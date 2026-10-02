@@ -1,0 +1,7 @@
+{% assign item = include.item %}
+<a class="content-card" href="{{ item.url | relative_url }}">
+  <div class="card-meta"><span>{{ item.section | replace: '-', ' ' | capitalize }}</span>{% if item.status %}<span class="status status-{{ item.status }}">{{ item.status | capitalize }}</span>{% endif %}</div>
+  <h3>{{ item.title | escape }}</h3>
+  {% if item.summary and item.summary contains 'Replace with' %}<p>How abundant software creation changes enterprise architecture.</p>{% elsif item.summary %}<p>{{ item.summary | escape }}</p>{% endif %}
+  <span class="card-action">Read {{ item.type | replace: '-', ' ' }} <span aria-hidden="true">→</span></span>
+</a>

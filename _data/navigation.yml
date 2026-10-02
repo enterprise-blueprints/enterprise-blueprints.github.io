@@ -1,0 +1,49 @@
+- slug: foundations
+  title: "Foundations"
+  description: "Ideas that explain the AI-native enterprise."
+  type: foundation
+
+- slug: reference-architecture
+  title: "Reference Architecture"
+  description: "The logical layers and responsibilities of the enterprise."
+  type: reference-architecture
+
+- slug: use-cases
+  title: "Use Cases"
+  description: "The people, needs, and processes behind the architecture."
+  type: use-case
+
+- slug: entities
+  title: "Entities"
+  description: "Shared business concepts, their meaning, and their lifecycle."
+  type: entity
+
+- slug: capabilities
+  title: "Capabilities"
+  description: "Reusable things the enterprise can do."
+  type: capability
+
+- slug: patterns
+  title: "Patterns"
+  description: "Approaches to recurring architecture problems."
+  type: pattern
+
+- slug: policies
+  title: "Policies"
+  description: "The rules and responsibilities that govern the work."
+  type: policy
+
+- slug: blueprints
+  title: "Blueprints"
+  description: "Logical architecture for a recognizable problem."
+  type: blueprint
+
+- slug: implementations
+  title: "Implementations"
+  description: "How technology realizes the logical architecture."
+  type: implementation
+
+- slug: decisions
+  title: "Architecture Decisions"
+  description: "The choices we make and the reasons behind them."
+  type: architecture-decision

@@ -1,0 +1,10 @@
+<nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link{% if page.layout == 'home' %} is-current{% endif %}" href="{{ '/' | relative_url }}"{% if page.layout == 'home' %} aria-current="page"{% endif %}>{% include icon.html name="home" %}<span>Home</span></a></li>
+    {% for section in site.data.navigation %}
+    <li><a class="nav-link{% if page.section == section.slug %} is-current{% endif %}" href="{{ section.slug | prepend: '/' | append: '/' | relative_url }}"{% if page.section == section.slug %}{% if page.layout == 'category' %} aria-current="page"{% else %} aria-current="location"{% endif %}{% endif %}>{% include icon.html name=section.slug %}<span>{{ section.title }}</span></a></li>
+    {% endfor %}
+    <li class="nav-about"><a class="nav-link{% if page.section == 'about' %} is-current{% endif %}" href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% elsif page.section == 'about' %} aria-current="location"{% endif %}>{% include icon.html name="about" %}<span>About the initiative</span></a></li>
+  </ul>
+</nav>

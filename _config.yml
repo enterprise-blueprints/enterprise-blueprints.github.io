@@ -1,0 +1,104 @@
+title: Enterprise Blueprints
+description: Open architecture for the AI-native enterprise
+url: "https://enterprise-blueprints.github.io"
+baseurl: ""
+repository_url: "https://github.com/enterprise-blueprints/enterprise-blueprints.github.io"
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+plugins:
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+relative_links:
+  enabled: true
+  collections: false
+exclude:
+  - brand_kit
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - AUTHORING.md
+  - structure.md
+  - SITE.md
+  - templates
+  - vendor
+  - .preview
+  - assets/diagrams/README.md
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: article
+  - scope:
+      path: "foundations"
+    values:
+      section: "foundations"
+      artifact: true
+  - scope:
+      path: "reference-architecture"
+    values:
+      section: "reference-architecture"
+      artifact: true
+  - scope:
+      path: "use-cases"
+    values:
+      section: "use-cases"
+      artifact: true
+  - scope:
+      path: "entities"
+    values:
+      section: "entities"
+      artifact: true
+  - scope:
+      path: "capabilities"
+    values:
+      section: "capabilities"
+      artifact: true
+  - scope:
+      path: "patterns"
+    values:
+      section: "patterns"
+      artifact: true
+  - scope:
+      path: "policies"
+    values:
+      section: "policies"
+      artifact: true
+  - scope:
+      path: "blueprints"
+    values:
+      section: "blueprints"
+      artifact: true
+  - scope:
+      path: "implementations"
+    values:
+      section: "implementations"
+      artifact: true
+  - scope:
+      path: "decisions"
+    values:
+      section: "decisions"
+      artifact: true
+  - scope:
+      path: charter
+    values:
+      section: about
+  - scope:
+      path: charter/project-charter-v0.4.md
+    values:
+      title: "Project Charter v0.4"
+  - scope:
+      path: charter/project-charter-v0.5.md
+    values:
+      title: "Project Charter v0.5"
+  - scope:
+      path: charter/project-charter-v0.3.md
+    values:
+      title: "Project Charter v0.3"
+  - scope:
+      path: LICENSING.md
+    values:
+      title: "Licensing and Attribution"

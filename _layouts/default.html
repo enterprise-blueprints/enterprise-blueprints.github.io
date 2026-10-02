@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title | escape }} · {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{% if page.summary and page.summary contains 'Replace with' %}{{ site.description | escape }}{% else %}{{ page.summary | default: page.description | default: site.description | escape }}{% endif %}">
+  <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="preload" href="{{ '/assets/fonts/InterVariable.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="{{ '/' | relative_url }}"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="{{ '/foundations/' | relative_url }}">Explore</a><a href="{{ '/about/' | relative_url }}">About</a><a href="{{ site.repository_url }}">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary>{% include navigation.html %}</details>
+  {{ content }}
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="{{ '/LICENSING.html' | relative_url }}">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

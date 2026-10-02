@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<div class="library-shell home-shell">
+<aside class="library-nav">{% include navigation.html %}</aside>
+<main id="main-content" class="home-main">
+  <section class="hero">
+    <div><p class="eyebrow">Enterprise Blueprints / Knowledge library</p><h1>Build Experiences.<br><span>Share Capabilities.</span></h1><p class="hero-lead">Create apps, workflows, and agents<br>that fit the work.</p><p class="hero-description">Build on shared enterprise capabilities, supported by authoritative data, identity, policy, and governance.</p><a class="button" href="{{ '/foundations/ai-native-enterprise.html' | relative_url }}">Read the AI-Native Enterprise <span aria-hidden="true">→</span></a><a class="text-link" href="{{ '/about/' | relative_url }}">About the initiative</a></div>
+    <div class="architecture-card"><p class="nav-label">The architectural idea</p><div class="architecture-layer experience"><span>01 / Experiences</span><strong>Apps · Interfaces · Agents</strong><p>Compose what the enterprise provides.</p></div><div class="layer-connector" aria-hidden="true">↓</div><div class="architecture-layer platform"><span>02 / Enterprise foundation</span><strong>Entities · Capabilities · Policies</strong><p>Keep meaning, state, and authority durable.</p></div><p class="architecture-caption">Dynamic experiences.<br>Durable enterprise architecture.</p></div>
+  </section>
+  <section class="home-section" aria-labelledby="start-heading"><div class="section-heading"><div><p class="eyebrow">Start reading</p><h2 id="start-heading">Ideas, then practice.</h2></div><span class="quiet">A growing body of knowledge</span></div>
+    <div class="featured-grid">{% assign foundations = site.pages | where: 'type', 'foundation' | sort: 'title' %}{% assign use_cases = site.pages | where: 'type', 'use-case' | sort: 'title' %}{% assign featured = foundations | concat: use_cases %}{% for item in featured limit: 4 %}{% include content-card.html item=item %}{% endfor %}</div>
+  </section>
+  <section class="home-section" aria-labelledby="library-heading"><div class="section-heading"><div><p class="eyebrow">Explore the library</p><h2 id="library-heading">From principles to implementation.</h2></div></div><div class="category-grid">{% for section in site.data.navigation %}<a class="category-tile" href="{{ section.slug | prepend: '/' | append: '/' | relative_url }}"><span class="category-number">{% include icon.html name=section.slug %}<span>{{ forloop.index | prepend: '0' }}</span></span><h3>{{ section.title }} <span aria-hidden="true">↗</span></h3><p>{{ section.description }}</p></a>{% endfor %}</div></section>
+</main>
+</div>
