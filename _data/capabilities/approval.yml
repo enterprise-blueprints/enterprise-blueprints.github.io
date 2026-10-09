@@ -1,0 +1,29 @@
+id: "capability:approval"
+title: "Approval"
+layer: "shared"
+status: "draft"
+responsibility: "Route a decision to a person with the authority to make it, and record the decision, the reasons, and who made it."
+boundaries: "The business program establishes who has authority for each decision; Approval enforces and records it. An agent may prepare a recommendation, but a consequential decision needs an authorized person."
+operations:
+  - name: "Approval.request"
+    description: "Ask for a decision from someone with the authority to make it."
+    accepts: ["subject", "decision needed", "criteria", "supporting evidence"]
+    returns: ["request ID"]
+  - name: "Approval.decide"
+    description: "Record an approver's decision and reasons."
+    accepts: ["request ID", "outcome", "reasons"]
+    returns: ["decision ID"]
+  - name: "Approval.getStatus"
+    description: "Report where a request stands and who it is waiting on."
+    accepts: ["request ID"]
+    returns: ["status"]
+entities: ["decision"]
+policies: ["authorization", "audit", "ai-policy"]
+depends_on: ["workflow", "identity"]
+signs:
+  - "Approvals happen by email reply."
+  - "The same decision goes up two or three levels."
+  - "Nobody can show who approved something, or when."
+questions:
+  - "Which decisions need approval, and who may give it?"
+  - "Where do requests most often wait for a decision?"

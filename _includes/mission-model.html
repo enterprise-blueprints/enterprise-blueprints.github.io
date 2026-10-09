@@ -4,6 +4,19 @@ Output stays unindented so kramdown treats it as HTML rather than code.
 {%- endcomment -%}
 {%- assign m = site.data.missions[include.mission] -%}
 {%- if m -%}
+{%- comment -%} Activity titles across the mission's processes, as "id::title" entries. {%- endcomment -%}
+{%- assign activity_index = "" -%}
+{%- for p in m.processes -%}
+{%- assign u = site.data["use-cases"][p.use_case] -%}
+{%- for ph in p.phases -%}{%- for a in ph.activities -%}
+{%- if a.id -%}{%- assign aid = a.id -%}{%- assign atitle = a.title -%}
+{%- else -%}{%- assign aid = a -%}{%- assign atitle = a -%}{%- for up in u.phases -%}{%- assign ua = up.activities | where: "id", a | first -%}{%- if ua -%}{%- assign atitle = ua.title -%}{%- endif -%}{%- endfor -%}
+{%- endif -%}
+{%- capture activity_index -%}{{ activity_index }}{{ aid }}::{{ atitle }};;{%- endcapture -%}
+{%- endfor -%}{%- endfor -%}
+{%- endfor -%}
+{%- assign activity_entries = activity_index | split: ";;" -%}
+{%- assign persona_case = m.processes[0].use_case -%}
 <div class="mission-model">
 <h2 id="factors">Factors</h2>
 <p>Factors are the things that shape how well the mission is carried out. Ask about each one with the customer, and note whether it is a strength or a problem today.</p>
@@ -18,7 +31,7 @@ Output stays unindented so kramdown treats it as HTML rather than code.
 <thead><tr><th>Factor</th><th>What it means</th><th>Questions to ask</th></tr></thead>
 <tbody>
 {%- for f in group %}
-<tr id="factor-{{ f.id }}"><td><strong>{{ f.title | escape }}</strong>{% if f.pattern %}<br><span class="mission-tag">Shared pattern: {{ f.pattern | replace: "-", " " }}</span>{% endif %}</td><td>{{ f.description | escape }}{% if f.signals %}<br><em>Signs it’s a problem:</em> {{ f.signals | join: " " | escape }}{% endif %}</td><td>{% for q in f.questions %}{{ q | escape }}{% unless forloop.last %}<br><br>{% endunless %}{% endfor %}</td></tr>
+<tr id="factor-{{ f.id }}"><td><strong>{{ f.title | escape }}</strong>{% if f.pattern %}<br><span class="mission-tag">Shared pattern: {{ f.pattern | replace: "-", " " }}</span>{% endif %}</td><td>{{ f.description | escape }}{% if f.signals %}<br><em>Signs it’s a problem:</em> {{ f.signals | join: " " | escape }}{% endif %}{% if f.activities.size > 0 %}<br><em>Shows up at:</em> {% for id in f.activities %}{% include mission-activity-title.html id=id entries=activity_entries %}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}</td><td>{% for q in f.questions %}{{ q | escape }}{% unless forloop.last %}<br><br>{% endunless %}{% endfor %}</td></tr>
 {%- endfor %}
 </tbody>
 </table>
@@ -63,10 +76,29 @@ Output stays unindented so kramdown treats it as HTML rather than code.
 <thead><tr><th>Intervention</th><th>Kind</th><th>Changes</th><th>What a system would need to do</th></tr></thead>
 <tbody>
 {%- for i in m.interventions %}
-<tr><td><strong>{{ i.title | escape }}</strong><br>{{ i.description | escape }}</td><td>{{ i.kind | capitalize }}{% unless i.kind == "technology" %}<br><span class="mission-tag">Out of scope</span>{% endunless %}</td><td>{% for c in i.changes %}{% assign f = m.factors | where: "id", c.factor | first %}{% if c.effect == "increases" %}↑{% else %}↓{% endif %} <a href="#factor-{{ c.factor }}">{{ f.title | escape }}</a>{% unless forloop.last %}<br>{% endunless %}{% endfor %}</td><td>{{ i.need | default: "—" | escape }}</td></tr>
+<tr><td><strong>{{ i.title | escape }}</strong><br>{{ i.description | escape }}</td><td>{{ i.kind | capitalize }}{% unless i.kind == "technology" %}<br><span class="mission-tag">Out of scope</span>{% endunless %}</td><td>{% for c in i.changes %}{% assign f = m.factors | where: "id", c.factor | first %}{% if c.effect == "increases" %}↑{% else %}↓{% endif %} <a href="#factor-{{ c.factor }}">{{ f.title | escape }}</a>{% unless forloop.last %}<br>{% endunless %}{% endfor %}</td><td>{{ i.need | default: "—" | escape }}{% if i.requirements.size > 0 %}<br><em>Delivered by:</em> {% for id in i.requirements %}{% include mission-requirement-link.html id=id mission=m %}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}</td></tr>
 {%- endfor %}
 </tbody>
 </table>
+{%- if m.processes.size > 0 %}
+<h2 id="processes">Processes</h2>
+<p>How the work flows. Each process specializes a use case’s process: some activities come from the use case as written, some are specialized for this mission, and some are new. The factors listed with an activity show up there, so that is where to look for them.</p>
+{%- for p in m.processes -%}
+{%- include mission-process.html process=p mission=m -%}
+{%- endfor -%}
+{%- endif -%}
+{%- if m.requirements.size > 0 %}
+<h2 id="requirements">Mission requirements</h2>
+<p>Requirements this mission adds to the template requirements of its use cases, in vendor-neutral terms. A requirement that specializes a template requirement takes its place.</p>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Delivers</th></tr></thead>
+<tbody>
+{%- for r in m.requirements %}
+<tr id="requirement-{{ r.id }}"><td><strong>{{ r.title | escape }}</strong><br>{{ r.statement | escape }}{% if r.extends %}<br><span class="mission-tag">Specializes</span> {% include mission-requirement-link.html id=r.extends mission=m %}{% endif %}</td><td>{% case r.category %}{% when "nfr" %}Quality{% when "constraint" %}Constraint{% else %}Functional{% endcase %}</td><td>{% for id in r.activities %}{% include mission-activity-title.html id=id entries=activity_entries %}{% unless forloop.last %}<br>{% endunless %}{% endfor %}{% if r.activities.size == 0 %}Across the process{% endif %}</td><td>{% assign shown = 0 %}{% for i in m.interventions %}{% if i.requirements contains r.id %}{% if shown > 0 %}<br>{% endif %}<a href="#interventions">{{ i.title | escape }}</a>{% assign shown = shown | plus: 1 %}{% endif %}{% endfor %}</td></tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}
 {%- if m.roles.size > 0 %}
 <h2 id="roles">Typical roles</h2>
 <p>The people usually involved, and the factors they know best. Every organization differs, so confirm who plays each part.</p>
@@ -74,7 +106,7 @@ Output stays unindented so kramdown treats it as HTML rather than code.
 <thead><tr><th>Role</th><th>What they do</th><th>What they care about</th><th>Knows about</th></tr></thead>
 <tbody>
 {%- for r in m.roles %}
-<tr><td><strong>{{ r.title | escape }}</strong><br><span class="mission-tag">{{ r.influence }} influence</span></td><td>{{ r.description | escape }}</td><td>{{ r.concerns | escape }}</td><td>{% for id in r.factors %}{% assign f = m.factors | where: "id", id | first %}<a href="#factor-{{ id }}">{{ f.title | escape }}</a>{% unless forloop.last %}<br>{% endunless %}{% endfor %}</td></tr>
+<tr><td><strong>{{ r.title | escape }}</strong><br><span class="mission-tag">{{ r.influence }} influence</span>{% if r.personas.size > 0 %}<br><span class="mission-tag">Acts as: {% for id in r.personas %}{% assign pp = site.data["use-cases"][persona_case].personas | where: "id", id | first %}{{ pp.title | default: id | escape | downcase }}{% unless forloop.last %}, {% endunless %}{% endfor %}</span>{% endif %}</td><td>{{ r.description | escape }}</td><td>{{ r.concerns | escape }}</td><td>{% for id in r.factors %}{% assign f = m.factors | where: "id", id | first %}<a href="#factor-{{ id }}">{{ f.title | escape }}</a>{% unless forloop.last %}<br>{% endunless %}{% endfor %}</td></tr>
 {%- endfor %}
 </tbody>
 </table>
@@ -86,7 +118,7 @@ Output stays unindented so kramdown treats it as HTML rather than code.
 <thead><tr><th>System</th><th>What it does</th><th>Usually</th></tr></thead>
 <tbody>
 {%- for s in m.systems %}
-<tr><td><strong>{{ s.title | escape }}</strong></td><td>{{ s.description | escape }}{% if s.notes != "" %}<br><em>{{ s.notes | escape }}</em>{% endif %}</td><td>{{ s.fate | capitalize }}</td></tr>
+<tr><td><strong>{{ s.title | escape }}</strong></td><td>{{ s.description | escape }}{% if s.notes != "" %}<br><em>{{ s.notes | escape }}</em>{% endif %}{% if s.provides.size > 0 %}<br><em>Provides:</em> {% for c in s.provides %}{% include capability-link.html id=c %}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}</td><td>{{ s.fate | capitalize }}</td></tr>
 {%- endfor %}
 </tbody>
 </table>

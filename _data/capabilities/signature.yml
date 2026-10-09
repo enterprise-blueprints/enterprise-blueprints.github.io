@@ -1,0 +1,23 @@
+id: "capability:signature"
+title: "Signature"
+layer: "shared"
+status: "draft"
+responsibility: "Collect signatures on documents and decisions, and let anyone with access verify them later."
+boundaries: "It records who signed and protects the signed document from change. Whether a signature is legally sufficient for a given purpose is a policy question."
+operations:
+  - name: "Signature.request"
+    description: "Ask one or more people to sign a document."
+    accepts: ["document ID", "signers", "order"]
+    returns: ["signature request ID"]
+  - name: "Signature.verify"
+    description: "Confirm who signed a document and that it hasn't changed since."
+    accepts: ["document ID"]
+    returns: ["verification result"]
+entities: ["document", "decision"]
+policies: ["identity", "records", "audit"]
+depends_on: ["identity", "document-management"]
+signs:
+  - "Documents are printed, signed, and scanned."
+  - "Signed versions are hard to tell apart from drafts."
+questions:
+  - "Which documents need a signature, and of what kind?"

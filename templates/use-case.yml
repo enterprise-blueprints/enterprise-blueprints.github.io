@@ -1,0 +1,48 @@
+# Copy to _data/use-cases/<slug>.yml. See use-cases/README.md for every field.
+
+id: "use-case:replace-with-slug"
+title: "Replace with title"
+status: "draft"
+version: 1
+summary: "Replace with a one-sentence summary."
+related: []
+
+personas:
+  - id: "replace-with-persona"
+    title: "Replace with a role"
+    description: "Replace with what they do in this work."
+    needs: "Replace with what they need from it."
+
+phases:
+  - id: "replace-with-phase"
+    title: "Replace with a phase"
+    description: "Replace with the work and its result."
+    throughout: false            # true for work that runs alongside every phase, such as oversight
+    activities:
+      - id: "replace-with-activity"
+        title: "Replace with a short verb phrase"
+        description: "Replace with what happens."
+        actor: "replace-with-persona"
+        participants: []         # other personas involved
+        produces: []             # entity IDs, such as case or decision
+        uses: []                 # capability IDs, such as notification or approval
+        decision: ""             # optional: the question decided here
+        waits: ""                # optional: what the work waits on here
+        optional: false          # true when only some scenarios reach it
+
+scenarios:
+  - id: "replace-with-scenario"
+    title: "Replace with a recognizable situation"
+    description: "Replace with what happens."
+    activities: ["replace-with-activity"]   # the path, in order
+    check: "Replace with what a design must show."
+
+requirements:
+  - id: "replace-with-requirement"
+    title: "Replace with a short title"
+    statement: "Replace with a vendor-neutral statement of what a solution must do."
+    category: "functional"       # functional | nfr | constraint
+    activities: ["replace-with-activity"]   # empty for requirements across the process
+    capabilities: []
+    policies: []                 # optional, such as privacy, records, or audit
+    scenarios: []                # optional

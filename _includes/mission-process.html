@@ -1,0 +1,32 @@
+{%- comment -%}
+One mission process as a table, for mission-model.html. Usage:
+{% include mission-process.html process=p mission=m %}
+Each activity is a use case activity's ID (used as written) or a full activity, which may extend
+one. Mission activities name roles; use case activities name personas, which roles act as.
+{%- endcomment -%}
+{%- assign p = include.process -%}
+{%- assign mm = include.mission -%}
+{%- assign u = site.data["use-cases"][p.use_case] -%}
+{%- assign u_url = '/use-cases/' | append: p.use_case | append: '.html' | relative_url %}
+<h3 id="process-{{ p.id }}">{{ p.title | escape }}</h3>
+<p>{{ p.description | escape }} It specializes the <a href="{{ u_url }}">{{ u.title | escape }}</a> process.</p>
+<table>
+<thead><tr><th>Activity</th><th>Who</th><th>Factors that show up here</th></tr></thead>
+<tbody>
+{%- for ph in p.phases -%}{%- for a in ph.activities -%}
+{%- if a.id -%}
+{%- assign act = a -%}{%- assign aid = a.id -%}
+{%- capture who -%}{% assign r = mm.roles | where: "id", a.actor | first %}{{ r.title | escape }}{% if a.participants %}<br><em>With:</em> {% for id in a.participants %}{% assign r = mm.roles | where: "id", id | first %}{{ r.title | escape }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}{%- endcapture -%}
+{%- assign origin = "New for this mission" -%}
+{%- if a.extends -%}{%- for up in u.phases -%}{%- assign ua = up.activities | where: "id", a.extends | first -%}{%- if ua -%}{%- capture origin -%}Specializes <a href="{{ u_url }}#activity-{{ a.extends }}">{{ ua.title | escape }}</a>{%- endcapture -%}{%- endif -%}{%- endfor -%}{%- endif -%}
+{%- else -%}
+{%- assign aid = a -%}{%- for up in u.phases -%}{%- assign ua = up.activities | where: "id", a | first -%}{%- if ua -%}{%- assign act = ua -%}{%- endif -%}{%- endfor -%}
+{%- assign names = "" | split: "" -%}{%- for r in mm.roles -%}{%- if r.personas contains act.actor -%}{%- assign names = names | push: r.title -%}{%- endif -%}{%- endfor -%}
+{%- if names.size == 0 -%}{%- assign persona = u.personas | where: "id", act.actor | first -%}{%- assign names = names | push: persona.title -%}{%- endif -%}
+{%- capture who -%}{{ names | join: " or " | escape }}{%- endcapture -%}
+{%- capture origin -%}From <a href="{{ u_url }}#activity-{{ aid }}">the use case</a>{%- endcapture -%}
+{%- endif %}
+<tr id="{{ p.id }}-{{ aid }}"><td>{% if forloop.first %}<span class="mission-tag">{{ ph.title | escape }}</span><br>{% endif %}<strong>{{ act.title | escape }}</strong>{% if act.optional %} <span class="mission-tag">Some cases</span>{% endif %}<br>{{ act.description | escape }}<br><span class="mission-tag">{{ origin }}</span></td><td>{{ who }}</td><td>{% assign shown = 0 %}{% for f in mm.factors %}{% if f.activities contains aid %}{% if shown > 0 %}<br>{% endif %}<a href="#factor-{{ f.id }}">{{ f.title | escape }}</a>{% assign shown = shown | plus: 1 %}{% endif %}{% endfor %}</td></tr>
+{%- endfor -%}{%- endfor %}
+</tbody>
+</table>

@@ -45,13 +45,17 @@ Start from the [mission template](../templates/mission.md) and [mission data tem
 | `factors[].signals` | What you might hear or see when the factor is a problem. |
 | `factors[].questions` | Questions to ask the customer. |
 | `factors[].metrics[]` | Candidate metrics: `name`, `measurement`, and `better`. |
+| `factors[].activities` | The process activities where the factor shows up. Leave it out for factors measured across a whole process, such as timeliness. |
 | `relationships[]` | `from`, `to`, `effect` (`increases` or `decreases`), `confidence` (`hypothesis`, `supported`, or `established`), and `rationale`. Optional: `lag`, `applies_when`, and `evidence` (a list of `source` and `note`). |
 | `loops[]` | `id`, `title`, `kind` (`reinforcing` or `balancing`), `factors` (in order around the loop), `description`, and optional `watch_for`. |
-| `roles[]` | Typical roles: `id`, `title`, `description`, `concerns`, `influence` (`high`, `medium`, or `low`), and `factors` (the factor IDs they know best). Tools offer them as starting stakeholders. |
-| `systems[]` | Typical current-state systems: `id`, `title`, `kind`, `fate` (`keep`, `integrate`, `replace`, or `retire`), `description`, and `notes`. Tools offer them as a starting current state. |
-| `interventions[]` | `id`, `title`, `kind` (`technology`, `process`, `policy`, `people`, or `organization`), `description`, and `changes` (a list of `factor` and `effect`). Technology interventions add `need`: what a system would have to do, in vendor-neutral terms. |
+| `roles[]` | Typical roles: `id`, `title`, `description`, `concerns`, `influence` (`high`, `medium`, or `low`), `factors` (the factor IDs they know best), and `personas` (the use case personas the role acts as). Tools offer them as starting stakeholders. |
+| `systems[]` | Typical current-state systems: `id`, `title`, `kind`, `fate` (`keep`, `integrate`, `replace`, or `retire`), `description`, `notes`, and `provides` (the capability IDs it provides today). Tools offer them as a starting current state. |
+| `interventions[]` | `id`, `title`, `kind` (`technology`, `process`, `policy`, `people`, or `organization`), `description`, and `changes` (a list of `factor` and `effect`). Technology interventions add `need`, what a system would have to do in vendor-neutral terms, and `requirements`, the requirement IDs that deliver it. |
+| `processes[]` | How the mission's work flows: `id`, `title`, `use_case` (the use case whose process it specializes), `description`, and `phases`. |
+| `processes[].phases[]` | `id`, `title`, `stage` (the use case phase it maps to), and `activities`. Each activity is either a use case activity's ID, used as written, or a full activity with the use case's activity fields. A full activity with `extends` specializes a use case activity and keeps its requirements; one without it is new to the mission. Its `actor` and `participants` are role IDs. |
+| `requirements[]` | Requirements the mission adds, with the use case's requirement fields. Optional `extends` names a use case requirement this one specializes; tools show the specialization in its place. |
 
-Keep IDs stable. Projects that used a mission refer to its factors and interventions by ID.
+Keep IDs stable. Projects that used a mission refer to its factors, interventions, activities, and requirements by ID. Activity and requirement IDs must not repeat the IDs of the use cases the mission runs on. See the [Use Cases index](../use-cases/README.md) for the process model format.
 
 Mark a relationship `supported` or `established` only when its `evidence` says why. Unconfirmed relationships stay hypotheses. Record customer-specific findings in the engagement, not here. Contribute back only generalized lessons that no longer identify a customer.
 

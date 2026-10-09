@@ -1,0 +1,29 @@
+id: "capability:identity"
+title: "Identity"
+layer: "shared"
+status: "draft"
+responsibility: "Establish who or what is acting, whether staff, a member of the public, a partner, or an agent, and with what level of assurance."
+boundaries: "Identity says who is acting. What they may do is an authorization decision, made under enterprise policy using that identity."
+operations:
+  - name: "Identity.authenticate"
+    description: "Sign a person, system, or agent in."
+    accepts: ["credentials"]
+    returns: ["authenticated identity", "assurance level"]
+  - name: "Identity.verify"
+    description: "Check evidence that a person is who they claim to be."
+    accepts: ["person details", "evidence"]
+    returns: ["verification result", "assurance level"]
+  - name: "Identity.getAttributes"
+    description: "Return the attributes of an identity that a consumer may use, such as role and organization."
+    accepts: ["identity", "purpose"]
+    returns: ["attributes"]
+entities: ["person", "organization"]
+policies: ["identity", "security", "privacy", "audit"]
+depends_on: []
+signs:
+  - "Applications keep their own user accounts and passwords."
+  - "External partners share accounts, or can't get one."
+  - "Accounts stay active after people change jobs."
+questions:
+  - "How do staff, the public, and partners sign in today, and to how many systems?"
+  - "Which actions need a higher level of identity assurance?"

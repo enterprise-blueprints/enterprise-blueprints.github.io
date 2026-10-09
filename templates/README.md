@@ -6,10 +6,10 @@ Copy a template into its destination, replace placeholder metadata and prompts, 
 | --- | --- | --- |
 | [Foundation](foundation.md) | `foundation` | `foundations/` |
 | [Reference architecture](reference-architecture.md) | `reference-architecture` | `reference-architecture/` |
-| [Use case](use-case.md) | `use-case` | `use-cases/` |
+| [Use case](use-case.md) and [use case data](use-case.yml) | `use-case` | `use-cases/` and `_data/use-cases/` |
 | [Mission](mission.md) and [mission data](mission.yml) | `mission` | `missions/` and `_data/missions/` |
 | [Entity](entity.md) | `entity` | `entities/` |
-| [Capability](capability.md) | `capability` | `capabilities/` |
+| [Capability](capability.md) and [capability data](capability.yml) | `capability` | `capabilities/` and `_data/capabilities/` |
 | [Pattern](pattern.md) | `pattern` | `patterns/` |
 | [Policy](policy.md) | `policy` | `policies/` |
 | [Blueprint](blueprint.md) | `blueprint` | `blueprints/` |

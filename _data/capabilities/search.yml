@@ -1,0 +1,24 @@
+id: "capability:search"
+title: "Search"
+layer: "shared"
+status: "draft"
+responsibility: "Find records, documents, people, and organizations across the enterprise, limited to what the requester may see."
+boundaries: "It finds and points to information; the systems of record stay authoritative. Results respect each record's access rules."
+operations:
+  - name: "Search.query"
+    description: "Search within a scope, returning only results the requester may see."
+    accepts: ["terms", "scope"]
+    returns: ["results"]
+  - name: "Search.findRelated"
+    description: "Suggest records that may be related to a given one."
+    accepts: ["record"]
+    returns: ["possible matches"]
+entities: ["case", "person", "organization", "document"]
+policies: ["authorization", "privacy", "audit"]
+depends_on: ["identity"]
+signs:
+  - "Staff ask colleagues whether a related case exists."
+  - "Searching means opening several systems one by one."
+questions:
+  - "Before starting work, how do staff check what the organization already knows?"
+  - "How far back, and across which systems, can they search?"

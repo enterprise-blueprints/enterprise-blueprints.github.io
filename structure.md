@@ -8,14 +8,25 @@ enterprise-blueprints.github.io/
 │   └── workflows/
 │       └── pages.yml
 ├── _data/
+│   ├── capabilities/
+│   │   └── <slug>.yml (one per capability)
 │   ├── missions/
 │   │   └── inspector-general-investigations.yml
-│   └── navigation.yml
+│   ├── navigation.yml
+│   └── use-cases/
+│       └── public-sector-case-management.yml
 ├── _includes/
+│   ├── capability-catalog.html
+│   ├── capability-link.html
 │   ├── content-card.html
 │   ├── icon.html
+│   ├── mission-activity-title.html
 │   ├── mission-model.html
-│   └── navigation.html
+│   ├── mission-process.html
+│   ├── mission-requirement-link.html
+│   ├── navigation.html
+│   ├── use-case-model.html
+│   └── use-case-requirement.html
 ├── _layouts/
 │   ├── article.html
 │   ├── category.html
@@ -43,6 +54,8 @@ enterprise-blueprints.github.io/
 │   ├── AI-Native Enterprise Brand Kit.png
 │   └── AI-Native Enterprise Dark Brand Board.png
 ├── capabilities/
+│   ├── catalog.md
+│   ├── index.json
 │   └── README.md
 ├── charter/
 │   ├── project-charter-v0.3.md
@@ -52,6 +65,8 @@ enterprise-blueprints.github.io/
 │   ├── 0001-add-use-cases-and-rename-objects-to-entities.md
 │   ├── 0002-build-experiences-share-capabilities.md
 │   ├── 0003-add-machine-readable-mission-models.md
+│   ├── 0004-add-machine-readable-use-case-processes.md
+│   ├── 0005-add-a-machine-readable-capability-catalog.md
 │   └── README.md
 ├── entities/
 │   └── README.md
@@ -75,6 +90,7 @@ enterprise-blueprints.github.io/
 │   ├── architecture-decision.md
 │   ├── blueprint.md
 │   ├── capability.md
+│   ├── capability.yml
 │   ├── entity.md
 │   ├── foundation.md
 │   ├── implementation.md
@@ -85,8 +101,10 @@ enterprise-blueprints.github.io/
 │   ├── policy.md
 │   ├── README.md
 │   ├── reference-architecture.md
-│   └── use-case.md
+│   ├── use-case.md
+│   └── use-case.yml
 ├── use-cases/
+│   ├── index.json
 │   ├── public-sector-case-management.md
 │   └── README.md
 ├── .gitignore
@@ -105,6 +123,6 @@ enterprise-blueprints.github.io/
 └── structure.md
 ```
 
-Git metadata, build output, caches, and local dependencies are omitted. Mission models in `_data/missions/` are the first machine-readable content. Labs and formal schema validation remain deferred.
+Git metadata, build output, caches, and local dependencies are omitted. Mission models in `_data/missions/`, use case process models in `_data/use-cases/`, and the capability catalog in `_data/capabilities/` are machine-readable content. Labs and formal schema validation remain deferred.
 
 See the [repository overview](README.md), [authoring guide](AUTHORING.md), [site development guide](SITE.md), and [template catalog](templates/README.md).

@@ -23,6 +23,8 @@ related: []
 
 <!-- Explain the typical trigger, major steps, handoffs, decisions, and outcome. Describe important variations and exceptions without prescribing implementation technology. -->
 
+<!-- Optional: to add a process model with activities, scenarios, and template requirements, copy use-case.yml to _data/use-cases/<slug>.yml, set use_case: "<slug>" in the front matter, and render it here with the use-case-model.html include. See use-cases/README.md. -->
+
 ## Constraints and open questions
 
 <!-- Capture relevant domain constraints, assumptions, and questions that require further investigation. -->

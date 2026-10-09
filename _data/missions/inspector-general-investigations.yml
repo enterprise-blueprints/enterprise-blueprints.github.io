@@ -20,6 +20,7 @@ factors:
     title: "Investigator caseload"
     description: "The number and complexity of open cases each investigator carries. A heavy caseload leaves less time for any one case."
     better: "lower"
+    activities: ["assign-owner", "monitor-workload"]
     pattern: "capacity"
     signals:
       - "Investigators carry more cases than they can actively work."
@@ -37,6 +38,7 @@ factors:
     title: "Volume of incoming allegations"
     description: "How many complaints, hotline submissions, and referrals arrive. Volume rises when people trust that reports lead to action."
     better: "neutral"
+    activities: ["receive-allegation"]
     signals:
       - "Hotline volume jumped after a high-profile case."
       - "Intake staff can’t keep up with new submissions."
@@ -53,6 +55,7 @@ factors:
     title: "Clear criteria for accepting and prioritizing allegations"
     description: "Written, shared criteria that decide which allegations become investigations, which go elsewhere, and in what order."
     better: "higher"
+    activities: ["triage-allegation", "decide-disposition"]
     signals:
       - "Similar allegations are handled differently depending on who reviews them."
       - "Priority depends on who is asking."
@@ -65,6 +68,7 @@ factors:
     title: "Clear decision rights for case actions"
     description: "Everyone knows who may open, assign, escalate, refer, and close a case, and those people can act without unnecessary handoffs."
     better: "higher"
+    activities: ["decide-disposition", "approve-findings", "resolve-delay"]
     pattern: "decision-rights"
     signals:
       - "Cases wait for approvals nobody is sure they need."
@@ -78,6 +82,7 @@ factors:
     title: "Supervisors can see external dependencies"
     description: "Supervisors can see which cases are waiting on records requests, subpoenas, interviews, or partner agencies, and have the authority to intervene."
     better: "higher"
+    activities: ["request-records", "monitor-workload"]
     pattern: "visibility"
     signals:
       - "Nobody knows how long a case has waited on another agency."
@@ -95,6 +100,7 @@ factors:
     title: "Pressure to close cases"
     description: "Performance targets, reporting cycles, or leadership attention that emphasize the number of closed cases over their quality."
     better: "lower"
+    activities: ["supervisory-review", "check-completion"]
     pattern: "incentives"
     signals:
       - "Closure counts dominate performance reviews or the semiannual report."
@@ -108,6 +114,7 @@ factors:
     title: "Investigators can find related cases and prior allegations"
     description: "Investigators can search earlier complaints, cases, subjects, and entities to see what the office already knows."
     better: "higher"
+    activities: ["check-related"]
     pattern: "information-access"
     signals:
       - "Investigators learn about a related case by asking around."
@@ -121,6 +128,7 @@ factors:
     title: "Reliable evidence handling and chain of custody"
     description: "Physical and digital evidence is captured, stored, and tracked so its integrity can be shown."
     better: "higher"
+    activities: ["collect-evidence"]
     signals:
       - "Evidence logs live in spreadsheets or paper binders."
       - "Digital evidence sits on shared drives or individual laptops."
@@ -133,6 +141,7 @@ factors:
     title: "Working relationships with prosecutors and partner agencies"
     description: "Established contacts, agreements, and expectations with prosecutors, law enforcement, and agency management."
     better: "higher"
+    activities: ["consult-prosecutor", "refer-for-action"]
     signals:
       - "Referrals go to whoever an investigator happens to know."
       - "Partners don’t know what a referral package should contain."
@@ -145,6 +154,7 @@ factors:
     title: "Complete and consistent case data"
     description: "Case records use consistent categories and fields, and are complete enough to report from without manual cleanup."
     better: "higher"
+    activities: ["receive-allegation", "report-results"]
     pattern: "data-quality"
     signals:
       - "Building the semiannual report takes weeks of reconciling spreadsheets."
@@ -162,6 +172,7 @@ factors:
     title: "Investigative information is protected and independent"
     description: "Case information is limited to people with a need to know, every access is logged, and agency staff outside the OIG can't see or change OIG records. Complainant and witness identities stay confidential."
     better: "higher"
+    activities: ["protect-complainant"]
     pattern: "independence"
     signals:
       - "Agency IT administrators can reach OIG files or mailboxes."
@@ -180,6 +191,7 @@ factors:
     title: "Investigators escalate stalled requests early"
     description: "Investigators notice when a records request, subpoena, or partner action has stalled, and raise it before it delays the case."
     better: "higher"
+    activities: ["request-records", "resolve-delay"]
     signals:
       - "Requests sit for months before anyone follows up."
       - "Escalation depends on the individual investigator."
@@ -195,6 +207,7 @@ factors:
     title: "Supervisors conduct substantive case reviews"
     description: "Supervisors regularly review the evidence, plan, and direction of each case, not just its status."
     better: "higher"
+    activities: ["supervisory-review"]
     signals:
       - "Case reviews are status meetings."
       - "Evidentiary gaps surface only when the report is drafted."
@@ -211,6 +224,7 @@ factors:
     title: "Reviews and documentation are rushed"
     description: "Under pressure, staff shorten reviews and write up work late or thinly."
     better: "lower"
+    activities: ["conduct-interviews", "supervisory-review", "review-report"]
     signals:
       - "Interview write-ups are done weeks after the interview."
       - "Reviews happen just before closure."
@@ -223,6 +237,7 @@ factors:
     title: "Intake staff triage allegations consistently"
     description: "Intake staff apply the same criteria to similar allegations, and route each one promptly."
     better: "higher"
+    activities: ["triage-allegation", "decide-disposition"]
     signals:
       - "Allegations are reassigned after triage because they went to the wrong place."
     questions:
@@ -237,6 +252,7 @@ factors:
     title: "Staff check for related cases before opening"
     description: "Before opening a case, staff check for earlier allegations, open cases, and known subjects."
     better: "higher"
+    activities: ["check-related"]
     signals:
       - "Two offices investigate the same subject without knowing."
     questions:
@@ -247,6 +263,7 @@ factors:
     title: "Investigators document work as it happens"
     description: "Interviews, evidence, and decisions are recorded in the case file close to when they occur."
     better: "higher"
+    activities: ["conduct-interviews", "collect-evidence"]
     signals:
       - "Case files are assembled at the end."
     questions:
@@ -261,6 +278,7 @@ factors:
     title: "Investigators engage prosecutors early"
     description: "Investigators consult prosecutors when a case shows criminal potential, rather than only at referral."
     better: "higher"
+    activities: ["consult-prosecutor"]
     signals:
       - "Referrals are declined for reasons that could have been addressed earlier."
     questions:
@@ -271,6 +289,7 @@ factors:
     title: "Supervisors rebalance caseloads"
     description: "Supervisors watch workload and case age, and move or close out work before it piles up."
     better: "higher"
+    activities: ["monitor-workload", "assign-owner"]
     signals:
       - "Some investigators are overloaded while others have room."
     questions:
@@ -300,6 +319,7 @@ factors:
     goal: "Reports and case files are right the first time"
     description: "Reports and case files returned for missing evidence, unclear findings, or documentation gaps."
     better: "lower"
+    activities: ["review-report"]
     questions:
       - "How often do reports go back for more work, and why?"
     metrics:
@@ -313,6 +333,7 @@ factors:
     goal: "Allegations and cases don’t wait for attention"
     description: "Allegations and cases waiting for attention."
     better: "lower"
+    activities: ["triage-allegation", "assign-owner"]
     questions:
       - "How many allegations are waiting for triage, and how many cases are waiting for an investigator?"
     metrics:
@@ -325,6 +346,7 @@ factors:
     title: "Referrals are accepted for prosecution or action"
     description: "Prosecutors and agency management accept referrals because the package is complete and the case is strong."
     better: "higher"
+    activities: ["refer-for-action"]
     questions:
       - "What share of referrals is accepted, and why are the others declined?"
     metrics:
@@ -337,6 +359,7 @@ factors:
     title: "Findings withstand review and challenge"
     description: "Findings hold up in peer review, litigation, and congressional or public scrutiny."
     better: "higher"
+    activities: ["review-report", "approve-findings"]
     questions:
       - "When were findings last challenged, and what happened?"
     metrics:
@@ -596,7 +619,7 @@ loops:
 # ------------------------------------------------------------------------------------------------
 # Interventions: changes that act on factors. Technology interventions are candidates for a solution;
 # the others are listed for discussion and completeness. `need` states what a system would have to
-# do, in vendor-neutral terms.
+# do, in vendor-neutral terms, and `requirements` names the requirements that deliver it.
 
 interventions:
   - id: "dependency-tracking"
@@ -604,6 +627,7 @@ interventions:
     kind: "technology"
     description: "Record every records request, subpoena, and partner action against the case, with due dates and automatic reminders."
     need: "Track external requests per case with due dates and status, and alert the investigator and supervisor when a request is overdue."
+    requirements: ["track-external-requests", "flag-stalled-work"]
     changes:
       - factor: "dependency-visibility"
         effect: "increases"
@@ -615,6 +639,7 @@ interventions:
     kind: "technology"
     description: "Prompt supervisors to review each case on a schedule, with a checklist that covers evidence and plan, and record the results."
     need: "Schedule periodic supervisory reviews for each case, record review findings and follow-up actions, and show overdue reviews."
+    requirements: ["scheduled-reviews"]
     changes:
       - factor: "substantive-review"
         effect: "increases"
@@ -624,6 +649,7 @@ interventions:
     kind: "technology"
     description: "Capture allegations through structured forms and apply documented triage criteria and routing."
     need: "Capture allegations through structured intake from every channel, apply configurable triage criteria, and route each allegation with a recorded disposition."
+    requirements: ["receive-any-channel", "configurable-triage", "record-routing"]
     changes:
       - factor: "triage-criteria"
         effect: "increases"
@@ -637,6 +663,7 @@ interventions:
     kind: "technology"
     description: "Let staff search earlier allegations, cases, people, and organizations in one place."
     need: "Search allegations, cases, subjects, and entities across offices and years, and flag possible related cases when a new allegation or case is created."
+    requirements: ["subject-search", "link-cases"]
     changes:
       - factor: "related-case-access"
         effect: "increases"
@@ -648,6 +675,7 @@ interventions:
     kind: "technology"
     description: "Track physical and digital evidence with a tamper-evident custody log."
     need: "Record evidence items with a complete chain of custody, store digital evidence with integrity checks, and restrict changes."
+    requirements: ["chain-of-custody", "digital-evidence-integrity"]
     changes:
       - factor: "evidence-handling"
         effect: "increases"
@@ -657,6 +685,7 @@ interventions:
     kind: "technology"
     description: "Show supervisors each investigator’s caseload, case age, and what each case is waiting on."
     need: "Report caseload, case age, and waiting status by investigator, team, and office from current case data."
+    requirements: ["workload-visibility"]
     changes:
       - factor: "dependency-visibility"
         effect: "increases"
@@ -668,6 +697,7 @@ interventions:
     kind: "technology"
     description: "Let investigators record interviews and activities in the case file from wherever they work."
     need: "Let investigators draft interview memoranda and activity records in the case file, including from the field, with templates."
+    requirements: ["interview-memoranda", "field-access"]
     changes:
       - factor: "contemporaneous-documentation"
         effect: "increases"
@@ -677,6 +707,7 @@ interventions:
     kind: "technology"
     description: "Restrict each case to the people working it, log every access and change, and keep OIG data out of reach of agency administrators."
     need: "Restrict access to cases and records by role and by case, record an audit trail of every view and change, protect complainant identities, and keep OIG data administered separately from the agency."
+    requirements: ["case-access-control", "audit-trail", "protect-complainant-identity", "oig-independence"]
     changes:
       - factor: "information-protection"
         effect: "increases"
@@ -734,6 +765,323 @@ interventions:
         effect: "increases"
 
 # ------------------------------------------------------------------------------------------------
+# Processes: how the mission's work flows. Each process specializes a use case's process. An
+# activity is either a use case activity's ID, used as written, or a full activity. A full activity
+# with `extends` specializes a use case activity and keeps its requirements; one without it is new to
+# this mission. `actor` and `participants` are role IDs. `stage` is the use case phase a phase maps to.
+
+processes:
+  - id: "complaint-intake"
+    title: "Complaint intake and triage"
+    use_case: "public-sector-case-management"
+    description: "How complaints, hotline submissions, and referrals are received, triaged, and routed to an investigation, to agency management, or elsewhere."
+    phases:
+      - id: "intake"
+        title: "Receive the complaint"
+        stage: "receive"
+        activities:
+          - id: "receive-allegation"
+            extends: "receive-matter"
+            title: "Receive the allegation"
+            description: "Record a complaint, hotline submission, or referral from any channel, including anonymous and whistleblower submissions."
+            actor: "hotline"
+            produces: ["interaction"]
+            uses: ["case-management", "document-management"]
+          - "acknowledge-receipt"
+          - id: "protect-complainant"
+            title: "Protect the complainant's identity"
+            description: "Note whether the complainant asked for confidentiality or is a whistleblower, and restrict who can see their identity."
+            actor: "hotline"
+            uses: ["identity", "person-information"]
+            decision: "Does this complainant's identity need protection?"
+      - id: "triage"
+        title: "Triage"
+        stage: "review-route"
+        activities:
+          - "check-related"
+          - id: "triage-allegation"
+            extends: "check-completeness"
+            title: "Apply the triage criteria"
+            description: "Check jurisdiction, credibility, seriousness, and priority against the office's written criteria."
+            actor: "hotline"
+            uses: ["case-management", "workflow"]
+            decision: "Is it within our jurisdiction, and how serious and credible is it?"
+          - "request-information"
+          - id: "decide-disposition"
+            extends: "route-matter"
+            title: "Decide the disposition"
+            description: "Open an investigation, refer to agency management for action, refer to another office of inspector general or agency, or close with no action, and record the reason."
+            actor: "hotline"
+            participants: ["sac"]
+            produces: ["case", "decision"]
+            uses: ["case-management", "workflow"]
+            decision: "Investigate, refer to management, refer elsewhere, or close?"
+      - id: "management-referral"
+        title: "Refer to agency management"
+        stage: "review-route"
+        activities:
+          - id: "refer-to-management"
+            extends: "refer-matter"
+            title: "Refer to agency management"
+            description: "Send the complaint to agency management for review and action, with a due date for a response."
+            actor: "hotline"
+            produces: ["interaction", "document"]
+            uses: ["document-management", "notification"]
+            optional: true
+          - id: "track-management-response"
+            title: "Track management's response"
+            description: "Follow up until management responds, and decide whether the response resolves the complaint."
+            actor: "hotline"
+            uses: ["workflow", "notification"]
+            decision: "Does the response resolve the complaint?"
+            waits: "Agency management's response."
+            optional: true
+      - id: "intake-close"
+        title: "Close the complaint"
+        stage: "close"
+        activities:
+          - "close-case"
+
+  - id: "investigation"
+    title: "Investigations"
+    use_case: "public-sector-case-management"
+    description: "How an investigation moves from opening through evidence gathering, reporting, referral, and closure."
+    phases:
+      - id: "open"
+        title: "Open and plan"
+        stage: "assign"
+        activities:
+          - "assign-owner"
+          - id: "plan-investigation"
+            extends: "plan-work"
+            title: "Write the investigative plan"
+            description: "Set out the allegations, subjects, evidence needed, and investigative steps."
+            actor: "special-agents"
+            participants: ["sac"]
+            produces: ["document", "task"]
+            uses: ["workflow", "document-management"]
+      - id: "investigate"
+        title: "Investigate"
+        stage: "assess"
+        activities:
+          - id: "request-records"
+            extends: "gather-information"
+            title: "Request records and issue subpoenas"
+            description: "Request records from agencies, companies, and partners, and issue subpoenas with counsel's review."
+            actor: "special-agents"
+            participants: ["counsel"]
+            produces: ["task", "document"]
+            uses: ["workflow", "notification", "document-management"]
+            waits: "Agencies, companies, and partners responding to requests and subpoenas."
+          - id: "conduct-interviews"
+            extends: "consult-participants"
+            title: "Interview witnesses and subjects"
+            description: "Plan and conduct interviews, and write up each memorandum of interview in the case file."
+            actor: "special-agents"
+            produces: ["interaction", "document"]
+            uses: ["scheduling", "document-management"]
+            waits: "Witness and subject availability."
+          - id: "collect-evidence"
+            title: "Collect and log evidence"
+            description: "Collect physical and digital evidence, log each item, and record every transfer in its chain of custody."
+            actor: "special-agents"
+            produces: ["evidence"]
+            uses: ["document-management"]
+          - id: "consult-prosecutor"
+            title: "Consult a prosecutor"
+            description: "Talk with a prosecutor about a case with criminal potential, before referral."
+            actor: "special-agents"
+            participants: ["prosecutors"]
+            produces: ["interaction"]
+            decision: "Is the case worth pursuing criminally, and what would it need?"
+            optional: true
+          - id: "supervisory-review"
+            title: "Review the case"
+            description: "A supervisor reviews the evidence, plan, and direction of the case on a schedule, and records the results and follow-up actions."
+            actor: "sac"
+            participants: ["special-agents"]
+            produces: ["document", "task"]
+            uses: ["workflow", "reporting"]
+            decision: "Continue, change direction, or close?"
+      - id: "report"
+        title: "Report"
+        stage: "decide-act"
+        activities:
+          - id: "draft-report"
+            extends: "prepare-recommendation"
+            title: "Write the report of investigation"
+            description: "Set out the allegations, findings, evidence, and recommendations."
+            actor: "special-agents"
+            produces: ["document"]
+            uses: ["document-management"]
+          - id: "review-report"
+            title: "Review the report"
+            description: "Supervisory and legal sufficiency review of the report, returning it for more work when needed."
+            actor: "sac"
+            participants: ["counsel"]
+            uses: ["workflow", "document-management"]
+            decision: "Is the report ready, or does it need more work?"
+            waits: "Reviewers."
+          - id: "approve-findings"
+            extends: "make-decision"
+            title: "Approve the findings"
+            description: "An authorized official approves the findings and recommendations."
+            actor: "aigi"
+            produces: ["decision"]
+            uses: ["approval", "signature"]
+            decision: "Are the findings supported?"
+      - id: "refer"
+        title: "Refer and follow up"
+        stage: "communicate"
+        activities:
+          - id: "refer-for-action"
+            title: "Refer for prosecution or administrative action"
+            description: "Send a referral package to a prosecutor or to agency management for action."
+            actor: "special-agents"
+            participants: ["prosecutors"]
+            produces: ["document", "interaction"]
+            uses: ["document-management"]
+            decision: "Accept or decline the referral? (The prosecutor or agency decides.)"
+            waits: "The prosecutor's or agency's decision."
+          - id: "track-referral-outcome"
+            title: "Track the outcome"
+            description: "Record charges, pleas, judgments, administrative actions, and monetary results as they happen."
+            actor: "special-agents"
+            produces: ["decision"]
+            uses: ["workflow", "case-management"]
+            waits: "Court and agency proceedings."
+      - id: "close"
+        title: "Close"
+        stage: "close"
+        activities:
+          - "check-completion"
+          - "close-case"
+          - id: "report-results"
+            title: "Report results"
+            description: "Count the investigation's results for the semiannual report and other reporting."
+            actor: "analytics"
+            uses: ["reporting"]
+          - "manage-record"
+      - id: "oversee"
+        title: "Oversee"
+        stage: "oversee"
+        activities:
+          - "monitor-workload"
+          - "resolve-delay"
+
+# ------------------------------------------------------------------------------------------------
+# Requirements this mission adds to its use cases' template requirements. `extends` names a use case
+# requirement that this one specializes; tools show the specialization in its place.
+
+requirements:
+  - id: "configurable-triage"
+    extends: "triage-criteria"
+    title: "Apply configurable triage criteria"
+    statement: "Apply the office's written triage criteria for jurisdiction, credibility, seriousness, and priority, and record the result for each allegation."
+    category: "functional"
+    activities: ["triage-allegation", "decide-disposition"]
+    capabilities: ["case-management", "workflow"]
+  - id: "protect-complainant-identity"
+    extends: "protect-personal-information"
+    title: "Protect complainant and whistleblower identities"
+    statement: "Restrict complainant, whistleblower, and confidential witness identities to the people who need them, and record every disclosure."
+    category: "constraint"
+    activities: ["protect-complainant", "receive-allegation"]
+    capabilities: ["identity", "person-information"]
+    policies: ["privacy", "authorization", "audit"]
+  - id: "track-management-referrals"
+    extends: "record-referrals"
+    title: "Track referrals to agency management"
+    statement: "Refer complaints to agency management with a due date for a response, track the response, and follow up when it is late."
+    category: "functional"
+    activities: ["refer-to-management", "track-management-response"]
+    capabilities: ["workflow", "notification"]
+  - id: "subject-search"
+    extends: "find-related-cases"
+    title: "Search allegations, cases, and subjects across offices"
+    statement: "Search allegations, cases, subjects, and entities across offices and years, and flag possible related cases when a new allegation or case is created."
+    category: "functional"
+    activities: ["check-related"]
+    capabilities: ["search"]
+  - id: "track-external-requests"
+    extends: "track-information-requests"
+    title: "Track records requests and subpoenas"
+    statement: "Track records requests, subpoenas, and partner actions for each case with due dates and status, and alert the investigator and supervisor when one is overdue."
+    category: "functional"
+    activities: ["request-records"]
+    capabilities: ["workflow", "notification"]
+  - id: "interview-memoranda"
+    title: "Write up interviews in the case file"
+    statement: "Draft memoranda of interview and activity records in the case file from templates, including from the field."
+    category: "functional"
+    activities: ["conduct-interviews"]
+    capabilities: ["document-management", "case-management"]
+  - id: "field-access"
+    title: "Work securely from the field"
+    statement: "Let investigators work on their cases securely from the field, including on mobile devices."
+    category: "nfr"
+    activities: ["conduct-interviews", "collect-evidence"]
+    capabilities: ["identity"]
+    policies: ["security"]
+  - id: "chain-of-custody"
+    title: "Record each evidence item's chain of custody"
+    statement: "Record each evidence item with a complete chain of custody: who collected it, every transfer, and where it is now."
+    category: "functional"
+    activities: ["collect-evidence"]
+    capabilities: ["document-management"]
+    policies: ["records", "audit"]
+  - id: "digital-evidence-integrity"
+    title: "Protect the integrity of digital evidence"
+    statement: "Store digital evidence with integrity checks, and prevent changes to it."
+    category: "nfr"
+    activities: ["collect-evidence"]
+    capabilities: ["document-management"]
+    policies: ["security", "records"]
+  - id: "scheduled-reviews"
+    title: "Schedule and record supervisory reviews"
+    statement: "Schedule periodic supervisory reviews for each case, record the findings and follow-up actions, and show overdue reviews."
+    category: "functional"
+    activities: ["supervisory-review"]
+    capabilities: ["workflow", "reporting"]
+  - id: "record-consultations"
+    title: "Record prosecutor consultations"
+    statement: "Record each consultation with a prosecutor against the case: when, with whom, and what was advised."
+    category: "functional"
+    activities: ["consult-prosecutor"]
+    capabilities: ["case-management"]
+  - id: "report-review-history"
+    title: "Track report reviews and returns"
+    statement: "Route each report through supervisory and legal review, and record each return for more work and why."
+    category: "functional"
+    activities: ["review-report"]
+    capabilities: ["workflow", "document-management"]
+  - id: "referral-package"
+    title: "Assemble referral packages"
+    statement: "Assemble a referral package from the report, evidence, and exhibits, and record each referral and the decision on it."
+    category: "functional"
+    activities: ["refer-for-action"]
+    capabilities: ["document-management"]
+  - id: "record-judicial-results"
+    title: "Record judicial, administrative, and monetary results"
+    statement: "Record charges, pleas, judgments, administrative actions, and monetary results against the case, with dates."
+    category: "functional"
+    activities: ["track-referral-outcome"]
+    capabilities: ["case-management"]
+  - id: "semiannual-statistics"
+    title: "Report statistics from case data"
+    statement: "Produce semiannual report statistics directly from case data with consistent categories, without manual reconciliation."
+    category: "functional"
+    activities: ["report-results"]
+    capabilities: ["reporting"]
+  - id: "oig-independence"
+    title: "Keep OIG data independent of the agency"
+    statement: "Administer OIG data separately from the agency, so agency staff and administrators can't see or change it."
+    category: "constraint"
+    activities: []
+    capabilities: ["identity"]
+    policies: ["security", "authorization"]
+
+# ------------------------------------------------------------------------------------------------
 # Typical roles and systems. Tools can offer these as a starting point for stakeholders and the
 # current state; every organization differs, so treat them as prompts to confirm, not facts.
 
@@ -743,60 +1091,70 @@ roles:
     description: "Leads the office, sets priorities, and reports to the agency head and Congress."
     concerns: "Independence, credibility of findings, and what the semiannual report says about results."
     influence: "high"
+    personas: ["decision-maker"]
     factors: ["accountability", "public-trust", "closure-pressure"]
   - id: "aigi"
     title: "Assistant Inspector General for Investigations"
     description: "Runs the investigations program across offices."
     concerns: "Case timeliness, aged cases, caseloads, and the quality of what goes to prosecutors."
     influence: "high"
+    personas: ["decision-maker", "supervisor"]
     factors: ["timely-investigations", "backlog", "caseload", "referral-acceptance"]
   - id: "sac"
     title: "Special Agent in Charge"
     description: "Supervises a field office or team of agents."
     concerns: "Seeing what cases are waiting on, reviewing cases, and balancing work across agents."
     influence: "medium"
+    personas: ["supervisor"]
     factors: ["dependency-visibility", "substantive-review", "caseload-balancing"]
   - id: "special-agents"
     title: "Special agents"
     description: "Investigate allegations: interviews, records, evidence, and reports."
     concerns: "Time spent on documentation, finding related cases, and handling evidence."
     influence: "medium"
+    personas: ["case-owner"]
     factors: ["contemporaneous-documentation", "related-case-access", "evidence-handling", "early-escalation"]
   - id: "hotline"
     title: "Hotline and intake staff"
     description: "Receive complaints and referrals and decide where each one goes."
     concerns: "Volume, consistent triage criteria, and duplicate submissions."
     influence: "low"
+    personas: ["intake-staff"]
     factors: ["allegation-volume", "triage-criteria", "consistent-triage"]
   - id: "counsel"
     title: "Counsel to the Inspector General"
     description: "Advises on subpoenas, legal sufficiency, and disclosure."
     concerns: "Findings that hold up, evidence handling, and what can be released."
     influence: "medium"
+    personas: ["specialist"]
     factors: ["defensible-findings", "evidence-handling", "information-protection"]
   - id: "analytics"
     title: "Data analytics and reporting staff"
     description: "Produce statistics, the semiannual report, and analysis that finds new cases."
     concerns: "Complete, consistent case data and less manual reconciliation."
     influence: "low"
+    personas: ["specialist"]
     factors: ["case-data-quality"]
   - id: "oig-it"
     title: "OIG IT and security"
     description: "Run the office's systems, often separately from the agency's to protect independence."
     concerns: "Security, hosting, identity, integration, and support."
     influence: "medium"
+    personas: []
     factors: ["case-data-quality", "information-protection"]
   - id: "records-officer"
     title: "Records management officer"
     description: "Owns retention schedules and how records move between systems."
     concerns: "Retention, migration of legacy records, and disposal."
     influence: "low"
+    personas: ["records-staff"]
     factors: []
   - id: "prosecutors"
     title: "Prosecutors and partner agencies"
     description: "External partners who accept referrals and act on findings."
     concerns: "Complete referral packages and early involvement."
     influence: "low"
+    personas: ["participant"]
     factors: ["referral-acceptance", "partner-relationships"]
 
 systems:
@@ -804,59 +1162,69 @@ systems:
     title: "Legacy case management system"
     kind: "service"
     fate: "replace"
+    provides: ["case-management", "workflow", "search", "reporting"]
     description: "Records allegations, cases, subjects, and activities."
     notes: "Often 10 to 20 years old, with limited reporting and integration."
   - id: "hotline-intake"
     title: "Hotline intake (web form, phone, email)"
     kind: "channel"
     fate: "replace"
+    provides: []
     description: "Where complaints and referrals arrive."
     notes: "Submissions are often re-keyed into the case system."
   - id: "evidence-storage"
     title: "Evidence logs and file shares"
     kind: "data"
     fate: "replace"
+    provides: ["document-management"]
     description: "Where evidence and its custody records are kept."
     notes: "Often spreadsheets, paper logs, and shared drives."
   - id: "statistics-spreadsheets"
     title: "Statistics spreadsheets"
     kind: "analytics"
     fate: "retire"
+    provides: ["reporting"]
     description: "Where case statistics are reconciled for the semiannual report."
     notes: ""
   - id: "records-management"
     title: "Document and records management"
     kind: "data"
     fate: "integrate"
+    provides: ["document-management"]
     description: "Holds official records and applies retention."
     notes: ""
   - id: "email"
     title: "Email and calendar"
     kind: "external"
     fate: "integrate"
+    provides: ["notification", "scheduling"]
     description: "Where much case correspondence happens."
     notes: ""
   - id: "identity"
     title: "Identity provider (PIV and single sign-on)"
     kind: "identity"
     fate: "integrate"
+    provides: ["identity"]
     description: "Signs staff in with agency credentials."
     notes: "Some offices run their own to protect independence."
   - id: "forensics"
     title: "Digital forensics tools"
     kind: "service"
     fate: "keep"
+    provides: []
     description: "Collect and analyze digital evidence."
     notes: ""
   - id: "agency-hr"
     title: "Agency HR and personnel system"
     kind: "external"
     fate: "integrate"
+    provides: ["person-information"]
     description: "Source of employee details for subjects and witnesses."
     notes: "Access is usually read-only and tightly controlled."
   - id: "agency-finance"
     title: "Agency financial and grants systems"
     kind: "external"
     fate: "integrate"
+    provides: []
     description: "Data for fraud analytics and for valuing losses."
     notes: ""

@@ -4,7 +4,9 @@ title: "Public Sector Case Management"
 type: "use-case"
 status: "draft"
 summary: "How an organization manages a matter from an internal or external source through resolution."
-related: []
+related:
+  - "mission:inspector-general-investigations"
+use_case: "public-sector-case-management"
 ---
 
 # Public Sector Case Management
@@ -51,10 +53,10 @@ These roles describe the people involved. An organization may combine roles or r
 | Participant | Provide information or respond to work that affects them | A way to contribute and access the information they may see |
 | Representative | Act for another participant | Clear authority and limits on what they may submit or receive |
 | Intake staff | Record the matter, check completeness, and direct it to the right team | Intake guidance and relevant case history |
-| Case owner or coordinator | Manage the case and coordinate the work | Current information, tasks, responsibility, and progress |
+| Case owner | Manage the case and coordinate the work | Current information, tasks, responsibility, and progress |
 | Specialist or supporting team | Assess an issue or complete assigned work | A clear task and enough information to complete it |
 | Decision-maker or reviewer | Make or review a decision | Evidence, decision criteria, and a record of the reasons |
-| Supervisor | Manage workload and resolve delays or escalations | Visibility into ownership, outstanding work, and outcomes |
+| Supervisor or coordinator | Assign cases, manage workload, and resolve delays or escalations | Visibility into ownership, outstanding work, and outcomes |
 | Records or oversight staff | Review the history and support records handling | Reliable records and appropriate access |
 
 ## Process
@@ -71,7 +73,7 @@ These stages describe common work. They do not prescribe case statuses or a fixe
 | 6. Communicate | Staff explain progress, outcomes, and outstanding work to relevant participants | Updates and recorded responses |
 | 7. Close | The owner checks completion and records the outcome | A closed case and any follow-up work |
 
-Staff communicate throughout the process. Closing a case does not delete its history. Participants may disagree with an outcome or request further review.
+Staff communicate throughout the process, and supervisors oversee ownership, outstanding work, and delays alongside every stage. Closing a case does not delete its history. Participants may disagree with an outcome or request further review.
 
 ### Variations
 
@@ -82,6 +84,14 @@ Staff communicate throughout the process. Closing a case does not delete its his
 - **Withdrawal or cancellation:** Staff record why the work stopped and identify any remaining obligations.
 - **Review or reopening:** A reviewer examines the outcome. Staff preserve earlier decisions and record new work in the same case or a linked case.
 - **Parallel work:** Several teams complete different tasks within the case. The owner tracks the overall outcome.
+
+## Process model
+
+The rest of this section breaks the stages into activities, the scenarios a design must handle, and template requirements. Its data lives in [`_data/use-cases/public-sector-case-management.yml`](https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/_data/use-cases/public-sector-case-management.yml), and tools can read every use case as JSON at [`/use-cases/index.json`](index.json). Missions that run on case management, such as [Inspector General Investigations](../missions/inspector-general-investigations.md), specialize this process with their own activities and requirements.
+
+Capability names link to the [Capability Catalog](../capabilities/catalog.md), which follows [The Enterprise Capability Map](../foundations/enterprise-capability-map.md).
+
+{% include use-case-model.html use_case=page.use_case %}
 
 ## Constraints and open questions
 

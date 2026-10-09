@@ -25,6 +25,8 @@ Every relationship is a proposition to test with a customer, not an established 
 
 The model includes interventions of every kind. A technology solution can change some factors, such as visibility into stalled requests. Others, such as closure targets or staffing, depend on policy, process, and people. Those are out of scope for a technology solution, but they belong in the conversation.
 
+The model also describes how the work flows, in two processes: complaint intake and triage, and investigations. Both specialize the [Public Sector Case Management](../use-cases/public-sector-case-management.md) process. Each factor names the activities where it shows up, and each technology intervention names the requirements that would deliver it. Those requirements add to, and in places specialize, the use case's template requirements.
+
 The feedback loops matter most. The closure pressure loop suggests that pushing for more closed cases may grow the backlog, which is the opposite of what a closure target intends.
 
 The model's data lives in [`_data/missions/inspector-general-investigations.yml`](https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/_data/missions/inspector-general-investigations.yml). Tools can read every mission model as JSON at [`/missions/index.json`](index.json). The rest of this page is generated from that data.

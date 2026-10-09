@@ -1,0 +1,33 @@
+id: "capability:workflow"
+title: "Workflow"
+layer: "shared"
+status: "draft"
+responsibility: "Coordinate tasks across people and systems: who does what, by when, and what happens when it's late."
+boundaries: "It moves work and tracks it. Who has authority to decide belongs to Approval and enterprise policy, and the rules of each process belong to the program that owns it."
+operations:
+  - name: "Task.create"
+    description: "Create a task with an assignee and a due date."
+    accepts: ["work", "assignee", "due date", "related record"]
+    returns: ["task ID"]
+  - name: "Task.assign"
+    description: "Assign or reassign a task, keeping its history."
+    accepts: ["task ID", "assignee"]
+    returns: ["assignment"]
+  - name: "Task.complete"
+    description: "Record a task's result."
+    accepts: ["task ID", "result"]
+    returns: ["completed task"]
+  - name: "Task.escalate"
+    description: "Raise an overdue or stalled task to the right person."
+    accepts: ["task ID", "reason"]
+    returns: ["escalation"]
+entities: ["task", "assignment"]
+policies: ["authorization", "audit"]
+depends_on: ["notification", "identity"]
+signs:
+  - "Work is tracked in email, personal lists, and spreadsheets."
+  - "Overdue work turns up in meetings instead of being flagged."
+  - "Each application has its own task list."
+questions:
+  - "How does someone know what they need to do today, and what is overdue?"
+  - "What happens when a task waits on someone outside the team?"

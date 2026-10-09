@@ -1,0 +1,26 @@
+id: "capability:reporting"
+title: "Reporting"
+layer: "shared"
+status: "draft"
+responsibility: "Provide measures and views of the work from authoritative data, such as workload, age, status, and results, with consistent definitions."
+boundaries: "It reports from the systems of record and doesn't become another source of truth. Each measure has an owner and an agreed definition."
+note: "Not among the capability map's examples. Added because oversight and statistics need it in almost every program."
+operations:
+  - name: "Report.get"
+    description: "Return a measure or view, filtered to what the requester may see."
+    accepts: ["measure", "filters"]
+    returns: ["results"]
+  - name: "Report.schedule"
+    description: "Produce a report on a schedule and deliver it."
+    accepts: ["measure", "filters", "schedule", "recipients"]
+    returns: ["schedule ID"]
+entities: ["case", "task", "assignment", "decision"]
+policies: ["authorization", "privacy", "data-governance"]
+depends_on: ["identity"]
+signs:
+  - "Statistics are reconciled by hand in spreadsheets."
+  - "Each office counts the same thing differently."
+  - "Supervisors can't see workload without asking."
+questions:
+  - "How long does it take to answer a question like “how many cases did we close last year?”"
+  - "Who defines each measure, and who checks it?"

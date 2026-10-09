@@ -1,0 +1,33 @@
+id: "capability:document-management"
+title: "Document Management"
+layer: "shared"
+status: "draft"
+responsibility: "Store, classify, version, and retrieve documents and files, and apply the records rules that govern them."
+boundaries: "It knows how a document is classified, secured, retained, and retrieved. The consuming process decides which documents belong to its work and which one is the official version."
+operations:
+  - name: "Document.store"
+    description: "Store a document with its classification and the record it belongs to."
+    accepts: ["file", "classification", "related record"]
+    returns: ["document ID"]
+  - name: "Document.get"
+    description: "Return a document the requester may see, and record the retrieval."
+    accepts: ["document ID", "purpose"]
+    returns: ["document"]
+  - name: "Document.classify"
+    description: "Set or change a document's classification and access restrictions."
+    accepts: ["document ID", "classification"]
+    returns: ["classification"]
+  - name: "Document.applyRetention"
+    description: "Apply a records schedule, and hold, transfer, or dispose of the document as it allows."
+    accepts: ["document ID", "records schedule"]
+    returns: ["retention status"]
+entities: ["document"]
+policies: ["records", "privacy", "security", "audit", "accessibility"]
+depends_on: ["identity"]
+signs:
+  - "Case files live on shared drives and personal laptops."
+  - "Nobody is sure which copy of a document is the official one."
+  - "Retention is applied by hand, or not at all."
+questions:
+  - "Where do documents for this work live today, and who can change them?"
+  - "Which records schedules apply, and who applies them?"

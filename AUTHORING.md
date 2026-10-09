@@ -49,8 +49,9 @@ Architecture decisions use sequential, four-digit filenames, starting with `0001
 ## Content boundaries
 
 - Missions model what drives effectiveness in a line of work. The YAML file in `_data/missions/` is the source; the article introduces it and renders it. Keep factor and intervention IDs stable, and keep relationships marked as hypotheses until evidence supports them. See the [Missions index](missions/README.md).
-- Use cases introduce business context through overview, personas, and process. Link to supporting blueprints when available; keep the introduction understandable without architecture or product knowledge.
+- Use cases introduce business context through overview, personas, and process. Link to supporting blueprints when available; keep the introduction understandable without architecture or product knowledge. A use case can add a process model in `_data/use-cases/`, with activities, scenarios, and template requirements; the article renders it. See the [Use Cases index](use-cases/README.md).
 - Foundations, reference architecture, entities, capabilities, patterns, policies, and blueprints describe logical architecture independently of vendors.
+- The capability catalog lives in `_data/capabilities/`, one file per capability, and the Capability Catalog article renders it. Use cases and missions refer to capabilities by slug. See the [Capabilities index](capabilities/README.md).
 - Implementations identify and link the logical architecture they realize, then describe technology mappings, gaps, and tradeoffs. Product terminology belongs here.
 - Labs identify the architecture and implementation they exercise. A lab template is available, but the labs directory and runnable exercises are deferred.
 - Policy artifacts explain architectural implications and assumptions; they do not claim to provide legal advice.

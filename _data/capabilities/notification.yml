@@ -1,0 +1,25 @@
+id: "capability:notification"
+title: "Notification"
+layer: "shared"
+status: "draft"
+responsibility: "Deliver approved messages to people through their preferred channels, and report whether each one was delivered."
+boundaries: "The consuming process decides what to say and to whom; Notification delivers it. The process keeps the message in its own record when the message is part of that record."
+operations:
+  - name: "Notification.send"
+    description: "Send an approved message to a recipient."
+    accepts: ["recipient", "approved message", "delivery preference"]
+    returns: ["delivery ID"]
+  - name: "Notification.getStatus"
+    description: "Report whether a message was delivered, opened, or failed."
+    accepts: ["delivery ID"]
+    returns: ["delivery status"]
+entities: ["person", "organization", "interaction"]
+policies: ["privacy", "records", "accessibility"]
+depends_on: ["person-information"]
+signs:
+  - "Several systems each send their own email."
+  - "Nobody can say whether a notice was delivered."
+  - "People can't choose how they're contacted."
+questions:
+  - "Which systems send messages to staff, the public, or partners today?"
+  - "Do any notices have legal or records requirements?"

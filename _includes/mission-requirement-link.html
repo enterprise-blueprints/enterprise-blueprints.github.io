@@ -1,0 +1,15 @@
+{%- comment -%}
+Links a requirement by ID: the mission's own on this page, or a use case template requirement on
+the use case's page. Usage: {% include mission-requirement-link.html id=requirement_id mission=m %}
+{%- endcomment -%}
+{%- assign req = include.mission.requirements | where: "id", include.id | first -%}
+{%- if req -%}
+<a href="#requirement-{{ include.id }}">{{ req.title | escape }}</a>
+{%- else -%}
+{%- assign found = false -%}
+{%- for p in include.mission.processes -%}
+{%- assign req = site.data["use-cases"][p.use_case].requirements | where: "id", include.id | first -%}
+{%- if req -%}<a href="{{ '/use-cases/' | append: p.use_case | append: '.html' | relative_url }}#requirement-{{ include.id }}">{{ req.title | escape }}</a>{%- assign found = true -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+{%- unless found -%}{{ include.id }}{%- endunless -%}
+{%- endif -%}
