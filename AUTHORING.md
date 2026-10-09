@@ -48,6 +48,7 @@ Architecture decisions use sequential, four-digit filenames, starting with `0001
 
 ## Content boundaries
 
+- Missions model what drives effectiveness in a line of work. The YAML file in `_data/missions/` is the source; the article introduces it and renders it. Keep factor and intervention IDs stable, and keep relationships marked as hypotheses until evidence supports them. See the [Missions index](missions/README.md).
 - Use cases introduce business context through overview, personas, and process. Link to supporting blueprints when available; keep the introduction understandable without architecture or product knowledge.
 - Foundations, reference architecture, entities, capabilities, patterns, policies, and blueprints describe logical architecture independently of vendors.
 - Implementations identify and link the logical architecture they realize, then describe technology mappings, gaps, and tradeoffs. Product terminology belongs here.

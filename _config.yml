@@ -48,6 +48,11 @@ defaults:
       section: "use-cases"
       artifact: true
   - scope:
+      path: "missions"
+    values:
+      section: "missions"
+      artifact: true
+  - scope:
       path: "entities"
     values:
       section: "entities"

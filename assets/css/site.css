@@ -59,3 +59,24 @@ h1,h2{font-weight:700}
 .architecture-caption{font-family:var(--sans)}
 @media(max-width:760px){.hero h1{font-size:clamp(1.9rem,8vw,2.75rem)}}
 @media print{h1,h2,.content-card h3{color:black}.hero{background:none}}
+
+/* Capability map: readable architecture text, with policy across the layers. */
+.capability-map{margin:var(--space-4) 0;line-height:1.5}
+.capability-map-logical{display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,.4fr);gap:var(--space-2);align-items:stretch}
+.capability-map-stack{min-width:0}
+.capability-map-layer,.capability-map-policy{padding:var(--space-3);border:1px solid var(--line);background:var(--white);border-radius:4px;min-width:0}
+.capability-map-policy{border-top:3px solid var(--teal)}
+.capability-map .capability-map-heading{font-size:1rem;font-weight:650;line-height:1.5;margin:0 0 var(--space-2);color:var(--accent)}
+.capability-map .capability-map-items{display:flex;flex-wrap:wrap;gap:var(--space-1) var(--space-2);list-style:none;margin:0;padding:0;font-size:1rem}
+.capability-map .capability-map-items li{margin:0}
+.capability-map-policy .capability-map-items{flex-direction:column}
+.capability-map .capability-map-relationship{margin:var(--space-1) 0;text-align:center;font-size:.875rem;color:var(--accent)}
+.capability-map-relationship span{font-size:1.25rem;margin-right:var(--space-1)}
+.capability-map .capability-map-scope,.capability-map figcaption{font-size:.875rem;color:var(--muted)}
+.capability-map .capability-map-scope{margin:0 0 var(--space-3)}
+.capability-map figcaption{margin-top:var(--space-2)}
+.capability-map-technology{border-style:dashed}
+@media(max-width:1000px){.capability-map-logical{grid-template-columns:1fr}.capability-map-policy .capability-map-items{flex-direction:row}}
+@media(max-width:480px){.capability-map-layer,.capability-map-policy{padding:var(--space-2)}}
+@media print{.capability-map-layer,.capability-map-policy{background:white;break-inside:avoid}.capability-map-logical{grid-template-columns:1fr}.capability-map-policy .capability-map-items{flex-direction:row}}
+.mission-tag{display:inline-block;margin-top:6px;font:500 .75rem/1.4 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.mission-model td a{text-decoration:none}.mission-model td a:hover{text-decoration:underline}

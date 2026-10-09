@@ -26,6 +26,7 @@ Start with the [current charter](charter/project-charter-v0.5.md). [Decision 000
 | [Foundations](foundations/README.md) | Durable ideas and architectural principles |
 | [Reference architecture](reference-architecture/README.md) | Logical layers, responsibilities, and relationships |
 | [Use Cases](use-cases/README.md) | Business context, personas, and processes |
+| [Missions](missions/README.md) | What drives a mission's effectiveness, as machine-readable models |
 | [Entities](entities/README.md) | Canonical business concepts, meaning, and lifecycle |
 | [Capabilities](capabilities/README.md) | Reusable things the enterprise can do |
 | [Patterns](patterns/README.md) | Approaches to recurring architectural problems |

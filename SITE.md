@@ -35,6 +35,8 @@ The theme follows the reference boards in `brand_kit/`, while retaining the Ente
 
 Outline icons and diagonal blue-and-teal graphics live in `assets/brand/`. The home page combines those graphics with its architecture diagram. Article text sits on a plain background and fills the available reading area.
 
+The capability map article embeds the content of `assets/diagrams/enterprise-capability-map.html` through Jekyll's `site.pages` collection and adjusts its links for `baseurl`. This keeps one editable diagram source under `assets/diagrams/`. The diagram uses native HTML text and links, with policy beside the logical layers on wider screens and below them on narrow screens. It works without JavaScript or external diagram libraries.
+
 Inter font files are served locally from `assets/fonts/`. Their [SIL Open Font License](assets/fonts/OFL-Inter.txt) remains with them. The source is the [official Inter project](https://rsms.me/inter/). The site does not request fonts from a third-party service.
 
 The boards are design references and stay outside the built site. The header retains an EB monogram until a standalone Enterprise Blueprints logo is available. The reference boards' AI-Native Enterprise wordmark does not rename this project.

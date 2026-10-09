@@ -17,6 +17,7 @@ Records of important architectural choices, rationale, alternatives, and consequ
 | --- | --- |
 | [0001: Add Use Cases and rename Objects to Entities](0001-add-use-cases-and-rename-objects-to-entities.md) | Published |
 | [0002: Adopt Build Experiences. Share Capabilities.](0002-build-experiences-share-capabilities.md) | Published |
+| [0003: Add machine-readable mission models](0003-add-machine-readable-mission-models.md) | Draft |
 
 Start with the [architecture decision template](../templates/architecture-decision.md) and [authoring guide](../AUTHORING.md). Add links here as artifacts are developed, labeling their status.
 

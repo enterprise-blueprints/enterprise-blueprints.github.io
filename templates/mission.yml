@@ -1,0 +1,67 @@
+# Copy to _data/missions/<slug>.yml. See missions/README.md for every field.
+
+id: "mission:replace-with-slug"
+title: "Replace with title"
+status: "draft"
+version: 1
+summary: "Replace with a one-sentence summary."
+related: []
+
+factors:
+  - id: "replace-with-condition"
+    type: "condition"            # condition | behavior | operational-outcome | mission-outcome
+    title: "Replace with a short, observable statement"
+    description: "Replace with what the factor means."
+    better: "higher"             # higher | lower | neutral
+    pattern: ""                  # optional shared pattern, such as decision-rights
+    signals:
+      - "Replace with something you might hear when this is a problem."
+    questions:
+      - "Replace with a question to ask the customer."
+    metrics: []
+
+  - id: "replace-with-outcome"
+    type: "operational-outcome"
+    title: "Replace with an outcome"
+    goal: ""                     # optional: the outcome as a goal, if the title names a problem
+    description: "Replace with what would be true."
+    better: "higher"
+    metrics:
+      - name: "Replace with a metric"
+        measurement: "Replace with how it is measured."
+        better: "higher"
+
+relationships:
+  - from: "replace-with-condition"
+    to: "replace-with-outcome"
+    effect: "increases"          # increases | decreases
+    confidence: "hypothesis"     # hypothesis | supported | established
+    rationale: "Replace with why one influences the other."
+
+loops: []
+
+roles:
+  - id: "replace-with-role"
+    title: "Replace with a role"
+    description: "Replace with what they do."
+    concerns: "Replace with what they care about."
+    influence: "medium"          # high | medium | low
+    factors: ["replace-with-condition"]
+
+systems:
+  - id: "replace-with-system"
+    title: "Replace with a system most organizations have"
+    kind: "service"              # channel | service | data | identity | integration | analytics | external | ...
+    fate: "replace"              # keep | integrate | replace | retire
+    description: "Replace with what it does today."
+    notes: ""
+
+interventions:
+  - id: "replace-with-intervention"
+    title: "Replace with an intervention"
+    kind: "technology"           # technology | process | policy | people | organization
+    description: "Replace with what changes."
+    need: "Replace with what a system would need to do, in vendor-neutral terms."
+    changes:
+      - factor: "replace-with-condition"
+        effect: "increases"

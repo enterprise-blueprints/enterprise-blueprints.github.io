@@ -8,10 +8,13 @@ enterprise-blueprints.github.io/
 │   └── workflows/
 │       └── pages.yml
 ├── _data/
+│   ├── missions/
+│   │   └── inspector-general-investigations.yml
 │   └── navigation.yml
 ├── _includes/
 │   ├── content-card.html
 │   ├── icon.html
+│   ├── mission-model.html
 │   └── navigation.html
 ├── _layouts/
 │   ├── article.html
@@ -25,6 +28,7 @@ enterprise-blueprints.github.io/
 │   ├── css/
 │   │   └── site.css
 │   ├── diagrams/
+│   │   ├── enterprise-capability-map.html
 │   │   └── README.md
 │   ├── fonts/
 │   │   ├── InterVariable-Italic.woff2
@@ -47,13 +51,19 @@ enterprise-blueprints.github.io/
 ├── decisions/
 │   ├── 0001-add-use-cases-and-rename-objects-to-entities.md
 │   ├── 0002-build-experiences-share-capabilities.md
+│   ├── 0003-add-machine-readable-mission-models.md
 │   └── README.md
 ├── entities/
 │   └── README.md
 ├── foundations/
 │   ├── ai-native-enterprise.md
+│   ├── enterprise-capability-map.md
 │   └── README.md
 ├── implementations/
+│   └── README.md
+├── missions/
+│   ├── index.json
+│   ├── inspector-general-investigations.md
 │   └── README.md
 ├── patterns/
 │   └── README.md
@@ -69,6 +79,8 @@ enterprise-blueprints.github.io/
 │   ├── foundation.md
 │   ├── implementation.md
 │   ├── lab.md
+│   ├── mission.md
+│   ├── mission.yml
 │   ├── pattern.md
 │   ├── policy.md
 │   ├── README.md
@@ -93,6 +105,6 @@ enterprise-blueprints.github.io/
 └── structure.md
 ```
 
-Git metadata, build output, caches, and local dependencies are omitted. Labs and machine-readable schemas remain deferred.
+Git metadata, build output, caches, and local dependencies are omitted. Mission models in `_data/missions/` are the first machine-readable content. Labs and formal schema validation remain deferred.
 
 See the [repository overview](README.md), [authoring guide](AUTHORING.md), [site development guide](SITE.md), and [template catalog](templates/README.md).

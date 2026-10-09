@@ -13,6 +13,11 @@
   description: "The people, needs, and processes behind the architecture."
   type: use-case
 
+- slug: missions
+  title: "Missions"
+  description: "How conditions, behaviors, and outcomes shape a mission's effectiveness."
+  type: mission
+
 - slug: entities
   title: "Entities"
   description: "Shared business concepts, their meaning, and their lifecycle."
