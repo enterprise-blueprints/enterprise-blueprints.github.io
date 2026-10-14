@@ -3,10 +3,12 @@ id: "foundation:enterprise-capability-map"
 title: "The Enterprise Capability Map"
 type: "foundation"
 status: "draft"
-summary: "A shared map connects business capabilities, reusable actions, enterprise entities, policy, and technology."
+summary: "A focused view of the reference architecture connects business and shared capabilities to enterprise entities and state, cross-cutting controls, and technology implementations."
 related:
   - "foundation:ai-native-enterprise"
   - "use-case:public-sector-case-management"
+  - "reference-architecture:ai-native-enterprise"
+  - "capability:catalog"
 ---
 
 # The Enterprise Capability Map
@@ -57,7 +59,7 @@ It gives programs a common foundation for carrying them out.
 
 The map below uses public sector examples. The same relationships apply to other enterprises.
 
-Business capabilities consume and compose shared enterprise capabilities. Those capabilities operate on enterprise entities and authoritative state. Enterprise policy governs the work across these boundaries. Technology implements the architecture.
+Business capabilities consume and compose shared capabilities. Both are groups within the Enterprise Capabilities layer. They operate on Enterprise Entities and State. Security, Trust, and Policy govern the work; Operations and Assurance sustain it and provide evidence. Technology implementations realize these responsibilities.
 
 {% assign capability_map = site.pages | where: 'path', 'assets/diagrams/enterprise-capability-map.html' | first %}
 {% capture diagram_link_prefix %}href="{{ '/' | relative_url }}{% endcapture %}
@@ -68,6 +70,24 @@ The examples are a starting point. They do not form a complete capability catalo
 An agency may share a capability across its programs. Several agencies may agree on a contract while operating separate implementations. A program may retain a specialized capability when its responsibilities require one.
 
 The map makes those choices visible.
+
+## How the Map Connects to the Reference Architecture
+
+The [AI-Native Enterprise Reference Architecture](../reference-architecture/ai-native-enterprise.md) describes four layers: Experiences, Enterprise Capabilities, Orchestration, and Enterprise Entities and State. This map focuses on the capabilities and information that those experiences and processes rely on.
+
+Business and shared capabilities occupy the same logical layer. The grouping highlights which responsibilities belong to a program and which actions can be reused across programs. The relationship between them expresses composition, not separate deployment tiers.
+
+| Reference architecture responsibility | Connection to this map |
+| --- | --- |
+| Experiences | Public forms, staff workspaces, and agents consume the capabilities shown here. |
+| Enterprise Capabilities | The map expands this layer into business and shared capability groups. |
+| Orchestration | Coordination fulfills capability commitments and composes actions across capabilities. Workflow and Approval expose reusable contracts; their coordination mechanisms support this responsibility. |
+| Enterprise Entities and State | The map identifies shared concepts and the authoritative state that capability actions use or change. |
+| Security, Trust, and Policy | Cross-cutting controls govern actors, actions, information, and implementations. |
+| Operations and Assurance | Monitoring, audit evidence, evaluation, recovery, and lifecycle management sustain the model. |
+| Technology implementations | A separate realization view maps products and components to responsibilities across the model. |
+
+Use the map to identify reusable responsibilities. Use the reference architecture to place them alongside experiences, coordination, information, and controls. A blueprint then applies both views to a particular use case.
 
 ## Shared Capabilities Provide Reusable Actions
 
@@ -129,11 +149,13 @@ The architecture must make that authority explicit and explain how the records r
 
 Otherwise, a new experience can create another competing version of the truth without anyone intending it.
 
-## Policy Applies Across the Architecture
+## Security, Trust, and Policy Across the Architecture
 
-Every part of the map operates within rules.
+Every part of the map needs protection, an explicit basis for trust, and rules for permitted behavior.
 
-Identity establishes who or what is acting. Authorization determines which actions that actor may perform. Privacy constrains how information is collected, used, and disclosed.
+Security protects information and actions against unauthorized access, disclosure, modification, and disruption. Trust establishes identities, provenance, and delegated authority. Authorization determines which actions an actor may perform. Privacy constrains how information is collected, used, and disclosed.
+
+Reusable capabilities such as Identity can support these controls. Their presence in the capability group describes services the enterprise provides; the cross-cutting panel describes obligations every relevant consumer and implementation must meet.
 
 Records requirements shape what the organization must retain. Audit requirements shape the evidence it must preserve. Security, accessibility, AI policy, and data governance affect both the shared capabilities and the experiences that use them.
 
@@ -148,6 +170,8 @@ The enterprise should place each control where it can enforce the requirement re
 The map helps us ask where each responsibility belongs.
 
 It does not make that decision for us.
+
+Operations and Assurance provide monitoring, audit evidence, evaluation, incident response, recovery, and lifecycle management across the same responsibilities. Audit evidence can demonstrate whether a control worked; it must also follow access, privacy, and records requirements. The reference architecture develops both sets of controls in more detail.
 
 ## Where Control Planes Fit
 
@@ -167,13 +191,13 @@ They may involve different components and different owners.
 
 We should describe those responsibilities before deciding whether one platform or several products will fulfill them.
 
-The policy area in the map represents the concerns these controls address. It does not claim that every concern has its own control plane, or that every policy can become an automated check.
+The Security, Trust, and Policy area in the map represents the concerns these controls address. Operations and Assurance help evaluate their behavior in practice. The map does not claim that every concern has its own control plane, or that every policy can become an automated check.
 
 ## Technology Realizes the Architecture
 
 Power Platform, Salesforce, ServiceNow, custom applications, cloud services, and SaaS products can implement parts of this architecture.
 
-A single product may support several business and shared capabilities. One capability may also depend on several products.
+A single product may support several business and shared capabilities, as well as experiences, orchestration, state, and controls. One capability may also depend on several products. The technology panel is a separate realization view of the whole model.
 
 The map does not require a one-to-one relationship.
 
@@ -207,9 +231,11 @@ Each experience may compose the same underlying capabilities.
 
 It may retrieve participant information, store supporting documents, schedule an appointment, request an approval, or send a notification.
 
+Orchestration coordinates the steps behind those capability commitments and can compose several capabilities into a broader case process. Workflow and Approval retain their contracts and authority boundaries when that process uses them.
+
 Those capabilities operate on entities such as Case, Person, Organization, Document, Task, and Decision. The architecture identifies where their authoritative state lives and who may change it.
 
-Policy applies throughout.
+Security, Trust, and Policy apply throughout. Operations and Assurance preserve evidence, track failures, and support recovery.
 
 Receiving a submission does not automatically establish the submitter's identity or authority. Access to one case does not automatically grant access to another. An agent's ability to prepare a recommendation does not automatically authorize it to make the decision.
 
@@ -240,5 +266,7 @@ This draft leaves several choices open: how organizations establish capability o
 The next foundation articles will develop those questions through experiences, authoritative state, policy and control planes, and capability contracts.
 
 The map gives them a common frame.
+
+The [AI-Native Enterprise Reference Architecture](../reference-architecture/ai-native-enterprise.md) develops this frame into a proposed stack of logical responsibilities and a separate view of technology implementations.
 
 **Build Experiences. Share Capabilities.**

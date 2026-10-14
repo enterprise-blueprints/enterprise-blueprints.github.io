@@ -26,7 +26,7 @@ Operations use names such as `Notification.send` to describe a responsibility, n
 
 The catalog is a starting point, not a complete inventory, and it doesn't imply one central platform. An organization may share a capability across its programs, run separate implementations that agree on a contract, or keep a specialized capability where its work requires one.
 
-Case Management appears as a business capability, as it does in the capability map. Reporting is an addition to the map's examples, because oversight and statistics need it in almost every program.
+Case Management appears as a business capability, as it does in the capability map. Reporting appears among the shared capability examples to support oversight and statistics.
 
 The data lives in [`_data/capabilities/`](https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/tree/main/_data/capabilities), one file per capability. Tools can read the whole catalog as JSON at [`/capabilities/index.json`](index.json). The rest of this page is generated from that data.
 
@@ -34,6 +34,7 @@ The data lives in [`_data/capabilities/`](https://github.com/enterprise-blueprin
 
 ## Related architecture
 
-- [The Enterprise Capability Map](../foundations/enterprise-capability-map.md) explains the layers these capabilities belong to.
+- [The Enterprise Capability Map](../foundations/enterprise-capability-map.md) groups business and shared capabilities within the Enterprise Capabilities layer and connects them to enterprise entities and state.
+- [AI-Native Enterprise Reference Architecture](../reference-architecture/ai-native-enterprise.md) places those capabilities within the full four-layer model and its cross-cutting controls.
 - [Public Sector Case Management](../use-cases/public-sector-case-management.md) shows which capabilities each case management activity uses.
 - [Inspector General Investigations](../missions/inspector-general-investigations.md) shows which capabilities typical systems provide today.

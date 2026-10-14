@@ -1,0 +1,46 @@
+---
+layout: null
+---
+<figure class="architecture-diagram enterprise-stack" aria-labelledby="enterprise-stack-caption">
+  <div class="diagram-header">
+    <svg class="diagram-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/assets/brand/icons.svg#reference-architecture"></use></svg>
+    <div><p class="diagram-eyebrow">Enterprise Blueprints / Reference model</p><p class="diagram-title">AI-native enterprise</p></div>
+  </div>
+  <div class="enterprise-stack-context">
+    <p class="enterprise-stack-label">Business context</p>
+    <ul class="diagram-context-items"><li>Mission outcomes</li><li>Personas</li><li>Business responsibilities</li><li>Process</li></ul>
+  </div>
+  <p class="diagram-relationship enterprise-stack-connector"><span aria-hidden="true">↓</span> Informs the architecture</p>
+  <div class="enterprise-stack-model">
+    <div class="enterprise-stack-layers">
+      <p class="enterprise-stack-label">Logical layers</p>
+      <ol class="enterprise-stack-list">
+        <li class="enterprise-stack-layer"><span class="enterprise-stack-number" aria-hidden="true">01</span><div class="diagram-layer-content"><p class="enterprise-stack-title"><a href="/reference-architecture/ai-native-enterprise.html#experiences">Experiences</a></p><small>Express intent and present permitted actions.</small><ul class="diagram-chips"><li>Public services</li><li>Staff workspaces</li><li>Generated interfaces</li><li>Assistants</li></ul></div></li>
+        <li class="enterprise-stack-layer"><span class="enterprise-stack-number" aria-hidden="true">02</span><div class="diagram-layer-content"><p class="enterprise-stack-title"><a href="/reference-architecture/ai-native-enterprise.html#enterprise-capabilities">Enterprise Capabilities</a></p><small>Provide reusable actions through governed contracts.</small><ul class="diagram-chips"><li>Case Management</li><li>Documents</li><li>Approval</li><li>Notification</li></ul></div></li>
+        <li class="enterprise-stack-layer"><span class="enterprise-stack-number" aria-hidden="true">03</span><div class="diagram-layer-content"><p class="enterprise-stack-title"><a href="/reference-architecture/ai-native-enterprise.html#orchestration">Orchestration</a></p><small>Coordinate work to fulfill capability commitments.</small><ul class="diagram-chips"><li>Workflows</li><li>Agent plans</li><li>Tasks</li><li>Human decisions</li></ul></div></li>
+        <li class="enterprise-stack-layer"><span class="enterprise-stack-number" aria-hidden="true">04</span><div class="diagram-layer-content"><p class="enterprise-stack-title"><a href="/reference-architecture/ai-native-enterprise.html#enterprise-entities-and-state">Enterprise Entities and State</a></p><small>Preserve meaning and durable state under explicit authority.</small><ul class="diagram-chips"><li>Shared meaning</li><li>Relationships</li><li>Authoritative state</li><li>History</li></ul></div></li>
+      </ol>
+    </div>
+    <div class="diagram-controls enterprise-stack-controls">
+      <p class="diagram-control-label">Cross-cutting controls</p>
+      <section class="diagram-control enterprise-stack-control" aria-labelledby="enterprise-stack-trust">
+        <svg class="diagram-control-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/assets/brand/icons.svg#policies"></use></svg>
+        <p class="enterprise-stack-title" id="enterprise-stack-trust"><a href="/reference-architecture/ai-native-enterprise.html#security-trust-and-policy">Security, Trust, and Policy</a></p>
+        <ul class="diagram-control-items"><li>Information protection</li><li>Identity &amp; delegation</li><li>Authorization &amp; privacy</li><li>Records &amp; accessibility</li><li>Human oversight</li></ul>
+      </section>
+      <section class="diagram-control diagram-control-operations enterprise-stack-control" aria-labelledby="enterprise-stack-operations">
+        <svg class="diagram-control-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/assets/brand/icons.svg#missions"></use></svg>
+        <p class="enterprise-stack-title" id="enterprise-stack-operations"><a href="/reference-architecture/ai-native-enterprise.html#operations-and-assurance">Operations and Assurance</a></p>
+        <ul class="diagram-control-items"><li>Observability &amp; audit</li><li>AI evaluation &amp; recovery</li><li>Availability &amp; incidents</li><li>Lifecycle &amp; ownership</li><li>Cost</li></ul>
+      </section>
+      <p class="diagram-control-scope">Across every layer and its technology implementations.</p>
+    </div>
+  </div>
+  <div class="diagram-realization enterprise-stack-realization">
+    <p class="enterprise-stack-label">Separate realization view</p>
+    <p class="enterprise-stack-title"><a href="/reference-architecture/ai-native-enterprise.html#mapping-to-technology-implementations">Technology implementations</a></p>
+    <ul class="diagram-chips"><li>Products</li><li>Configurations</li><li>Custom code</li><li>Adapters</li><li>Operating procedures</li></ul>
+    <small>Map to all layers and controls. One product can fulfill several responsibilities; one capability can use several products.</small>
+  </div>
+  <figcaption id="enterprise-stack-caption">Proposed AI-native enterprise stack. Read top to bottom as logical responsibilities, not a mandatory call sequence or deployment topology. AI can participate across layers under explicit authority.</figcaption>
+</figure>

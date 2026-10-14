@@ -39,6 +39,7 @@ enterprise-blueprints.github.io/
 │   ├── css/
 │   │   └── site.css
 │   ├── diagrams/
+│   │   ├── ai-native-enterprise-stack.html
 │   │   ├── enterprise-capability-map.html
 │   │   └── README.md
 │   ├── fonts/
@@ -85,6 +86,7 @@ enterprise-blueprints.github.io/
 ├── policies/
 │   └── README.md
 ├── reference-architecture/
+│   ├── ai-native-enterprise.md
 │   └── README.md
 ├── templates/
 │   ├── architecture-decision.md

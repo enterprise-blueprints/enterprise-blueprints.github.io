@@ -60,23 +60,112 @@ h1,h2{font-weight:700}
 @media(max-width:760px){.hero h1{font-size:clamp(1.9rem,8vw,2.75rem)}}
 @media print{h1,h2,.content-card h3{color:black}.hero{background:none}}
 
-/* Capability map: readable architecture text, with policy across the layers. */
-.capability-map{margin:var(--space-4) 0;line-height:1.5}
-.capability-map-logical{display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,.4fr);gap:var(--space-2);align-items:stretch}
-.capability-map-stack{min-width:0}
-.capability-map-layer,.capability-map-policy{padding:var(--space-3);border:1px solid var(--line);background:var(--white);border-radius:4px;min-width:0}
-.capability-map-policy{border-top:3px solid var(--teal)}
-.capability-map .capability-map-heading{font-size:1rem;font-weight:650;line-height:1.5;margin:0 0 var(--space-2);color:var(--accent)}
-.capability-map .capability-map-items{display:flex;flex-wrap:wrap;gap:var(--space-1) var(--space-2);list-style:none;margin:0;padding:0;font-size:1rem}
-.capability-map .capability-map-items li{margin:0}
-.capability-map-policy .capability-map-items{flex-direction:column}
-.capability-map .capability-map-relationship{margin:var(--space-1) 0;text-align:center;font-size:.875rem;color:var(--accent)}
-.capability-map-relationship span{font-size:1.25rem;margin-right:var(--space-1)}
-.capability-map .capability-map-scope,.capability-map figcaption{font-size:.875rem;color:var(--muted)}
-.capability-map .capability-map-scope{margin:0 0 var(--space-3)}
-.capability-map figcaption{margin-top:var(--space-2)}
-.capability-map-technology{border-style:dashed}
-@media(max-width:1000px){.capability-map-logical{grid-template-columns:1fr}.capability-map-policy .capability-map-items{flex-direction:row}}
-@media(max-width:480px){.capability-map-layer,.capability-map-policy{padding:var(--space-2)}}
-@media print{.capability-map-layer,.capability-map-policy{background:white;break-inside:avoid}.capability-map-logical{grid-template-columns:1fr}.capability-map-policy .capability-map-items{flex-direction:row}}
 .mission-tag{display:inline-block;margin-top:6px;font:500 .75rem/1.4 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.mission-model td a{text-decoration:none}.mission-model td a:hover{text-decoration:underline}
+
+/* Shared diagram canvas: native text, subtle blueprint grid, and quiet links. */
+.architecture-diagram{
+  container:architecture-diagram / inline-size;
+  margin:var(--space-4) 0;
+  padding:var(--space-3);
+  border:1px solid #29465e;
+  border-radius:12px;
+  background-color:#081a2a;
+  background-image:linear-gradient(#75d8fb05 1px,transparent 1px),linear-gradient(90deg,#75d8fb05 1px,transparent 1px);
+  background-size:24px 24px;
+  font-size:.875rem;
+  line-height:1.5;
+}
+.architecture-diagram p{margin:0}
+.architecture-diagram a{color:inherit;text-decoration:none}
+.architecture-diagram a:hover,.architecture-diagram a:focus-visible{color:var(--accent);text-decoration:underline}
+.architecture-diagram a:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:2px}
+.diagram-header{display:flex;align-items:center;gap:var(--space-2);padding-bottom:var(--space-3);margin-bottom:var(--space-3);border-bottom:1px solid #29465e}
+.diagram-icon{flex:0 0 auto;box-sizing:content-box;padding:12px;border:1px solid #375778;border-radius:8px;color:#93bbff;background:#163455}
+.architecture-diagram .diagram-eyebrow,.architecture-diagram .enterprise-stack-label,.architecture-diagram .diagram-control-label{
+  font:500 .875rem/1.5 var(--mono);letter-spacing:.045em;text-transform:uppercase;color:#b1c1d0;
+}
+.architecture-diagram .diagram-title{margin-top:4px;color:#f1f6fb;font-size:1.25rem;font-weight:650;letter-spacing:-.02em}
+.enterprise-stack-context{padding:var(--space-2);border:1px dashed #38536b;border-radius:6px;background:#0a2030}
+.architecture-diagram .diagram-context-items{display:flex;flex-wrap:wrap;gap:4px 16px;list-style:none;margin:8px 0 0;padding:0;color:#d5e2ec}
+.architecture-diagram .diagram-context-items li{margin:0}
+.architecture-diagram .diagram-relationship{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 0;margin:0;color:#afc2d3;font-size:.875rem}
+.diagram-relationship::before,.diagram-relationship::after{content:"";height:1px;flex:1;max-width:64px;background:#38536b}
+.diagram-relationship span{color:#8eafc8;font-size:1rem}
+.enterprise-stack-model,.capability-map-logical{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-2);align-items:stretch}
+.enterprise-stack-layers,.capability-map-stack,.diagram-layer-content{min-width:0}
+.architecture-diagram .enterprise-stack-layers>.enterprise-stack-label{margin-bottom:12px}
+.architecture-diagram .enterprise-stack-list{display:grid;gap:12px;list-style:none;margin:0;padding:0}
+.architecture-diagram .enterprise-stack-layer{
+  --layer-accent:#93bbff;
+  position:relative;display:flex;align-items:flex-start;gap:12px;padding:var(--space-2);margin:0;
+  border:1px solid #30495f;border-left:3px solid var(--layer-accent);border-radius:6px;background:#0c2337;
+}
+.enterprise-stack-layer:nth-child(2){--layer-accent:#63d9cb}
+.enterprise-stack-layer:nth-child(3){--layer-accent:#b1bafb}
+.enterprise-stack-layer:nth-child(4){--layer-accent:#f4c477}
+.enterprise-stack-layer:not(:last-child)::after{content:"";position:absolute;width:1px;height:13px;left:31px;bottom:-14px;background:#456179}
+.enterprise-stack-number,.diagram-layer-badge{
+  display:inline-grid;place-items:center;flex:0 0 auto;width:30px;height:30px;border:1px solid currentColor;border-radius:5px;
+  color:var(--layer-accent,#63d9cb);font:600 .875rem/1 var(--mono);background:#ffffff06;
+}
+.architecture-diagram .enterprise-stack-title,.architecture-diagram .capability-map-heading{font-size:1.0625rem;font-weight:650;line-height:1.4;color:#f1f6fb;margin:0 0 8px}
+.architecture-diagram small,.architecture-diagram .capability-map-scope{display:block;font-size:.875rem;line-height:1.5;color:#b1c1d0}
+.architecture-diagram .diagram-layer-content small{margin-bottom:12px}
+.architecture-diagram .diagram-chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0;font-size:.875rem;line-height:1.5}
+.architecture-diagram .diagram-chips li{margin:0;padding:3px 8px;border:1px solid #304b63;border-radius:4px;background:#163249;color:#dce8f1;max-width:100%}
+.diagram-controls{display:grid;grid-template-columns:minmax(0,1fr);gap:0;min-width:0;border:1px solid #30495f;border-radius:6px;overflow:hidden;background:#0b2232}
+.architecture-diagram .diagram-control-label{padding:12px 14px;border-bottom:1px solid #30495f;grid-column:1/-1}
+.diagram-control{--control-accent:#63d9cb;min-width:0;position:relative;padding:16px 14px;border-left:3px solid var(--control-accent);background:#0d94880a}
+.diagram-control-operations{--control-accent:#f4c477;background:#f59e0b08;border-top:1px solid #30495f}
+.diagram-control-icon{display:block;color:var(--control-accent);margin-bottom:10px}
+.architecture-diagram .diagram-control .enterprise-stack-title,.architecture-diagram .diagram-control .capability-map-heading{font-size:1rem;margin-bottom:12px}
+.architecture-diagram .diagram-control-items{list-style:none;display:grid;gap:6px;margin:0;padding:0;color:#c9d8e5;font-size:.875rem;line-height:1.5}
+.architecture-diagram .diagram-control-items li{position:relative;padding-left:12px;margin:0}
+.diagram-control-items li::before{content:"";position:absolute;left:0;top:.6em;width:4px;height:4px;border-radius:50%;background:var(--control-accent)}
+.architecture-diagram .diagram-control-scope{padding:12px 14px;border-top:1px solid #30495f;color:#b1c1d0;font-size:.875rem;grid-column:1/-1}
+.diagram-realization{margin-top:var(--space-3);padding:var(--space-2);border:1px dashed #52738e;border-radius:6px;background:#0a2030}
+.architecture-diagram .diagram-realization>.enterprise-stack-label,.architecture-diagram .diagram-realization>.diagram-eyebrow{margin-bottom:8px}
+.architecture-diagram .diagram-realization small,.architecture-diagram .diagram-realization .capability-map-scope{margin-top:12px}
+.architecture-diagram figcaption{margin-top:var(--space-2);padding-top:var(--space-2);border-top:1px solid #29465e;font-size:.875rem;line-height:1.6;color:#b1c1d0}
+.architecture-diagram figcaption a{color:#dce8f1}
+
+/* The capability view expands two numbered layers from the reference model. */
+.capability-map-capabilities{padding:var(--space-2);border:1px solid #41857e;border-radius:6px;background:#0b2634}
+.architecture-diagram .diagram-layer-heading{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.capability-map-layer{padding:var(--space-2);border:1px solid #30495f;border-radius:5px;background:#0c2337}
+.capability-map-capabilities .capability-map-heading:not(.diagram-layer-heading){font-size:.875rem;font-weight:600;color:#9fe4dc;margin-bottom:12px}
+.capability-map-stack>.capability-map-layer{--layer-accent:#f4c477;border-left:3px solid var(--layer-accent)}
+.architecture-diagram .capability-map-layer>.capability-map-scope{margin-top:12px}
+
+/* Use the reading column's width, including at larger text/zoom settings. */
+@container architecture-diagram (min-width:440px){
+  .diagram-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .diagram-control-operations{border-top:0;border-left:3px solid var(--control-accent)}
+}
+@container architecture-diagram (min-width:680px){
+  .enterprise-stack-model,.capability-map-logical{grid-template-columns:minmax(0,1fr) 200px}
+  .diagram-controls{display:flex;flex-direction:column}
+  .diagram-control{flex:1}
+  .diagram-control-operations{border-top:1px solid #30495f}
+}
+@media(max-width:480px){
+  .architecture-diagram{padding:var(--space-2);border-radius:8px}
+  .diagram-header{gap:12px}
+  .diagram-icon{padding:8px;width:20px;height:20px}
+  .architecture-diagram .diagram-title{font-size:1.125rem}
+  .architecture-diagram .enterprise-stack-layer{gap:10px;padding:12px}
+  .enterprise-stack-number,.diagram-layer-badge{width:26px;height:26px}
+  .enterprise-stack-layer:not(:last-child)::after{left:25px}
+  .capability-map-capabilities,.capability-map-layer{padding:12px}
+}
+@media print{
+  .architecture-diagram{background:white;border-color:#999;padding:12pt;container-type:normal}
+  .architecture-diagram a,.architecture-diagram p,.architecture-diagram small,.architecture-diagram li,.architecture-diagram figcaption{color:#222}
+  .enterprise-stack-model,.capability-map-logical{grid-template-columns:1fr}
+  .diagram-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .diagram-control,.enterprise-stack-layer,.capability-map-capabilities,.capability-map-layer,.diagram-realization,.enterprise-stack-context,.diagram-icon{background:white;break-inside:avoid}
+  .architecture-diagram .diagram-chips li{background:#f4f4f4;color:#222;border-color:#aaa}
+  .diagram-control-operations{border-top:0}
+  .architecture-diagram .diagram-title,.architecture-diagram .diagram-eyebrow,.architecture-diagram .enterprise-stack-label,.architecture-diagram .diagram-control-label,.architecture-diagram .enterprise-stack-title,.architecture-diagram .capability-map-heading{color:#222}
+  .enterprise-stack-number,.diagram-layer-badge,.diagram-control-icon{color:#35546b}
+}
