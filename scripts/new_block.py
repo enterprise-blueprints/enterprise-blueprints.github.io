@@ -72,7 +72,7 @@ FIELD_EXAMPLES = {
         "events:\n  - id: created\n    name: Something created\n    description: When it's announced.\n"
         "    raised_by: create   # an operation id; leave out for events like a deadline passing"
     ),
-    "measures": "measures:\n  - name: A measure\n    description: What it shows.",
+    "measures": "measures:\n  - id: a-measure\n    name: A measure\n    description: What it shows.",
     "personas": (
         "personas:\n  - name: Who uses it\n    summary: Who they are, and what they need.\n"
         "    ideas:\n      - Something the experience could include for them."

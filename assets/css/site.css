@@ -602,6 +602,16 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 
 .outcomes { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; }
 .outcomes li { position: relative; padding-left: 1.75rem; }
+.outcome__statement { margin: 0; }
+/* What an outcome is measured by and supported by, as small links. */
+.outcome__trace { display: grid; gap: .3rem; margin: .45rem 0 .35rem; font-size: .875rem; }
+.outcome__trace > div { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .5rem; }
+.outcome__trace dt { flex: 0 0 6.5rem; font-weight: 650; color: var(--text-muted); }
+.outcome__trace dd { display: flex; flex-wrap: wrap; gap: .3rem; margin: 0; flex: 1 1 14rem; }
+.trace-ref { display: inline-flex; align-items: baseline; gap: .35rem; padding: .1rem .5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); text-decoration: none; color: var(--text); }
+.trace-ref:hover { border-color: var(--border-strong); }
+.trace-ref__item { font-weight: 600; text-decoration: underline; text-underline-offset: .15em; }
+.trace-ref__of { color: var(--text-muted); font-size: .8125rem; }
 .outcomes li::before {
   content: "";
   position: absolute;
@@ -747,6 +757,8 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .op-contract { display: block; margin-top: .35rem; font-size: .875rem; color: var(--text-muted); }
 .op-contract > span { display: block; }
 .op-contract strong { color: var(--text); font-weight: 650; }
+.measure-outcomes { display: block; margin-top: .45rem; font-size: .875rem; color: var(--text-muted); }
+.measure-outcomes strong { display: block; color: var(--text); font-weight: 650; }
 .op-authority { display: block; margin-top: .35rem; font-size: .8125rem; color: var(--text-muted); min-width: 8rem; }
 
 /* Maturity levels, lowest first. The dots show how far up the scale a level is. */

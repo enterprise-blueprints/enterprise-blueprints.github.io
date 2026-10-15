@@ -189,7 +189,7 @@ Front matter fields:
 | `every_operation` | capabilities only | A list of sentences that are true of every operation, such as "Records who performed it, when, and why." Start each with a verb: the page joins them into one sentence under the Operations heading, beginning "Every operation". |
 | `states`, `transitions` | capabilities only | `states` is a list of `{id, name, description}` in their usual order. `transitions` is a list of `{from, to, via}`: two state ids and the id of the operation that makes the move. |
 | `events` | capabilities only | A list of `{id, name, description, raised_by}`: what the capability announces. `raised_by` is the id of the operation that raises it; leave it out for events such as a deadline passing. |
-| `measures` | capabilities only | A list of `{name, description}`. |
+| `measures` | capabilities only | A list of `{id, name, description}`. The `id` is optional, but a mission outcome can only reference a measure that has one. Each measure lists the mission outcomes that reference it. |
 | `maturity` | capabilities only | A list of `{level, description, questions}`, lowest level first. `questions` help an organization tell whether it has reached the level. Capabilities keep their questions here, so they leave out the shared Questions to ask section. |
 | `obligations` | policies only | A list of `{id, level, statement}`. `level` is `must`, `must-not`, or `should`, from `obligation_levels` in `_data/block_types.yml`. Start each statement with a verb, because it reads after its level. The policy page shows which control enforces each obligation, and which have none yet. |
 | `waivers` | policies only | A list of `{title, description, approved_by}`: when the policy can be set aside, and who approves it. |
@@ -275,7 +275,7 @@ Copy [`templates/mission.md`](templates/mission.md) to `_missions/<slug>.md` and
 | `id`, `title`, `summary`, `status` | yes | As for blocks. |
 | `components` | yes, unless `planned` | Blocks this mission uses. See below. |
 | `domains` | no | Keys from `_data/domains.yml`. A mission may draw on many domains. |
-| `outcomes` | no | A list of short sentences. |
+| `outcomes` | no | A list of outcomes. Each is a short sentence, or `{id, statement, measures, supported_by}` to trace it. See below. |
 | `lifecycle` | no | A list of `{id, title, summary}` stages. Present them as illustrative. |
 | `lifecycle_note` | no | Replaces the default "these stages are illustrative" note. |
 | `lifecycle_process` | no | The ID of the process block the lifecycle summarizes. Each page then links to the other. |
@@ -295,6 +295,24 @@ components:
 The page shows each block's title, type, and summary from the block's own record, alongside this mission's `purpose`. Blocks appear in the lifecycle by stage, and in a stack arranged by what relies on what: roles at the top, then experiences (with any experience ideas), processes, capabilities, and entities, followed by governance and then patterns. The stack is defined by `mission_layout` in `_data/block_types.yml`.
 
 List a block once. If it really plays different parts at different stages, list it once per stage, each with a distinct `stage`. The validator rejects other duplicates.
+
+### Tracing outcomes
+
+An outcome can say how you'd know it's achieved, and what makes it possible:
+
+```yaml
+outcomes:
+  - id: timely-triage
+    statement: Matters are triaged promptly and prioritized by risk.
+    measures:
+      - capability.case-management#time-to-accept   # a measure defined on the block
+    supported_by:
+      - process.investigation-lifecycle#triage      # a process's step
+      - capability.case-management#accept           # a capability's operation
+      - pattern.human-in-the-loop-review            # or a whole block
+```
+
+Measures are defined once, on the building block, and referenced here, so the mission never keeps its own copy. A reference is a block ID, optionally followed by `#` and the id of a measure, a step, or an operation. The validator checks that each one exists. The mission page shows each outcome with links to what measures and supports it, and each measure's row on its block page lists the outcomes that use it.
 
 ---
 

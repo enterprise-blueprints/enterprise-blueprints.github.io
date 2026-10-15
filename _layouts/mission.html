@@ -42,9 +42,31 @@ layout: default
       {%- if page.outcomes and page.outcomes.size > 0 %}
       <section class="section section--first" id="outcomes" aria-labelledby="outcomes-heading">
         <h2 id="outcomes-heading">Mission outcomes</h2>
+        {%- comment -%}
+          An outcome is a sentence, or {id, statement, measures, supported_by}.
+          `measures` point at measures defined on building blocks, rather than
+          repeating them here; `supported_by` points at blocks, or at a
+          process's step or a capability's operation.
+        {%- endcomment %}
         <ul class="outcomes">
           {%- for outcome in page.outcomes %}
-          <li>{{ outcome }}</li>
+          {%- if outcome.statement %}
+          <li class="outcome" id="outcome-{{ outcome.id }}">
+            <p class="outcome__statement">{{ outcome.statement }}</p>
+            {%- if outcome.measures.size > 0 or outcome.supported_by.size > 0 %}
+            <dl class="outcome__trace">
+              {%- if outcome.measures.size > 0 %}
+              <div><dt>Measured by</dt><dd>{% for ref in outcome.measures %}{% include trace-ref.html ref=ref kind="measure" %}{% endfor %}</dd></div>
+              {%- endif %}
+              {%- if outcome.supported_by.size > 0 %}
+              <div><dt>Supported by</dt><dd>{% for ref in outcome.supported_by %}{% include trace-ref.html ref=ref %}{% endfor %}</dd></div>
+              {%- endif %}
+            </dl>
+            {%- endif %}
+          </li>
+          {%- else %}
+          <li class="outcome"><p class="outcome__statement">{{ outcome }}</p></li>
+          {%- endif %}
           {%- endfor %}
         </ul>
       </section>

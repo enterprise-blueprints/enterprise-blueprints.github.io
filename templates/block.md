@@ -43,7 +43,8 @@ events:                     # optional
     description: When it's announced.
     raised_by: create       # an operation id; leave out for events like a deadline passing
 measures:                   # optional
-  - name: A measure
+  - id: a-measure           # lets mission outcomes reference it
+    name: A measure
     description: What it shows.
 maturity:                   # optional, lowest level first
   - level: Basic

@@ -128,15 +128,20 @@ events:
     raised_by: dispose
 
 measures:
-  - name: Time to find
+  - id: time-to-find
+    name: Time to find
     description: How long it takes to find a specific document and its current version.
-  - name: Unclassified documents
+  - id: unclassified-documents
+    name: Unclassified documents
     description: Documents with no sensitivity or retention category. This should be zero.
-  - name: Overdue disposals
+  - id: overdue-disposals
+    name: Overdue disposals
     description: Records past the end of their retention period that haven't been disposed of.
-  - name: Holds broken
+  - id: holds-broken
+    name: Holds broken
     description: Documents on hold that were changed or disposed of anyway. This should be zero.
-  - name: Duplicate copies
+  - id: duplicate-copies
+    name: Duplicate copies
     description: Documents stored more than once, in different places, instead of being referenced.
 
 maturity:

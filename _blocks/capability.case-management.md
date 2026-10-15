@@ -147,15 +147,20 @@ events:
     description: One of an open case's due dates has passed.
 
 measures:
-  - name: Time to accept
+  - id: time-to-accept
+    name: Time to accept
     description: How long new cases wait as Received before they're accepted or screened out.
-  - name: Cases without an owner
+  - id: unowned-cases
+    name: Cases without an owner
     description: Open cases with no accountable owner. This should be zero.
-  - name: Overdue cases
+  - id: overdue-cases
+    name: Overdue cases
     description: Open cases past one of their due dates.
-  - name: Reopen rate
+  - id: reopen-rate
+    name: Reopen rate
     description: The share of closed cases that are later reopened.
-  - name: Recorded reasons
+  - id: recorded-reasons
+    name: Recorded reasons
     description: The share of state changes that have a reason recorded.
 
 maturity:

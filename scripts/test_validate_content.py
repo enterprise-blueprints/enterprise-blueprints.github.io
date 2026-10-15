@@ -600,6 +600,56 @@ class LifecycleProcessRules(ValidatorTestCase):
         self.assertFails("lifecycle_process 'process.missing' does not exist")
 
 
+class OutcomeRules(ValidatorTestCase):
+    OUTCOMES = (
+        "outcomes:\n"
+        "  - A plain sentence still works.\n"
+        "  - id: timely-triage\n"
+        "    statement: Matters are triaged promptly.\n"
+        "    measures: [capability.case-management#time-to-accept]\n"
+        "    supported_by: [capability.case-management#accept, entity.case]\n"
+    )
+
+    def setUp(self):
+        super().setUp()
+        self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT.replace(
+            "---\nA definition.",
+            "operations:\n  - id: accept\n    title: Accept\n"
+            "measures:\n  - id: time-to-accept\n    name: Time to accept\n---\nA definition.",
+        ))
+
+    def write_outcomes(self, outcomes: str) -> None:
+        self.write("_missions/example.md", MISSION.replace("lifecycle:\n", outcomes + "lifecycle:\n"))
+
+    def test_structured_outcomes_are_valid(self):
+        self.write_outcomes(self.OUTCOMES)
+        self.assertEqual(self.errors(), "")
+
+    def test_measure_must_exist_on_the_block(self):
+        self.write_outcomes(self.OUTCOMES.replace("#time-to-accept", "#time-to-acept"))
+        self.assertFails("has no measure 'time-to-acept'", "Did you mean 'time-to-accept'?")
+
+    def test_measure_reference_must_name_a_measure(self):
+        self.write_outcomes(self.OUTCOMES.replace("[capability.case-management#time-to-accept]", "[capability.case-management]"))
+        self.assertFails("must name one of the block's measures")
+
+    def test_supported_by_operation_must_exist(self):
+        self.write_outcomes(self.OUTCOMES.replace("#accept,", "#approve,"))
+        self.assertFails("has no operation 'approve'")
+
+    def test_supported_by_block_must_exist(self):
+        self.write_outcomes(self.OUTCOMES.replace("entity.case]", "entity.cases]"))
+        self.assertFails("'entity.cases' does not exist")
+
+    def test_entity_has_no_items_to_name(self):
+        self.write_outcomes(self.OUTCOMES.replace("entity.case]", "entity.case#title]"))
+        self.assertFails("only a process's steps or a capability's operations")
+
+    def test_outcome_needs_a_statement(self):
+        self.write_outcomes(self.OUTCOMES.replace("    statement: Matters are triaged promptly.\n", ""))
+        self.assertFails("outcome #2 must be a sentence, or have an 'id' and a 'statement'")
+
+
 class SectionRegistryRules(ValidatorTestCase):
     def test_section_field_must_be_known(self):
         path = self.root / "_data/block_types.yml"

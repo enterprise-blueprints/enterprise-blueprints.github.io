@@ -61,7 +61,7 @@ FIELD_SPECS = {
     "transitions": FieldSpec("list", frozenset({"from", "to", "via"}), ("from", "to")),
     "every_operation": FieldSpec("strings"),
     "events": FieldSpec("list", frozenset({"id", "name", "description", "raised_by"}), ("id", "name")),
-    "measures": FieldSpec("list", frozenset({"name", "description"}), ("name",)),
+    "measures": FieldSpec("list", frozenset({"id", "name", "description"}), ("name",)),
     "maturity": FieldSpec("list", frozenset({"level", "description", "questions"}), ("level",)),
     "obligations": FieldSpec("list", frozenset({"id", "statement", "level"}), ("id", "statement")),
     "waivers": FieldSpec("list", frozenset({"title", "description", "approved_by"}), ("title",)),
@@ -81,6 +81,8 @@ DECISION_KEYS = {"decision", "accountable", "records"}
 # roles that people or agents play directly.
 PARTICIPANT_ACTORS = ("person", "agent")
 BLOCK_OPTIONAL += list(FIELD_SPECS)
+
+OUTCOME_KEYS = {"id", "statement", "measures", "supported_by"}
 
 MISSION_REQUIRED = ["id", "title", "summary", "status", "components"]
 MISSION_OPTIONAL = [
@@ -864,6 +866,7 @@ def check_capability_model(record: Record, registries: Registries, report: Repor
         ):
             report.error(rel, f"maturity #{index} 'questions' must be a list of questions.")
     entry_ids(record, "events", report)
+    entry_ids(record, "measures", report)
     for event in record.data.get("events") or []:
         if not isinstance(event, dict):
             continue
@@ -891,6 +894,88 @@ def check_capability_model(record: Record, registries: Registries, report: Repor
             report.error(where, f"'via: {via}' isn't one of the operations." + suggest(via, operation_ids))
 
 
+def part_ids(block: Record, field_name: str) -> list[str]:
+    return [
+        str(e["id"]) for e in block.data.get(field_name) or [] if isinstance(e, dict) and not is_blank(e.get("id"))
+    ]
+
+
+def check_outcomes(record: Record, blocks_by_id: dict, report: Report, block_files: dict) -> None:
+    """An outcome is a sentence, or {id, statement, measures, supported_by}.
+
+    `measures` reference measures defined on building blocks ("block#measure-id"),
+    so a measure is defined once. `supported_by` references blocks, or a
+    process's step or a capability's operation ("block#item-id").
+    """
+    rel = record.rel_path
+    outcomes = record.data.get("outcomes")
+    if outcomes is None:
+        return
+    if not isinstance(outcomes, list):
+        report.error(rel, "'outcomes' must be a list.")
+        return
+    seen = []
+    for index, outcome in enumerate(outcomes, start=1):
+        if isinstance(outcome, str):
+            continue
+        if not isinstance(outcome, dict) or is_blank(outcome.get("id")) or is_blank(outcome.get("statement")):
+            report.error(rel, f"outcome #{index} must be a sentence, or have an 'id' and a 'statement'.")
+            continue
+        outcome_id = str(outcome["id"])
+        where = f"{rel}: outcome '{outcome_id}'"
+        if not SLUG_PATTERN.match(outcome_id):
+            report.error(where, "id must be lowercase words joined by hyphens.")
+        if outcome_id in seen:
+            report.error(where, "id is used more than once.")
+        seen.append(outcome_id)
+        for key in outcome:
+            if key not in OUTCOME_KEYS:
+                report.warn(where, f"unknown field '{key}' will be ignored." + suggest(key, OUTCOME_KEYS))
+        for key in ("measures", "supported_by"):
+            refs = outcome.get(key)
+            if refs is None:
+                continue
+            if not isinstance(refs, list):
+                report.error(where, f"'{key}' must be a list of references.")
+                continue
+            for ref in refs:
+                check_trace_ref(where, key, ref, blocks_by_id, report, block_files)
+
+
+def check_trace_ref(where: str, key: str, ref, blocks_by_id: dict, report: Report, block_files: dict) -> None:
+    if not isinstance(ref, str) or not ref.strip():
+        report.error(where, f"'{key}' entries must be references such as 'capability.case-management#time-to-accept'.")
+        return
+    block_id, _, item = ref.partition("#")
+    if block_id not in blocks_by_id:
+        report.error(where, f"{key} '{ref}': '{block_id}' does not exist." + missing_hint(block_id, blocks_by_id, block_files))
+        return
+    block = blocks_by_id[block_id]
+    block_type = block.data.get("type")
+    if key == "measures":
+        if not item:
+            report.error(where, f"measures '{ref}' must name one of the block's measures, as '{block_id}#measure-id'.")
+            return
+        field_name, label = "measures", "measure"
+    elif not item:
+        return
+    elif block_type == "process":
+        field_name, label = "steps", "step"
+    elif block_type == "capability":
+        field_name, label = "operations", "operation"
+    else:
+        report.error(where, f"supported_by '{ref}': only a process's steps or a capability's operations can be named after '#'.")
+        return
+    known = part_ids(block, field_name)
+    if item not in known:
+        report.error(
+            where,
+            f"{key} '{ref}': {block_id} has no {label} '{item}'"
+            + (f" (its {field_name}: {', '.join(known)})." if known else ".")
+            + suggest(item, known),
+        )
+
+
 def check_mission(
     record: Record,
     blocks_by_id: dict[str, Record],
@@ -914,11 +999,7 @@ def check_mission(
                         + suggest(domain, registries.domains),
                     )
 
-    outcomes = data.get("outcomes")
-    if outcomes is not None and (
-        not isinstance(outcomes, list) or not all(isinstance(o, str) for o in outcomes)
-    ):
-        report.error(rel, "'outcomes' must be a list of short sentences.")
+    check_outcomes(record, blocks_by_id, report, block_files)
 
     for key, allowed_keys, required in (
         ("roles", ROLE_KEYS, "name"),

@@ -20,7 +20,7 @@ steps:
   - id: intake
     title: Intake
     role: Intake analyst
-    description: Record the concern, who raised it, and how it arrived. Acknowledge it, check it's complete, and capture any material that came with it.
+    description: Record the concern, who raised it, and how it arrived. Every concern is recorded, including those that will be screened out. Acknowledge it, check it's complete, and capture any material that came with it.
     uses: [capability.case-management, capability.document-management]
   - id: triage
     title: Triage

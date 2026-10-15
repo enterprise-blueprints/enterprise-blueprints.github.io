@@ -6,8 +6,15 @@ summary: An outcome-oriented sentence about what the mission achieves.
 status: draft               # planned | draft | published
 domains: [cross-cutting]    # keys from _data/domains.yml
 
+# An outcome can be a plain sentence, or traced to what supports it.
+# References are "block.id" or "block.id#item": a measure on the block, a
+# process's step, or a capability's operation.
 outcomes:
   - A short sentence describing one outcome.
+  - id: timely-response
+    statement: A short sentence describing another outcome.
+    measures: [capability.case-management#time-to-accept]       # optional
+    supported_by: [capability.case-management#accept]           # optional
 
 lifecycle_note: Optional. Explains that the stages are illustrative.
 lifecycle:

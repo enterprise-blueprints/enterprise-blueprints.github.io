@@ -5,12 +5,45 @@ summary: Receive, assess, investigate, and resolve allegations fairly, promptly,
 status: draft
 domains: [investigations, cross-cutting]
 
+# Each outcome links to the measures and building blocks that support it.
+# Measures are defined once, on the building block, and referenced here.
 outcomes:
-  - Concerns are recorded consistently and acknowledged promptly, however they arrive.
-  - Matters are prioritized by risk, so serious concerns get attention first.
-  - Evidence is preserved with clear provenance and is available to those authorized to see it.
-  - Findings are reviewed, recorded with their reasoning, and can withstand later scrutiny.
-  - Sensitive information about complainants and subjects stays restricted throughout.
+  - id: every-concern-recorded
+    statement: Every concern is recorded and acknowledged promptly, however it arrives, including those that are later screened out.
+    supported_by:
+      - process.investigation-lifecycle#intake
+      - capability.case-management#record
+  - id: timely-triage
+    statement: Matters are triaged promptly and prioritized by risk, so serious concerns get attention first.
+    measures:
+      - capability.case-management#time-to-accept
+      - capability.case-management#unowned-cases
+    supported_by:
+      - process.investigation-lifecycle#triage
+      - capability.case-management#accept
+      - capability.case-management#screen-out
+      - pattern.human-in-the-loop-review
+  - id: evidence-preserved
+    statement: Evidence is preserved with clear provenance and is available to those authorized to see it.
+    measures:
+      - capability.document-management#holds-broken
+    supported_by:
+      - process.investigation-lifecycle#investigation
+      - capability.document-management#capture
+      - entity.investigative-document
+  - id: defensible-findings
+    statement: Findings are reviewed, recorded with their reasoning, and can withstand later scrutiny.
+    measures:
+      - capability.case-management#recorded-reasons
+    supported_by:
+      - process.investigation-lifecycle#findings
+      - capability.case-management#resolve
+      - pattern.human-in-the-loop-review
+  - id: restricted-information
+    statement: Sensitive information about complainants and subjects stays restricted throughout.
+    supported_by:
+      - policy.restricted-case-access
+      - control.case-authorization-check
 
 lifecycle_note: >-
   These five stages illustrate a common way to organize investigative work.
@@ -20,10 +53,10 @@ lifecycle_process: process.investigation-lifecycle
 lifecycle:
   - id: intake
     title: Intake
-    summary: A concern is received, recorded, and acknowledged.
+    summary: A concern is received, recorded, and acknowledged. Every concern is recorded, even one that's screened out later.
   - id: triage
     title: Triage
-    summary: The matter is assessed for jurisdiction, risk, and priority, and either assigned or screened out.
+    summary: The matter is assessed for jurisdiction, risk, and priority, and either assigned or screened out. A screened-out matter stays on record, with the reason.
   - id: investigation
     title: Investigation
     summary: Investigators gather and analyze evidence and interview the people involved.
