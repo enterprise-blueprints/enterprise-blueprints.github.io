@@ -17,3 +17,6 @@ or the main README.
   handoff: light capability contracts, traceable mission outcomes, direct and
   indirect reuse, and the Grants additions. What was decided is in the main
   README's "Modeling decisions" section.
+- [Solution Studio alignment](solution-studio-alignment.md) — how Solution
+  Studio reads the library, what the v0.2 rebuild changed for it, and what
+  each project needs to line up again.
