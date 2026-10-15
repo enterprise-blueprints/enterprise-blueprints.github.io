@@ -70,6 +70,19 @@ FIELD_EXAMPLES = {
         "    raised_by: create   # an operation id; leave out for events like a deadline passing"
     ),
     "measures": "measures:\n  - name: A measure\n    description: What it shows.",
+    "personas": (
+        "personas:\n  - name: Who uses it\n    summary: Who they are, and what they need.\n"
+        "    ideas:\n      - Something the experience could include for them."
+    ),
+    "channels": "channels:\n  - name: Web\n    description: How it's used there.",
+    "principles": "principles:\n  - A commitment the experience keeps, such as meeting WCAG 2.2 AA.",
+    "participants": (
+        "participants:\n  - name: A role\n    type: capability   # the kind of block that usually plays it, or person or agent\n"
+        "    description: Its part in the pattern."
+    ),
+    "approach": "approach:\n  - title: First step\n    description: What happens.",
+    "use_when": "use_when:\n  - A situation where the pattern fits.",
+    "avoid_when": "avoid_when:\n  - A situation where it doesn't.",
     "obligations": (
         "obligations:\n  - id: first-obligation\n    level: must   # must | must-not | should\n"
         "    statement: Do something, starting with a verb."

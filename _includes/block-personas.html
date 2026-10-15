@@ -1,0 +1,27 @@
+{%- comment -%}
+  An experience's personas, one section each. Put it under "## Who it's for":
+    {% include block-personas.html %}
+  Reads `personas` ({name, summary, ideas}) from the block's front matter.
+  `ideas` are suggestions for what the experience could include for that
+  persona, written as plain sentences.
+{%- endcomment -%}
+{%- if page.personas.size > 0 -%}
+<div class="stack-cards block-items personas type-{{ page.type }}">
+{%- for persona in page.personas %}
+<section class="stack-card persona" id="persona-{{ persona.name | slugify }}" aria-labelledby="persona-{{ persona.name | slugify }}-name">
+<h3 class="stack-card__name" id="persona-{{ persona.name | slugify }}-name">{{ persona.name }}</h3>
+{%- if persona.summary %}
+<p class="stack-card__definition">{{ persona.summary }}</p>
+{%- endif %}
+{%- if persona.ideas.size > 0 %}
+<p class="persona__label">Could include</p>
+<ul class="persona__ideas">
+{%- for idea in persona.ideas %}
+<li>{{ idea }}</li>
+{%- endfor %}
+</ul>
+{%- endif %}
+</section>
+{%- endfor %}
+</div>
+{%- endif -%}

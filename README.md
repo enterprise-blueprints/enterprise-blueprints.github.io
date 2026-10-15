@@ -196,6 +196,12 @@ Front matter fields:
 | `checks` | controls only | A list of `{title, description}`, in order: what the control does, step by step. |
 | `evidence` | controls only | A list of `{name, description}`: the records the control leaves. |
 | `tests` | controls only | A list of `{title, expected}`: a situation to try, and the result that shows the control works. |
+| `personas` | experiences only | A list of `{name, summary, ideas}`: who uses the experience, and ideas for what it could include for them. `ideas` are plain sentences, not a specification, so the experience doesn't have to change whenever the blocks underneath it grow. |
+| `channels` | experiences only | A list of `{name, description}`: where people reach it. |
+| `principles` | experiences only | A list of sentences: the accessibility and design commitments it keeps. |
+| `participants` | patterns only | A list of `{name, type, description}`: the roles the pattern arranges. `type` is the kind of building block that usually plays the role, or `person` or `agent` for roles that people or agents play directly. |
+| `approach` | patterns only | A list of `{title, description}`, in order: how the pattern works. |
+| `use_when`, `avoid_when` | patterns only | Lists of sentences: when the pattern fits, and when it doesn't. |
 | `kind` | controls only | `preventive`, `detective`, or `corrective`, from `kinds` in `_data/block_types.yml`. Shown as a badge. |
 
 The body is Markdown. The layout already shows the title and summary, so start with `##` headings. A `planned` stub may have an empty body. Draft and published blocks need one.

@@ -685,8 +685,7 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .data-table__line { display: block; }
 .data-table__line + .data-table__line { margin-top: .2rem; }
 /* State names never break inside; a move can break only after its arrow. */
-.data-table__state { white-space: nowrap; }
-/* The description gets room first; links in the other columns wrap instead. */
+.data-table__state { white-space: nowrap; }/* The description gets room first; links in the other columns wrap instead. */
 @media (min-width: 46rem) { .prose .data-table td[data-label="What it does"], .prose .data-table td[data-label="What it means"] { min-width: 13rem; } }
 @media (max-width: 45.99rem) {
   .prose .data-table, .prose .data-table tbody { display: block; }
@@ -718,6 +717,26 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 /* Numbered steps, and row labels long enough to wrap. */
 .step-number { display: inline-flex; align-items: center; justify-content: center; width: 1.4rem; height: 1.4rem; margin-right: .5rem; border-radius: 50%; background: var(--tc-bg, var(--accent-soft)); color: var(--tc, var(--accent)); font-size: .75rem; font-weight: 700; vertical-align: .05em; }
 .prose .data-table th.data-table__plain { white-space: normal; font-weight: 600; min-width: 12rem; }
+
+/* A pattern's "Use it when" and "Avoid it when" lists, side by side. */
+.prose .use-when { display: grid; gap: .75rem; margin: 1rem 0 1.25rem; }
+@media (min-width: 46rem) { .prose .use-when { grid-template-columns: 1fr 1fr; } }
+.use-when__column { padding: .85rem 1rem; border: 1px solid var(--border); border-top: 3px solid var(--t-capability); border-radius: var(--radius); }
+.use-when__column--avoid { border-top-color: var(--danger-text); }
+.prose .use-when__title { margin: 0 0 .4rem; font-weight: 700; }
+.prose .use-when ul { margin: 0; padding-left: 1.1rem; font-size: .9375rem; }
+.prose .use-when li:last-child { margin-bottom: 0; }
+
+/* An experience's personas: one card each, with ideas for what to include. */
+.prose .personas { display: grid; }
+.prose .persona h3.stack-card__name { margin: 0; font-size: 1.0625rem; }
+.prose .persona__label { margin: .35rem 0 0; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
+.prose .persona__ideas { margin: 0; padding-left: 1.1rem; font-size: .9375rem; }
+.prose .persona__ideas li { margin: 0 0 .25rem; }
+.prose .persona__ideas li:last-child { margin-bottom: 0; }
+
+.prose .block-principles { margin: 1rem 0 1.25rem; }
+.prose .block-principles li { margin: 0; }
 
 /* Who may perform a capability's operation. */
 .automation { display: inline-block; font-size: .75rem; font-weight: 650; white-space: nowrap; padding: .2em .55em; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); color: var(--text-muted); }

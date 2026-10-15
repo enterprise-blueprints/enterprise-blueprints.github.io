@@ -522,6 +522,63 @@ class GovernanceRules(ValidatorTestCase):
         self.assertFails("tests #1 needs 'title' and 'expected'")
 
 
+EXPERIENCE = """\
+---
+id: experience.example
+type: experience
+title: Example Workspace
+summary: Where people work cases.
+status: planned
+scope: shared
+domain: cross-cutting
+personas:
+  - name: Investigator
+    summary: Works a few cases at a time.
+    ideas:
+      - A list of assigned cases.
+---
+"""
+
+
+class ExperienceRules(ValidatorTestCase):
+    def setUp(self):
+        super().setUp()
+        self.write("_blocks/experience.example.md", EXPERIENCE)
+
+    def test_personas_with_ideas_are_valid(self):
+        self.assertEqual(self.errors(), "")
+
+    def test_persona_needs_a_name(self):
+        self.write("_blocks/experience.example.md", EXPERIENCE.replace("  - name: Investigator\n    summary:", "  - summary:"))
+        self.assertFails("personas #1 needs 'name'")
+
+    def test_persona_ideas_must_be_sentences(self):
+        self.write("_blocks/experience.example.md", EXPERIENCE.replace("      - A list of assigned cases.\n", "      - title: Not a sentence\n"))
+        self.assertFails("personas #1 'ideas' must be a list of sentences")
+
+    def test_retired_tasks_field_is_flagged(self):
+        self.write("_blocks/experience.example.md", EXPERIENCE.replace("personas:\n", "tasks:\n  - id: x\n    title: X\npersonas:\n"))
+        warnings = "\n".join(validate_content.validate(self.root).warnings)
+        self.assertIn("unknown field 'tasks'", warnings)
+
+    def test_participant_type_must_be_a_block_type(self):
+        self.write("_blocks/pattern.example.md", """\
+            ---
+            id: pattern.example
+            type: pattern
+            title: Example Pattern
+            summary: A pattern.
+            status: planned
+            scope: shared
+            domain: cross-cutting
+            participants:
+              - name: Reviewer
+                type: robot
+            ---
+            """)
+        self.assertFails("participants #1 has type 'robot'. Use a building block type, or 'person' or 'agent'")
+
+
 class LifecycleProcessRules(ValidatorTestCase):
     def test_lifecycle_process_must_be_a_process(self):
         self.write("_missions/example.md", MISSION.replace("lifecycle:\n", "lifecycle_process: capability.case-management\nlifecycle:\n"))

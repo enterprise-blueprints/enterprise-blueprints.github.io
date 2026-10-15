@@ -171,17 +171,24 @@ type_sections:
       fields: [exceptions]
       include: block-exceptions.html
       prompt: How work leaves the usual path, and the step where it continues, as `exceptions` in front matter.
+  # An experience is where people and agents do the work. It's described by
+  # persona, with ideas for what it could include, rather than as a detailed
+  # specification, so it doesn't have to change whenever the capabilities
+  # and processes underneath it grow.
   experience:
     - heading: Who it's for
       required: true
-      prompt: The people or agents who use it, and what they need from it.
-    - heading: Tasks it supports
-      required: true
-      prompt: The main things people do with it.
+      fields: [personas]
+      include: block-personas.html
+      prompt: The people or agents who use it, each with a short summary and ideas for what the experience could include for them, as `personas` in front matter.
     - heading: Channels
-      prompt: Where people reach it, such as web, mobile, phone, or an assistant.
+      fields: [channels]
+      include: block-channels.html
+      prompt: Where people reach it, such as web, mobile, phone, or an assistant, as `channels` in front matter.
     - heading: Accessibility and design principles
-      prompt: The accessibility and design commitments it keeps.
+      fields: [principles]
+      include: block-principles.html
+      prompt: The accessibility and design commitments it keeps, as `principles` in front matter.
   # A policy states obligations. Controls enforce them, and the policy page
   # shows which control enforces each obligation, and which have none yet.
   policy:
@@ -221,19 +228,29 @@ type_sections:
       fields: [tests]
       include: block-tests.html
       prompt: Situations to try, and the result that shows the control works, as `tests` in front matter. Include what happens when the control itself fails.
+  # A pattern arranges roles that building blocks play. Its participants
+  # name those roles and the type of block that usually fills each one.
   pattern:
     - heading: Problem
       required: true
       prompt: The recurring problem the pattern solves.
     - heading: Context
       prompt: The situations where the problem shows up.
+    - heading: Participants
+      fields: [participants]
+      include: block-participants.html
+      prompt: The roles the pattern arranges, and the type of building block that usually plays each one (`type`), as `participants` in front matter.
     - heading: Approach
       required: true
-      prompt: How the pattern arranges building blocks to solve the problem.
+      fields: [approach]
+      include: block-approach.html
+      prompt: How the pattern works, step by step, as `approach` in front matter.
     - heading: Trade-offs
       prompt: What the pattern costs, and what it makes harder.
     - heading: When to use it
-      prompt: When the pattern fits, and when it doesn't.
+      fields: [use_when, avoid_when]
+      include: block-use-when.html
+      prompt: When the pattern fits (`use_when`), and when it doesn't (`avoid_when`).
 
 # Shared sections a type leaves out. Entities skip the sections about how a
 # block is used, because an entity makes no assumptions about its use.

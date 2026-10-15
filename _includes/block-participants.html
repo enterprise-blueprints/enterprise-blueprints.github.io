@@ -1,0 +1,22 @@
+{%- comment -%}
+  The roles a pattern arranges. Put it under "## Participants":
+    {% include block-participants.html %}
+  Reads `participants` ({name, type, description}) from the block's front
+  matter. `type` is the kind of building block that usually plays the role,
+  or `person` or `agent` for roles that people or agents play directly.
+{%- endcomment -%}
+{%- if page.participants.size > 0 -%}
+<table class="attribute-table data-table">
+<thead><tr><th scope="col">Participant</th><th scope="col">Its part</th><th scope="col">Usually played by</th></tr></thead>
+<tbody>
+{%- for participant in page.participants %}
+{%- assign p_type = participant.type %}
+<tr>
+<th scope="row">{{ participant.name }}</th>
+<td data-label="Its part">{{ participant.description }}</td>
+<td data-label="Usually played by">{% if p_type == "person" %}A person{% elsif p_type == "agent" %}An agent or automation{% elsif p_type %}{% include type-badge.html type=p_type link=true %}{% endif %}</td>
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}

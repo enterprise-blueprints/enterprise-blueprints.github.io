@@ -1,0 +1,30 @@
+{%- comment -%}
+  When a pattern fits, and when it doesn't. Put it under "## When to use it":
+    {% include block-use-when.html %}
+  Reads `use_when` and `avoid_when` (lists of sentences) from the block's
+  front matter.
+{%- endcomment -%}
+{%- if page.use_when.size > 0 or page.avoid_when.size > 0 -%}
+<div class="use-when">
+{%- if page.use_when.size > 0 %}
+<div class="use-when__column use-when__column--use">
+<p class="use-when__title">Use it when</p>
+<ul>
+{%- for item in page.use_when %}
+<li>{{ item }}</li>
+{%- endfor %}
+</ul>
+</div>
+{%- endif %}
+{%- if page.avoid_when.size > 0 %}
+<div class="use-when__column use-when__column--avoid">
+<p class="use-when__title">Avoid it when</p>
+<ul>
+{%- for item in page.avoid_when %}
+<li>{{ item }}</li>
+{%- endfor %}
+</ul>
+</div>
+{%- endif %}
+</div>
+{%- endif -%}

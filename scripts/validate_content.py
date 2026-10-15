@@ -64,8 +64,18 @@ FIELD_SPECS = {
     "checks": FieldSpec("list", frozenset({"title", "description"}), ("title",)),
     "evidence": FieldSpec("list", frozenset({"name", "description"}), ("name",)),
     "tests": FieldSpec("list", frozenset({"title", "expected"}), ("title", "expected")),
+    "personas": FieldSpec("list", frozenset({"name", "summary", "ideas"}), ("name",)),
+    "channels": FieldSpec("list", frozenset({"name", "description"}), ("name",)),
+    "principles": FieldSpec("strings"),
+    "participants": FieldSpec("list", frozenset({"name", "type", "description"}), ("name",)),
+    "approach": FieldSpec("list", frozenset({"title", "description"}), ("title",)),
+    "use_when": FieldSpec("strings"),
+    "avoid_when": FieldSpec("strings"),
 }
 DECISION_KEYS = {"decision", "accountable", "records"}
+# A pattern participant's `type` can be a block type, or one of these for
+# roles that people or agents play directly.
+PARTICIPANT_ACTORS = ("person", "agent")
 BLOCK_OPTIONAL += list(FIELD_SPECS)
 
 MISSION_REQUIRED = ["id", "title", "summary", "status", "components"]
@@ -739,6 +749,25 @@ def check_block_fields(
 
     if "operations" in allowed_fields:
         check_capability_model(record, registries, report)
+
+    if "personas" in allowed_fields:
+        for index, persona in enumerate(record.data.get("personas") or [], start=1):
+            ideas = persona.get("ideas") if isinstance(persona, dict) else None
+            if ideas is not None and (
+                not isinstance(ideas, list) or not all(isinstance(i, str) and i.strip() for i in ideas)
+            ):
+                report.error(rel, f"personas #{index} 'ideas' must be a list of sentences.")
+
+    if "participants" in allowed_fields:
+        for index, participant in enumerate(record.data.get("participants") or [], start=1):
+            ptype = participant.get("type") if isinstance(participant, dict) else None
+            allowed_types = list(registries.block_types) + list(PARTICIPANT_ACTORS)
+            if ptype is not None and ptype not in allowed_types:
+                report.error(
+                    rel,
+                    f"participants #{index} has type '{ptype}'. Use a building block type, "
+                    f"or {' or '.join(repr(a) for a in PARTICIPANT_ACTORS)}." + suggest(ptype, allowed_types),
+                )
 
     if "obligations" in allowed_fields:
         entry_ids(record, "obligations", report)
