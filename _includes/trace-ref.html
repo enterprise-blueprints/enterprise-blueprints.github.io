@@ -29,7 +29,7 @@
 {%- endif -%}
 <a class="trace-ref type-{{ tr_block.type }}" href="{{ tr_block.url | relative_url }}#{{ tr_anchor }}"><span class="trace-ref__item">{{ tr_name | default: tr_item_id }}</span> <span class="trace-ref__of">{{ tr_block.title }}</span></a>
 {%- elsif tr_block -%}
-<a class="trace-ref type-{{ tr_block.type }}" href="{{ tr_block.url | relative_url }}"><span class="trace-ref__item">{{ tr_block.title }}</span> <span class="trace-ref__of">{{ site.data.block_types.types[tr_block.type].label | default: tr_block.type }}</span></a>
+<a class="trace-ref type-{{ tr_block.type }}" href="{{ tr_block.url | relative_url }}"><span class="trace-ref__item">{{ tr_block.title }}</span> <span class="trace-ref__of">{{ site.data.block_types.types[tr_block.type].label | default: tr_block.type }}</span>{% if tr_block.status == "planned" %} <span class="status-badge status-planned">Planned</span>{% endif %}</a>
 {%- else -%}
 {% include block-ref.html id=tr_block_id %}
 {%- endif -%}

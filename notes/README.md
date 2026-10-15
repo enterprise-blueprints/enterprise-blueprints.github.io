@@ -13,3 +13,7 @@ or the main README.
 - [Building block metamodel v0.2](building-block-metamodel-v0.2.md) — how the
   building block types relate, intrinsic and contextual relationships, and the
   case for treating patterns and governance differently from core elements.
+- [Enterprise Blueprints v0.2](enterprise-blueprints-v0.2.md) — the v0.2
+  handoff: light capability contracts, traceable mission outcomes, direct and
+  indirect reuse, and the Grants additions. What was decided is in the main
+  README's "Modeling decisions" section.

@@ -8,7 +8,13 @@ scope: domain
 domain: grants-management
 relationships:
   - type: uses
+    target: capability.application-management
+  - type: uses
     target: capability.document-management
+  - type: constrained_by
+    target: policy.grant-eligibility
+  - type: constrained_by
+    target: policy.reviewer-conflicts-of-interest
 
 trigger: An applicant submits an application to an open funding opportunity.
 
@@ -17,11 +23,12 @@ steps:
     title: Receipt
     role: Program officer
     description: Confirm the application arrived before the deadline, acknowledge it, and record it with its attachments.
-    uses: [capability.document-management]
+    uses: [capability.application-management, capability.document-management]
   - id: eligibility
     title: Eligibility screening
     role: Program officer
     description: Check the application against the program's eligibility rules and its list of required contents.
+    uses: [capability.application-management]
     decisions:
       - decision: Find the application eligible or ineligible
         accountable: Program officer
@@ -29,8 +36,8 @@ steps:
   - id: merit-review
     title: Merit review
     role: Reviewer
-    description: Read each eligible application and evaluate it against the program's published criteria.
-    uses: [capability.document-management]
+    description: Declare any conflicts, then read each eligible application and evaluate it against the program's published criteria.
+    uses: [capability.application-management, capability.document-management]
     decisions:
       - decision: Score the application
         accountable: Reviewer
@@ -39,6 +46,7 @@ steps:
     title: Recommendation
     role: Program officer
     description: Combine the reviewers' scores, rank the applications, and prepare funding recommendations for an award decision.
+    uses: [capability.application-management]
     decisions:
       - decision: Recommend applications for funding
         accountable: Program officer
@@ -51,7 +59,7 @@ exceptions:
     description: Many programs reject late applications outright. Some allow missing items to be supplied by a set date.
     continues_at: eligibility
   - title: A reviewer's conflict of interest
-    description: The reviewer steps aside from that application, the conflict is recorded, and another reviewer takes it.
+    description: The reviewer steps aside from that application, the conflict is recorded, and another reviewer takes it. A conflict found after scoring means the score is set aside.
     continues_at: merit-review
   - title: Widely differing scores
     description: When reviewers disagree sharply, the program officer arranges a discussion or an additional review.
@@ -79,7 +87,7 @@ Automation is well suited to the routine checks: whether an application arrived 
 
 ## Boundaries
 
-This process ends with a recommendation. The award decision, the agreement, and oversight of the grant come after it. The process works on {% include ref.html id="entity.grant-application" %} records and uses {% include ref.html id="capability.document-management" %} to receive and keep the application packages.
+This process ends with a recommendation. The award decision, the agreement, and oversight of the grant come after it. The process works on {% include ref.html id="entity.grant-application" %} records. It uses {% include ref.html id="capability.application-management" %} to receive each application and track its status, and {% include ref.html id="capability.document-management" %} to keep the documents submitted with it. The rules it follows come from {% include ref.html id="policy.grant-eligibility" %} and {% include ref.html id="policy.reviewer-conflicts-of-interest" %}.
 
 ## Considerations
 

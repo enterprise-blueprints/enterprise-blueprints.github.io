@@ -393,6 +393,7 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .reuse__count:hover { text-decoration: underline; }
 .reuse__count-value { font-size: 1.5rem; font-weight: 700; line-height: 1.1; }
 .reuse-more { margin: 1rem 0 0; }
+.path-more { margin: 1.25rem 0 0; color: var(--text-muted); }
 @media (max-width: 40rem) {
   .reuse { grid-template-columns: 1fr; gap: .75rem; }
   .reuse__count { flex-direction: row; gap: .4rem; justify-self: start; min-width: 0; }

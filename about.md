@@ -10,6 +10,8 @@ Enterprise Blueprints is a reference library about designing the AI-native enter
 
 Most architecture material is a set of separate documents. Each one redefines the concepts it needs, and they drift apart over time. Enterprise Blueprints is built as **one connected body of knowledge**. Every building block is defined once, and missions link to the blocks they rely on. You can always move from a mission to the blocks it uses, and from a block to every mission that relies on it.
 
+New to the library? [How to Use Enterprise Blueprints]({{ '/architecture/how-to-use/' | relative_url }}) walks through it, from a mission's outcomes to the building blocks behind them.
+
 ## Logical architecture first
 
 Building blocks and mission blueprints describe logical architecture: responsibilities, information, behavior, and governance, rather than particular products. Technology-specific realizations belong in separate [Implementation Guides]({{ '/implementations/' | relative_url }}), so the logical architecture stays useful whatever platforms an organization chooses.

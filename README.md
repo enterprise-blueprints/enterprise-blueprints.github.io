@@ -411,6 +411,21 @@ This is fine for a library of hundreds of records. If builds become slow at a mu
 
 ---
 
+## Modeling decisions
+
+Choices that shape the model, and why. Change them deliberately.
+
+- **Seven building block types, no more for now.** Entity, Capability, Process, Experience, Policy, Control, and Pattern. Outcomes, measures, roles, and events are real concepts, but they live inside missions and blocks, with stable ids so they can be referenced, rather than as types of their own. Promote one only when it needs its own page and relationships.
+- **Each content type has one job.** A mission holds outcomes, context, participants, an illustrative lifecycle, and its composition of blocks. A process holds steps, decisions, handoffs between roles, exceptions, and the capabilities each step uses. A capability holds operations, states, events, and measures. An experience describes who it serves and how. A mission links to its process rather than repeating it.
+- **Capability contracts stay light.** An operation can say what it takes, what it returns, and who has authority to perform it, all in plain phrases. When it can be used comes from its states, and what it announces comes from its events. There are no data types or schemas: those belong to implementations. See [Capability contracts](#capability-contracts).
+- **Measures are defined once, on building blocks.** Mission outcomes reference them (`capability.case-management#time-to-accept`) instead of defining their own. For now only capabilities have measures. Add measures to other types when a real outcome needs one that no capability can carry.
+- **Usage is written once and derived both ways.** A mission lists the blocks it uses directly. Indirect usage is derived by following only the relationships marked `implies_use`, up to three steps, so a mission isn't credited with every block that happens to be connected. Nobody maintains reverse references or lists of missions on blocks.
+- **Intrinsic relationships go on blocks, contextual ones on missions.** A relationship that's true wherever a block is used belongs on the block. How one mission uses a block goes in that mission's `purpose`.
+- **Ownership stays narrow.** Document Management keeps documents. It doesn't own a grant application's lifecycle: Application Management does, and the application's documents are documents in their own right.
+- **Placeholders are welcome.** A planned block with only a summary and its relationships is enough to show where the library has gaps, such as the Grants policies and controls, and every page that links to it already works.
+
+---
+
 ## Design and accessibility
 
 - One stylesheet with CSS custom properties, a light theme, and a dark theme that follows the reader's system setting.

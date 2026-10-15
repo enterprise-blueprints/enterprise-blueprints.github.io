@@ -6,8 +6,25 @@ status: draft
 domains: [grants-management, cross-cutting]
 
 outcomes:
-  - Applicants can submit complete applications and supporting documents once.
-  - Applications are reviewed consistently, with any automated scoring checked by a person.
+  - id: submit-once
+    statement: Applicants can submit complete applications and supporting documents once.
+    supported_by:
+      - process.grant-application-review#receipt
+      - capability.application-management
+      - capability.document-management#capture
+  - id: consistent-review
+    statement: Applications are reviewed consistently, with any automated scoring checked by a person.
+    supported_by:
+      - process.grant-application-review#eligibility
+      - process.grant-application-review#merit-review
+      - policy.grant-eligibility
+      - pattern.human-in-the-loop-review
+  - id: independent-review
+    statement: Every application is judged by reviewers with no conflict of interest, and every finding, score, and recommendation can be explained later.
+    supported_by:
+      - policy.reviewer-conflicts-of-interest
+      - control.conflict-of-interest-declaration
+      - control.review-audit-trail
 
 lifecycle_note: >-
   These stages illustrate a common grants lifecycle. This blueprint currently
@@ -41,15 +58,26 @@ experience_ideas:
     description: Lets reviewers read applications and record scores and comments against the criteria.
 
 components:
-  - ref: entity.grant-application
-    purpose: The applicant's request for funding and the information it contains.
-    stage: application
-  - ref: capability.document-management
-    purpose: Receives and retains application packages, attachments, and supporting documentation.
-    stage: application
   - ref: process.grant-application-review
     purpose: Coordinates eligibility screening and merit review of each application.
     stage: review
+  - ref: policy.grant-eligibility
+    purpose: Holds eligibility decisions to the program's published rules, applied the same way to every applicant.
+  - ref: policy.reviewer-conflicts-of-interest
+    purpose: Keeps reviewers with a conflict of interest away from the applications they're conflicted on.
+  - ref: control.conflict-of-interest-declaration
+    purpose: Has reviewers declare conflicts before they're given applications to score.
+  - ref: control.review-audit-trail
+    purpose: Records each eligibility finding, score, and recommendation, so funding decisions can be explained later.
+  - ref: entity.grant-application
+    purpose: The applicant's request for funding and the information it contains.
+    stage: application
+  - ref: capability.application-management
+    purpose: Receives each application and tracks its status, from submission through review to a funding decision.
+    stage: application
+  - ref: capability.document-management
+    purpose: Keeps the documents submitted with each application, with their versions.
+    stage: application
   - ref: pattern.human-in-the-loop-review
     purpose: Any automated eligibility screening or AI-assisted scoring is reviewed by a person before it affects a funding decision.
     stage: review

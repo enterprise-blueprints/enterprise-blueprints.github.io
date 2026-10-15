@@ -49,7 +49,7 @@ A grant application is a request for funding from a specific program or opportun
 
 ## Boundaries
 
-A grant application holds information about one request for funding. It doesn't describe how applications are screened, reviewed, or decided. Those belong to processes such as {% include ref.html id="process.grant-application-review" %}.
+A grant application holds information about one request for funding. It doesn't describe how applications are screened, reviewed, or decided. Those belong to processes such as {% include ref.html id="process.grant-application-review" %}, and keeping each application's status up to date belongs to {% include ref.html id="capability.application-management" %}.
 
 An application also isn't an award. If funding is approved, the award is a separate record with its own terms, amounts, and dates. The attachments are documents in their own right, {% include ref.html id="entity.document" %}.
 

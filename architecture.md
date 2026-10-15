@@ -39,6 +39,8 @@ This library separates two kinds of content.
 
 **Mission Blueprints** put building blocks to work for a specific mission. For example, {% include ref.html id="mission.investigations" text="Investigations" %} follows a reported concern from intake to closure. It uses Case Management to track each matter, Document Management to keep the evidence file, and Human-in-the-Loop Review before findings are approved. For each block, the blueprint explains the part it plays *in that mission*.
 
+[How to Use Enterprise Blueprints]({{ '/architecture/how-to-use/' | relative_url }}) follows one Investigations outcome, timely triage, from the mission down through its process, capabilities, information, and governance.
+
 Both are meant to be granular and self-contained. A building block covers one concept and makes sense on its own page. A blueprint can start as a handful of references and grow over time. New blocks and blueprints can be added, or extended, from any starting point without restructuring what's already there. Everything is linked both ways: a mission links to its blocks, and every block shows the missions that use it.
 
 ## Building block types
