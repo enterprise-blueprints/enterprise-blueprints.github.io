@@ -8,7 +8,7 @@ scope: shared
 domain: cross-cutting
 relationships:
   - type: manages
-    target: information.case
+    target: entity.case
   - type: constrained_by
     target: policy.restricted-case-access
 ---
@@ -19,7 +19,7 @@ Case Management is the organization's ability to open, track, assign, progress, 
 
 ## Responsibilities
 
-- Open a case with a stable identity and an initial classification.
+- Open a case with a permanent identifier and an initial classification.
 - Record status changes, assignments, and key events as a durable history.
 - Maintain participants and their roles on the case.
 - Link a case to its related documents and records.

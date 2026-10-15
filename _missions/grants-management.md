@@ -10,8 +10,8 @@ outcomes:
   - Applications are reviewed consistently, with any automated scoring checked by a person.
 
 lifecycle_note: >-
-  An intentionally skeletal outline. Only the first stages are composed so
-  far; later stages will be added as the blueprint develops.
+  These stages illustrate a common grants lifecycle. This blueprint currently
+  covers the application and review stages.
 lifecycle:
   - id: application
     title: Application
@@ -26,8 +26,22 @@ lifecycle:
     title: Oversight and closeout
     summary: Performance and spending are monitored until the grant is closed.
 
+roles:
+  - name: Applicant
+    description: The organization or person requesting funding.
+  - name: Program officer
+    description: Runs the program, answers applicant questions, and oversees awards.
+  - name: Reviewer
+    description: Evaluates applications against the program's criteria.
+
+experience_ideas:
+  - title: Applicant portal
+    description: Lets applicants prepare, submit, and track an application in one place.
+  - title: Reviewer workspace
+    description: Lets reviewers read applications and record scores and comments against the criteria.
+
 components:
-  - ref: information.grant-application
+  - ref: entity.grant-application
     purpose: The applicant's request for funding and the information it contains.
     stage: application
   - ref: capability.document-management
@@ -43,11 +57,4 @@ components:
 
 ## Overview
 
-Grants Management covers the work of offering funding, choosing who receives it, and making sure it's used as intended. This blueprint is deliberately skeletal. It exists to show that a second mission can build on the same canonical building blocks as Investigations without redefining them.
-
-## What it reuses
-
-- **Document Management** is the same canonical record that Investigations uses. Here it holds application packages instead of evidence. That difference lives in this mission's composition, not in the block's definition.
-- **Human-in-the-Loop Review** is the same pattern that Investigations applies to triage and findings. Here it guards automated screening and scoring.
-
-The grants-specific concepts, Grant Application and Grant Application Review, are planned stubs. They reserve a place in the model until someone writes their definitions.
+Grants Management covers the work of offering funding, choosing who receives it, and making sure it's used as intended. Programs depend on complete applications, consistent and fair review, and a clear record of why each award was made.

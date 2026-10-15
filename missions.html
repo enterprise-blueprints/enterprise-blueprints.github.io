@@ -7,7 +7,7 @@ summary: Mission-specific compositions of shared building blocks, with outcomes,
 <div class="container">
   <header class="page-header">
     <h1>{{ page.title }}</h1>
-    <p class="lede">{{ page.summary }} A mission references canonical blocks by ID instead of redefining them, so several missions can build on the same foundation.</p>
+    <p class="lede">{{ page.summary }} Each mission links to the building blocks it relies on, so you can see how several missions build on the same foundation.</p>
   </header>
 
   {%- assign missions = site.missions | sort: "title" %}

@@ -2,7 +2,7 @@
 layout: default
 ---
 {%- comment -%}
-  Canonical building block page.
+  Building block page: the one place a block is defined.
 
   Outgoing relationships come from this record's `relationships`.
   Incoming relationships, mission usage, and implementation guides are all
@@ -91,7 +91,7 @@ layout: default
     <article class="record-main">
       {%- if page.status == "planned" %}
       <div class="notice notice--planned" role="note">
-        <p><strong>Planned building block.</strong> This record reserves the ID and its place in the model. The full definition hasn't been written yet. Its relationships and mission usage below are already generated from the model.</p>
+        <p><strong>Planned building block.</strong> This block holds a place in the library, but its full definition hasn't been written yet. The relationships and missions below already link to it.</p>
       </div>
       {%- endif %}
 
@@ -104,7 +104,7 @@ layout: default
 
       <section class="section" id="relationships" aria-labelledby="relationships-heading">
         <h2 id="relationships-heading">Relationships</h2>
-        <p class="section-note">Intrinsic relationships are part of what this block means, wherever it's used. How a block takes part in a particular mission is recorded on that mission instead.</p>
+        <p class="section-note">These relationships hold wherever the block is used. How it's used in a particular mission is described on that mission's page.</p>
         <div class="rel-columns">
           <div class="rel-column">
             <h3>From this block</h3>
@@ -128,7 +128,7 @@ layout: default
       <section class="section" id="missions" aria-labelledby="missions-heading">
         <h2 id="missions-heading">Used in Mission Blueprints</h2>
         {%- if mission_count > 0 %}
-        <p class="section-note">Generated from each mission's composition. The purpose shown is specific to that mission.</p>
+        <p class="section-note">The purpose shown is specific to each mission.</p>
         <ul class="usage-list">
           {%- for m in missions -%}
           {%- assign uses = m.components | where: "ref", block_id -%}

@@ -69,7 +69,7 @@ Use one building-block collection with the following typed records:
 
 | `type` | Meaning | Example |
 | --- | --- | --- |
-| `information` | A meaningful enterprise information concept. | Case, Document |
+| `entity` | A distinct thing the enterprise needs to identify, describe, and keep information about. | Case, Document |
 | `capability` | What an organization can reliably do. | Case Management |
 | `process` | How work is coordinated to achieve an outcome. | Investigation Lifecycle |
 | `experience` | How people or agents engage with capabilities and processes. | Investigator Workspace |
@@ -91,17 +91,17 @@ Start with this small registry:
 
 | Relation | Allowed source → target | Meaning |
 | --- | --- | --- |
-| `manages` | capability → information | Capability manages a logical information concept. |
+| `manages` | capability → entity | Capability manages an entity. |
 | `uses` | process → capability | Process employs a capability. |
 | `supports` | experience → process | Experience helps participants perform a process. |
 | `provides_access_to` | experience → capability | Experience provides interaction with a capability. |
-| `constrained_by` | information/capability/process/experience → policy | Applicable requirement or restriction. |
+| `constrained_by` | entity/capability/process/experience → policy | Applicable requirement or restriction. |
 | `enforces` | control → policy | Control helps implement/enforce a policy. |
 | `depends_on` | capability → capability | A true logical dependency, not a merely common integration. |
-| `references` | information → information | A modeled information association. |
+| `references` | entity → entity | A modeled association between entities. |
 | `part_of` | same type → same type | Hierarchical decomposition where meaningful. |
 | `specializes` | same type → same type | Explicit refinement or specialization. |
-| `applies_to` | pattern → information/capability/process/experience/control | Applicable reusable guidance. |
+| `applies_to` | pattern → entity/capability/process/experience/control | Applicable reusable guidance. |
 
 Implementations may later use `realizes` to reference logical elements; leave room for it in the registry but do not require implementation examples in v0.1.
 
@@ -163,7 +163,7 @@ scope: shared
 domain: cross-cutting
 relationships:
   - type: manages
-    target: information.case
+    target: entity.case
   - type: constrained_by
     target: policy.restricted-case-access
 ---
@@ -270,8 +270,8 @@ Write enough substantive sample content that navigation demonstrates the actual 
 
 **Minimum blocks:**
 
-1. `information.case` — Case
-2. `information.document` — Document
+1. `entity.case` — Case
+2. `entity.document` — Document
 3. `capability.case-management` — Case Management
 4. `capability.document-management` — Document Management
 5. `process.investigation-lifecycle` — Investigation Lifecycle
@@ -336,4 +336,4 @@ Recommended order:
 
 Before finishing, report what was built, which acceptance criteria were verified, known limitations, and the next *small* content expansion worth undertaking.
 
-**The main architectural goal:** Future contributors should be able to build the enterprise model progressively from almost anywhere—starting with a mission, capability, information concept, governance concern, or pattern—while adding to a single coherent, reusable knowledge model.
+**The main architectural goal:** Future contributors should be able to build the enterprise model progressively from almost anywhere—starting with a mission, capability, entity, governance concern, or pattern—while adding to a single coherent, reusable knowledge model.

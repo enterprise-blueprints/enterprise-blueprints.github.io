@@ -40,8 +40,8 @@ relationships: []
 """
 
 EXAMPLES = {
-    "information": ("references", "information.document"),
-    "capability": ("manages", "information.case"),
+    "entity": ("references", "entity.document"),
+    "capability": ("manages", "entity.case"),
     "process": ("uses", "capability.case-management"),
     "experience": ("supports", "process.investigation-lifecycle"),
     "policy": ("specializes", "policy.restricted-case-access"),

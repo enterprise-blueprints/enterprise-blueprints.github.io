@@ -45,22 +45,18 @@ roles:
   - name: AI agent
     description: Assists with summarizing, classifying, and suggesting next steps, under human review.
 
-use_cases:
-  - title: Record a concern
-    description: Capture a new allegation from any channel and open a case for it.
-  - title: Triage and assign
-    description: Assess risk and priority, with any AI-assisted recommendation reviewed by a person.
-  - title: Build the evidence file
-    description: Collect, label, and preserve documents and other evidence against the case.
-  - title: Approve findings
-    description: Review draft findings and their reasoning before they become final.
-  - title: Close and retain
-    description: Record the outcome, close the case, and retain the record on schedule.
+experience_ideas:
+  - title: Public reporting portal
+    description: Lets anyone report a concern, confidentially if they choose, and check its status later.
+  - title: Supervisor dashboard
+    description: Shows caseloads, aging matters, and decisions waiting for approval.
+  - title: Triage assistant
+    description: An AI agent that summarizes each new concern and suggests a priority for a person to confirm.
 
 components:
   - ref: process.investigation-lifecycle
     purpose: Coordinates the matter from intake through closure, and is where stage-by-stage decisions are made.
-  - ref: information.case
+  - ref: entity.case
     purpose: The single record of the matter, including what was alleged, decided, and done.
   - ref: policy.restricted-case-access
     purpose: Restricts sensitive investigative information, including the identity of reporting parties and subjects.
@@ -78,7 +74,7 @@ components:
   - ref: capability.document-management
     purpose: Maintains investigative documents and attachments, with versions and provenance preserved.
     stage: investigation
-  - ref: information.investigative-document
+  - ref: entity.investigative-document
     purpose: Identifies documents that serve as evidence and the handling they require.
     stage: investigation
   - ref: pattern.human-in-the-loop-review
@@ -94,9 +90,3 @@ components:
 Investigations turn a reported concern into a documented, defensible outcome. Whether the concern is about fraud, misconduct, safety, or a regulatory breach, the mission shares a common shape. Something is reported, someone decides whether and how to look into it, evidence is gathered, a conclusion is reached, and a record is kept.
 
 The stakes are unusually high. Investigations handle sensitive information about people who may not know they are under review. They often rely on judgement, and their conclusions may be challenged years later. That makes consistent records, restricted access, and clear human accountability central to the mission, not optional extras.
-
-## Design notes
-
-- **Build on shared blocks.** Case Management and Document Management are defined once and shared with other missions. This blueprint adds only what's specific to investigations, such as the stages where each block matters and the specialized Investigative Document.
-- **Enforce access below the interface.** Restricted access applies to every experience and agent that can reach a case. That's why the authorization check is part of the composition, not just a feature of the Investigator Workspace.
-- **Keep people accountable for consequential decisions.** AI assistance is welcome in triage and in drafting findings. Human-in-the-Loop Review appears at both points, so each recommendation is reviewed before it affects anyone.

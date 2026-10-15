@@ -1,6 +1,6 @@
 main:
-  - title: The Model
-    url: /model/
+  - title: The Architecture
+    url: /architecture/
   - title: Mission Blueprints
     url: /missions/
   - title: Building Blocks

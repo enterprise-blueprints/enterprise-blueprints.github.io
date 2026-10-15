@@ -8,8 +8,8 @@
 title: Enterprise Blueprints
 tagline: Build Experiences. Share Capabilities.
 description: >-
-  An open, vendor-neutral reference library for designing the AI-native
-  enterprise: canonical building blocks composed into mission blueprints.
+  An open reference library for designing the AI-native enterprise:
+  reusable building blocks composed into mission blueprints.
 url: ""
 baseurl: ""
 
@@ -59,6 +59,7 @@ exclude:
   - requirements-dev.txt
   - scripts/
   - templates/
+  - notes/
   - vendor/
   - .bundle/
   - .github/

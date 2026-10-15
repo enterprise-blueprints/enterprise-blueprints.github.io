@@ -5,13 +5,13 @@
 # `policy` and `control` stay distinct types in data but share the
 # "Governance" group on the site.
 #
-# `area` names the part of the conceptual model (see /model/) where a type's
+# `area` names the part of the architecture (see /architecture/) where a type's
 # responsibilities mostly sit. It is explanatory only; it is not a runtime tier.
 
 groups:
-  - id: information
-    label: Information
-    types: [information]
+  - id: entity
+    label: Entities
+    types: [entity]
   - id: capability
     label: Capabilities
     types: [capability]
@@ -29,12 +29,14 @@ groups:
     types: [pattern]
 
 types:
-  information:
-    label: Information
-    plural: Information concepts
-    group: information
+  entity:
+    label: Entity
+    plural: Entities
+    group: entity
     area: Enterprise Foundation — information and meaning
-    description: A meaningful enterprise information concept.
+    description: >-
+      A distinct thing the enterprise needs to identify, describe, and keep
+      information about.
     example: Case, Document
   capability:
     label: Capability
@@ -77,8 +79,27 @@ types:
     label: Pattern
     plural: Patterns
     group: pattern
-    area: Guidance across the whole model
+    area: Guidance across the whole architecture
     description: >-
       A reusable design or composition approach. Patterns guide how blocks are
       arranged; they are not an additional software tier.
     example: Human-in-the-Loop Review
+
+# How a Mission Blueprint page arranges its building blocks.
+#   stack    Core types, top to bottom in the order they rely on each other.
+#            `next` names the relationship shown between a layer and the one
+#            below it (experiences support processes, and so on).
+#   cross_cutting  Shown after the stack, because they apply to every layer.
+#   applied  Shown below the stack, next to where they apply.
+# Every type above must appear exactly once here; the validator checks this.
+mission_layout:
+  stack:
+    - type: experience
+      next: supports
+    - type: process
+      next: uses
+    - type: capability
+      next: manages
+    - type: entity
+  cross_cutting: [policy, control]
+  applied: [pattern]

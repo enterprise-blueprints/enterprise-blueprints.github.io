@@ -1,12 +1,12 @@
 # Enterprise Blueprints
 
-An open, vendor-neutral reference library for designing the AI-native enterprise.
+An open reference library for designing the AI-native enterprise.
 
 **Build Experiences. Share Capabilities.** As AI makes software easier to create, the enterprise needs durable shared information, capabilities, governance, and contracts, so new apps, workflows, and agents don't keep reinventing the organization's responsibilities.
 
-The site is one connected architectural model, not a set of separate articles:
+The site is one connected architecture, not a set of separate articles:
 
-- **Building blocks** are canonical, reusable definitions. Each one has a stable ID, a type, and typed relationships.
+- **Building blocks** are reusable definitions. Each one has a permanent ID, a type, and typed relationships.
 - **Mission Blueprints** compose those blocks by ID and record the part each block plays in that mission.
 - **Reverse references are generated.** A block page lists every block that points to it and every mission that uses it. Nobody maintains those lists by hand.
 
@@ -21,7 +21,7 @@ It's a plain Jekyll site: Markdown and YAML front matter, Liquid templates, one 
 - [Quick start](#quick-start)
 - [Publish on GitHub Pages](#publish-on-github-pages)
 - [Repository layout](#repository-layout)
-- [The content model](#the-content-model)
+- [How content is structured](#how-content-is-structured)
 - [Add a building block](#add-a-building-block)
 - [Add a Mission Blueprint](#add-a-mission-blueprint)
 - [Add a relationship type](#add-a-relationship-type)
@@ -104,7 +104,7 @@ What the workflow does:
 .
 ├── _config.yml                 Site settings and collections
 ├── index.html                  Homepage
-├── model.md                    The Model
+├── architecture.md             The Architecture
 ├── vocabulary.html             Vocabulary reference, generated from _data/
 ├── blocks.html                 Building Blocks index, with type filter
 ├── missions.html               Mission Blueprints index
@@ -114,14 +114,14 @@ What the workflow does:
 ├── _missions/                  One file per Mission Blueprint
 ├── _implementations/           Implementation Guides (empty in v0.1)
 ├── _data/
-│   ├── block_types.yml         Block types and how they're grouped
+│   ├── block_types.yml         Block types, grouping, and mission page layout
 │   ├── relationship_types.yml  Relationship vocabulary and endpoint rules
 │   ├── statuses.yml            planned, draft, published
 │   ├── scopes.yml              shared, domain
 │   ├── domains.yml             Domains used as metadata
 │   └── navigation.yml          Main navigation
 ├── _layouts/                   default, page, block, mission, implementation
-├── _includes/                  Reference links, badges, cards, model diagram
+├── _includes/                  Reference links, badges, cards, architecture diagram
 ├── assets/                     site.css, site.js, favicon
 ├── scripts/
 │   ├── validate_content.py     Content validator (CI runs it before building)
@@ -129,6 +129,8 @@ What the workflow does:
 │   ├── check_links.py          Internal link checker for a built site
 │   └── new_block.py            Creates a planned block stub
 ├── templates/                  Copy-and-edit templates for new records
+├── redirects/                  Old URLs that forward to renamed pages
+├── notes/                      Working notes and design proposals (not published)
 └── .github/workflows/pages.yml
 ```
 
@@ -136,7 +138,7 @@ Adding content never requires changes to layouts, includes, routing, or configur
 
 ---
 
-## The content model
+## How content is structured
 
 ### IDs
 
@@ -158,7 +160,7 @@ All block types live in one `_blocks/` collection:
 
 | `type` | Meaning | Shown under |
 | --- | --- | --- |
-| `information` | A meaningful enterprise information concept | Information |
+| `entity` | A distinct thing the enterprise needs to identify, describe, and keep information about | Entities |
 | `capability` | What an organization can reliably do | Capabilities |
 | `process` | How work is coordinated to achieve an outcome | Processes |
 | `experience` | How people or agents engage with capabilities and processes | Experiences |
@@ -183,7 +185,7 @@ The body is Markdown. The layout already shows the title and summary, so start w
 
 ### Intrinsic and contextual relationships
 
-This distinction is the core of the model:
+This distinction is at the heart of how the library works:
 
 - **Intrinsic** relationships belong on the block, because they're part of what the block means everywhere. *Case Management `manages` Case.*
 - **Contextual** relationships belong on the mission, in that mission's `components`. *In Investigations, Document Management maintains the evidence file.*
@@ -194,7 +196,7 @@ Relationships are written **once, on the source record**. Never add the reverse 
 
 ### Specialization
 
-"Define once" means one canonical definition per concept *within a clear scope*. If a domain's meaning genuinely differs, create a separate block that `specializes` the general one. For example, `information.investigative-document` specializes `information.document`.
+"Define once" means one definition per concept *within a clear scope*. If a domain's meaning genuinely differs, create a separate block that `specializes` the general one. For example, `entity.investigative-document` specializes `entity.document`.
 
 ---
 
@@ -230,7 +232,7 @@ Copy [`templates/mission.md`](templates/mission.md) to `_missions/<slug>.md` and
 | `lifecycle` | no | A list of `{id, title, summary}` stages. Present them as illustrative. |
 | `lifecycle_note` | no | Replaces the default "these stages are illustrative" note. |
 | `roles` | no | A list of `{name, description}`. |
-| `use_cases` | no | A list of `{title, description}`. |
+| `experience_ideas` | no | A list of `{title, description}`: experiences someone could build for this mission. They're suggestions, not building blocks. |
 
 Each component:
 
@@ -242,7 +244,7 @@ components:
     notes: Optional extra mission-specific detail.
 ```
 
-The page shows each block's canonical title, type, and summary from the block record, alongside this mission's `purpose`. It groups blocks by type and by lifecycle stage, and notes which other missions also use each block.
+The page shows each block's title, type, and summary from the block's own record, alongside this mission's `purpose`. Blocks appear in the lifecycle by stage, and in a stack arranged by what relies on what: roles at the top, then experiences (with any experience ideas), processes, capabilities, and entities, followed by governance and then patterns. The stack is defined by `mission_layout` in `_data/block_types.yml`.
 
 List a block once. If it really plays different parts at different stages, list it once per stage, each with a distinct `stage`. The validator rejects other duplicates.
 
@@ -271,7 +273,7 @@ Block pages and the vocabulary page pick it up automatically. Add relationship t
 
 ## Other registries
 
-- **Block types:** add an entry under `types` in `_data/block_types.yml`, and add the type to exactly one entry under `groups`. Add colors for `.type-<name>` in `assets/css/site.css` if you want a distinct color; otherwise it falls back to neutral.
+- **Block types:** add an entry under `types` in `_data/block_types.yml`, add the type to exactly one entry under `groups`, and place it once in `mission_layout` (in `stack`, `cross_cutting`, or `applied`). Add colors for `.type-<name>` in `assets/css/site.css` if you want a distinct color; otherwise it falls back to neutral.
 - **Domains:** add an entry to `_data/domains.yml` before using it.
 - **Statuses and scopes:** `_data/statuses.yml` and `_data/scopes.yml`. Templates style `planned`, `draft`, and `published`, so change these rarely.
 
@@ -292,7 +294,7 @@ The validator checks these IDs too. A broken one also shows a visible "Unresolve
 
 ## Implementation Guides
 
-Implementation Guides describe how a specific technology realizes logical blocks. They're kept separate so the logical model stays vendor-neutral.
+Implementation Guides describe how a specific technology realizes logical blocks. They're kept separate so the logical architecture doesn't depend on any one technology.
 
 Copy [`templates/implementation.md`](templates/implementation.md) to `_implementations/<slug>.md`. A guide lists the blocks it realizes with `realizes` relationships. Those blocks then link to the guide automatically. Blocks never reference guides.
 
@@ -316,7 +318,7 @@ Version 0.1 has no guides on purpose. The structure is in place for when they're
 It also warns about unknown fields, which usually means a typo, and suggests the closest match:
 
 ```text
-ERROR    _blocks/capability.case-management.md: relationship #1: (manages -> information.cas) targets ID 'information.cas', which does not exist. Create the block (a 'planned' stub is fine) or fix the ID. Did you mean 'information.case'?
+ERROR    _blocks/capability.case-management.md: relationship #1: (manages -> entity.cas) targets ID 'entity.cas', which does not exist. Create the block (a 'planned' stub is fine) or fix the ID. Did you mean 'entity.case'?
 
 FAILED: checked 12 blocks, 2 missions, 0 implementation guides; 1 error(s), 0 warning(s).
 ```
@@ -344,7 +346,7 @@ This is fine for a library of hundreds of records. If builds become slow at a mu
 - Semantic landmarks, a skip link, visible focus states, `aria-current` navigation, and labeled filter controls.
 - Every page works without JavaScript. The script only adds the type and text filter on the Building Blocks index and "Copy" buttons for IDs.
 - Responsive from phone to wide desktop, with no horizontal page scrolling.
-- The conceptual model diagram is HTML and CSS, so it stays crisp and readable by screen readers.
+- The architecture diagram is HTML and CSS, so it stays crisp and readable by screen readers.
 
 ---
 
@@ -352,7 +354,7 @@ This is fine for a library of hundreds of records. If builds become slow at a mu
 
 Deliberately **not** included: an interactive graph explorer, a database or CMS, an ontology or inference engine, advanced search, AI generation, authentication, collaborative authoring, a comprehensive catalog, vendor-specific architectures, or a large design system.
 
-The focus is clear content structure, typed references, validation, and good navigation. The library is meant to grow from any starting point: a mission, a capability, an information concept, a governance concern, or a pattern.
+The focus is clear content structure, typed references, validation, and good navigation. The library is meant to grow from any starting point: a mission, a capability, an entity, a governance concern, or a pattern.
 
 ---
 

@@ -19,11 +19,12 @@ roles:
   - name: Example role
     description: What this role does in the mission.
 
-use_cases:
-  - title: Example use case
-    description: What someone needs to get done.
+# Experiences someone could build for this mission. Suggestions, not building blocks.
+experience_ideas:
+  - title: Example experience
+    description: What it would let people or agents do.
 
-# Each component references a canonical building block by ID.
+# Each component references a building block by ID.
 # `purpose` says what the block does in THIS mission. `stage` is optional.
 # List a block twice only when it plays a different part at different stages.
 components:

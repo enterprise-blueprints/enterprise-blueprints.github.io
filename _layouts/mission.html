@@ -4,10 +4,10 @@ layout: default
 {%- comment -%}
   Mission Blueprint page.
 
-  A mission references canonical building blocks by ID through `components`.
+  A mission references building blocks by ID through `components`.
   Each component's `purpose` and `stage` describe its part in this mission
-  only. Block titles, types, and summaries always come from the canonical
-  block record, never from the mission.
+  only. Block titles, types, and summaries always come from the block's
+  own record, never from the mission.
 {%- endcomment -%}
 {%- assign mission_id = "mission." | append: page.slug -%}
 {%- assign components = page.components -%}
@@ -89,7 +89,7 @@ layout: default
           {%- endfor -%}
         {%- endcapture -%}
         {%- if cross_stage != "" %}
-        <div class="lifecycle__across">
+        <div class="lifecycle__across" id="stage-all">
           <p class="lifecycle__across-title">Across every stage</p>
           <ul class="lifecycle__blocks">{{ cross_stage }}
           </ul>
@@ -98,80 +98,103 @@ layout: default
       </section>
       {%- endif %}
 
-      {%- if page.roles.size > 0 or page.use_cases.size > 0 %}
-      <section class="section" id="roles-and-use-cases" aria-labelledby="roles-heading">
-        <h2 id="roles-heading">Key roles and use cases</h2>
-        <div class="two-up">
-          {%- if page.roles.size > 0 %}
-          <div>
-            <h3>Roles</h3>
-            <dl class="term-list">
-              {%- for role in page.roles %}
-              <div><dt>{{ role.name }}</dt>{% if role.description %}<dd>{{ role.description }}</dd>{% endif %}</div>
-              {%- endfor %}
-            </dl>
-          </div>
-          {%- endif %}
-          {%- if page.use_cases.size > 0 %}
-          <div>
-            <h3>Use cases</h3>
-            <dl class="term-list">
-              {%- for uc in page.use_cases %}
-              <div><dt>{{ uc.title }}</dt>{% if uc.description %}<dd>{{ uc.description }}</dd>{% endif %}</div>
-              {%- endfor %}
-            </dl>
-          </div>
-          {%- endif %}
-        </div>
-      </section>
-      {%- endif %}
-
       <section class="section" id="building-blocks" aria-labelledby="components-heading">
         <h2 id="components-heading">Building blocks in this blueprint</h2>
         {%- if components.size > 0 %}
-        <p class="section-note">Each entry links to the one canonical definition of that block. The purpose describes its part in <em>this</em> mission only.</p>
-        {%- for group in site.data.block_types.groups -%}
-          {%- capture group_rows -%}
-            {%- for c in components -%}
-              {%- assign cb = site.blocks | where: "slug", c.ref | first -%}
-              {%- if cb and group.types contains cb.type -%}
-                {%- assign stage = nil -%}
-                {%- if c.stage -%}{%- assign stage = lifecycle | where: "id", c.stage | first -%}{%- endif %}
-            <li class="component">
-              <div class="component__head">{% include block-ref.html id=c.ref %}{% if stage %} <a class="stage-chip" href="#stage-{{ stage.id }}">{{ stage.title }}</a>{% endif %}</div>
-              <p class="component__purpose"><span class="label">In this mission</span> {{ c.purpose }}</p>
-              {%- if c.notes %}
-              <p class="component__notes">{{ c.notes }}</p>
-              {%- endif %}
-              <p class="component__canonical"><span class="label">Canonical definition</span> {{ cb.summary }}</p>
-              {%- assign also_count = 0 -%}
-              {%- capture also_used -%}
-                {%- for m in site.missions -%}
-                  {%- if m.url != page.url -%}
-                    {%- assign other_hits = m.components | where: "ref", c.ref -%}
-                    {%- if other_hits.size > 0 -%}
-                      {%- if also_count > 0 %}, {% endif -%}
-                      <a href="{{ m.url | relative_url }}">{{ m.title }}</a>
-                      {%- assign also_count = also_count | plus: 1 -%}
-                    {%- endif -%}
-                  {%- endif -%}
-                {%- endfor -%}
-              {%- endcapture -%}
-              {%- if also_count > 0 %}
-              <p class="component__reuse"><span class="label">Also used in</span> {{ also_used }}</p>
+        <p class="section-note">Arranged top to bottom by what relies on what, followed by governance, which applies to every layer. Each block links to its full definition; the text on each card describes its part in this mission.</p>
+
+        {%- if page.roles.size > 0 %}
+        <div class="mission-roles" id="roles">
+          <h3 class="stack-label">Who's involved</h3>
+          <ul class="stack-cards">
+            {%- for role in page.roles %}
+            <li class="stack-card stack-card--role">
+              <p class="stack-card__name">{{ role.name }}</p>
+              {%- if role.description %}
+              <p class="stack-card__definition">{{ role.description }}</p>
               {%- endif %}
             </li>
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endcapture -%}
-          {%- if group_rows != "" %}
-        <div class="component-group">
-          <h3>{{ group.label }}</h3>
-          <ul class="component-list">{{ group_rows }}
+            {%- endfor %}
           </ul>
         </div>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- endif %}
+
+        {%- assign layout = site.data.block_types.mission_layout -%}
+        {%- assign ideas = page.experience_ideas -%}
+        <div class="mission-stack">
+            {%- for layer in layout.stack %}
+            {%- assign layer_def = site.data.block_types.types[layer.type] -%}
+            {%- capture layer_cards -%}
+              {%- for ref in unique_refs -%}
+                {%- assign cb = site.blocks | where: "slug", ref | first -%}
+                {%- if cb and cb.type == layer.type -%}{% include mission-component.html ref=ref block=cb %}{%- endif -%}
+              {%- endfor -%}
+            {%- endcapture -%}
+            {%- assign show_ideas = false -%}
+            {%- if layer.type == "experience" and ideas.size > 0 -%}{%- assign show_ideas = true -%}{%- endif %}
+            <section class="stack-layer type-{{ layer.type }}" aria-labelledby="layer-{{ layer.type }}">
+              <h3 class="stack-label" id="layer-{{ layer.type }}">{{ layer_def.plural }}</h3>
+              {%- if layer_cards != "" or show_ideas %}
+              <ul class="stack-cards">
+                {{- layer_cards -}}
+                {%- if show_ideas -%}
+                {%- for idea in ideas %}
+                <li class="stack-card stack-card--idea">
+                  <p class="stack-card__name">{{ idea.title }} <span class="status-badge status-idea" title="A suggested experience for this mission, not yet a building block">Idea</span></p>
+                  {%- if idea.description %}
+                  <p class="stack-card__definition">{{ idea.description }}</p>
+                  {%- endif %}
+                </li>
+                {%- endfor -%}
+                {%- endif %}
+              </ul>
+              {%- else %}
+              <p class="empty">None in this blueprint yet.</p>
+              {%- endif %}
+            </section>
+            {%- if layer.next %}
+            {%- assign next_rel = site.data.relationship_types[layer.next] %}
+            <div class="stack-connector" aria-hidden="true"><span>{{ next_rel.label | downcase }}</span></div>
+            {%- endif %}
+            {%- endfor %}
+        </div>
+
+        {%- assign cross_type = layout.cross_cutting | first -%}
+        {%- assign cross_group_id = site.data.block_types.types[cross_type].group -%}
+        {%- assign cross_group = site.data.block_types.groups | where: "id", cross_group_id | first -%}
+        {%- capture cross_cards -%}
+          {%- for ref in unique_refs -%}
+            {%- assign cb = site.blocks | where: "slug", ref | first -%}
+            {%- if cb and layout.cross_cutting contains cb.type -%}{% include mission-component.html ref=ref block=cb %}{%- endif -%}
+          {%- endfor -%}
+        {%- endcapture %}
+        <section class="mission-cross-cutting" aria-labelledby="layer-cross-cutting">
+          <h3 class="stack-label" id="layer-cross-cutting">{{ cross_group.label }}</h3>
+          <p class="mission-cross-cutting__note">Applies to every layer above.</p>
+          {%- if cross_cards != "" %}
+          <ul class="stack-cards">{{ cross_cards }}
+          </ul>
+          {%- else %}
+          <p class="empty">None in this blueprint yet.</p>
+          {%- endif %}
+        </section>
+
+        {%- capture applied_cards -%}
+          {%- for ref in unique_refs -%}
+            {%- assign cb = site.blocks | where: "slug", ref | first -%}
+            {%- if cb and layout.applied contains cb.type -%}{% include mission-component.html ref=ref block=cb %}{%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if applied_cards != "" %}
+        {%- assign applied_type = layout.applied | first -%}
+        {%- assign applied_def = site.data.block_types.types[applied_type] %}
+        <section class="mission-applied" aria-labelledby="layer-applied">
+          <h3 class="stack-label" id="layer-applied">{{ applied_def.plural }} applied</h3>
+          <ul class="stack-cards">{{ applied_cards }}
+          </ul>
+        </section>
+        {%- endif %}
+
         {%- capture unresolved -%}
           {%- for c in components -%}
             {%- assign cb = site.blocks | where: "slug", c.ref | first -%}

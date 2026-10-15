@@ -8,7 +8,7 @@ scope: shared
 domain: cross-cutting
 relationships:
   - type: manages
-    target: information.document
+    target: entity.document
 ---
 
 ## Definition
@@ -26,7 +26,7 @@ Document Management is the organization's ability to capture documents, keep the
 
 ## Boundaries
 
-Document Management handles documents in general. It doesn't decide *why* a document matters to a particular mission: an investigation treats a file as evidence, and a grants program treats it as part of an application. Those meanings belong to the mission composition, or to a specialized information block.
+Document Management handles documents in general. It doesn't decide *why* a document matters to a particular mission: an investigation treats a file as evidence, and a grants program treats it as part of an application. Those meanings belong to the mission composition, or to a specialized entity.
 
 ## Considerations
 

@@ -1,14 +1,14 @@
 ---
 layout: default
 title: Vocabulary
-permalink: /model/vocabulary/
-summary: The working vocabulary of the model, generated from the registries in the repository's _data folder.
+permalink: /architecture/vocabulary/
+summary: The building block types, relationship types, and statuses used across Enterprise Blueprints.
 ---
 {%- assign all_types = site.data.block_types.types -%}
 <div class="container">
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <ol>
-      <li><a href="{{ '/model/' | relative_url }}">The Model</a></li>
+      <li><a href="{{ '/architecture/' | relative_url }}">The Architecture</a></li>
       <li><span aria-current="page">{{ page.title }}</span></li>
     </ol>
   </nav>
@@ -41,7 +41,7 @@ summary: The working vocabulary of the model, generated from the registries in t
 
   <section class="section" aria-labelledby="relationships-heading">
     <h2 id="relationships-heading">Relationship types</h2>
-    <p class="section-note">A relationship is written once, on its source record. The site shows the inverse phrase on the target record automatically.</p>
+    <p class="section-note">Each relationship reads one way from the first block and the other way from the second. For example, Case Management <em>manages</em> Case, and Case is <em>managed by</em> Case Management.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th scope="col">Relationship</th><th scope="col">From</th><th scope="col">To</th><th scope="col">Shown on the target as</th><th scope="col">Meaning</th><th scope="col">Uses</th></tr></thead>

@@ -21,8 +21,8 @@ REPO = Path(__file__).resolve().parent.parent
 
 CASE = """\
 ---
-id: information.case
-type: information
+id: entity.case
+type: entity
 title: Case
 summary: A matter.
 status: published
@@ -43,7 +43,7 @@ scope: shared
 domain: cross-cutting
 relationships:
   - type: manages
-    target: information.case
+    target: entity.case
 ---
 A definition.
 """
@@ -72,7 +72,7 @@ class ValidatorTestCase(unittest.TestCase):
         shutil.copytree(REPO / "_data", self.root / "_data")
         for folder in ("_blocks", "_missions", "_implementations"):
             (self.root / folder).mkdir()
-        self.write("_blocks/information.case.md", CASE)
+        self.write("_blocks/entity.case.md", CASE)
         self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT)
         self.write("_missions/example.md", MISSION)
 
@@ -107,10 +107,10 @@ class ValidContent(ValidatorTestCase):
         self.assertEqual(self.errors(), "")
 
     def test_planned_stub_can_be_referenced(self):
-        self.write("_blocks/information.document.md", """\
+        self.write("_blocks/entity.document.md", """\
             ---
-            id: information.document
-            type: information
+            id: entity.document
+            type: entity
             title: Document
             summary: Recorded content.
             status: planned
@@ -118,40 +118,40 @@ class ValidContent(ValidatorTestCase):
             domain: cross-cutting
             ---
             """)
-        self.write("_blocks/information.case.md", CASE.replace(
+        self.write("_blocks/entity.case.md", CASE.replace(
             "domain: cross-cutting\n",
-            "domain: cross-cutting\nrelationships:\n  - type: references\n    target: information.document\n",
+            "domain: cross-cutting\nrelationships:\n  - type: references\n    target: entity.document\n",
         ))
         self.assertEqual(self.errors(), "")
 
 
 class IdentityErrors(ValidatorTestCase):
     def test_missing_id(self):
-        self.write("_blocks/information.case.md", CASE.replace("id: information.case\n", ""))
-        self.assertFails("information.case.md: missing required field 'id'")
+        self.write("_blocks/entity.case.md", CASE.replace("id: entity.case\n", ""))
+        self.assertFails("entity.case.md: missing required field 'id'")
 
     def test_duplicate_id(self):
         self.write("_missions/copy.md", MISSION.replace("mission.example", "capability.case-management"))
         self.assertFails("duplicate id 'capability.case-management'")
 
     def test_filename_must_match_id(self):
-        self.write("_blocks/information.case.md", CASE.replace("id: information.case", "id: information.matter"))
+        self.write("_blocks/entity.case.md", CASE.replace("id: entity.case", "id: entity.matter"))
         self.assertFails("does not match the filename")
 
     def test_id_prefix_must_match_type(self):
-        self.write("_blocks/information.case.md", CASE.replace("type: information", "type: capability"))
+        self.write("_blocks/entity.case.md", CASE.replace("type: entity", "type: capability"))
         self.assertFails("must start with its type: 'capability.'")
 
     def test_missing_required_field(self):
-        self.write("_blocks/information.case.md", CASE.replace("summary: A matter.\n", ""))
+        self.write("_blocks/entity.case.md", CASE.replace("summary: A matter.\n", ""))
         self.assertFails("missing required field 'summary'")
 
     def test_unknown_block_type(self):
-        self.write("_blocks/information.case.md", CASE.replace("type: information", "type: informaton"))
-        self.assertFails("unknown block type 'informaton'", "Did you mean 'information'?")
+        self.write("_blocks/entity.case.md", CASE.replace("type: entity", "type: entiy"))
+        self.assertFails("unknown block type 'entiy'", "Did you mean 'entity'?")
 
     def test_unknown_status(self):
-        self.write("_blocks/information.case.md", CASE.replace("status: published", "status: final"))
+        self.write("_blocks/entity.case.md", CASE.replace("status: published", "status: final"))
         self.assertFails("status 'final' is not defined")
 
 
@@ -161,21 +161,21 @@ class RelationshipErrors(ValidatorTestCase):
         self.assertFails("unknown relationship type 'related_to'")
 
     def test_reference_to_missing_id(self):
-        self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT.replace("target: information.case", "target: information.cas"))
-        self.assertFails("targets ID 'information.cas', which does not exist", "Did you mean 'information.case'?")
+        self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT.replace("target: entity.case", "target: entity.cas"))
+        self.assertFails("targets ID 'entity.cas', which does not exist", "Did you mean 'entity.case'?")
 
     def test_invalid_source_type(self):
         # `manages` is only allowed from a capability, not from a process.
         self.write("_blocks/process.example.md", CASE_MANAGEMENT
                    .replace("capability.case-management", "process.example")
                    .replace("type: capability", "type: process"))
-        self.assertFails("(manages -> information.case) is not allowed from type 'process'")
+        self.assertFails("(manages -> entity.case) is not allowed from type 'process'")
 
     def test_invalid_target_type(self):
-        # `manages` must target information, not a capability.
+        # `manages` must target an entity, not a capability.
         self.write("_blocks/capability.other.md", CASE_MANAGEMENT
                    .replace("capability.case-management", "capability.other")
-                   .replace("target: information.case", "target: capability.case-management"))
+                   .replace("target: entity.case", "target: capability.case-management"))
         self.assertFails("cannot target type 'capability'")
 
     def test_same_type_rule(self):
@@ -183,13 +183,13 @@ class RelationshipErrors(ValidatorTestCase):
         self.assertFails("must connect two records of the same type")
 
     def test_relationship_missing_target(self):
-        self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT.replace("    target: information.case\n", ""))
+        self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT.replace("    target: entity.case\n", ""))
         self.assertFails("(manages) is missing 'target'")
 
     def test_duplicate_relationship(self):
         text = CASE_MANAGEMENT.replace(
-            "    target: information.case\n",
-            "    target: information.case\n  - type: manages\n    target: information.case\n",
+            "    target: entity.case\n",
+            "    target: entity.case\n  - type: manages\n    target: entity.case\n",
         )
         self.write("_blocks/capability.case-management.md", text)
         self.assertFails("is listed more than once")
@@ -225,9 +225,38 @@ class MissionErrors(ValidatorTestCase):
         ))
         self.assertEqual(self.errors(), "")
 
+    def test_experience_idea_needs_a_title(self):
+        self.write("_missions/example.md", MISSION.replace(
+            "components:\n",
+            "experience_ideas:\n  - description: An idea with no name.\ncomponents:\n",
+        ))
+        self.assertFails("experience_ideas #1 needs a 'title'")
+
+    def test_retired_use_cases_field_is_flagged(self):
+        self.write("_missions/example.md", MISSION.replace(
+            "components:\n",
+            "use_cases:\n  - title: Old field\ncomponents:\n",
+        ))
+        warnings = "\n".join(validate_content.validate(self.root).warnings)
+        self.assertIn("unknown field 'use_cases'", warnings)
+
     def test_inline_reference_to_missing_id(self):
         self.write("_missions/example.md", MISSION + '\nSee {% include ref.html id="capability.nothing" %}.\n')
         self.assertFails("inline ref.html link points to ID 'capability.nothing'")
+
+
+class RegistryErrors(ValidatorTestCase):
+    def test_every_type_must_be_placed_in_mission_layout(self):
+        path = self.root / "_data/block_types.yml"
+        text = path.read_text(encoding="utf-8")
+        path.write_text(text.replace("  applied: [pattern]\n", "  applied: []\n"), encoding="utf-8")
+        self.assertFails("type 'pattern' is missing from mission_layout")
+
+    def test_mission_layout_connector_must_be_a_known_relationship(self):
+        path = self.root / "_data/block_types.yml"
+        text = path.read_text(encoding="utf-8")
+        path.write_text(text.replace("      next: supports\n", "      next: helps\n"), encoding="utf-8")
+        self.assertFails("uses unknown relationship 'helps'")
 
 
 class ImplementationRules(ValidatorTestCase):

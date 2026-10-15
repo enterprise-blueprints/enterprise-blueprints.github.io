@@ -40,7 +40,7 @@ MISSION_OPTIONAL = [
     "lifecycle",
     "lifecycle_note",
     "roles",
-    "use_cases",
+    "experience_ideas",
     "layout",
 ]
 
@@ -51,7 +51,7 @@ RELATIONSHIP_KEYS = {"type", "target", "note"}
 COMPONENT_KEYS = {"ref", "purpose", "stage", "notes"}
 STAGE_KEYS = {"id", "title", "summary"}
 ROLE_KEYS = {"name", "description"}
-USE_CASE_KEYS = {"title", "description"}
+EXPERIENCE_IDEA_KEYS = {"title", "description"}
 
 # Keys that would break ID-based linking or stable URLs if authors set them.
 FORBIDDEN_KEYS = {
@@ -220,6 +220,8 @@ def load_registries(root: Path, report: Report) -> Registries | None:
                         + suggest(type_name, endpoint_kinds),
                     )
 
+    check_mission_layout(block_types_file.get("mission_layout"), types, relationship_types, report)
+
     for file_name, registry in (("statuses", statuses), ("scopes", scopes), ("domains", domains)):
         if not isinstance(registry, dict) or not registry:
             report.error(f"_data/{file_name}.yml", "must be a non-empty mapping.")
@@ -227,6 +229,38 @@ def load_registries(root: Path, report: Report) -> Registries | None:
     if report.errors:
         return None
     return Registries(types, groups, relationship_types, statuses, scopes, domains)
+
+
+def check_mission_layout(layout, types: dict, relationship_types: dict, report: Report) -> None:
+    """Every block type must have exactly one place on a Mission Blueprint page."""
+    where = "_data/block_types.yml"
+    if not isinstance(layout, dict):
+        report.error(where, "must contain a 'mission_layout' mapping with 'stack', 'cross_cutting', and 'applied'.")
+        return
+    placed = []
+    stack = layout.get("stack") or []
+    for index, layer in enumerate(stack):
+        type_name = (layer or {}).get("type")
+        placed.append(type_name)
+        rel = (layer or {}).get("next")
+        if rel is not None and rel not in relationship_types:
+            report.error(where, f"mission_layout stack layer '{type_name}' uses unknown relationship '{rel}'.")
+        if rel is None and index < len(stack) - 1:
+            report.error(where, f"mission_layout stack layer '{type_name}' needs 'next' (the relationship to the layer below).")
+    for key in ("cross_cutting", "applied"):
+        placed.extend(layout.get(key) or [])
+    for type_name in placed:
+        if type_name not in types:
+            report.error(where, f"mission_layout places unknown type '{type_name}'." + suggest(type_name, types))
+    for type_name in types:
+        count = placed.count(type_name)
+        if count != 1:
+            problem = "is missing from" if count == 0 else "appears more than once in"
+            report.error(
+                where,
+                f"type '{type_name}' {problem} mission_layout, so its blocks "
+                "would not show correctly on Mission Blueprint pages.",
+            )
 
 
 # --------------------------------------------------------------------------
@@ -421,7 +455,7 @@ def check_mission(
 
     for key, allowed_keys, required in (
         ("roles", ROLE_KEYS, "name"),
-        ("use_cases", USE_CASE_KEYS, "title"),
+        ("experience_ideas", EXPERIENCE_IDEA_KEYS, "title"),
     ):
         entries = data.get(key)
         if entries is None:

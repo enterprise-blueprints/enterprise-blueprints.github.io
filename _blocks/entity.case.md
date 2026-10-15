@@ -1,6 +1,6 @@
 ---
-id: information.case
-type: information
+id: entity.case
+type: entity
 title: Case
 summary: A matter the organization tracks from the moment it is opened until it is resolved and closed.
 status: published
@@ -8,7 +8,7 @@ scope: shared
 domain: cross-cutting
 relationships:
   - type: references
-    target: information.document
+    target: entity.document
     note: A case refers to the documents that record and support it.
   - type: constrained_by
     target: policy.restricted-case-access
@@ -24,12 +24,12 @@ Without a shared concept of a case, each application keeps its own partial recor
 
 ## Core information
 
-- A stable case identifier.
+- A permanent case identifier.
 - A case type or category, which determines how the case is handled.
 - Status and key dates, such as opened, last updated, and closed.
 - Accountable owner and assigned participants.
 - Parties or subjects involved, where relevant.
-- References to related documents and, where modeled, other cases.
+- References to related documents and, where relevant, other cases.
 - A sensitivity or access classification.
 
 ## Boundaries
@@ -38,4 +38,4 @@ A case is the matter itself, not the work steps performed on it. The sequence of
 
 ## Specialization
 
-Domains often need more specific meaning. An investigative case, for example, carries allegations, subjects, and findings that a general case does not. Model such differences as separate blocks that *specialize* this one, rather than adding domain-specific fields here.
+Domains often need more specific meaning. An investigative case, for example, carries allegations, subjects, and findings that a general case does not. Define such differences as separate blocks that *specialize* this one, rather than adding domain-specific fields here.

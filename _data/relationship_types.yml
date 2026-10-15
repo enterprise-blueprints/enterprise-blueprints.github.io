@@ -1,7 +1,7 @@
 # Relationship type registry (v0.1 working vocabulary)
 #
 # Relationships are typed, directional references from one record to another
-# record's stable ID. Only the source record declares the relationship; the
+# record's permanent ID. Only the source record declares the relationship; the
 # site generates the reverse ("inverse") view automatically.
 #
 # Fields
@@ -22,8 +22,8 @@ manages:
   label: Manages
   inverse_label: Managed by
   sources: [capability]
-  targets: [information]
-  description: The capability manages a logical information concept.
+  targets: [entity]
+  description: The capability manages the entity.
 
 uses:
   label: Uses
@@ -49,7 +49,7 @@ provides_access_to:
 constrained_by:
   label: Constrained by
   inverse_label: Constrains
-  sources: [information, capability, process, experience]
+  sources: [entity, capability, process, experience]
   targets: [policy]
   description: The policy is an applicable requirement or restriction.
 
@@ -72,9 +72,9 @@ depends_on:
 references:
   label: References
   inverse_label: Referenced by
-  sources: [information]
-  targets: [information]
-  description: A modeled association between information concepts.
+  sources: [entity]
+  targets: [entity]
+  description: A defined association between entities.
 
 part_of:
   label: Part of
@@ -98,14 +98,14 @@ applies_to:
   label: Applies to
   inverse_label: Guided by
   sources: [pattern]
-  targets: [information, capability, process, experience, control]
+  targets: [entity, capability, process, experience, control]
   description: The pattern is applicable reusable guidance for the target.
 
 realizes:
   label: Realizes
   inverse_label: Realized by
   sources: [implementation]
-  targets: [information, capability, process, experience, control]
+  targets: [entity, capability, process, experience, control]
   reserved: true
   description: >-
     An Implementation Guide describes how a specific technology realizes a

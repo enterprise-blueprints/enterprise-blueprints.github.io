@@ -1,6 +1,6 @@
 ---
-id: information.document
-type: information
+id: entity.document
+type: entity
 title: Document
 summary: A unit of recorded content, with the metadata needed to find, trust, and retain it.
 status: published
@@ -28,4 +28,4 @@ Documents are often the evidence that a decision was made properly. When each ap
 
 ## Boundaries
 
-This block describes the information concept, not the system that stores it. Storing, versioning, and retaining documents is the job of {% include ref.html id="capability.document-management" %}. Domain-specific kinds of document, such as investigative evidence, are modeled as specializations.
+This block describes the entity, not the system that stores it. Storing, versioning, and retaining documents is the job of {% include ref.html id="capability.document-management" %}. Domain-specific kinds of document, such as investigative evidence, are defined as specializations.

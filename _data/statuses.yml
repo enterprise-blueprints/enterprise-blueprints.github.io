@@ -3,8 +3,8 @@
 planned:
   label: Planned
   description: >-
-    A stub that reserves the ID and its place in the model. The definition has
-    not been written yet, but other records can already reference it.
+    A placeholder that holds a concept's place in the library. The definition
+    hasn't been written yet, but other blocks and missions can already link to it.
 draft:
   label: Draft
   description: Written and usable, but still being reviewed and refined.

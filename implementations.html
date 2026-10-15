@@ -2,7 +2,7 @@
 layout: default
 title: Implementation Guides
 permalink: /implementations/
-summary: Optional, technology-specific realizations of logical building blocks, kept strictly separate from the canonical definitions.
+summary: Optional, technology-specific realizations of logical building blocks, kept separate from the building block definitions.
 ---
 {%- assign guides = site.implementations | sort: "title" -%}
 <div class="container container--narrow">
@@ -12,7 +12,7 @@ summary: Optional, technology-specific realizations of logical building blocks, 
   </header>
 
   <div class="prose">
-    <p>Building blocks describe <em>what</em> the enterprise needs in vendor-neutral terms. An Implementation Guide describes <em>how</em> a particular technology or product can realize one or more of those blocks. Guides point at the blocks they realize. Blocks never depend on a guide, so a logical definition stays the same no matter how many ways it's implemented.</p>
+    <p>Building blocks describe <em>what</em> the enterprise needs. An Implementation Guide describes <em>how</em> a particular technology or product can realize one or more of those blocks. Guides point at the blocks they realize. Blocks never depend on a guide, so a logical definition stays the same no matter how many ways it's implemented.</p>
   </div>
 
   {%- if guides.size > 0 %}
@@ -29,7 +29,7 @@ summary: Optional, technology-specific realizations of logical building blocks, 
   </ul>
   {%- else %}
   <div class="notice" role="note">
-    <p><strong>No implementation guides yet.</strong> Version 0.1 focuses on the logical model. The structure for guides is ready: each guide is a Markdown file in <code>_implementations/</code> that lists the blocks it realizes with the <a href="{{ '/model/vocabulary/' | relative_url }}#rel-realizes"><code>realizes</code></a> relationship.</p>
+    <p><strong>No implementation guides yet.</strong> Version 0.1 focuses on the logical architecture. When guides are added, each one will link to the building blocks it realizes, and those blocks will link back to it.</p>
   </div>
   {%- endif %}
 </div>
