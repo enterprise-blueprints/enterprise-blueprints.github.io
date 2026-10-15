@@ -1,0 +1,226 @@
+---
+layout: default
+---
+{%- comment -%}
+  Mission Blueprint page.
+
+  A mission references canonical building blocks by ID through `components`.
+  Each component's `purpose` and `stage` describe its part in this mission
+  only. Block titles, types, and summaries always come from the canonical
+  block record, never from the mission.
+{%- endcomment -%}
+{%- assign mission_id = "mission." | append: page.slug -%}
+{%- assign components = page.components -%}
+{%- assign unique_refs = components | map: "ref" | uniq -%}
+{%- assign lifecycle = page.lifecycle -%}
+
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ '/missions/' | relative_url }}">Mission Blueprints</a></li>
+      <li><span aria-current="page">{{ page.title }}</span></li>
+    </ol>
+  </nav>
+
+  <header class="record-header record-header--mission">
+    <div class="record-header__meta">
+      <span class="kind-badge">Mission Blueprint</span>
+      {% include status-badge.html status=page.status %}
+    </div>
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }}</p>
+  </header>
+
+  <div class="record-layout">
+    <article class="record-main">
+      {%- if page.status == "planned" %}
+      <div class="notice notice--planned" role="note">
+        <p><strong>Planned Mission Blueprint.</strong> This mission has a place in the library, but its composition hasn't been written yet.</p>
+      </div>
+      {%- endif %}
+
+      {%- if page.outcomes and page.outcomes.size > 0 %}
+      <section class="section section--first" id="outcomes" aria-labelledby="outcomes-heading">
+        <h2 id="outcomes-heading">Mission outcomes</h2>
+        <ul class="outcomes">
+          {%- for outcome in page.outcomes %}
+          <li>{{ outcome }}</li>
+          {%- endfor %}
+        </ul>
+      </section>
+      {%- endif %}
+
+      {%- assign body = content | strip -%}
+      {%- if body != "" %}
+      <div class="prose">
+{{ content }}
+      </div>
+      {%- endif %}
+
+      {%- if lifecycle.size > 0 %}
+      <section class="section" id="lifecycle" aria-labelledby="lifecycle-heading">
+        <h2 id="lifecycle-heading">Illustrative lifecycle</h2>
+        <p class="section-note">{{ page.lifecycle_note | default: "These stages illustrate one common way to organize this mission. They are not a universal or mandated process." }}</p>
+        <ol class="lifecycle">
+          {%- for stage in lifecycle %}
+          {%- assign stage_components = components | where: "stage", stage.id %}
+          <li class="lifecycle__stage" id="stage-{{ stage.id }}">
+            <div class="lifecycle__text">
+              <p class="lifecycle__title"><span class="lifecycle__number" aria-hidden="true">{{ forloop.index }}</span>{{ stage.title }}</p>
+              {%- if stage.summary %}
+              <p class="lifecycle__summary">{{ stage.summary }}</p>
+              {%- endif %}
+            </div>
+            {%- if stage_components.size > 0 %}
+            <ul class="lifecycle__blocks">
+              {%- for c in stage_components %}
+              <li>{% include block-ref.html id=c.ref %}</li>
+              {%- endfor %}
+            </ul>
+            {%- endif %}
+          </li>
+          {%- endfor %}
+        </ol>
+        {%- capture cross_stage -%}
+          {%- for c in components -%}
+            {%- unless c.stage %}
+          <li>{% include block-ref.html id=c.ref %}</li>
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if cross_stage != "" %}
+        <div class="lifecycle__across">
+          <p class="lifecycle__across-title">Across every stage</p>
+          <ul class="lifecycle__blocks">{{ cross_stage }}
+          </ul>
+        </div>
+        {%- endif %}
+      </section>
+      {%- endif %}
+
+      {%- if page.roles.size > 0 or page.use_cases.size > 0 %}
+      <section class="section" id="roles-and-use-cases" aria-labelledby="roles-heading">
+        <h2 id="roles-heading">Key roles and use cases</h2>
+        <div class="two-up">
+          {%- if page.roles.size > 0 %}
+          <div>
+            <h3>Roles</h3>
+            <dl class="term-list">
+              {%- for role in page.roles %}
+              <div><dt>{{ role.name }}</dt>{% if role.description %}<dd>{{ role.description }}</dd>{% endif %}</div>
+              {%- endfor %}
+            </dl>
+          </div>
+          {%- endif %}
+          {%- if page.use_cases.size > 0 %}
+          <div>
+            <h3>Use cases</h3>
+            <dl class="term-list">
+              {%- for uc in page.use_cases %}
+              <div><dt>{{ uc.title }}</dt>{% if uc.description %}<dd>{{ uc.description }}</dd>{% endif %}</div>
+              {%- endfor %}
+            </dl>
+          </div>
+          {%- endif %}
+        </div>
+      </section>
+      {%- endif %}
+
+      <section class="section" id="building-blocks" aria-labelledby="components-heading">
+        <h2 id="components-heading">Building blocks in this blueprint</h2>
+        {%- if components.size > 0 %}
+        <p class="section-note">Each entry links to the one canonical definition of that block. The purpose describes its part in <em>this</em> mission only.</p>
+        {%- for group in site.data.block_types.groups -%}
+          {%- capture group_rows -%}
+            {%- for c in components -%}
+              {%- assign cb = site.blocks | where: "slug", c.ref | first -%}
+              {%- if cb and group.types contains cb.type -%}
+                {%- assign stage = nil -%}
+                {%- if c.stage -%}{%- assign stage = lifecycle | where: "id", c.stage | first -%}{%- endif %}
+            <li class="component">
+              <div class="component__head">{% include block-ref.html id=c.ref %}{% if stage %} <a class="stage-chip" href="#stage-{{ stage.id }}">{{ stage.title }}</a>{% endif %}</div>
+              <p class="component__purpose"><span class="label">In this mission</span> {{ c.purpose }}</p>
+              {%- if c.notes %}
+              <p class="component__notes">{{ c.notes }}</p>
+              {%- endif %}
+              <p class="component__canonical"><span class="label">Canonical definition</span> {{ cb.summary }}</p>
+              {%- assign also_count = 0 -%}
+              {%- capture also_used -%}
+                {%- for m in site.missions -%}
+                  {%- if m.url != page.url -%}
+                    {%- assign other_hits = m.components | where: "ref", c.ref -%}
+                    {%- if other_hits.size > 0 -%}
+                      {%- if also_count > 0 %}, {% endif -%}
+                      <a href="{{ m.url | relative_url }}">{{ m.title }}</a>
+                      {%- assign also_count = also_count | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endcapture -%}
+              {%- if also_count > 0 %}
+              <p class="component__reuse"><span class="label">Also used in</span> {{ also_used }}</p>
+              {%- endif %}
+            </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if group_rows != "" %}
+        <div class="component-group">
+          <h3>{{ group.label }}</h3>
+          <ul class="component-list">{{ group_rows }}
+          </ul>
+        </div>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- capture unresolved -%}
+          {%- for c in components -%}
+            {%- assign cb = site.blocks | where: "slug", c.ref | first -%}
+            {%- unless cb %}
+            <li class="component">{% include block-ref.html id=c.ref %}<p class="component__purpose">{{ c.purpose }}</p></li>
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if unresolved != "" %}
+        <div class="component-group component-group--missing">
+          <h3>Unresolved references</h3>
+          <ul class="component-list">{{ unresolved }}
+          </ul>
+        </div>
+        {%- endif %}
+        {%- else %}
+        <p class="empty">This mission doesn't reference any building blocks yet.</p>
+        {%- endif %}
+      </section>
+    </article>
+
+    <aside class="record-aside" aria-label="Mission details">
+      <dl class="facts">
+        <div>
+          <dt>ID</dt>
+          <dd><code class="copyable" data-copy="{{ mission_id }}">{{ mission_id }}</code></dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{{ site.data.statuses[page.status].label | default: page.status }}</dd>
+        </div>
+        {%- if page.domains.size > 0 %}
+        <div>
+          <dt>Domains</dt>
+          <dd>{% for d in page.domains %}{{ site.data.domains[d].label | default: d }}{% unless forloop.last %}, {% endunless %}{% endfor %}</dd>
+        </div>
+        {%- endif %}
+        <div>
+          <dt>Building blocks</dt>
+          <dd><a href="#building-blocks">{{ unique_refs.size }} referenced</a></dd>
+        </div>
+        {%- if lifecycle.size > 0 %}
+        <div>
+          <dt>Lifecycle</dt>
+          <dd><a href="#lifecycle">{{ lifecycle.size }} illustrative stages</a></dd>
+        </div>
+        {%- endif %}
+      </dl>
+      {% include edit-link.html %}
+    </aside>
+  </div>
+</div>

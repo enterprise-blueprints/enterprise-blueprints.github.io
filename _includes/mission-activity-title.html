@@ -1,7 +1,0 @@
-{%- comment -%}
-Outputs an activity's title from a mission's activity index. Usage:
-{% include mission-activity-title.html id=activity_id entries=activity_entries %}
-{%- endcomment -%}
-{%- assign title = include.id -%}
-{%- for e in include.entries -%}{%- assign kv = e | split: "::" -%}{%- if kv[0] == include.id -%}{%- assign title = kv[1] -%}{%- break -%}{%- endif -%}{%- endfor -%}
-{{- title | escape -}}

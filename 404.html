@@ -1,6 +1,15 @@
 ---
-layout: article
+layout: default
 title: Page not found
 permalink: /404.html
 ---
-<h1>We couldn’t find that page.</h1><p>The library is still growing. Start at the <a href="{{ '/' | relative_url }}">home page</a> or <a href="{{ '/foundations/' | relative_url }}">browse the foundations</a>.</p>
+<div class="container container--narrow">
+  <header class="page-header">
+    <h1>Page not found</h1>
+    <p class="lede">That page doesn't exist, or it may have moved.</p>
+  </header>
+  <p class="hero__actions">
+    <a class="button button--primary" href="{{ '/' | relative_url }}">Go to the homepage</a>
+    <a class="button" href="{{ '/blocks/' | relative_url }}">Browse building blocks</a>
+  </p>
+</div>

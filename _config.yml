@@ -1,109 +1,65 @@
+# Enterprise Blueprints — site configuration
+#
+# `baseurl` stays empty here. GitHub Actions passes the correct base path for
+# the repository (for example "/my-repo" on a project site) at build time, and
+# every template uses Jekyll's `relative_url` filter, so the same source works
+# on a project site and on a root user/organization site.
+
 title: Enterprise Blueprints
-description: Open architecture for the AI-native enterprise
-url: "https://enterprise-blueprints.github.io"
+tagline: Build Experiences. Share Capabilities.
+description: >-
+  An open, vendor-neutral reference library for designing the AI-native
+  enterprise: canonical building blocks composed into mission blueprints.
+url: ""
 baseurl: ""
-repository_url: "https://github.com/enterprise-blueprints/enterprise-blueprints.github.io"
+
+# Optional. Set to the repository's GitHub URL (for example
+# "https://github.com/OWNER/REPO") to show "Edit this page" links.
+repository_url: ""
+# Branch used for "Edit this page" links.
+repository_branch: main
+
 markdown: kramdown
-highlighter: rouge
 kramdown:
   input: GFM
+  hard_wrap: false
+  auto_ids: true
   syntax_highlighter: rouge
-plugins:
-  - jekyll-relative-links
-  - jekyll-optional-front-matter
-relative_links:
-  enabled: true
-  collections: false
+
+collections:
+  blocks:
+    output: true
+    permalink: /blocks/:name/
+  missions:
+    output: true
+    permalink: /missions/:name/
+  implementations:
+    output: true
+    permalink: /implementations/:name/
+
+defaults:
+  - scope: { path: "", type: pages }
+    values: { layout: page }
+  - scope: { path: "", type: blocks }
+    values: { layout: block }
+  - scope: { path: "", type: missions }
+    values: { layout: mission }
+  - scope: { path: "", type: implementations }
+    values: { layout: implementation }
+
 exclude:
-  - brand_kit
+  - README.md
+  - CONTRIBUTING.md
+  - LICENSING.md
+  - LICENSE-MIT.txt
+  - LICENSE-CC-BY-4.0.txt
+  - enterprise-blueprints-greenfield-scaffold.md
   - Gemfile
   - Gemfile.lock
-  - README.md
-  - AUTHORING.md
-  - structure.md
-  - SITE.md
-  - templates
-  - vendor
-  - .preview
-  - assets/diagrams/README.md
-defaults:
-  - scope:
-      path: ""
-      type: pages
-    values:
-      layout: article
-  - scope:
-      path: "foundations"
-    values:
-      section: "foundations"
-      artifact: true
-  - scope:
-      path: "reference-architecture"
-    values:
-      section: "reference-architecture"
-      artifact: true
-  - scope:
-      path: "use-cases"
-    values:
-      section: "use-cases"
-      artifact: true
-  - scope:
-      path: "missions"
-    values:
-      section: "missions"
-      artifact: true
-  - scope:
-      path: "entities"
-    values:
-      section: "entities"
-      artifact: true
-  - scope:
-      path: "capabilities"
-    values:
-      section: "capabilities"
-      artifact: true
-  - scope:
-      path: "patterns"
-    values:
-      section: "patterns"
-      artifact: true
-  - scope:
-      path: "policies"
-    values:
-      section: "policies"
-      artifact: true
-  - scope:
-      path: "blueprints"
-    values:
-      section: "blueprints"
-      artifact: true
-  - scope:
-      path: "implementations"
-    values:
-      section: "implementations"
-      artifact: true
-  - scope:
-      path: "decisions"
-    values:
-      section: "decisions"
-      artifact: true
-  - scope:
-      path: charter
-    values:
-      section: about
-  - scope:
-      path: charter/project-charter-v0.4.md
-    values:
-      title: "Project Charter v0.4"
-  - scope:
-      path: charter/project-charter-v0.5.md
-    values:
-      title: "Project Charter v0.5"
-  - scope:
-      path: charter/project-charter-v0.3.md
-    values:
-      title: "Project Charter v0.3"
-  - scope:
-      path: LICENSING.md
-    values:
-      title: "Licensing and Attribution"
+  - requirements-dev.txt
+  - scripts/
+  - templates/
+  - vendor/
+  - .bundle/
+  - .github/
+  - .venv/

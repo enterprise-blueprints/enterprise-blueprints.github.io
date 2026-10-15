@@ -1,27 +1,41 @@
 ---
-id: "mission:replace-with-slug"
-title: "Replace with title"
-type: "mission"
-status: "draft"
-summary: "Replace with a one-sentence summary."
-related: []
-mission: "replace-with-slug"
+# Copy to _missions/<slug>.md. The id must be "mission." + the filename.
+id: mission.example
+title: Example Mission
+summary: An outcome-oriented sentence about what the mission achieves.
+status: draft               # planned | draft | published
+domains: [cross-cutting]    # keys from _data/domains.yml
+
+outcomes:
+  - A short sentence describing one outcome.
+
+lifecycle_note: Optional. Explains that the stages are illustrative.
+lifecycle:
+  - id: first-stage         # lowercase words joined by hyphens
+    title: First stage
+    summary: What happens in this stage.
+
+roles:
+  - name: Example role
+    description: What this role does in the mission.
+
+use_cases:
+  - title: Example use case
+    description: What someone needs to get done.
+
+# Each component references a canonical building block by ID.
+# `purpose` says what the block does in THIS mission. `stage` is optional.
+# List a block twice only when it plays a different part at different stages.
+components:
+  - ref: capability.document-management
+    purpose: What this block does for this mission.
+    stage: first-stage
 ---
-
-# Replace with title
-
-<!-- Replace metadata and prompts before publication. The model itself lives in _data/missions/<slug>.yml; start it from templates/mission.yml. -->
 
 ## Overview
 
-<!-- Describe the mission in plain language: who carries it out, what starts the work, and what public value it creates. Explain how architects use the model in discovery. -->
+Context for the mission, and why its architecture matters.
 
-## How to read this model
+## Design notes
 
-<!-- Explain what the evidence behind the relationships is, which loops matter most, and which interventions fall outside technology. -->
-
-{% include mission-model.html mission=page.mission %}
-
-## Related architecture
-
-<!-- Link the use cases, blueprints, and capabilities that support this mission. -->
+- Mission-specific architectural guidance.

@@ -1,7 +1,0 @@
-{%- comment -%}
-One template requirement as a table row, for use-case-model.html.
-{%- endcomment -%}
-{%- assign r = include.r -%}
-{%- assign category = r.category -%}
-{%- for c in include.categories -%}{%- assign parts = c | split: "|" -%}{%- if parts[0] == r.category -%}{%- assign category = parts[1] -%}{%- endif -%}{%- endfor %}
-<tr id="requirement-{{ r.id }}"><td><strong>{{ r.title | escape }}</strong><br>{{ r.statement | escape }}</td><td>{{ category }}</td><td>{% for id in r.activities %}{% for phase in include.u.phases %}{% assign a = phase.activities | where: "id", id | first %}{% if a %}<a href="#activity-{{ id }}">{{ a.title | escape }}</a>{% endif %}{% endfor %}{% unless forloop.last %}<br>{% endunless %}{% endfor %}{% if r.scenarios %}{% if r.activities.size > 0 %}<br>{% endif %}<em>Scenarios:</em> {% for id in r.scenarios %}{% assign s = include.u.scenarios | where: "id", id | first %}<a href="#scenario-{{ id }}">{{ s.title | escape | downcase }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}</td><td>{% for c in r.capabilities %}{% include capability-link.html id=c %}{% unless forloop.last %}, {% endunless %}{% endfor %}{% if r.policies %}{% if r.capabilities.size > 0 %}<br>{% endif %}<em>Policy:</em> {{ r.policies | join: ", " | replace: "-", " " }}{% endif %}</td></tr>

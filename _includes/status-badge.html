@@ -1,0 +1,2 @@
+{%- assign sb_def = site.data.statuses[include.status] -%}
+<span class="status-badge status-{{ include.status }}" title="{{ sb_def.description | strip | escape }}">{{ sb_def.label | default: include.status }}</span>

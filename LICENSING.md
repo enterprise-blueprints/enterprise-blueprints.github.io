@@ -1,6 +1,6 @@
 # Licensing and attribution
 
-Enterprise Blueprints follows the licensing split established in [Charter v0.5](charter/project-charter-v0.5.md).
+Enterprise Blueprints follows the licensing split established in [Charter v0.5](https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/d372fc4f827dd5296d51fbf1237cc6174cda1080/charter/project-charter-v0.5.md).
 
 | Material | Applicable license |
 | --- | --- |
@@ -10,8 +10,6 @@ Enterprise Blueprints follows the licensing split established in [Charter v0.5](
 The split applies by material, not just directory or file extension. YAML metadata accompanying a Markdown document is part of that document. Software examples embedded in documentation use MIT; the surrounding explanatory prose uses CC BY 4.0. Implementation and lab documentation remains CC BY 4.0.
 
 New mixed-material artifacts should state the applicable licenses where the boundary is not clear. Retain third-party license and attribution notices; third-party material is not relicensed by this statement.
-
-The bundled Inter fonts retain their [SIL Open Font License 1.1](assets/fonts/OFL-Inter.txt). The brand boards in `brand_kit/` serve as supplied design references and do not receive a new license through this statement.
 
 ## Attribution
 

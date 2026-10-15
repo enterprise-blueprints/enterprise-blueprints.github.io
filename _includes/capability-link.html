@@ -1,6 +1,0 @@
-{%- comment -%}
-Links a capability ID to its entry in the capability catalog. Usage:
-{% include capability-link.html id=capability_id %}
-{%- endcomment -%}
-{%- assign cap = site.data.capabilities[include.id] -%}
-{%- if cap -%}<a href="{{ '/capabilities/catalog.html' | relative_url }}#capability-{{ include.id }}">{{ cap.title | escape }}</a>{%- else -%}{{ include.id | replace: "-", " " | capitalize }}{%- endif -%}

@@ -1,6 +1,0 @@
----
-layout: null
-permalink: /capabilities/index.json
-artifact: false
----
-{{ site.data.capabilities | jsonify }}

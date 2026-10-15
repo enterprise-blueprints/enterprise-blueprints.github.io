@@ -1,0 +1,201 @@
+---
+layout: default
+---
+{%- comment -%}
+  Canonical building block page.
+
+  Outgoing relationships come from this record's `relationships`.
+  Incoming relationships, mission usage, and implementation guides are all
+  derived at build time by scanning the other records' one-way references.
+  Nothing here is hand-maintained in both directions.
+{%- endcomment -%}
+{%- assign block_id = page.slug -%}
+{%- assign type_def = site.data.block_types.types[page.type] -%}
+{%- assign group_def = site.data.block_types.groups | where: "id", type_def.group | first -%}
+{%- assign domain_def = site.data.domains[page.domain] -%}
+{%- assign scope_def = site.data.scopes[page.scope] -%}
+{%- assign missions = site.missions | sort: "title" -%}
+
+{%- assign mission_count = 0 -%}
+{%- for m in missions -%}
+  {%- assign hits = m.components | where: "ref", block_id -%}
+  {%- if hits.size > 0 -%}{%- assign mission_count = mission_count | plus: 1 -%}{%- endif -%}
+{%- endfor -%}
+
+{%- capture outgoing_html -%}
+  {%- for rt in site.data.relationship_types -%}
+    {%- assign rels = page.relationships | where: "type", rt[0] -%}
+    {%- if rels.size > 0 -%}
+    <div class="rel-group">
+      <h4 class="rel-group__label" title="{{ rt[1].description | strip | escape }}">{{ rt[1].label }}</h4>
+      <ul class="ref-list">
+        {%- for rel in rels %}
+        <li>{% include block-ref.html id=rel.target %}{% if rel.note %}<p class="ref-note">{{ rel.note }}</p>{% endif %}</li>
+        {%- endfor %}
+      </ul>
+    </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture incoming_html -%}
+  {%- for rt in site.data.relationship_types -%}
+    {%- capture group_items -%}
+      {%- for b in site.blocks -%}
+        {%- if b.relationships -%}
+          {%- assign hits = b.relationships | where: "type", rt[0] | where: "target", block_id -%}
+          {%- for rel in hits %}
+        <li>{% include block-ref.html id=b.slug %}{% if rel.note %}<p class="ref-note">{{ rel.note }}</p>{% endif %}</li>
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if group_items != "" -%}
+    <div class="rel-group">
+      <h4 class="rel-group__label" title="{{ rt[1].description | strip | escape }}">{{ rt[1].inverse_label }}</h4>
+      <ul class="ref-list">{{ group_items }}
+      </ul>
+    </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- capture implementations_html -%}
+  {%- for impl in site.implementations -%}
+    {%- assign hits = impl.relationships | where: "type", "realizes" | where: "target", block_id -%}
+    {%- if hits.size > 0 %}
+    <li><a href="{{ impl.url | relative_url }}">{{ impl.title }}</a>{% if impl.technology %} <span class="muted">· {{ impl.technology }}</span>{% endif %}</li>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ '/blocks/' | relative_url }}">Building Blocks</a></li>
+      <li><a href="{{ '/blocks/' | relative_url }}?type={{ type_def.group }}">{{ group_def.label }}</a></li>
+      <li><span aria-current="page">{{ page.title }}</span></li>
+    </ol>
+  </nav>
+
+  <header class="record-header type-{{ page.type }}">
+    <div class="record-header__meta">
+      {% include type-badge.html type=page.type link=true %}
+      {% include status-badge.html status=page.status %}
+    </div>
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }}</p>
+  </header>
+
+  <div class="record-layout">
+    <article class="record-main">
+      {%- if page.status == "planned" %}
+      <div class="notice notice--planned" role="note">
+        <p><strong>Planned building block.</strong> This record reserves the ID and its place in the model. The full definition hasn't been written yet. Its relationships and mission usage below are already generated from the model.</p>
+      </div>
+      {%- endif %}
+
+      {%- assign body = content | strip -%}
+      {%- if body != "" %}
+      <div class="prose">
+{{ content }}
+      </div>
+      {%- endif %}
+
+      <section class="section" id="relationships" aria-labelledby="relationships-heading">
+        <h2 id="relationships-heading">Relationships</h2>
+        <p class="section-note">Intrinsic relationships are part of what this block means, wherever it's used. How a block takes part in a particular mission is recorded on that mission instead.</p>
+        <div class="rel-columns">
+          <div class="rel-column">
+            <h3>From this block</h3>
+            {%- if outgoing_html != "" %}
+            {{ outgoing_html }}
+            {%- else %}
+            <p class="empty">No outgoing relationships yet.</p>
+            {%- endif %}
+          </div>
+          <div class="rel-column">
+            <h3>To this block</h3>
+            {%- if incoming_html != "" %}
+            {{ incoming_html }}
+            {%- else %}
+            <p class="empty">No other block points to this one yet.</p>
+            {%- endif %}
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="missions" aria-labelledby="missions-heading">
+        <h2 id="missions-heading">Used in Mission Blueprints</h2>
+        {%- if mission_count > 0 %}
+        <p class="section-note">Generated from each mission's composition. The purpose shown is specific to that mission.</p>
+        <ul class="usage-list">
+          {%- for m in missions -%}
+          {%- assign uses = m.components | where: "ref", block_id -%}
+          {%- if uses.size > 0 %}
+          <li class="usage">
+            <div class="usage__head">
+              <a class="usage__title" href="{{ m.url | relative_url }}">{{ m.title }}</a>
+              {% include status-badge.html status=m.status %}
+            </div>
+            <ul class="usage__roles">
+              {%- for use in uses -%}
+              {%- assign stage = nil -%}
+              {%- if use.stage -%}{%- assign stage = m.lifecycle | where: "id", use.stage | first -%}{%- endif %}
+              <li>{% if stage %}<span class="stage-chip">{{ stage.title }}</span> {% endif %}{{ use.purpose }}</li>
+              {%- endfor %}
+            </ul>
+          </li>
+          {%- endif -%}
+          {%- endfor %}
+        </ul>
+        {%- else %}
+        <p class="empty">No Mission Blueprint uses this block yet.</p>
+        {%- endif %}
+      </section>
+
+      {%- if implementations_html != "" %}
+      <section class="section" id="implementations" aria-labelledby="implementations-heading">
+        <h2 id="implementations-heading">Implementation guides</h2>
+        <p class="section-note">Technology-specific realizations of this logical block. They don't change its definition.</p>
+        <ul class="plain-list">{{ implementations_html }}
+        </ul>
+      </section>
+      {%- endif %}
+    </article>
+
+    <aside class="record-aside" aria-label="Block details">
+      <dl class="facts">
+        <div>
+          <dt>ID</dt>
+          <dd><code class="copyable" data-copy="{{ block_id }}">{{ block_id }}</code></dd>
+        </div>
+        <div>
+          <dt>Type</dt>
+          <dd>{{ type_def.label }}{% if group_def.types.size > 1 %} <span class="muted">· {{ group_def.label }}</span>{% endif %}</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>{{ site.data.statuses[page.status].label | default: page.status }}</dd>
+        </div>
+        <div>
+          <dt>Domain</dt>
+          <dd>{{ domain_def.label | default: page.domain }}</dd>
+        </div>
+        <div>
+          <dt>Scope</dt>
+          <dd><span title="{{ scope_def.description | strip | escape }}">{{ scope_def.label | default: page.scope }}</span></dd>
+        </div>
+        <div>
+          <dt>Missions</dt>
+          <dd>{% if mission_count > 0 %}<a href="#missions">Used in {{ mission_count }}</a>{% else %}None yet{% endif %}</dd>
+        </div>
+        <div>
+          <dt>Implementations</dt>
+          <dd>{% if implementations_html != "" %}<a href="#implementations">See guides</a>{% else %}<a href="{{ '/implementations/' | relative_url }}">None yet</a>{% endif %}</dd>
+        </div>
+      </dl>
+      {% include edit-link.html %}
+    </aside>
+  </div>
+</div>

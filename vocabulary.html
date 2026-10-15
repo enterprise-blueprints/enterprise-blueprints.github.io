@@ -1,0 +1,101 @@
+---
+layout: default
+title: Vocabulary
+permalink: /model/vocabulary/
+summary: The working vocabulary of the model, generated from the registries in the repository's _data folder.
+---
+{%- assign all_types = site.data.block_types.types -%}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ '/model/' | relative_url }}">The Model</a></li>
+      <li><span aria-current="page">{{ page.title }}</span></li>
+    </ol>
+  </nav>
+  <header class="page-header">
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }} It's version 0.1: small on purpose, and extended deliberately as the library grows.</p>
+  </header>
+
+  <section class="section" aria-labelledby="types-heading">
+    <h2 id="types-heading">Building block types</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Type</th><th scope="col">Key</th><th scope="col">Meaning</th><th scope="col">Shown under</th><th scope="col">Blocks</th></tr></thead>
+        <tbody>
+          {%- for t in all_types %}
+          {%- assign group_def = site.data.block_types.groups | where: "id", t[1].group | first %}
+          {%- assign typed = site.blocks | where: "type", t[0] %}
+          <tr>
+            <th scope="row">{% assign type_key = t[0] %}{% include type-badge.html type=type_key link=true %}</th>
+            <td><code>{{ t[0] }}</code></td>
+            <td>{{ t[1].description }}</td>
+            <td>{{ group_def.label }}</td>
+            <td>{{ typed.size }}</td>
+          </tr>
+          {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="relationships-heading">
+    <h2 id="relationships-heading">Relationship types</h2>
+    <p class="section-note">A relationship is written once, on its source record. The site shows the inverse phrase on the target record automatically.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Relationship</th><th scope="col">From</th><th scope="col">To</th><th scope="col">Shown on the target as</th><th scope="col">Meaning</th><th scope="col">Uses</th></tr></thead>
+        <tbody>
+          {%- for rt in site.data.relationship_types %}
+          {%- assign uses = 0 -%}
+          {%- for b in site.blocks -%}
+            {%- assign hits = b.relationships | where: "type", rt[0] -%}
+            {%- assign uses = uses | plus: hits.size -%}
+          {%- endfor -%}
+          {%- for impl in site.implementations -%}
+            {%- assign hits = impl.relationships | where: "type", rt[0] -%}
+            {%- assign uses = uses | plus: hits.size -%}
+          {%- endfor %}
+          <tr id="rel-{{ rt[0] }}">
+            <th scope="row">{{ rt[1].label }}<br><code>{{ rt[0] }}</code>{% if rt[1].reserved %}<br><span class="status-badge status-planned">Reserved</span>{% endif %}</th>
+            <td>{% if rt[1].sources == "any" %}Any type{% else %}{% for s in rt[1].sources %}{% if all_types[s] %}{{ all_types[s].label }}{% else %}Implementation guide{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}</td>
+            <td>{% if rt[1].same_type %}The same type{% elsif rt[1].targets == "any" %}Any type{% else %}{% for s in rt[1].targets %}{{ all_types[s].label | default: s }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}</td>
+            <td>{{ rt[1].inverse_label }}</td>
+            <td>{{ rt[1].description }}</td>
+            <td>{{ uses }}</td>
+          </tr>
+          {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="two-up">
+    <section class="section" aria-labelledby="statuses-heading">
+      <h2 id="statuses-heading">Statuses</h2>
+      <dl class="term-list">
+        {%- for s in site.data.statuses %}
+        <div><dt>{% assign status_key = s[0] %}{% include status-badge.html status=status_key %}</dt><dd>{{ s[1].description }}</dd></div>
+        {%- endfor %}
+      </dl>
+    </section>
+    <section class="section" aria-labelledby="scopes-heading">
+      <h2 id="scopes-heading">Scopes</h2>
+      <dl class="term-list">
+        {%- for s in site.data.scopes %}
+        <div><dt>{{ s[1].label }} <code>{{ s[0] }}</code></dt><dd>{{ s[1].description }}</dd></div>
+        {%- endfor %}
+      </dl>
+    </section>
+  </div>
+
+  <section class="section" aria-labelledby="domains-heading">
+    <h2 id="domains-heading">Domains</h2>
+    <p class="section-note">A domain establishes scope and the meaning of concepts. It doesn't have to match a single Mission Blueprint, and a mission can use blocks from many domains.</p>
+    <dl class="term-list term-list--columns">
+      {%- for d in site.data.domains %}
+      <div><dt>{{ d[1].label }} <code>{{ d[0] }}</code></dt><dd>{{ d[1].description }}</dd></div>
+      {%- endfor %}
+    </dl>
+  </section>
+</div>

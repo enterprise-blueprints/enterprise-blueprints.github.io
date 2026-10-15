@@ -1,0 +1,35 @@
+---
+layout: default
+title: Implementation Guides
+permalink: /implementations/
+summary: Optional, technology-specific realizations of logical building blocks, kept strictly separate from the canonical definitions.
+---
+{%- assign guides = site.implementations | sort: "title" -%}
+<div class="container container--narrow">
+  <header class="page-header">
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }}</p>
+  </header>
+
+  <div class="prose">
+    <p>Building blocks describe <em>what</em> the enterprise needs in vendor-neutral terms. An Implementation Guide describes <em>how</em> a particular technology or product can realize one or more of those blocks. Guides point at the blocks they realize. Blocks never depend on a guide, so a logical definition stays the same no matter how many ways it's implemented.</p>
+  </div>
+
+  {%- if guides.size > 0 %}
+  <ul class="card-grid card-grid--single">
+    {%- for g in guides %}
+    {%- assign realized = g.relationships | where: "type", "realizes" %}
+    <li class="card">
+      <div class="card__meta"><span class="kind-badge">Implementation Guide</span> {% include status-badge.html status=g.status %}</div>
+      <h2 class="card__title"><a href="{{ g.url | relative_url }}">{{ g.title }}</a></h2>
+      <p class="card__summary">{{ g.summary }}</p>
+      <p class="card__foot">Realizes {% for r in realized %}{% include block-ref.html id=r.target %}{% unless forloop.last %} {% endunless %}{% endfor %}</p>
+    </li>
+    {%- endfor %}
+  </ul>
+  {%- else %}
+  <div class="notice" role="note">
+    <p><strong>No implementation guides yet.</strong> Version 0.1 focuses on the logical model. The structure for guides is ready: each guide is a Markdown file in <code>_implementations/</code> that lists the blocks it realizes with the <a href="{{ '/model/vocabulary/' | relative_url }}#rel-realizes"><code>realizes</code></a> relationship.</p>
+  </div>
+  {%- endif %}
+</div>

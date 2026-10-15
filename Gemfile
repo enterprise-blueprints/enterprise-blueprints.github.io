@@ -1,13 +1,15 @@
 source "https://rubygems.org"
 
-gem "jekyll", "~> 3.10"
-gem "kramdown-parser-gfm", "~> 1.1"
-gem "jekyll-relative-links", "~> 0.6"
-gem "jekyll-optional-front-matter", "~> 0.3"
+# Plain Jekyll with no plugins. The site is built by GitHub Actions, so it does
+# not depend on the github-pages gem or its pinned plugin set.
+gem "jekyll", "~> 4.4"
+
+# Needed by `jekyll serve` on Ruby 3.x.
 gem "webrick", "~> 1.9"
-gem "csv"
-gem "logger"
-gem "base64"
-gem "bigdecimal"
-gem "tzinfo", "~> 2.0"
-gem "tzinfo-data"
+
+# Windows and JRuby do not include zoneinfo files or a native file watcher.
+platforms :windows, :jruby do
+  gem "tzinfo", ">= 1", "< 3"
+  gem "tzinfo-data"
+end
+gem "wdm", "~> 0.2", platforms: [:windows]

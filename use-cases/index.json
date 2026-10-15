@@ -1,6 +1,0 @@
----
-layout: null
-permalink: /use-cases/index.json
-artifact: false
----
-{{ site.data["use-cases"] | jsonify }}

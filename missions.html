@@ -1,0 +1,48 @@
+---
+layout: default
+title: Mission Blueprints
+permalink: /missions/
+summary: Mission-specific compositions of shared building blocks, with outcomes, an illustrative lifecycle, and the part each block plays.
+---
+<div class="container">
+  <header class="page-header">
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }} A mission references canonical blocks by ID instead of redefining them, so several missions can build on the same foundation.</p>
+  </header>
+
+  {%- assign missions = site.missions | sort: "title" %}
+  <div class="mission-grid">
+    {%- for m in missions %}
+    {%- assign refs = m.components | map: "ref" | uniq %}
+    {%- assign shared_count = 0 -%}
+    {%- for ref in refs -%}
+      {%- for other in site.missions -%}
+        {%- if other.url != m.url -%}
+          {%- assign hits = other.components | where: "ref", ref -%}
+          {%- if hits.size > 0 -%}{%- assign shared_count = shared_count | plus: 1 -%}{%- break -%}{%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor %}
+    <article class="card mission-card">
+      <div class="card__meta">
+        <span class="kind-badge">Mission Blueprint</span>
+        {% include status-badge.html status=m.status %}
+      </div>
+      <h2 class="card__title"><a href="{{ m.url | relative_url }}">{{ m.title }}</a></h2>
+      <p class="card__summary">{{ m.summary }}</p>
+      <ul class="mission-card__facts">
+        <li><strong>{{ refs.size }}</strong> building block{% if refs.size != 1 %}s{% endif %}</li>
+        {%- if m.lifecycle.size > 0 %}
+        <li><strong>{{ m.lifecycle.size }}</strong> illustrative stages</li>
+        {%- endif %}
+        {%- if shared_count > 0 %}
+        <li><strong>{{ shared_count }}</strong> shared with other missions</li>
+        {%- endif %}
+      </ul>
+      {%- if m.domains.size > 0 %}
+      <p class="card__foot">{% for d in m.domains %}{{ site.data.domains[d].label | default: d }}{% unless forloop.last %} · {% endunless %}{% endfor %}</p>
+      {%- endif %}
+    </article>
+    {%- endfor %}
+  </div>
+</div>

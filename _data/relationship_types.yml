@@ -1,0 +1,112 @@
+# Relationship type registry (v0.1 working vocabulary)
+#
+# Relationships are typed, directional references from one record to another
+# record's stable ID. Only the source record declares the relationship; the
+# site generates the reverse ("inverse") view automatically.
+#
+# Fields
+#   label          Phrase shown on the source record ("Manages").
+#   inverse_label  Phrase shown on the target record ("Managed by").
+#   sources        Block types allowed as the source, or `any`.
+#                  `implementation` means an Implementation Guide record.
+#   targets        Block types allowed as the target, or `any`.
+#   same_type      When true, source and target must have the same type.
+#   description    What the relationship means.
+#   reserved       When true, the relationship is defined for future use and
+#                  is not expected on building blocks yet.
+#
+# To add a relationship type, add an entry here, then run
+# `python scripts/validate_content.py`. No template changes are needed.
+
+manages:
+  label: Manages
+  inverse_label: Managed by
+  sources: [capability]
+  targets: [information]
+  description: The capability manages a logical information concept.
+
+uses:
+  label: Uses
+  inverse_label: Used by process
+  sources: [process]
+  targets: [capability]
+  description: The process employs the capability.
+
+supports:
+  label: Supports
+  inverse_label: Supported by
+  sources: [experience]
+  targets: [process]
+  description: The experience helps participants perform the process.
+
+provides_access_to:
+  label: Provides access to
+  inverse_label: Accessed through
+  sources: [experience]
+  targets: [capability]
+  description: The experience provides interaction with the capability.
+
+constrained_by:
+  label: Constrained by
+  inverse_label: Constrains
+  sources: [information, capability, process, experience]
+  targets: [policy]
+  description: The policy is an applicable requirement or restriction.
+
+enforces:
+  label: Enforces
+  inverse_label: Enforced by
+  sources: [control]
+  targets: [policy]
+  description: The control helps implement or enforce the policy.
+
+depends_on:
+  label: Depends on
+  inverse_label: Required by
+  sources: [capability]
+  targets: [capability]
+  description: >-
+    A true logical dependency between capabilities, not merely a common
+    integration.
+
+references:
+  label: References
+  inverse_label: Referenced by
+  sources: [information]
+  targets: [information]
+  description: A modeled association between information concepts.
+
+part_of:
+  label: Part of
+  inverse_label: Has part
+  sources: any
+  targets: any
+  same_type: true
+  description: Hierarchical decomposition, where it is meaningful.
+
+specializes:
+  label: Specializes
+  inverse_label: Specialized by
+  sources: any
+  targets: any
+  same_type: true
+  description: >-
+    An explicit refinement of a more general concept, usually for a specific
+    domain.
+
+applies_to:
+  label: Applies to
+  inverse_label: Guided by
+  sources: [pattern]
+  targets: [information, capability, process, experience, control]
+  description: The pattern is applicable reusable guidance for the target.
+
+realizes:
+  label: Realizes
+  inverse_label: Realized by
+  sources: [implementation]
+  targets: [information, capability, process, experience, control]
+  reserved: true
+  description: >-
+    An Implementation Guide describes how a specific technology realizes a
+    logical building block. Reserved for Implementation Guides.

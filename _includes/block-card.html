@@ -1,0 +1,19 @@
+{%- comment -%}
+  A summary card for one building block. Params: block (required)
+{%- endcomment -%}
+{%- assign bc = include.block -%}
+{%- assign bc_type = site.data.block_types.types[bc.type] -%}
+{%- assign bc_missions = 0 -%}
+{%- for m in site.missions -%}
+  {%- assign bc_hits = m.components | where: "ref", bc.slug -%}
+  {%- if bc_hits.size > 0 -%}{%- assign bc_missions = bc_missions | plus: 1 -%}{%- endif -%}
+{%- endfor -%}
+<article class="card block-card type-{{ bc.type }}" data-type="{{ bc.type }}" data-group="{{ bc_type.group }}" data-search="{{ bc.title | append: ' ' | append: bc.summary | append: ' ' | append: bc.slug | downcase | escape }}">
+  <div class="card__meta">
+    {% include type-badge.html type=bc.type %}
+    {% include status-badge.html status=bc.status %}
+  </div>
+  <h3 class="card__title"><a href="{{ bc.url | relative_url }}">{{ bc.title }}</a></h3>
+  <p class="card__summary">{{ bc.summary }}</p>
+  <p class="card__foot"><code>{{ bc.slug }}</code>{% if bc_missions > 0 %}<span>Used in {{ bc_missions }} mission{% if bc_missions != 1 %}s{% endif %}</span>{% endif %}</p>
+</article>

@@ -1,0 +1,14 @@
+# Domains establish scope and the meaning of concepts. In v0.1 a domain is
+# metadata on a record, not a page type. Add a domain here before using it.
+
+cross-cutting:
+  label: Cross-cutting
+  description: Concepts whose meaning holds across many domains.
+investigations:
+  label: Investigations
+  description: >-
+    Receiving, assessing, investigating, and resolving allegations or
+    reported concerns.
+grants-management:
+  label: Grants Management
+  description: Soliciting, reviewing, awarding, and overseeing grant funding.

@@ -1,0 +1,13 @@
+# Allowed values for `status` on blocks, missions, and implementation guides.
+
+planned:
+  label: Planned
+  description: >-
+    A stub that reserves the ID and its place in the model. The definition has
+    not been written yet, but other records can already reference it.
+draft:
+  label: Draft
+  description: Written and usable, but still being reviewed and refined.
+published:
+  label: Published
+  description: Reviewed and considered stable enough to build on.

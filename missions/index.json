@@ -1,6 +1,0 @@
----
-layout: null
-permalink: /missions/index.json
-artifact: false
----
-{{ site.data.missions | jsonify }}

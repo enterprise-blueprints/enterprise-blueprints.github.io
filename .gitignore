@@ -1,7 +1,11 @@
 _site/
+_site_*/
 .jekyll-cache/
 .jekyll-metadata
 .sass-cache/
 .bundle/
 vendor/
-.preview/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store

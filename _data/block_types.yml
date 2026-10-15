@@ -1,0 +1,84 @@
+# Building block type registry (v0.1)
+#
+# Every record in `_blocks/` has a `type` that must be a key under `types`.
+# The `groups` list controls how types are grouped and ordered in the UI.
+# `policy` and `control` stay distinct types in data but share the
+# "Governance" group on the site.
+#
+# `area` names the part of the conceptual model (see /model/) where a type's
+# responsibilities mostly sit. It is explanatory only; it is not a runtime tier.
+
+groups:
+  - id: information
+    label: Information
+    types: [information]
+  - id: capability
+    label: Capabilities
+    types: [capability]
+  - id: process
+    label: Processes
+    types: [process]
+  - id: experience
+    label: Experiences
+    types: [experience]
+  - id: governance
+    label: Governance
+    types: [policy, control]
+  - id: pattern
+    label: Patterns
+    types: [pattern]
+
+types:
+  information:
+    label: Information
+    plural: Information concepts
+    group: information
+    area: Enterprise Foundation — information and meaning
+    description: A meaningful enterprise information concept.
+    example: Case, Document
+  capability:
+    label: Capability
+    plural: Capabilities
+    group: capability
+    area: Enterprise Foundation — capabilities and behavior
+    description: >-
+      What an organization can reliably do. A capability is not necessarily
+      an API or a service.
+    example: Case Management
+  process:
+    label: Process
+    plural: Processes
+    group: process
+    area: Enterprise Foundation — capabilities and behavior
+    description: How work is coordinated to achieve an outcome.
+    example: Investigation Lifecycle
+  experience:
+    label: Experience
+    plural: Experiences
+    group: experience
+    area: Experiences
+    description: How people or agents engage with capabilities and processes.
+    example: Investigator Workspace
+  policy:
+    label: Policy
+    plural: Policies
+    group: governance
+    area: Trust & Governance
+    description: A rule, obligation, or constraint.
+    example: Restricted Case Access
+  control:
+    label: Control
+    plural: Controls
+    group: governance
+    area: Trust & Governance
+    description: A safeguard or enforcement mechanism that satisfies a policy.
+    example: Case Authorization Check
+  pattern:
+    label: Pattern
+    plural: Patterns
+    group: pattern
+    area: Guidance across the whole model
+    description: >-
+      A reusable design or composition approach. Patterns guide how blocks are
+      arranged; they are not an additional software tier.
+    example: Human-in-the-Loop Review

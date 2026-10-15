@@ -1,0 +1,63 @@
+---
+layout: default
+---
+{%- comment -%}
+  Implementation Guide page. Guides describe how a specific technology
+  realizes logical building blocks. They point at blocks with `realizes`;
+  blocks never point at implementations.
+{%- endcomment -%}
+{%- assign guide_id = "implementation." | append: page.slug -%}
+{%- assign realized = page.relationships | where: "type", "realizes" -%}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ '/implementations/' | relative_url }}">Implementation Guides</a></li>
+      <li><span aria-current="page">{{ page.title }}</span></li>
+    </ol>
+  </nav>
+
+  <header class="record-header">
+    <div class="record-header__meta">
+      <span class="kind-badge">Implementation Guide</span>
+      {% include status-badge.html status=page.status %}
+    </div>
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }}</p>
+  </header>
+
+  <div class="record-layout">
+    <article class="record-main">
+      <div class="notice" role="note">
+        <p>This guide describes one way to realize logical building blocks with specific technology. The canonical block definitions stay vendor-neutral and don't depend on it.</p>
+      </div>
+      <div class="prose">
+{{ content }}
+      </div>
+    </article>
+    <aside class="record-aside" aria-label="Guide details">
+      <dl class="facts">
+        <div>
+          <dt>ID</dt>
+          <dd><code class="copyable" data-copy="{{ guide_id }}">{{ guide_id }}</code></dd>
+        </div>
+        {%- if page.technology %}
+        <div>
+          <dt>Technology</dt>
+          <dd>{{ page.technology }}</dd>
+        </div>
+        {%- endif %}
+        <div>
+          <dt>Realizes</dt>
+          <dd>
+            <ul class="ref-list ref-list--compact">
+              {%- for rel in realized %}
+              <li>{% include block-ref.html id=rel.target %}</li>
+              {%- endfor %}
+            </ul>
+          </dd>
+        </div>
+      </dl>
+      {% include edit-link.html %}
+    </aside>
+  </div>
+</div>
