@@ -60,7 +60,10 @@ FIELD_EXAMPLES = {
     "outcome": "outcome: What the process has produced when it ends.",
     "operations": (
         "operations:\n  - id: create\n    title: Create\n    description: What the operation does.\n"
-        "    automation: with-review   # allowed | with-review | people-only"
+        "    automation: with-review   # allowed | with-review | people-only\n"
+        "    takes: [What it needs]          # optional\n"
+        "    returns: [What it gives back]   # optional\n"
+        "    authority: Who may do it, if narrower than the usual access check.   # optional"
     ),
     "states": "states:\n  - id: open\n    name: Open\n    description: What this state means.",
     "transitions": "transitions:\n  - { from: open, to: closed, via: close }",

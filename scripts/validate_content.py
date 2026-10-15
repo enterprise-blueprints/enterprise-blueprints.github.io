@@ -52,7 +52,11 @@ FIELD_SPECS = {
     "outcome": FieldSpec("text"),
     "steps": FieldSpec("list", frozenset({"id", "title", "description", "role", "uses", "decisions"}), ("id", "title")),
     "exceptions": FieldSpec("list", frozenset({"title", "description", "continues_at"}), ("title",)),
-    "operations": FieldSpec("list", frozenset({"id", "title", "description", "automation"}), ("id", "title")),
+    "operations": FieldSpec(
+        "list",
+        frozenset({"id", "title", "description", "automation", "takes", "returns", "authority"}),
+        ("id", "title"),
+    ),
     "states": FieldSpec("list", frozenset({"id", "name", "description"}), ("id", "name")),
     "transitions": FieldSpec("list", frozenset({"from", "to", "via"}), ("from", "to")),
     "every_operation": FieldSpec("strings"),
@@ -836,6 +840,16 @@ def check_capability_model(record: Record, registries: Registries, report: Repor
     for operation in record.data.get("operations") or []:
         if not isinstance(operation, dict):
             continue
+        # The light contract: plain phrases, deliberately without data types.
+        for key in ("takes", "returns"):
+            value = operation.get(key)
+            if value is not None and (
+                not isinstance(value, list) or not all(isinstance(v, str) and v.strip() for v in value)
+            ):
+                report.error(rel, f"operation '{operation.get('id')}' '{key}' must be a list of short phrases.")
+        authority = operation.get("authority")
+        if authority is not None and (not isinstance(authority, str) or not authority.strip()):
+            report.error(rel, f"operation '{operation.get('id')}' 'authority' must be a sentence of plain text.")
         level = operation.get("automation")
         if level is not None and level not in levels:
             report.error(

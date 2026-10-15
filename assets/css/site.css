@@ -743,6 +743,11 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .automation--allowed { color: var(--t-capability); background: var(--t-capability-bg); border-color: transparent; }
 .automation--with-review { color: var(--text); background: var(--warning-bg); border-color: var(--warning-border); }
 .automation--people-only { color: var(--text); background: var(--surface-muted); }
+/* An operation's light contract: what it takes and returns, and who may do it. */
+.op-contract { display: block; margin-top: .35rem; font-size: .875rem; color: var(--text-muted); }
+.op-contract > span { display: block; }
+.op-contract strong { color: var(--text); font-weight: 650; }
+.op-authority { display: block; margin-top: .35rem; font-size: .8125rem; color: var(--text-muted); min-width: 8rem; }
 
 /* Maturity levels, lowest first. The dots show how far up the scale a level is. */
 .maturity-meter { display: inline-flex; gap: .25rem; align-self: center; }

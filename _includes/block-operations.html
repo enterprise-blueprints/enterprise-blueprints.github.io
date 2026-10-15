@@ -3,8 +3,11 @@
     {% include block-operations.html %}
   Reads from the block's front matter:
     every_operation  sentences that are true of every operation (optional)
-    operations       {id, title, description, automation}. `automation` is a
-                     key from `automation_levels` in _data/block_types.yml.
+    operations       {id, title, description, automation, takes, returns,
+                     authority}. `automation` is a key from `automation_levels`
+                     in _data/block_types.yml. `takes` and `returns` are short
+                     lists of plain phrases; `authority` says who may perform
+                     the operation, when that's narrower than the usual check.
   Each operation also shows the state moves it makes (from `transitions`)
   and the events it raises (from `events`).
 {%- endcomment -%}
@@ -42,10 +45,10 @@
 {%- assign op_events = page.events | where: "raised_by", op.id %}
 <tr id="op-{{ op.id }}">
 <th scope="row">{{ op.title }}</th>
-<td data-label="What it does">{{ op.description }}</td>
+<td data-label="What it does">{{ op.description }}{% if op.takes.size > 0 or op.returns.size > 0 %}<span class="op-contract">{% if op.takes.size > 0 %}<span><strong>Takes</strong> {{ op.takes | join: " · " }}</span>{% endif %}{% if op.returns.size > 0 %}<span><strong>Returns</strong> {{ op.returns | join: " · " }}</span>{% endif %}</span>{% endif %}</td>
 <td data-label="Moves">{% for move in op_moves %}{% assign from_state = page.states | where: "id", move.from | first %}{% assign to_state = page.states | where: "id", move.to | first %}<span class="data-table__line"><span class="data-table__state"><a href="#state-{{ move.from }}">{{ from_state.name }}</a>&nbsp;→</span> <a class="data-table__state" href="#state-{{ move.to }}">{{ to_state.name }}</a></span>{% endfor %}</td>
 <td data-label="Announces">{% for event in op_events %}<span class="data-table__line"><a href="#event-{{ event.id }}">{{ event.name }}</a></span>{% endfor %}</td>
-<td data-label="Who may do it">{% if op_level %}<span class="automation automation--{{ op.automation }}" title="{{ op_level.description | escape }}">{{ op_level.label }}</span>{% endif %}</td>
+<td data-label="Who may do it">{% if op_level %}<span class="automation automation--{{ op.automation }}" title="{{ op_level.description | escape }}">{{ op_level.label }}</span>{% endif %}{% if op.authority %}<span class="op-authority">{{ op.authority }}</span>{% endif %}</td>
 </tr>
 {%- endfor %}
 </tbody>

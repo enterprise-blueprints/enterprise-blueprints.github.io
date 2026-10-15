@@ -25,6 +25,9 @@ operations:                 # required
     title: Create
     description: What the operation does.
     automation: with-review # allowed | with-review | people-only
+    takes: [What it needs]          # optional, plain phrases
+    returns: [What it gives back]   # optional
+    authority: Who may do it, when that's narrower than the usual access check.  # optional
 states:                     # optional, with transitions
   - id: open
     name: Open

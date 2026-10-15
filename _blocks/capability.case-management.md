@@ -21,30 +21,41 @@ operations:
     title: Record a case
     description: Create a case with a permanent identifier, a type, and a description of the matter. It starts as Received.
     automation: allowed
+    takes: [The case type, A description of the matter, Where it came from]
+    returns: [The case's permanent identifier]
   - id: accept
     title: Accept
     description: Take responsibility for the matter and give it an accountable owner.
     automation: with-review
+    takes: [The accountable owner]
+    authority: Someone who can take on matters of this case type, such as a supervisor.
   - id: screen-out
     title: Screen out
-    description: Close a received case without further work, with the reason recorded.
+    description: Close a received case without further work, with the reason recorded. The case and its history are kept.
     automation: people-only
+    takes: [The reason, Any referral made elsewhere]
+    authority: Someone who can take on matters of this case type, such as a supervisor.
   - id: assign
     title: Assign
     description: Change the case's owner or participants.
     automation: with-review
+    takes: [The new owner or participants]
   - id: update
     title: Update details
     description: Change the case's title, description, parties, due dates, or related records.
     automation: allowed
+    takes: [The changed details]
   - id: classify
     title: Classify
     description: Set or change the case's sensitivity.
     automation: people-only
+    takes: [The sensitivity, The reason]
+    authority: Someone allowed to set sensitivity at that level.
   - id: pause
     title: Pause
     description: Put an open case on hold, with the reason recorded.
     automation: with-review
+    takes: [The reason, When to look at it again]
   - id: resume
     title: Resume
     description: Return a case on hold to work.
@@ -53,18 +64,24 @@ operations:
     title: Resolve
     description: Record the outcome of the case and the reason for it.
     automation: people-only
+    takes: [The outcome, The reasoning behind it]
+    authority: The case's accountable owner, or a decision-maker the owner names.
   - id: close
     title: Close
     description: End work on a resolved case.
     automation: people-only
+    takes: [Any follow-up actions, The retention category]
   - id: reopen
     title: Reopen
     description: Return a closed case to work under the same identifier, with the reason recorded.
     automation: people-only
+    takes: [The reason]
   - id: retrieve
     title: Retrieve
     description: Get a case, its current state, and its history, subject to the requester's access.
     automation: allowed
+    takes: [The case identifier]
+    returns: [The case, Its current state, Its history]
 
 states:
   - id: received

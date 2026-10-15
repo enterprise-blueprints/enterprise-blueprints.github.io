@@ -392,6 +392,9 @@ operations:
   - id: close
     title: Close
     automation: people-only
+    takes: [The reason]
+    returns: [The closed case]
+    authority: The case's owner.
 states:
   - id: active
     name: Active
@@ -419,6 +422,14 @@ class CapabilityModelRules(ValidatorTestCase):
     def test_unknown_automation_level(self):
         self.write_capability(CAPABILITY_MODEL.replace("automation: allowed", "automation: allow"))
         self.assertFails("has automation 'allow', which isn't defined", "Did you mean 'allowed'?")
+
+    def test_contract_takes_must_be_phrases(self):
+        self.write_capability(CAPABILITY_MODEL.replace("takes: [The reason]", "takes: The reason"))
+        self.assertFails("operation 'close' 'takes' must be a list of short phrases")
+
+    def test_contract_authority_must_be_text(self):
+        self.write_capability(CAPABILITY_MODEL.replace("authority: The case's owner.", "authority: [owner]"))
+        self.assertFails("operation 'close' 'authority' must be a sentence of plain text")
 
     def test_transition_must_join_known_states(self):
         self.write_capability(CAPABILITY_MODEL.replace("to: closed,", "to: done,"))

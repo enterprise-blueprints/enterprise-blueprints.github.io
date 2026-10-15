@@ -185,7 +185,7 @@ Front matter fields:
 | `steps` | processes only | A list of `{id, title, role, description, uses, decisions}`, in order. `uses` lists capability IDs, which must also be `uses` relationships. Each capability's page links back to the steps that use it. `decisions` is a list of `{decision, accountable, records}`. |
 | `outcome` | processes only | One sentence: what the process has produced when it ends. Shown at the bottom of the Flow. |
 | `exceptions` | processes only | A list of `{title, description, continues_at}`. `continues_at` is the id of the step where work picks up again. |
-| `operations` | capabilities only | A list of `{id, title, description, automation}`. `automation` is `allowed`, `with-review`, or `people-only`, from `automation_levels` in `_data/block_types.yml`. Each operation's row also shows the state moves it makes and the events it raises. |
+| `operations` | capabilities only | A list of `{id, title, description, automation, takes, returns, authority}`. `automation` is `allowed`, `with-review`, or `people-only`, from `automation_levels` in `_data/block_types.yml`. Each operation's row also shows the state moves it makes and the events it raises. The optional `takes`, `returns`, and `authority` fields give the operation a light contract; see [Capability contracts](#capability-contracts). |
 | `every_operation` | capabilities only | A list of sentences that are true of every operation, such as "Records who performed it, when, and why." Start each with a verb: the page joins them into one sentence under the Operations heading, beginning "Every operation". |
 | `states`, `transitions` | capabilities only | `states` is a list of `{id, name, description}` in their usual order. `transitions` is a list of `{from, to, via}`: two state ids and the id of the operation that makes the move. |
 | `events` | capabilities only | A list of `{id, name, description, raised_by}`: what the capability announces. `raised_by` is the id of the operation that raises it; leave it out for events such as a deadline passing. |
@@ -230,6 +230,20 @@ Relationships are written **once, on the source record**. Never add the reverse 
 ### Specialization
 
 "Define once" means one definition per concept *within a clear scope*. If a domain's meaning genuinely differs, create a separate block that `specializes` the general one. For example, `entity.investigative-document` specializes `entity.document`.
+
+### Capability contracts
+
+A capability's operations together form its contract: what anyone, whether a person, an app, or an agent, can ask the capability to do. Most of the contract comes from fields that are already there:
+
+| Part of the contract | Where it comes from |
+| --- | --- |
+| What the operation does | `description` |
+| What it needs, and what it gives back | `takes` and `returns`, both optional |
+| When it can be used | The `from` state of its `transitions` |
+| Who may do it | `every_operation` (the usual access check), `automation`, and the optional `authority` |
+| What it announces | `events` whose `raised_by` names the operation |
+
+`takes` and `returns` are short plain phrases, such as "The reason", not data types or schemas. The contract stays technology-neutral: it says what a capability promises, and leaves message formats and APIs to Implementation Guides. Add `authority` only when the operation needs more than the usual access check, such as "A records officer for the records' category".
 
 ---
 

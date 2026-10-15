@@ -19,42 +19,59 @@ operations:
     title: Capture
     description: Add a document, with its content and metadata, from a person, a system, or an agent. It starts as Active.
     automation: allowed
+    takes: [The content, Its title and type, The records it relates to]
+    returns: [The document's permanent identifier]
   - id: add-version
     title: Add a version
     description: Add a new version of an active document. Earlier versions are kept, and the newest becomes the current one.
     automation: allowed
+    takes: [The document identifier, The new content]
+    returns: [The new version's number]
   - id: update-metadata
     title: Update metadata
     description: Change a document's title, type, or related records.
     automation: allowed
+    takes: [The changed metadata]
   - id: classify
     title: Classify
     description: Set or change the document's sensitivity and retention category.
     automation: with-review
+    takes: [The sensitivity, The retention category]
   - id: declare
     title: Declare as a record
     description: Lock the document's content, so it can no longer change, and start its retention period.
     automation: with-review
+    takes: [The document identifier]
   - id: place-hold
     title: Place a hold
     description: Stop changes and disposal because of a legal or administrative hold, with the reason recorded.
     automation: people-only
+    takes: [The documents it covers, The reason, Who issued it]
+    authority: Someone authorized to issue holds, such as legal counsel or a records officer.
   - id: release-hold
     title: Release a hold
     description: Lift a hold once it no longer applies.
     automation: people-only
+    takes: [The hold, The reason it no longer applies]
+    authority: Whoever issued the hold, or someone with the same authority.
   - id: dispose
     title: Dispose
     description: Destroy or transfer a record whose retention period has ended, keeping a record of what was done and under which rule.
     automation: people-only
+    takes: [The records, The retention rule that applies]
+    authority: A records officer for the records' category.
   - id: search
     title: Search
     description: Find documents by their metadata and, where it's allowed, by their content.
     automation: allowed
+    takes: [What to look for]
+    returns: [The matching documents the requester may see]
   - id: retrieve
     title: Retrieve
     description: Get a document, any of its versions, and its history.
     automation: allowed
+    takes: [The document identifier, Optionally a version]
+    returns: [The document, The requested version, Its history]
 
 states:
   - id: active
