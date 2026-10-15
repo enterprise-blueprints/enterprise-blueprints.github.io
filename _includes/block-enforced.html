@@ -1,0 +1,38 @@
+{%- comment -%}
+  The policy obligations a control enforces. Put it under
+  "## Obligations it enforces":
+    {% include block-enforced.html %}
+  Reads the control's `enforces` relationships. Each can list the policy's
+  obligations it covers, with `obligations: [ids]`; the statements and
+  levels come from the policy itself.
+{%- endcomment -%}
+{%- assign en_rels = page.relationships | where: "type", "enforces" -%}
+{%- if en_rels.size > 0 -%}
+{%- assign ob_levels = site.data.block_types.obligation_levels -%}
+<table class="attribute-table data-table">
+<thead><tr><th scope="col">Level</th><th scope="col">Obligation</th><th scope="col">Policy</th></tr></thead>
+<tbody>
+{%- for rel in en_rels %}
+{%- assign en_policy = site.blocks | where: "slug", rel.target | first -%}
+{%- if rel.obligations.size > 0 -%}
+{%- for ob_id in rel.obligations %}
+{%- assign ob = en_policy.obligations | where: "id", ob_id | first -%}
+{%- assign ob_level = nil -%}
+{%- if ob.level -%}{%- assign ob_level = ob_levels[ob.level] -%}{%- endif %}
+<tr>
+<th scope="row">{% if ob_level %}<span class="obligation-level obligation-level--{{ ob.level }}" title="{{ ob_level.description | escape }}">{{ ob_level.label }}</span>{% endif %}</th>
+<td data-label="Obligation">{{ ob.statement }}</td>
+<td data-label="Policy"><a href="{{ en_policy.url | relative_url }}#ob-{{ ob_id }}">{{ en_policy.title }}</a></td>
+</tr>
+{%- endfor -%}
+{%- else %}
+<tr>
+<th scope="row"></th>
+<td data-label="Obligation"><span class="muted">The obligations this control covers aren't listed yet.</span></td>
+<td data-label="Policy"><a href="{{ en_policy.url | relative_url }}">{{ en_policy.title }}</a></td>
+</tr>
+{%- endif -%}
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}

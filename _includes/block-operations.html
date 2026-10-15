@@ -43,7 +43,7 @@
 <tr id="op-{{ op.id }}">
 <th scope="row">{{ op.title }}</th>
 <td data-label="What it does">{{ op.description }}</td>
-<td data-label="Moves">{% for move in op_moves %}{% assign from_state = page.states | where: "id", move.from | first %}{% assign to_state = page.states | where: "id", move.to | first %}<span class="data-table__line"><a href="#state-{{ move.from }}">{{ from_state.name }}</a> → <a href="#state-{{ move.to }}">{{ to_state.name }}</a></span>{% endfor %}</td>
+<td data-label="Moves">{% for move in op_moves %}{% assign from_state = page.states | where: "id", move.from | first %}{% assign to_state = page.states | where: "id", move.to | first %}<span class="data-table__line"><span class="data-table__state"><a href="#state-{{ move.from }}">{{ from_state.name }}</a>&nbsp;→</span> <a class="data-table__state" href="#state-{{ move.to }}">{{ to_state.name }}</a></span>{% endfor %}</td>
 <td data-label="Announces">{% for event in op_events %}<span class="data-table__line"><a href="#event-{{ event.id }}">{{ event.name }}</a></span>{% endfor %}</td>
 <td data-label="Who may do it">{% if op_level %}<span class="automation automation--{{ op.automation }}" title="{{ op_level.description | escape }}">{{ op_level.label }}</span>{% endif %}</td>
 </tr>

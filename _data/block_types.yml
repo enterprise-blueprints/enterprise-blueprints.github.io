@@ -97,6 +97,8 @@ types:
 #   include   The include that shows those fields. Put {% include <name> %}
 #             under the heading.
 #   prompt    One line of guidance, used by new_block.py and the vocabulary page.
+#   tab       Show the section as a tab, together with the type's other tab
+#             sections. Without JavaScript, the sections simply stack.
 #
 # Relationships, missions, and implementation guides are generated on every
 # page, so they aren't listed here.
@@ -134,23 +136,28 @@ type_sections:
   # through, and the events it announces.
   capability:
     - heading: Operations
+      tab: true
       required: true
       fields: [every_operation, operations]
       include: block-operations.html
       prompt: The actions the capability offers, and who may perform each one (`operations`), plus anything true of every operation, such as recording who did it (`every_operation`). Start each `every_operation` rule with a verb, because the page joins them into one sentence that begins "Every operation".
     - heading: States
+      tab: true
       fields: [states, transitions]
       include: block-states.html
       prompt: The states its entities move through (`states`), and which operation moves them from one to the next (`transitions`).
     - heading: Events
+      tab: true
       fields: [events]
       include: block-events.html
       prompt: What the capability announces when something happens, and the operation that raises each one, as `events` in front matter.
     - heading: Measures
+      tab: true
       fields: [measures]
       include: block-measures.html
       prompt: How you can tell the capability is working, as `measures` in front matter.
     - heading: Maturity levels
+      tab: true
       fields: [maturity]
       include: block-maturity.html
       prompt: What basic, established, and advanced look like, with questions that help an organization tell which level it's at, as `maturity` in front matter.
@@ -175,28 +182,45 @@ type_sections:
       prompt: Where people reach it, such as web, mobile, phone, or an assistant.
     - heading: Accessibility and design principles
       prompt: The accessibility and design commitments it keeps.
+  # A policy states obligations. Controls enforce them, and the policy page
+  # shows which control enforces each obligation, and which have none yet.
   policy:
     - heading: Intent
       required: true
       prompt: Why the policy exists, and what harm it prevents.
     - heading: Obligations
       required: true
-      prompt: What must and must not happen, as plain statements.
+      fields: [obligations]
+      include: block-obligations.html
+      prompt: What must, must not, or should happen, as `obligations` in front matter. Start each statement with a verb, because it follows its level ("Must grant access only ...").
     - heading: Source of authority
       prompt: The law, regulation, or decision the policy comes from, described generally.
     - heading: Exceptions and waivers
-      prompt: When the policy can be set aside, and who can approve it.
+      fields: [waivers]
+      include: block-waivers.html
+      prompt: When the policy can be set aside, and who can approve it, as `waivers` in front matter.
+  # A control enforces a policy's obligations. Its `enforces` relationship
+  # lists which ones, with `obligations: [ids]`.
   control:
     - heading: Objective
       required: true
       prompt: What the control prevents, detects, or corrects.
+    - heading: Obligations it enforces
+      include: block-enforced.html
+      prompt: Shown from the `obligations` listed on the control's `enforces` relationships. Add the include; there's nothing else to write.
     - heading: How it works
       required: true
-      prompt: What the control checks or does, and when.
+      fields: [checks]
+      include: block-checks.html
+      prompt: What the control checks or does, step by step, as `checks` in front matter.
     - heading: Evidence it produces
-      prompt: The records it leaves, so others can confirm it worked.
+      fields: [evidence]
+      include: block-evidence.html
+      prompt: The records it leaves, so others can confirm it worked, as `evidence` in front matter.
     - heading: How to test it
-      prompt: How to show the control works, including what failure looks like.
+      fields: [tests]
+      include: block-tests.html
+      prompt: Situations to try, and the result that shows the control works, as `tests` in front matter. Include what happens when the control itself fails.
   pattern:
     - heading: Problem
       required: true
@@ -230,6 +254,18 @@ automation_levels:
   people-only:
     label: People only
     description: Only a person may perform it.
+
+# How strong a policy's obligation is, set with `level:` on each obligation.
+obligation_levels:
+  must:
+    label: Must
+    description: Required. Not meeting it breaks the policy.
+  must-not:
+    label: Must not
+    description: Prohibited. Doing it breaks the policy.
+  should:
+    label: Should
+    description: Expected, unless there's a good, recorded reason not to.
 
 # A type can define `kinds`, a short list a block of that type picks one
 # from with `kind:`. The block page shows it as a badge.

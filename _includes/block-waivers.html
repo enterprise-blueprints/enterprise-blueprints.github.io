@@ -1,0 +1,20 @@
+{%- comment -%}
+  When a policy can be set aside. Put it under "## Exceptions and waivers":
+    {% include block-waivers.html %}
+  Reads `waivers` ({title, description, approved_by}) from the block's
+  front matter.
+{%- endcomment -%}
+{%- if page.waivers.size > 0 -%}
+<table class="attribute-table data-table">
+<thead><tr><th scope="col">Exception</th><th scope="col">When it applies</th><th scope="col">Approved by</th></tr></thead>
+<tbody>
+{%- for waiver in page.waivers %}
+<tr>
+<th scope="row">{{ waiver.title }}</th>
+<td data-label="When it applies">{{ waiver.description }}</td>
+<td data-label="Approved by">{{ waiver.approved_by }}</td>
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}

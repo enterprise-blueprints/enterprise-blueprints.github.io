@@ -59,6 +59,11 @@ FIELD_SPECS = {
     "events": FieldSpec("list", frozenset({"id", "name", "description", "raised_by"}), ("id", "name")),
     "measures": FieldSpec("list", frozenset({"name", "description"}), ("name",)),
     "maturity": FieldSpec("list", frozenset({"level", "description", "questions"}), ("level",)),
+    "obligations": FieldSpec("list", frozenset({"id", "statement", "level"}), ("id", "statement")),
+    "waivers": FieldSpec("list", frozenset({"title", "description", "approved_by"}), ("title",)),
+    "checks": FieldSpec("list", frozenset({"title", "description"}), ("title",)),
+    "evidence": FieldSpec("list", frozenset({"name", "description"}), ("name",)),
+    "tests": FieldSpec("list", frozenset({"title", "expected"}), ("title", "expected")),
 }
 DECISION_KEYS = {"decision", "accountable", "records"}
 BLOCK_OPTIONAL += list(FIELD_SPECS)
@@ -78,7 +83,7 @@ MISSION_OPTIONAL = [
 IMPLEMENTATION_REQUIRED = ["id", "title", "summary", "status", "relationships"]
 IMPLEMENTATION_OPTIONAL = ["technology", "layout"]
 
-RELATIONSHIP_KEYS = {"type", "target", "note"}
+RELATIONSHIP_KEYS = {"type", "target", "note", "obligations"}
 COMPONENT_KEYS = {"ref", "purpose", "stage", "notes"}
 STAGE_KEYS = {"id", "title", "summary"}
 ROLE_KEYS = {"name", "description"}
@@ -197,6 +202,7 @@ class Registries:
     sections: dict = field(default_factory=dict)
     kinds: dict = field(default_factory=dict)
     automation_levels: dict = field(default_factory=dict)
+    obligation_levels: dict = field(default_factory=dict)
 
 
 def load_registries(root: Path, report: Report) -> Registries | None:
@@ -258,13 +264,18 @@ def load_registries(root: Path, report: Report) -> Registries | None:
     check_mission_layout(block_types_file.get("mission_layout"), types, relationship_types, report)
     sections = load_sections(block_types_file, types, report)
     kinds = load_kinds(block_types_file, types, report)
-    automation_levels = block_types_file.get("automation_levels") or {}
-    if not isinstance(automation_levels, dict):
-        report.error("_data/block_types.yml", "'automation_levels' must be a mapping.")
-        automation_levels = {}
-    for key, definition in automation_levels.items():
-        if is_blank((definition or {}).get("label")):
-            report.error("_data/block_types.yml", f"automation level '{key}' is missing 'label'.")
+    level_sets = {}
+    for name in ("automation_levels", "obligation_levels"):
+        levels = block_types_file.get(name) or {}
+        if not isinstance(levels, dict):
+            report.error("_data/block_types.yml", f"'{name}' must be a mapping.")
+            levels = {}
+        for key, definition in levels.items():
+            if is_blank((definition or {}).get("label")):
+                report.error("_data/block_types.yml", f"{name} entry '{key}' is missing 'label'.")
+        level_sets[name] = levels
+    automation_levels = level_sets["automation_levels"]
+    obligation_levels = level_sets["obligation_levels"]
 
     for file_name, registry in (("statuses", statuses), ("scopes", scopes), ("domains", domains)):
         if not isinstance(registry, dict) or not registry:
@@ -272,7 +283,10 @@ def load_registries(root: Path, report: Report) -> Registries | None:
 
     if report.errors:
         return None
-    return Registries(types, groups, relationship_types, statuses, scopes, domains, sections, kinds, automation_levels)
+    return Registries(
+        types, groups, relationship_types, statuses, scopes, domains,
+        sections, kinds, automation_levels, obligation_levels,
+    )
 
 
 def load_sections(block_types_file: dict, types: dict, report: Report) -> dict:
@@ -553,6 +567,27 @@ def check_relationships(
                 f"but links a '{source_type}' to a '{target_type}'.",
             )
 
+        # A control's `enforces` relationship can name the policy's obligations it covers.
+        obligations = rel.get("obligations")
+        if obligations is not None:
+            if rel_type != "enforces":
+                report.error(where, f"({label}) lists 'obligations', which only an 'enforces' relationship can.")
+            elif not isinstance(obligations, list):
+                report.error(where, f"({label}) 'obligations' must be a list of obligation ids from {target}.")
+            else:
+                known = [
+                    o.get("id")
+                    for o in blocks_by_id[target].data.get("obligations") or []
+                    if isinstance(o, dict)
+                ]
+                for ob in obligations:
+                    if ob not in known:
+                        report.error(
+                            where,
+                            f"({label}) lists obligation '{ob}', which {target} doesn't have."
+                            + suggest(ob, [k for k in known if k]),
+                        )
+
 
 HIDDEN_TEXT = re.compile(
     r"\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}|<!--.*?-->|^```.*?^```",
@@ -704,6 +739,20 @@ def check_block_fields(
 
     if "operations" in allowed_fields:
         check_capability_model(record, registries, report)
+
+    if "obligations" in allowed_fields:
+        entry_ids(record, "obligations", report)
+        levels = registries.obligation_levels
+        for obligation in record.data.get("obligations") or []:
+            if not isinstance(obligation, dict):
+                continue
+            level = obligation.get("level")
+            if level is not None and level not in levels:
+                report.error(
+                    rel,
+                    f"obligation '{obligation.get('id')}' has level '{level}', which isn't defined in "
+                    f"_data/block_types.yml. Allowed: {', '.join(levels)}." + suggest(level, levels),
+                )
 
     exceptions = record.data.get("exceptions")
     if isinstance(exceptions, list) and "exceptions" in allowed_fields:

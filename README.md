@@ -179,7 +179,7 @@ Front matter fields:
 | `status` | yes | `planned`, `draft`, or `published`. |
 | `scope` | yes | `shared` (reusable across domains) or `domain` (meaningful within its domain). |
 | `domain` | yes | A key in `_data/domains.yml`. |
-| `relationships` | no | A list of `{type, target, note}`. Intrinsic relationships only. |
+| `relationships` | no | A list of `{type, target, note}`. Intrinsic relationships only. A control's `enforces` relationship can also list `obligations: [ids]` from the policy it enforces. |
 | `attributes` | entities only | A list of `{name, description}`, shown as a table under Key attributes. |
 | `trigger` | processes only | One sentence: what starts the process. Shown at the top of the Flow. |
 | `steps` | processes only | A list of `{id, title, role, description, uses, decisions}`, in order. `uses` lists capability IDs, which must also be `uses` relationships. Each capability's page links back to the steps that use it. `decisions` is a list of `{decision, accountable, records}`. |
@@ -191,6 +191,11 @@ Front matter fields:
 | `events` | capabilities only | A list of `{id, name, description, raised_by}`: what the capability announces. `raised_by` is the id of the operation that raises it; leave it out for events such as a deadline passing. |
 | `measures` | capabilities only | A list of `{name, description}`. |
 | `maturity` | capabilities only | A list of `{level, description, questions}`, lowest level first. `questions` help an organization tell whether it has reached the level. Capabilities keep their questions here, so they leave out the shared Questions to ask section. |
+| `obligations` | policies only | A list of `{id, level, statement}`. `level` is `must`, `must-not`, or `should`, from `obligation_levels` in `_data/block_types.yml`. Start each statement with a verb, because it reads after its level. The policy page shows which control enforces each obligation, and which have none yet. |
+| `waivers` | policies only | A list of `{title, description, approved_by}`: when the policy can be set aside, and who approves it. |
+| `checks` | controls only | A list of `{title, description}`, in order: what the control does, step by step. |
+| `evidence` | controls only | A list of `{name, description}`: the records the control leaves. |
+| `tests` | controls only | A list of `{title, expected}`: a situation to try, and the result that shows the control works. |
 | `kind` | controls only | `preventive`, `detective`, or `corrective`, from `kinds` in `_data/block_types.yml`. Shown as a badge. |
 
 The body is Markdown. The layout already shows the title and summary, so start with `##` headings. A `planned` stub may have an empty body. Draft and published blocks need one.

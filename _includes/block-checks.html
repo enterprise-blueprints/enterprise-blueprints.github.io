@@ -1,0 +1,19 @@
+{%- comment -%}
+  What a control does, step by step. Put it under "## How it works":
+    {% include block-checks.html %}
+  Reads `checks` ({title, description}), in order, from the block's front
+  matter.
+{%- endcomment -%}
+{%- if page.checks.size > 0 -%}
+<table class="attribute-table data-table">
+<thead><tr><th scope="col">Step</th><th scope="col">What happens</th></tr></thead>
+<tbody>
+{%- for check in page.checks %}
+<tr>
+<th scope="row"><span class="step-number" aria-hidden="true">{{ forloop.index }}</span>{{ check.title }}</th>
+<td data-label="What happens">{{ check.description }}</td>
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}

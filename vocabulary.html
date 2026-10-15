@@ -86,6 +86,16 @@ summary: The building block types, relationship types, and statuses used across 
     </dl>
   </section>
 
+  <section class="section" id="obligation-levels" aria-labelledby="obligation-levels-heading">
+    <h2 id="obligation-levels-heading">Obligation levels</h2>
+    <p class="section-note">Each obligation a policy states has a level, which says how strong it is.</p>
+    <dl class="term-list">
+      {%- for level in site.data.block_types.obligation_levels %}
+      <div><dt><span class="obligation-level obligation-level--{{ level[0] }}">{{ level[1].label }}</span> <code>{{ level[0] }}</code></dt><dd>{{ level[1].description }}</dd></div>
+      {%- endfor %}
+    </dl>
+  </section>
+
   <section class="section" aria-labelledby="relationships-heading">
     <h2 id="relationships-heading">Relationship types</h2>
     <p class="section-note">Each relationship reads one way from the first block and the other way from the second. For example, Case Management <em>manages</em> Case, and Case is <em>managed by</em> Case Management.</p>

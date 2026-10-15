@@ -70,6 +70,14 @@ FIELD_EXAMPLES = {
         "    raised_by: create   # an operation id; leave out for events like a deadline passing"
     ),
     "measures": "measures:\n  - name: A measure\n    description: What it shows.",
+    "obligations": (
+        "obligations:\n  - id: first-obligation\n    level: must   # must | must-not | should\n"
+        "    statement: Do something, starting with a verb."
+    ),
+    "waivers": "waivers:\n  - title: An exception\n    description: When it applies.\n    approved_by: Who approves it",
+    "checks": "checks:\n  - title: First step\n    description: What the control does.",
+    "evidence": "evidence:\n  - name: A log\n    description: What it records.",
+    "tests": "tests:\n  - title: A situation to try.\n    expected: The result that shows the control works.",
     "maturity": (
         "maturity:\n  - level: Basic\n    description: What it looks like.\n"
         "    questions:\n      - A question that shows whether you're at this level?\n"

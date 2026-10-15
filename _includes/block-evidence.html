@@ -1,0 +1,18 @@
+{%- comment -%}
+  The records a control leaves. Put it under "## Evidence it produces":
+    {% include block-evidence.html %}
+  Reads `evidence` ({name, description}) from the block's front matter.
+{%- endcomment -%}
+{%- if page.evidence.size > 0 -%}
+<table class="attribute-table data-table">
+<thead><tr><th scope="col">Evidence</th><th scope="col">What it records</th></tr></thead>
+<tbody>
+{%- for item in page.evidence %}
+<tr>
+<th scope="row">{{ item.name }}</th>
+<td data-label="What it records">{{ item.description }}</td>
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}

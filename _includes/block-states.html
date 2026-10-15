@@ -21,7 +21,7 @@
 <tr id="state-{{ state.id }}">
 <th scope="row">{{ state.name }}</th>
 <td data-label="What it means">{{ state.description }}</td>
-<td data-label="Moves to">{% for move in moves %}{% assign move_to = page.states | where: "id", move.to | first %}{% assign move_op = nil %}{% if move.via %}{% assign move_op = page.operations | where: "id", move.via | first %}{% endif %}<span class="data-table__line"><a href="#state-{{ move.to }}">{{ move_to.name }}</a>{% if move_op %} <span class="muted">by <a href="#op-{{ move_op.id }}">{{ move_op.title | downcase }}</a></span>{% endif %}</span>{% endfor %}</td>
+<td data-label="Moves to">{% for move in moves %}{% assign move_to = page.states | where: "id", move.to | first %}{% assign move_op = nil %}{% if move.via %}{% assign move_op = page.operations | where: "id", move.via | first %}{% endif %}<span class="data-table__line"><a class="data-table__state" href="#state-{{ move.to }}">{{ move_to.name }}</a>{% if move_op %} <span class="muted">by <a href="#op-{{ move_op.id }}">{{ move_op.title | downcase }}</a></span>{% endif %}</span>{% endfor %}</td>
 </tr>
 {%- endfor %}
 </tbody>

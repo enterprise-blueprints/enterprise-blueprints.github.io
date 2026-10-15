@@ -644,6 +644,37 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .prose .attribute-table th[scope="row"] { font-weight: 650; white-space: nowrap; }
 @media (max-width: 45.99rem) { .prose .attribute-table th[scope="row"] { white-space: normal; } }
 
+/* Tabs for a block's structured sections, added by site.js. */
+.prose .tabs { margin: 2.25rem 0 0; }
+.tabs__list { display: flex; flex-wrap: wrap; gap: .25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+.tabs__tab {
+  appearance: none;
+  margin: 0 0 -1px;
+  padding: .6rem .85rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tabs__tab:hover { color: var(--text); }
+.tabs__tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--tc, var(--accent)); }
+.tabs__tab:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.tabs__count { display: inline-block; min-width: 1.4em; padding: .05em .4em; border-radius: 999px; background: var(--surface-muted); color: var(--text-muted); font-size: .75rem; font-weight: 650; text-align: center; }
+.tabs__tab[aria-selected="true"] .tabs__count { background: var(--tc-bg, var(--accent-soft)); color: var(--tc, var(--accent)); }
+.tabs__panel > :first-child + * { margin-top: 0; }
+/* A link to a tabbed section (such as #states) lands on its hidden heading;
+   the margin keeps the tab bar in view above it. */
+.tabs__panel > h2 { scroll-margin-top: 6rem; }
+.prose .tabs__panel > h2.visually-hidden { margin: 0; }
+@media print {
+  .tabs__list { display: none; }
+  .tabs__panel[hidden] { display: block !important; }
+  .tabs__panel > h2.visually-hidden { position: static; width: auto; height: auto; clip: auto; margin: 2rem 0 .5rem; }
+}
+
 /* Tables of a capability's operations, states, events, and measures. Rows
    link to each other by id, and the linked row is highlighted. On narrow
    screens each row becomes a small card, with the column names as labels. */
@@ -651,7 +682,12 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .prose .data-table tr:target > * { background: var(--accent-soft); }
 .prose .data-table td { font-size: .9375rem; }
 .prose .data-table td:empty::after { content: "—"; color: var(--text-muted); }
-.data-table__line { display: block; white-space: nowrap; }
+.data-table__line { display: block; }
+.data-table__line + .data-table__line { margin-top: .2rem; }
+/* State names never break inside; a move can break only after its arrow. */
+.data-table__state { white-space: nowrap; }
+/* The description gets room first; links in the other columns wrap instead. */
+@media (min-width: 46rem) { .prose .data-table td[data-label="What it does"], .prose .data-table td[data-label="What it means"] { min-width: 13rem; } }
 @media (max-width: 45.99rem) {
   .prose .data-table, .prose .data-table tbody { display: block; }
   .prose .data-table thead { display: none; }
@@ -664,8 +700,24 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
   .prose .data-table td:empty { display: none; }
   .prose .data-table tr:target { background: var(--accent-soft); }
   .prose .data-table tr:target > * { background: transparent; }
-  .data-table__line { white-space: normal; }
 }
+
+/* Cards like those on a Mission Blueprint page, used for a capability's
+   maturity levels, where each item has several parts. */
+.prose .block-items { margin: 1rem 0 1.25rem; padding: 0; }
+.prose .block-items > li { margin: 0; scroll-margin-top: 1.5rem; }
+.prose .block-items .stack-card__uses { margin: .2rem 0 0; padding: 0; }
+.prose .block-items .stack-card__uses li { margin: 0; }
+.block-items .stack-card__name { margin: 0; }
+/* How strong a policy's obligation is. */
+.obligation-level { display: inline-block; font-size: .75rem; font-weight: 700; white-space: nowrap; padding: .2em .55em; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); color: var(--text); }
+.obligation-level--must { color: var(--t-policy); background: var(--t-policy-bg); border-color: transparent; }
+.obligation-level--must-not { color: var(--danger-text); background: var(--danger-bg); border-color: var(--danger-text); }
+.obligation-level--should { color: var(--text-muted); background: transparent; }
+
+/* Numbered steps, and row labels long enough to wrap. */
+.step-number { display: inline-flex; align-items: center; justify-content: center; width: 1.4rem; height: 1.4rem; margin-right: .5rem; border-radius: 50%; background: var(--tc-bg, var(--accent-soft)); color: var(--tc, var(--accent)); font-size: .75rem; font-weight: 700; vertical-align: .05em; }
+.prose .data-table th.data-table__plain { white-space: normal; font-weight: 600; min-width: 12rem; }
 
 /* Who may perform a capability's operation. */
 .automation { display: inline-block; font-size: .75rem; font-weight: 650; white-space: nowrap; padding: .2em .55em; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); color: var(--text-muted); }
@@ -674,14 +726,10 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .automation--people-only { color: var(--text); background: var(--surface-muted); }
 
 /* Maturity levels, lowest first. The dots show how far up the scale a level is. */
-.maturity-meter { display: flex; gap: .25rem; margin-bottom: .35rem; }
+.maturity-meter { display: inline-flex; gap: .25rem; align-self: center; }
+
 .maturity-meter__dot { width: .55rem; height: .55rem; border-radius: 50%; border: 1.5px solid var(--tc, var(--accent)); box-sizing: border-box; }
 .maturity-meter__dot.is-on { background: var(--tc, var(--accent)); }
-.prose .maturity-questions { margin: 0; padding-left: 1.1rem; }
-.prose .maturity-questions li { margin: 0 0 .3rem; }
-.prose .maturity-questions li:last-child { margin-bottom: 0; }
-.prose .maturity-table td:nth-child(2) { width: 38%; }
-@media (max-width: 45.99rem) { .prose .maturity-table td:nth-child(2) { width: auto; } }
 
 /* A process flow: start, numbered steps with their decisions, end. A line
    joins each node to the one above it, lined up with the step numbers. */

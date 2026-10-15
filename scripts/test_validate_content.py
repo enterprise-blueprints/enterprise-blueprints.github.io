@@ -460,6 +460,68 @@ class CapabilityModelRules(ValidatorTestCase):
         self.assertIn("'operations' isn't used by entity blocks", warnings)
 
 
+POLICY = """\
+---
+id: policy.example
+type: policy
+title: Example Policy
+summary: Limits access.
+status: planned
+scope: shared
+domain: cross-cutting
+obligations:
+  - id: need-to-know
+    level: must
+    statement: Grant access only to those who need it.
+---
+"""
+
+CONTROL = """\
+---
+id: control.example
+type: control
+kind: preventive
+title: Example Control
+summary: Checks access.
+status: planned
+scope: shared
+domain: cross-cutting
+relationships:
+  - type: enforces
+    target: policy.example
+    obligations: [need-to-know]
+---
+"""
+
+
+class GovernanceRules(ValidatorTestCase):
+    def setUp(self):
+        super().setUp()
+        self.write("_blocks/policy.example.md", POLICY)
+        self.write("_blocks/control.example.md", CONTROL)
+
+    def test_control_may_list_obligations_it_enforces(self):
+        self.assertEqual(self.errors(), "")
+
+    def test_listed_obligation_must_exist_on_the_policy(self):
+        self.write("_blocks/control.example.md", CONTROL.replace("[need-to-know]", "[need-to-knwo]"))
+        self.assertFails("lists obligation 'need-to-knwo', which policy.example doesn't have", "Did you mean 'need-to-know'?")
+
+    def test_only_enforces_may_list_obligations(self):
+        self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT.replace(
+            "    target: entity.case\n", "    target: entity.case\n    obligations: [need-to-know]\n"))
+        self.assertFails("lists 'obligations', which only an 'enforces' relationship can")
+
+    def test_unknown_obligation_level(self):
+        self.write("_blocks/policy.example.md", POLICY.replace("level: must", "level: shall"))
+        self.assertFails("has level 'shall', which isn't defined")
+
+    def test_tests_need_an_expected_result(self):
+        self.write("_blocks/control.example.md", CONTROL.replace(
+            "---\n", "---\n", 1).replace("    obligations: [need-to-know]\n", "    obligations: [need-to-know]\ntests:\n  - title: Someone asks.\n"))
+        self.assertFails("tests #1 needs 'title' and 'expected'")
+
+
 class LifecycleProcessRules(ValidatorTestCase):
     def test_lifecycle_process_must_be_a_process(self):
         self.write("_missions/example.md", MISSION.replace("lifecycle:\n", "lifecycle_process: capability.case-management\nlifecycle:\n"))

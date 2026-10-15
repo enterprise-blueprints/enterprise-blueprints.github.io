@@ -103,8 +103,11 @@ layout: default
       {%- endif %}
 
       {%- assign body = content | strip -%}
+      {%- capture tab_sections -%}
+        {%- for s in site.data.block_types.type_sections[page.type] -%}{%- if s.tab -%}{{ s.heading }}|{%- endif -%}{%- endfor -%}
+      {%- endcapture -%}
       {%- if body != "" %}
-      <div class="prose">
+      <div class="prose"{% if tab_sections != "" %} data-tab-sections="{{ tab_sections | escape }}" data-tab-type="{{ page.type }}"{% endif %}>
 {{ content }}
       </div>
       {%- endif %}
