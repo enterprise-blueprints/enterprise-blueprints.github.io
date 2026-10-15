@@ -634,6 +634,112 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .lifecycle__across-title { font-weight: 700; margin-bottom: .6rem; }
 .lifecycle__across .lifecycle__blocks { flex-direction: row; flex-wrap: wrap; gap: .5rem 1.5rem; }
 
+/* Structured sections on building block pages */
+
+.block-kind { color: var(--tc); background: transparent; border: 1px solid currentColor; }
+.section-name--required { font-weight: 700; }
+
+/* Two short columns always fit, so this table fills the width instead of scrolling. */
+.prose .attribute-table { display: table; }
+.prose .attribute-table th[scope="row"] { font-weight: 650; white-space: nowrap; }
+@media (max-width: 45.99rem) { .prose .attribute-table th[scope="row"] { white-space: normal; } }
+
+/* Tables of a capability's operations, states, events, and measures. Rows
+   link to each other by id, and the linked row is highlighted. On narrow
+   screens each row becomes a small card, with the column names as labels. */
+.prose .data-table tr { scroll-margin-top: 1.5rem; }
+.prose .data-table tr:target > * { background: var(--accent-soft); }
+.prose .data-table td { font-size: .9375rem; }
+.prose .data-table td:empty::after { content: "—"; color: var(--text-muted); }
+.data-table__line { display: block; white-space: nowrap; }
+@media (max-width: 45.99rem) {
+  .prose .data-table, .prose .data-table tbody { display: block; }
+  .prose .data-table thead { display: none; }
+  .prose .data-table tr { display: block; padding: .7rem .85rem; border-bottom: 1px solid var(--border); }
+  .prose .data-table tr:last-child { border-bottom: 0; }
+  .prose .data-table th, .prose .data-table td { display: block; padding: 0; border: 0; }
+  .prose .data-table th[scope="row"] { margin-bottom: .2rem; }
+  .prose .data-table td { margin-top: .3rem; }
+  .prose .data-table td::before { content: attr(data-label); display: block; font-size: .75rem; font-weight: 650; letter-spacing: .03em; text-transform: uppercase; color: var(--text-muted); }
+  .prose .data-table td:empty { display: none; }
+  .prose .data-table tr:target { background: var(--accent-soft); }
+  .prose .data-table tr:target > * { background: transparent; }
+  .data-table__line { white-space: normal; }
+}
+
+/* Who may perform a capability's operation. */
+.automation { display: inline-block; font-size: .75rem; font-weight: 650; white-space: nowrap; padding: .2em .55em; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); color: var(--text-muted); }
+.automation--allowed { color: var(--t-capability); background: var(--t-capability-bg); border-color: transparent; }
+.automation--with-review { color: var(--text); background: var(--warning-bg); border-color: var(--warning-border); }
+.automation--people-only { color: var(--text); background: var(--surface-muted); }
+
+/* Maturity levels, lowest first. The dots show how far up the scale a level is. */
+.maturity-meter { display: flex; gap: .25rem; margin-bottom: .35rem; }
+.maturity-meter__dot { width: .55rem; height: .55rem; border-radius: 50%; border: 1.5px solid var(--tc, var(--accent)); box-sizing: border-box; }
+.maturity-meter__dot.is-on { background: var(--tc, var(--accent)); }
+.prose .maturity-questions { margin: 0; padding-left: 1.1rem; }
+.prose .maturity-questions li { margin: 0 0 .3rem; }
+.prose .maturity-questions li:last-child { margin-bottom: 0; }
+.prose .maturity-table td:nth-child(2) { width: 38%; }
+@media (max-width: 45.99rem) { .prose .maturity-table td:nth-child(2) { width: auto; } }
+
+/* A process flow: start, numbered steps with their decisions, end. A line
+   joins each node to the one above it, lined up with the step numbers. */
+.flow { --flow-gap: 1.1rem; --flow-x: calc(1.25rem + .8rem - 1px); margin: 1.25rem 0 1rem; }
+.prose .process-steps { display: grid; gap: var(--flow-gap); padding: 0; margin: var(--flow-gap) 0; }
+.prose .flow > :first-child { margin-top: 0; }
+.prose .flow > :last-child { margin-bottom: 0; }
+.prose .process-steps > li { margin-bottom: 0; }
+/* One column: title, role, and description, then decisions, then a row of the capabilities it uses. */
+.process-steps .lifecycle__stage { position: relative; grid-template-columns: minmax(0, 1fr); border-left-color: var(--tc, var(--accent)); }
+.flow-uses { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 1rem; margin-left: 2.15rem; padding-top: .75rem; border-top: 1px dashed var(--border); font-size: .875rem; }
+.process-steps .flow-uses .lifecycle__blocks { flex-direction: row; flex-wrap: wrap; gap: .5rem 1.5rem; margin: 0; padding: 0; border: 0; }
+.prose .flow-uses li { margin: 0; }
+.process-steps > li::before, .flow__terminal--end::before {
+  content: "";
+  position: absolute;
+  left: var(--flow-x);
+  top: calc(-1 * var(--flow-gap) - 1px);
+  height: var(--flow-gap);
+  width: 2px;
+  background: var(--border-strong);
+}
+.flow > .process-steps:first-child > li:first-child::before { display: none; }
+.flow__terminal {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  padding: .8rem 1.25rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--tc, var(--accent));
+  border-radius: var(--radius);
+  background: var(--tc-bg, var(--surface-muted));
+}
+.flow__terminal p { margin: 0; line-height: 1.5; }
+.flow__marker { flex: none; display: inline-flex; width: 1.6rem; height: 1.6rem; align-items: center; justify-content: center; }
+.flow__marker::after { content: ""; width: .8rem; height: .8rem; border-radius: 50%; background: var(--tc, var(--accent)); }
+.flow__terminal--end .flow__marker::after { width: .55rem; height: .55rem; background: transparent; box-shadow: 0 0 0 2px var(--tc, var(--accent)), 0 0 0 4px var(--tc-bg, var(--surface-muted)), 0 0 0 6px var(--tc, var(--accent)); }
+.flow__terminal-label { display: block; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--tc, var(--text-muted)); }
+
+/* Decisions inside a step span the whole card. */
+.prose .flow-decisions { grid-column: 1 / -1; display: grid; gap: .6rem; margin: 0 0 0 2.15rem; padding: .75rem 0 0; border-top: 1px dashed var(--border); list-style: none; }
+.prose .flow-decision { margin: 0; }
+.flow-decision__title { display: flex; align-items: baseline; gap: .5rem; margin: 0; font-weight: 650; font-size: .9375rem; }
+.flow-decision__icon { flex: none; width: .6rem; height: .6rem; transform: translateY(-.05rem) rotate(45deg); border: 2px solid var(--tc, var(--accent)); border-radius: 2px; }
+.flow-decision__meta { margin: .15rem 0 0 1.1rem; font-size: .875rem; color: var(--text-muted); }
+.flow-decision__label { font-weight: 650; color: var(--text); }
+
+.prose .flow-exceptions { display: grid; gap: .9rem; margin: 1rem 0 1.25rem; padding: 0; list-style: none; }
+.prose .flow-exceptions li { margin: 0; padding-left: 1rem; border-left: 2px solid var(--border-strong); }
+.flow-exceptions__title { margin: 0; font-weight: 650; }
+.flow-exceptions__description { margin: .1rem 0 0; }
+.flow-exceptions__next { margin: .2rem 0 0; font-size: .875rem; color: var(--text-muted); }
+.process-steps .lifecycle__title, .process-steps .lifecycle__summary { margin-top: 0; }
+.lifecycle__role { margin: 0 0 .35rem 2.15rem; font-size: .875rem; font-weight: 600; }
+.lifecycle__role-label { color: var(--text-muted); font-weight: 500; }
+.process-steps__note { margin-top: .75rem; }
+
 .two-up { display: grid; gap: 2rem; }
 @media (min-width: 46rem) { .two-up { grid-template-columns: 1fr 1fr; } }
 

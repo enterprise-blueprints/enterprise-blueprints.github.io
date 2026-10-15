@@ -259,6 +259,238 @@ class RegistryErrors(ValidatorTestCase):
         self.assertFails("uses unknown relationship 'helps'")
 
 
+PROCESS = """\
+---
+id: process.example
+type: process
+title: Example Process
+summary: Work a case.
+status: draft
+scope: shared
+domain: cross-cutting
+relationships:
+  - type: uses
+    target: capability.case-management
+trigger: A request arrives.
+steps:
+  - id: open
+    title: Open the case
+    uses: [capability.case-management]
+    decisions:
+      - decision: Accept the request
+        accountable: Supervisor
+outcome: The case is open.
+---
+## Definition
+
+A process.
+
+## Flow
+
+{% include block-flow.html %}
+
+## Boundaries
+
+Not a capability.
+"""
+
+
+class SectionRules(ValidatorTestCase):
+    def warnings(self) -> str:
+        return "\n".join(validate_content.validate(self.root).warnings)
+
+    def test_well_formed_process_has_no_warnings(self):
+        self.write("_blocks/process.example.md", PROCESS)
+        self.assertEqual(self.errors(), "")
+        self.assertNotIn("process.example", self.warnings())
+
+    def test_missing_required_section_is_flagged(self):
+        self.write("_blocks/process.example.md", PROCESS.replace("## Boundaries\n\nNot a capability.\n", ""))
+        self.assertIn("is missing the '## Boundaries' section", self.warnings())
+
+    def test_unknown_section_is_flagged(self):
+        self.write("_blocks/process.example.md", PROCESS.replace("## Boundaries", "## Responsibilities"))
+        self.assertIn("'## Responsibilities' isn't a section for process blocks", self.warnings())
+
+    def test_sections_out_of_order_are_flagged(self):
+        text = PROCESS.replace("## Definition\n\nA process.\n\n", "") + "\n## Definition\n\nA process.\n"
+        self.write("_blocks/process.example.md", text)
+        self.assertIn("sections are out of order", self.warnings())
+
+    def test_headings_inside_comments_are_ignored(self):
+        self.write("_blocks/process.example.md", PROCESS + "\n<!--\n## Leftover\n-->\n")
+        self.assertNotIn("Leftover", self.warnings())
+
+    def test_planned_stub_needs_no_sections(self):
+        self.write("_blocks/process.example.md", PROCESS.replace("status: draft", "status: planned").replace("## Steps", "## Anything"))
+        self.assertNotIn("process.example", self.warnings())
+
+    def test_field_without_its_include_is_flagged(self):
+        self.write("_blocks/process.example.md", PROCESS.replace("{% include block-flow.html %}", "Some steps."))
+        self.assertIn("doesn't show them. Put {% include block-flow.html %}", self.warnings())
+
+    def test_text_field_must_be_text(self):
+        self.write("_blocks/process.example.md", PROCESS.replace("trigger: A request arrives.", "trigger:\n  - A request"))
+        self.assertFails("'trigger' must be a sentence of plain text")
+
+    def test_decision_needs_a_decision(self):
+        self.write("_blocks/process.example.md", PROCESS.replace("      - decision: Accept the request\n", "      - records: Something\n"))
+        self.assertFails("step 'open': decision #1 needs a 'decision'")
+
+    def test_exception_must_continue_at_a_step(self):
+        self.write("_blocks/process.example.md", PROCESS.replace(
+            "outcome: The case is open.\n",
+            "outcome: The case is open.\nexceptions:\n  - title: Rework\n    continues_at: opne\n",
+        ))
+        self.assertFails("continues at 'opne', which isn't one of this process's steps", "Did you mean 'open'?")
+
+    def test_field_on_the_wrong_type_is_flagged(self):
+        self.write("_blocks/entity.case.md", CASE.replace("domain: cross-cutting\n", "domain: cross-cutting\nsteps:\n  - id: a\n    title: A\n"))
+        self.assertIn("'steps' isn't used by entity blocks", self.warnings())
+
+    def test_entries_need_their_required_keys(self):
+        self.write("_blocks/process.example.md", PROCESS.replace("  - id: open\n", "  - id:\n"))
+        self.assertFails("steps #1 needs 'id' and 'title'")
+
+    def test_step_must_use_a_related_capability(self):
+        self.write("_blocks/capability.other.md", CASE_MANAGEMENT.replace("capability.case-management", "capability.other"))
+        self.write("_blocks/process.example.md", PROCESS.replace("uses: [capability.case-management]", "uses: [capability.other]"))
+        self.assertFails("uses 'capability.other', but the process has no 'uses' relationship to it")
+
+    def test_step_must_use_a_capability(self):
+        self.write("_blocks/process.example.md", PROCESS.replace("uses: [capability.case-management]", "uses: [entity.case]"))
+        self.assertFails("uses 'entity.case', which isn't a capability")
+
+    def test_duplicate_step_ids(self):
+        self.write("_blocks/process.example.md", PROCESS.replace(
+            "    uses: [capability.case-management]\n",
+            "    uses: [capability.case-management]\n  - id: open\n    title: Again\n",
+        ))
+        self.assertFails("step 'open': id is used more than once")
+
+    def test_unknown_control_kind(self):
+        self.write("_blocks/control.example.md", """\
+            ---
+            id: control.example
+            type: control
+            kind: preventative
+            title: Example Control
+            summary: Checks things.
+            status: planned
+            scope: shared
+            domain: cross-cutting
+            ---
+            """)
+        self.assertFails("kind 'preventative' is not defined", "Did you mean 'preventive'?")
+
+
+CAPABILITY_MODEL = """\
+operations:
+  - id: open
+    title: Open
+    automation: allowed
+  - id: close
+    title: Close
+    automation: people-only
+states:
+  - id: active
+    name: Active
+  - id: closed
+    name: Closed
+transitions:
+  - { from: active, to: closed, via: close }
+every_operation:
+  - Records who performed it.
+events:
+  - id: closed
+    name: Case closed
+    raised_by: close
+"""
+
+
+class CapabilityModelRules(ValidatorTestCase):
+    def write_capability(self, model: str = CAPABILITY_MODEL) -> None:
+        self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT.replace("---\nA definition.", model + "---\nA definition."))
+
+    def test_well_formed_model_is_valid(self):
+        self.write_capability()
+        self.assertEqual(self.errors(), "")
+
+    def test_unknown_automation_level(self):
+        self.write_capability(CAPABILITY_MODEL.replace("automation: allowed", "automation: allow"))
+        self.assertFails("has automation 'allow', which isn't defined", "Did you mean 'allowed'?")
+
+    def test_transition_must_join_known_states(self):
+        self.write_capability(CAPABILITY_MODEL.replace("to: closed,", "to: done,"))
+        self.assertFails("'to: done' isn't one of the states")
+
+    def test_transition_must_use_a_known_operation(self):
+        self.write_capability(CAPABILITY_MODEL.replace("via: close", "via: shut"))
+        self.assertFails("'via: shut' isn't one of the operations")
+
+    def test_duplicate_operation_ids(self):
+        self.write_capability(CAPABILITY_MODEL.replace("  - id: close\n", "  - id: open\n"))
+        self.assertFails("operations id 'open' is used more than once")
+
+    def test_every_operation_must_be_sentences(self):
+        self.write_capability(CAPABILITY_MODEL.replace("  - Records who performed it.\n", "  - title: Not a sentence\n"))
+        self.assertFails("'every_operation' must be a list of sentences")
+
+    def test_event_must_be_raised_by_a_known_operation(self):
+        self.write_capability(CAPABILITY_MODEL.replace("raised_by: close", "raised_by: clsoe"))
+        self.assertFails("is raised by 'clsoe', which isn't one of the operations", "Did you mean 'close'?")
+
+    def test_maturity_questions_must_be_a_list(self):
+        self.write_capability(CAPABILITY_MODEL + "maturity:\n  - level: Basic\n    questions: Is it working?\n")
+        self.assertFails("maturity #1 'questions' must be a list of questions")
+
+    def test_capability_omits_questions_to_ask(self):
+        self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT.replace(
+            "A definition.", "## Definition\n\nAbility.\n\n## Operations\n\nOps.\n\n## Boundaries\n\nLimits.\n\n## Questions to ask\n\n- One?"))
+        warnings = "\n".join(validate_content.validate(self.root).warnings)
+        self.assertIn("'## Questions to ask' isn't a section for capability blocks", warnings)
+
+    def test_event_needs_an_id(self):
+        self.write_capability(CAPABILITY_MODEL.replace("  - id: closed\n    name: Case closed", "  - name: Case closed"))
+        self.assertFails("events #1 needs 'id' and 'name'")
+
+    def test_capability_fields_on_an_entity_are_flagged(self):
+        self.write("_blocks/entity.case.md", CASE.replace("domain: cross-cutting\n", "domain: cross-cutting\n" + CAPABILITY_MODEL))
+        warnings = "\n".join(validate_content.validate(self.root).warnings)
+        self.assertIn("'operations' isn't used by entity blocks", warnings)
+
+
+class LifecycleProcessRules(ValidatorTestCase):
+    def test_lifecycle_process_must_be_a_process(self):
+        self.write("_missions/example.md", MISSION.replace("lifecycle:\n", "lifecycle_process: capability.case-management\nlifecycle:\n"))
+        self.assertFails("lifecycle_process 'capability.case-management' must be a process block")
+
+    def test_lifecycle_process_must_exist(self):
+        self.write("_missions/example.md", MISSION.replace("lifecycle:\n", "lifecycle_process: process.missing\nlifecycle:\n"))
+        self.assertFails("lifecycle_process 'process.missing' does not exist")
+
+
+class SectionRegistryRules(ValidatorTestCase):
+    def test_section_field_must_be_known(self):
+        path = self.root / "_data/block_types.yml"
+        text = path.read_text(encoding="utf-8")
+        path.write_text(text.replace("fields: [attributes]", "fields: [phases]"), encoding="utf-8")
+        self.assertFails("uses unknown field 'phases'")
+
+    def test_omitted_section_must_be_a_shared_section(self):
+        path = self.root / "_data/block_types.yml"
+        text = path.read_text(encoding="utf-8")
+        path.write_text(text.replace("entity: [In practice,", "entity: [In practise,"), encoding="utf-8")
+        self.assertFails("names 'In practise', which isn't a shared section", "Did you mean 'In practice'?")
+
+
+class EntitySections(ValidatorTestCase):
+    def test_entity_may_not_use_a_section_it_omits(self):
+        self.write("_blocks/entity.case.md", CASE.replace("A definition.", "## Definition\n\nA matter.\n\n## In practice\n\nUsed somewhere."))
+        warnings = "\n".join(validate_content.validate(self.root).warnings)
+        self.assertIn("'## In practice' isn't a section for entity blocks", warnings)
+
+
 class ImplementationRules(ValidatorTestCase):
     GUIDE = """\
     ---

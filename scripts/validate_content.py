@@ -31,7 +31,37 @@ ID_PATTERN = re.compile(r"^[a-z][a-z0-9]*\.[a-z0-9]+(?:-[a-z0-9]+)*$")
 SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 BLOCK_REQUIRED = ["id", "type", "title", "summary", "status", "domain", "scope"]
-BLOCK_OPTIONAL = ["relationships", "layout"]
+BLOCK_OPTIONAL = ["relationships", "layout", "kind"]
+
+@dataclass
+class FieldSpec:
+    """The shape of a structured front matter field (see `fields` in _data/block_types.yml).
+
+    A "text" field is one plain string. A "strings" field is a list of plain
+    strings. A "list" field is a list of mappings, each allowed `keys`, of
+    which `required` must be filled in.
+    """
+    kind: str
+    keys: frozenset = frozenset()
+    required: tuple = ()
+
+
+FIELD_SPECS = {
+    "attributes": FieldSpec("list", frozenset({"name", "description"}), ("name",)),
+    "trigger": FieldSpec("text"),
+    "outcome": FieldSpec("text"),
+    "steps": FieldSpec("list", frozenset({"id", "title", "description", "role", "uses", "decisions"}), ("id", "title")),
+    "exceptions": FieldSpec("list", frozenset({"title", "description", "continues_at"}), ("title",)),
+    "operations": FieldSpec("list", frozenset({"id", "title", "description", "automation"}), ("id", "title")),
+    "states": FieldSpec("list", frozenset({"id", "name", "description"}), ("id", "name")),
+    "transitions": FieldSpec("list", frozenset({"from", "to", "via"}), ("from", "to")),
+    "every_operation": FieldSpec("strings"),
+    "events": FieldSpec("list", frozenset({"id", "name", "description", "raised_by"}), ("id", "name")),
+    "measures": FieldSpec("list", frozenset({"name", "description"}), ("name",)),
+    "maturity": FieldSpec("list", frozenset({"level", "description", "questions"}), ("level",)),
+}
+DECISION_KEYS = {"decision", "accountable", "records"}
+BLOCK_OPTIONAL += list(FIELD_SPECS)
 
 MISSION_REQUIRED = ["id", "title", "summary", "status", "components"]
 MISSION_OPTIONAL = [
@@ -39,6 +69,7 @@ MISSION_OPTIONAL = [
     "outcomes",
     "lifecycle",
     "lifecycle_note",
+    "lifecycle_process",
     "roles",
     "experience_ideas",
     "layout",
@@ -84,11 +115,11 @@ class Report:
         self.warnings.append(f"{where}: {message}")
 
 
-def suggest(value: object, options) -> str:
+def suggest(value: object, options, cutoff: float = 0.6) -> str:
     """Return a ' Did you mean ...?' hint for a likely typo, or ''."""
     if not isinstance(value, str):
         return ""
-    matches = difflib.get_close_matches(value, list(options), n=1, cutoff=0.6)
+    matches = difflib.get_close_matches(value, list(options), n=1, cutoff=cutoff)
     return f" Did you mean '{matches[0]}'?" if matches else ""
 
 
@@ -108,7 +139,7 @@ def is_blank(value: object) -> bool:
 
 def split_front_matter(text: str) -> tuple[str, str] | None:
     """Split a Jekyll document into (front matter, body)."""
-    text = text.lstrip("﻿")
+    text = text.lstrip("ï»¿")
     match = re.match(r"^---[ \t]*\r?\n(.*?)\r?\n---[ \t]*(?:\r?\n|$)(.*)$", text, re.S)
     if not match:
         return None
@@ -162,6 +193,10 @@ class Registries:
     statuses: dict
     scopes: dict
     domains: dict
+    # Each type's full section list, in page order: before + type + after.
+    sections: dict = field(default_factory=dict)
+    kinds: dict = field(default_factory=dict)
+    automation_levels: dict = field(default_factory=dict)
 
 
 def load_registries(root: Path, report: Report) -> Registries | None:
@@ -221,6 +256,15 @@ def load_registries(root: Path, report: Report) -> Registries | None:
                     )
 
     check_mission_layout(block_types_file.get("mission_layout"), types, relationship_types, report)
+    sections = load_sections(block_types_file, types, report)
+    kinds = load_kinds(block_types_file, types, report)
+    automation_levels = block_types_file.get("automation_levels") or {}
+    if not isinstance(automation_levels, dict):
+        report.error("_data/block_types.yml", "'automation_levels' must be a mapping.")
+        automation_levels = {}
+    for key, definition in automation_levels.items():
+        if is_blank((definition or {}).get("label")):
+            report.error("_data/block_types.yml", f"automation level '{key}' is missing 'label'.")
 
     for file_name, registry in (("statuses", statuses), ("scopes", scopes), ("domains", domains)):
         if not isinstance(registry, dict) or not registry:
@@ -228,7 +272,93 @@ def load_registries(root: Path, report: Report) -> Registries | None:
 
     if report.errors:
         return None
-    return Registries(types, groups, relationship_types, statuses, scopes, domains)
+    return Registries(types, groups, relationship_types, statuses, scopes, domains, sections, kinds, automation_levels)
+
+
+def load_sections(block_types_file: dict, types: dict, report: Report) -> dict:
+    """Build each type's ordered section list from block_sections and type_sections."""
+    where = "_data/block_types.yml"
+    shared = block_types_file.get("block_sections")
+    if not isinstance(shared, dict):
+        report.error(where, "must contain 'block_sections' with 'before' and 'after' lists.")
+        return {}
+    per_type = block_types_file.get("type_sections") or {}
+    for type_name in per_type:
+        if type_name not in types:
+            report.error(where, f"type_sections lists unknown type '{type_name}'." + suggest(type_name, types))
+
+    def entries(value, label):
+        if value is None:
+            return []
+        if not isinstance(value, list):
+            report.error(where, f"{label} must be a list of sections.")
+            return []
+        good = []
+        for index, section in enumerate(value, start=1):
+            if not isinstance(section, dict) or is_blank(section.get("heading")):
+                report.error(where, f"{label} section #{index} needs a 'heading'.")
+                continue
+            names = section.get("fields") or []
+            if not isinstance(names, list):
+                report.error(where, f"{label} section '{section['heading']}': 'fields' must be a list.")
+                names = []
+            for name in names:
+                if name not in FIELD_SPECS:
+                    report.error(
+                        where,
+                        f"{label} section '{section['heading']}' uses unknown field '{name}'. "
+                        f"Known fields: {', '.join(FIELD_SPECS)}.",
+                    )
+            if names and is_blank(section.get("include")):
+                report.error(where, f"{label} section '{section['heading']}' has fields but no 'include' to show them.")
+            good.append(section)
+        return good
+
+    before = entries(shared.get("before"), "block_sections.before")
+    after = entries(shared.get("after"), "block_sections.after")
+    shared_headings = [s["heading"] for s in before + after]
+    omit = block_types_file.get("omit_sections") or {}
+    for type_name, headings in omit.items():
+        if type_name not in types:
+            report.error(where, f"omit_sections lists unknown type '{type_name}'." + suggest(type_name, types))
+        for heading in headings or []:
+            if heading not in shared_headings:
+                report.error(
+                    where,
+                    f"omit_sections for '{type_name}' names '{heading}', which isn't a shared section."
+                    + suggest(heading, shared_headings),
+                )
+    result = {}
+    for type_name in types:
+        own = entries(per_type.get(type_name), f"type_sections.{type_name}")
+        skipped = set(omit.get(type_name) or [])
+        ordered = [s for s in before if s["heading"] not in skipped] + own + [
+            s for s in after if s["heading"] not in skipped
+        ]
+        headings = [s["heading"] for s in ordered]
+        for heading in sorted(set(headings)):
+            if headings.count(heading) > 1:
+                report.error(where, f"type '{type_name}' has the section '{heading}' more than once.")
+        result[type_name] = ordered
+    return result
+
+
+def load_kinds(block_types_file: dict, types: dict, report: Report) -> dict:
+    where = "_data/block_types.yml"
+    kinds = block_types_file.get("kinds") or {}
+    if not isinstance(kinds, dict):
+        report.error(where, "'kinds' must map a type to its kinds.")
+        return {}
+    for type_name, options in kinds.items():
+        if type_name not in types:
+            report.error(where, f"kinds lists unknown type '{type_name}'." + suggest(type_name, types))
+        if not isinstance(options, dict) or not options:
+            report.error(where, f"kinds for '{type_name}' must be a non-empty mapping.")
+            continue
+        for key, definition in options.items():
+            if is_blank((definition or {}).get("label")):
+                report.error(where, f"kind '{key}' for '{type_name}' is missing 'label'.")
+    return kinds
 
 
 def check_mission_layout(layout, types: dict, relationship_types: dict, report: Report) -> None:
@@ -424,6 +554,251 @@ def check_relationships(
             )
 
 
+HIDDEN_TEXT = re.compile(
+    r"\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}|<!--.*?-->|^```.*?^```",
+    re.S | re.M,
+)
+SECTION_HEADING = re.compile(r"^##[ \t]+(.+?)[ \t]*#*[ \t]*$", re.M)
+
+
+def body_headings(body: str) -> list[str]:
+    """The `## ` headings a reader will see, ignoring comments and code."""
+    return SECTION_HEADING.findall(HIDDEN_TEXT.sub("", body))
+
+
+def check_sections(record: Record, block_type: str, registries: Registries, report: Report) -> None:
+    """Check a block's `## ` headings against its type's sections."""
+    if record.data.get("status") not in ("draft", "published"):
+        return  # planned stubs don't have sections yet
+    sections = registries.sections.get(block_type) or []
+    if not sections:
+        return
+    expected = [s["heading"] for s in sections]
+    found = body_headings(record.body)
+    rel = record.rel_path
+    for heading in found:
+        if heading not in expected:
+            report.warn(
+                rel,
+                f"'## {heading}' isn't a section for {block_type} blocks."
+                + suggest(heading, expected, cutoff=0.8)
+                + " Rename it, or add it to the sections in _data/block_types.yml.",
+            )
+    for heading in sorted({h for h in found if found.count(h) > 1}):
+        report.warn(rel, f"'## {heading}' appears more than once.")
+    for section in sections:
+        if section.get("required") and section["heading"] not in found:
+            report.warn(rel, f"is missing the '## {section['heading']}' section.")
+    known = [h for h in found if h in expected]
+    if known != sorted(known, key=expected.index):
+        in_order = [h for h in expected if h in known]
+        report.warn(rel, f"sections are out of order. Expected: {', '.join(in_order)}.")
+
+    visible = HIDDEN_TEXT.sub("", record.body)
+    for section in sections:
+        names = section.get("fields") or []
+        include_name = section.get("include")
+        if not names or not include_name:
+            continue
+        included = re.search(r"\{%-?\s*include\s+" + re.escape(include_name), visible)
+        present = [n for n in names if record.data.get(n)]
+        if present and not included:
+            report.warn(
+                rel,
+                f"has {', '.join(repr(n) for n in present)} but doesn't show them. "
+                f"Put {{% include {include_name} %}} under '## {section['heading']}'.",
+            )
+        if included and not present:
+            report.warn(
+                rel,
+                f"includes {include_name} but has none of its fields "
+                f"({', '.join(names)}) in its front matter.",
+            )
+
+
+def check_block_fields(
+    record: Record,
+    block_type: str,
+    blocks_by_id: dict[str, Record],
+    registries: Registries,
+    report: Report,
+    block_files: dict[str, str],
+) -> None:
+    """Check structured front matter: the type's `fields`, step details, and kind."""
+    rel = record.rel_path
+    allowed_fields = {
+        name for s in registries.sections.get(block_type) or [] for name in (s.get("fields") or [])
+    }
+    for name, spec in FIELD_SPECS.items():
+        value = record.data.get(name)
+        if value is None:
+            continue
+        if name not in allowed_fields:
+            report.warn(rel, f"'{name}' isn't used by {block_type} blocks and won't be shown.")
+            continue
+        if spec.kind == "text":
+            if not isinstance(value, str) or not value.strip():
+                report.error(rel, f"'{name}' must be a sentence of plain text.")
+            continue
+        if spec.kind == "strings":
+            if not isinstance(value, list) or not all(isinstance(v, str) and v.strip() for v in value):
+                report.error(rel, f"'{name}' must be a list of sentences.")
+            continue
+        if not isinstance(value, list):
+            report.error(rel, f"'{name}' must be a list.")
+            continue
+        for index, entry in enumerate(value, start=1):
+            if not isinstance(entry, dict) or any(is_blank(entry.get(k)) for k in spec.required):
+                needs = " and ".join(f"'{k}'" for k in spec.required)
+                report.error(rel, f"{name} #{index} needs {needs}.")
+                continue
+            for key in entry:
+                if key not in spec.keys:
+                    report.warn(rel, f"{name} #{index} has unknown field '{key}'." + suggest(key, spec.keys))
+
+    steps = record.data.get("steps")
+    step_ids = []
+    if isinstance(steps, list) and "steps" in allowed_fields:
+        uses = {
+            r.get("target")
+            for r in record.data.get("relationships") or []
+            if isinstance(r, dict) and r.get("type") == "uses"
+        }
+        for step in steps:
+            if not isinstance(step, dict) or is_blank(step.get("id")):
+                continue
+            step_id = str(step["id"])
+            where = f"{rel}: step '{step_id}'"
+            if not SLUG_PATTERN.match(step_id):
+                report.error(where, "id must be lowercase words joined by hyphens.")
+            if step_id in step_ids:
+                report.error(where, "id is used more than once.")
+            step_ids.append(step_id)
+            decisions = step.get("decisions")
+            if decisions is not None:
+                if not isinstance(decisions, list):
+                    report.error(where, "'decisions' must be a list.")
+                else:
+                    for index, decision in enumerate(decisions, start=1):
+                        if not isinstance(decision, dict) or is_blank(decision.get("decision")):
+                            report.error(where, f"decision #{index} needs a 'decision' (what is decided).")
+                            continue
+                        for key in decision:
+                            if key not in DECISION_KEYS:
+                                report.warn(where, f"decision #{index} has unknown field '{key}'." + suggest(key, DECISION_KEYS))
+            step_uses = step.get("uses") or []
+            if not isinstance(step_uses, list):
+                report.error(where, "'uses' must be a list of capability IDs.")
+                continue
+            for ref in step_uses:
+                if ref not in blocks_by_id:
+                    report.error(where, f"uses ID '{ref}', which does not exist." + missing_hint(ref, blocks_by_id, block_files))
+                elif blocks_by_id[ref].data.get("type") != "capability":
+                    report.error(where, f"uses '{ref}', which isn't a capability.")
+                elif ref not in uses:
+                    report.error(
+                        where,
+                        f"uses '{ref}', but the process has no 'uses' relationship to it. "
+                        "Add the relationship, so it shows on both pages.",
+                    )
+
+    if "operations" in allowed_fields:
+        check_capability_model(record, registries, report)
+
+    exceptions = record.data.get("exceptions")
+    if isinstance(exceptions, list) and "exceptions" in allowed_fields:
+        for index, exception in enumerate(exceptions, start=1):
+            if not isinstance(exception, dict):
+                continue
+            target = exception.get("continues_at")
+            if target is not None and target not in step_ids:
+                report.error(
+                    rel,
+                    f"exceptions #{index} continues at '{target}', which isn't one of this "
+                    f"process's steps ({', '.join(step_ids) or 'none'})." + suggest(target, step_ids),
+                )
+
+    kind = record.data.get("kind")
+    if kind is not None:
+        options = registries.kinds.get(block_type)
+        if not options:
+            report.warn(rel, f"'kind' isn't used by {block_type} blocks and won't be shown.")
+        elif kind not in options:
+            report.error(
+                rel,
+                f"kind '{kind}' is not defined for {block_type} blocks in _data/block_types.yml. "
+                f"Allowed: {', '.join(options)}." + suggest(kind, options),
+            )
+
+
+def entry_ids(record: Record, name: str, report: Report) -> list[str]:
+    """The `id`s of a list field's entries, checking that each is a unique slug."""
+    ids = []
+    entries = record.data.get(name)
+    if not isinstance(entries, list):
+        return ids
+    for entry in entries:
+        if not isinstance(entry, dict) or is_blank(entry.get("id")):
+            continue
+        entry_id = str(entry["id"])
+        if not SLUG_PATTERN.match(entry_id):
+            report.error(record.rel_path, f"{name} id '{entry_id}' must be lowercase words joined by hyphens.")
+        if entry_id in ids:
+            report.error(record.rel_path, f"{name} id '{entry_id}' is used more than once.")
+        ids.append(entry_id)
+    return ids
+
+
+def check_capability_model(record: Record, registries: Registries, report: Report) -> None:
+    """Operations need a known automation level; transitions and events must point at known states and operations."""
+    rel = record.rel_path
+    operation_ids = entry_ids(record, "operations", report)
+    state_ids = entry_ids(record, "states", report)
+    levels = registries.automation_levels
+    for operation in record.data.get("operations") or []:
+        if not isinstance(operation, dict):
+            continue
+        level = operation.get("automation")
+        if level is not None and level not in levels:
+            report.error(
+                rel,
+                f"operation '{operation.get('id')}' has automation '{level}', which isn't defined in "
+                f"_data/block_types.yml. Allowed: {', '.join(levels)}." + suggest(level, levels),
+            )
+    for index, level in enumerate(record.data.get("maturity") or [], start=1):
+        questions = level.get("questions") if isinstance(level, dict) else None
+        if questions is not None and (
+            not isinstance(questions, list) or not all(isinstance(q, str) and q.strip() for q in questions)
+        ):
+            report.error(rel, f"maturity #{index} 'questions' must be a list of questions.")
+    entry_ids(record, "events", report)
+    for event in record.data.get("events") or []:
+        if not isinstance(event, dict):
+            continue
+        raised_by = event.get("raised_by")
+        if raised_by is not None and raised_by not in operation_ids:
+            report.error(
+                rel,
+                f"event '{event.get('id')}' is raised by '{raised_by}', which isn't one of the operations."
+                + suggest(raised_by, operation_ids),
+            )
+    transitions = record.data.get("transitions")
+    if transitions and not state_ids:
+        report.error(rel, "has 'transitions' but no 'states' for them to connect.")
+        return
+    for index, transition in enumerate(transitions or [], start=1):
+        if not isinstance(transition, dict):
+            continue
+        where = f"{rel}: transition #{index}"
+        for end in ("from", "to"):
+            value = transition.get(end)
+            if value is not None and value not in state_ids:
+                report.error(where, f"'{end}: {value}' isn't one of the states ({', '.join(state_ids)})." + suggest(value, state_ids))
+        via = transition.get("via")
+        if via is not None and via not in operation_ids:
+            report.error(where, f"'via: {via}' isn't one of the operations." + suggest(via, operation_ids))
+
+
 def check_mission(
     record: Record,
     blocks_by_id: dict[str, Record],
@@ -489,6 +864,18 @@ def check_mission(
                 for key in stage:
                     if key not in STAGE_KEYS:
                         report.warn(rel, f"lifecycle stage '{stage['id']}' has unknown field '{key}'.")
+
+    process = data.get("lifecycle_process")
+    if process is not None:
+        if not stage_ids:
+            report.error(rel, "sets 'lifecycle_process', but the mission defines no 'lifecycle'.")
+        if process not in blocks_by_id:
+            report.error(
+                rel,
+                f"lifecycle_process '{process}' does not exist." + missing_hint(str(process), blocks_by_id, block_files),
+            )
+        elif blocks_by_id[process].data.get("type") != "process":
+            report.error(rel, f"lifecycle_process '{process}' must be a process block.")
 
     components = data.get("components")
     if components is None:
@@ -597,6 +984,9 @@ def validate(root: Path) -> Report:
             report.error(block.rel_path, f"id '{record_id}' must start with its type: '{block_type}.'.")
         check_body(block, report)
         check_relationships(block, block_type, blocks_by_id, set(ids), registries, report, block_files)
+        if block_type:
+            check_sections(block, block_type, registries, report)
+            check_block_fields(block, block_type, blocks_by_id, registries, report, block_files)
 
     for mission in missions:
         check_fields(mission, MISSION_REQUIRED, MISSION_OPTIONAL, report)

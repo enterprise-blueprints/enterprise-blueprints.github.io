@@ -60,7 +60,7 @@ layout: default
       {%- if lifecycle.size > 0 %}
       <section class="section" id="lifecycle" aria-labelledby="lifecycle-heading">
         <h2 id="lifecycle-heading">Illustrative lifecycle</h2>
-        <p class="section-note">{{ page.lifecycle_note | default: "These stages illustrate one common way to organize this mission. They are not a universal or mandated process." }}</p>
+        <p class="section-note">{{ page.lifecycle_note | default: "These stages illustrate one common way to organize this mission. They are not a universal or mandated process." }}{% if page.lifecycle_process %} The {% include ref.html id=page.lifecycle_process %} process describes each step in more detail.{% endif %}</p>
         <ol class="lifecycle">
           {%- for stage in lifecycle %}
           {%- assign stage_components = components | where: "stage", stage.id %}

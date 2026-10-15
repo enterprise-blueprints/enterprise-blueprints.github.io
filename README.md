@@ -180,8 +180,30 @@ Front matter fields:
 | `scope` | yes | `shared` (reusable across domains) or `domain` (meaningful within its domain). |
 | `domain` | yes | A key in `_data/domains.yml`. |
 | `relationships` | no | A list of `{type, target, note}`. Intrinsic relationships only. |
+| `attributes` | entities only | A list of `{name, description}`, shown as a table under Key attributes. |
+| `trigger` | processes only | One sentence: what starts the process. Shown at the top of the Flow. |
+| `steps` | processes only | A list of `{id, title, role, description, uses, decisions}`, in order. `uses` lists capability IDs, which must also be `uses` relationships. Each capability's page links back to the steps that use it. `decisions` is a list of `{decision, accountable, records}`. |
+| `outcome` | processes only | One sentence: what the process has produced when it ends. Shown at the bottom of the Flow. |
+| `exceptions` | processes only | A list of `{title, description, continues_at}`. `continues_at` is the id of the step where work picks up again. |
+| `operations` | capabilities only | A list of `{id, title, description, automation}`. `automation` is `allowed`, `with-review`, or `people-only`, from `automation_levels` in `_data/block_types.yml`. Each operation's row also shows the state moves it makes and the events it raises. |
+| `every_operation` | capabilities only | A list of sentences that are true of every operation, such as "Records who performed it, when, and why." Start each with a verb: the page joins them into one sentence under the Operations heading, beginning "Every operation". |
+| `states`, `transitions` | capabilities only | `states` is a list of `{id, name, description}` in their usual order. `transitions` is a list of `{from, to, via}`: two state ids and the id of the operation that makes the move. |
+| `events` | capabilities only | A list of `{id, name, description, raised_by}`: what the capability announces. `raised_by` is the id of the operation that raises it; leave it out for events such as a deadline passing. |
+| `measures` | capabilities only | A list of `{name, description}`. |
+| `maturity` | capabilities only | A list of `{level, description, questions}`, lowest level first. `questions` help an organization tell whether it has reached the level. Capabilities keep their questions here, so they leave out the shared Questions to ask section. |
+| `kind` | controls only | `preventive`, `detective`, or `corrective`, from `kinds` in `_data/block_types.yml`. Shown as a badge. |
 
-The body is Markdown. The layout already shows the title and summary, so start with `##` headings such as Definition, Responsibilities, Boundaries, and Considerations. A `planned` stub may have an empty body. Draft and published blocks need one.
+The body is Markdown. The layout already shows the title and summary, so start with `##` headings. A `planned` stub may have an empty body. Draft and published blocks need one.
+
+### Sections
+
+Every block starts with **Definition** and ends with a shared set of sections, including **Boundaries**. In between, each type has its own sections. A process has Flow and Exceptions and rework, for example, while a control has Objective, How it works, Evidence it produces, and How to test it. The full list, with a writing prompt for each section, is `block_sections` and `type_sections` in [`_data/block_types.yml`](_data/block_types.yml). The vocabulary page shows the same list.
+
+Entities are the exception to the shared ending. An entity describes data only: its Definition, its Key attributes, and its Boundaries. It makes no assumptions about how it will be used, so it leaves out In practice, Agents and automation, and Questions to ask (see `omit_sections`). How the data is managed, used, or governed belongs to the capabilities, processes, and policies built on it.
+
+Use the headings exactly as written there, in that order. The validator warns about a missing required section, an unknown heading, or sections out of order.
+
+Some sections show structured front matter instead of prose, listed as the section's `fields`. A process's Flow, for example, comes from `trigger`, `steps`, and `outcome`. Put the section's include, such as `{% include block-flow.html %}`, under its heading. Keep content like this in front matter wherever it has a regular shape, so tools and apps can read it as data, not just people.
 
 ### Intrinsic and contextual relationships
 
@@ -208,7 +230,7 @@ Either create a planned stub:
 python scripts/new_block.py capability identity-verification "Identity Verification" --domain cross-cutting
 ```
 
-or copy [`templates/block.md`](templates/block.md) to `_blocks/<type>.<slug>.md`. Then:
+or copy [`templates/block.md`](templates/block.md) to `_blocks/<type>.<slug>.md`. The script also writes an outline of the type's sections into the stub, inside a Liquid comment so the planned page stays clean. Then:
 
 1. Write a one-sentence `summary`.
 2. Add intrinsic `relationships` to existing IDs. Check `_data/relationship_types.yml` for which types can connect.
@@ -231,6 +253,7 @@ Copy [`templates/mission.md`](templates/mission.md) to `_missions/<slug>.md` and
 | `outcomes` | no | A list of short sentences. |
 | `lifecycle` | no | A list of `{id, title, summary}` stages. Present them as illustrative. |
 | `lifecycle_note` | no | Replaces the default "these stages are illustrative" note. |
+| `lifecycle_process` | no | The ID of the process block the lifecycle summarizes. Each page then links to the other. |
 | `roles` | no | A list of `{name, description}`. |
 | `experience_ideas` | no | A list of `{title, description}`: experiences someone could build for this mission. They're suggestions, not building blocks. |
 

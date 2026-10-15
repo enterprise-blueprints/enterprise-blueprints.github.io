@@ -1,0 +1,19 @@
+{%- comment -%}
+  How to tell a capability is working, as a table. Put it under
+  "## Measures":
+    {% include block-measures.html %}
+  Reads `measures` ({name, description}) from the block's front matter.
+{%- endcomment -%}
+{%- if page.measures.size > 0 -%}
+<table class="attribute-table data-table">
+<thead><tr><th scope="col">Measure</th><th scope="col">What it shows</th></tr></thead>
+<tbody>
+{%- for measure in page.measures %}
+<tr>
+<th scope="row">{{ measure.name }}</th>
+<td data-label="What it shows">{{ measure.description }}</td>
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}

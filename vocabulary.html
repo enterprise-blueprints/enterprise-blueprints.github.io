@@ -23,20 +23,67 @@ summary: The building block types, relationship types, and statuses used across 
       <table>
         <thead><tr><th scope="col">Type</th><th scope="col">Key</th><th scope="col">Meaning</th><th scope="col">Shown under</th><th scope="col">Blocks</th></tr></thead>
         <tbody>
-          {%- for t in all_types %}
-          {%- assign group_def = site.data.block_types.groups | where: "id", t[1].group | first %}
-          {%- assign typed = site.blocks | where: "type", t[0] %}
+          {%- comment -%} Types in the same order as the Building Blocks page: by group. {%- endcomment -%}
+          {%- for group_def in site.data.block_types.groups %}
+          {%- for type_key in group_def.types %}
+          {%- assign type_def = all_types[type_key] %}
+          {%- assign typed = site.blocks | where: "type", type_key %}
           <tr>
-            <th scope="row">{% assign type_key = t[0] %}{% include type-badge.html type=type_key link=true %}</th>
-            <td><code>{{ t[0] }}</code></td>
-            <td>{{ t[1].description }}</td>
+            <th scope="row">{% include type-badge.html type=type_key link=true %}</th>
+            <td><code>{{ type_key }}</code></td>
+            <td>{{ type_def.description }}</td>
             <td>{{ group_def.label }}</td>
             <td>{{ typed.size }}</td>
           </tr>
           {%- endfor %}
+          {%- endfor %}
         </tbody>
       </table>
     </div>
+  </section>
+
+  {%- assign shared_sections = site.data.block_types.block_sections %}
+  <section class="section" id="sections" aria-labelledby="sections-heading">
+    <h2 id="sections-heading">Sections of a building block</h2>
+    <p class="section-note">Building block pages share their opening and closing sections. In between, each type has sections of its own, because each type answers different questions. Entities describe data only, so they leave out the shared sections about how a block is used. Sections in bold appear on every written block; the rest are added where they help. Relationships and Mission Blueprint usage are added to every page automatically.</p>
+    <div class="table-wrap">
+      <table class="sections-table">
+        <thead><tr><th scope="col">Type</th><th scope="col">Sections, in order</th></tr></thead>
+        <tbody>
+          <tr>
+            <th scope="row">Shared, first</th>
+            <td>{% for s in shared_sections.before %}<span class="section-name{% if s.required %} section-name--required{% endif %}" title="{{ s.prompt | escape }}">{{ s.heading }}</span>{% unless forloop.last %} · {% endunless %}{% endfor %}</td>
+          </tr>
+          {%- for group_def in site.data.block_types.groups %}
+          {%- for type_key in group_def.types %}
+          {%- assign own_sections = site.data.block_types.type_sections[type_key] %}
+          {%- assign type_kinds = site.data.block_types.kinds[type_key] %}
+          {%- assign type_omits = site.data.block_types.omit_sections[type_key] %}
+          <tr>
+            <th scope="row">{% include type-badge.html type=type_key link=true %}</th>
+            <td>{% for s in own_sections %}<span class="section-name{% if s.required %} section-name--required{% endif %}" title="{{ s.prompt | escape }}">{{ s.heading }}</span>{% unless forloop.last %} · {% endunless %}{% endfor %}
+              {%- if type_kinds %}<br><span class="muted">Each one is marked as {% for k in type_kinds %}{{ k[1].label | downcase }}{% if forloop.rindex == 2 %}, or {% elsif forloop.last == false %}, {% endif %}{% endfor %}.</span>{% endif %}
+              {%- if type_omits.size > 0 %}<br><span class="muted">Leaves out {% for h in type_omits %}{{ h }}{% if forloop.rindex == 2 %}, and {% elsif forloop.last == false %}, {% endif %}{% endfor %}.</span>{% endif %}</td>
+          </tr>
+          {%- endfor %}
+          {%- endfor %}
+          <tr>
+            <th scope="row">Shared, last</th>
+            <td>{% for s in shared_sections.after %}<span class="section-name{% if s.required %} section-name--required{% endif %}" title="{{ s.prompt | escape }}">{{ s.heading }}</span>{% unless forloop.last %} · {% endunless %}{% endfor %}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="automation-levels" aria-labelledby="automation-heading">
+    <h2 id="automation-heading">Automation levels</h2>
+    <p class="section-note">Each operation a capability offers says who may perform it. These are defaults: a policy or a Mission Blueprint can be stricter, but shouldn't be looser.</p>
+    <dl class="term-list">
+      {%- for level in site.data.block_types.automation_levels %}
+      <div><dt><span class="automation automation--{{ level[0] }}">{{ level[1].label }}</span> <code>{{ level[0] }}</code></dt><dd>{{ level[1].description }}</dd></div>
+      {%- endfor %}
+    </dl>
   </section>
 
   <section class="section" aria-labelledby="relationships-heading">

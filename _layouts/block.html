@@ -14,6 +14,8 @@ layout: default
 {%- assign group_def = site.data.block_types.groups | where: "id", type_def.group | first -%}
 {%- assign domain_def = site.data.domains[page.domain] -%}
 {%- assign scope_def = site.data.scopes[page.scope] -%}
+{%- assign kind_def = nil -%}
+{%- if page.kind -%}{%- assign kind_def = site.data.block_types.kinds[page.type][page.kind] -%}{%- endif -%}
 {%- assign missions = site.missions | sort: "title" -%}
 
 {%- assign mission_count = 0 -%}
@@ -45,7 +47,9 @@ layout: default
         {%- if b.relationships -%}
           {%- assign hits = b.relationships | where: "type", rt[0] | where: "target", block_id -%}
           {%- for rel in hits %}
-        <li>{% include block-ref.html id=b.slug %}{% if rel.note %}<p class="ref-note">{{ rel.note }}</p>{% endif %}</li>
+          {%- assign used_at = nil -%}
+          {%- if rt[0] == "uses" and b.steps -%}{%- assign used_at = b.steps | where_exp: "s", "s.uses contains block_id" -%}{%- endif %}
+        <li>{% include block-ref.html id=b.slug %}{% if rel.note %}<p class="ref-note">{{ rel.note }}</p>{% endif %}{% if used_at.size > 0 %}<p class="ref-note">At {% if used_at.size == 1 %}step{% else %}steps{% endif %}: {% for s in used_at %}<a href="{{ b.url | relative_url }}#step-{{ s.id }}">{{ s.title }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}</p>{% endif %}</li>
           {%- endfor -%}
         {%- endif -%}
       {%- endfor -%}
@@ -81,6 +85,9 @@ layout: default
   <header class="record-header type-{{ page.type }}">
     <div class="record-header__meta">
       {% include type-badge.html type=page.type link=true %}
+      {%- if kind_def %}
+      <span class="kind-badge block-kind" title="{{ kind_def.description | escape }}">{{ kind_def.label }}</span>
+      {%- endif %}
       {% include status-badge.html status=page.status %}
     </div>
     <h1>{{ page.title }}</h1>
@@ -174,6 +181,12 @@ layout: default
           <dt>Type</dt>
           <dd>{{ type_def.label }}{% if group_def.types.size > 1 %} <span class="muted">· {{ group_def.label }}</span>{% endif %}</dd>
         </div>
+        {%- if kind_def %}
+        <div>
+          <dt>Kind</dt>
+          <dd>{{ kind_def.label }} <span class="muted">· {{ kind_def.description }}</span></dd>
+        </div>
+        {%- endif %}
         <div>
           <dt>Status</dt>
           <dd>{{ site.data.statuses[page.status].label | default: page.status }}</dd>

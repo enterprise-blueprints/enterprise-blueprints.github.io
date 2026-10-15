@@ -8,8 +8,11 @@ Example:
     python scripts/new_block.py capability identity-verification "Identity Verification"
 
 This writes _blocks/capability.identity-verification.md with status 'planned'.
-Fill in the summary, relationships, and definition, then change the status to
-'draft' and run scripts/validate_content.py.
+The body holds an outline of the type's sections, from _data/block_types.yml,
+inside a Liquid comment so the planned page doesn't show empty headings.
+When you start writing, remove the comment lines, fill in each section, delete
+the optional ones you don't need, and change the status to 'draft'. Then run
+scripts/validate_content.py.
 """
 
 from __future__ import annotations
@@ -37,7 +40,81 @@ relationships: []
 #   - type: {example_rel}
 #     target: {example_target}
 ---
+{{% comment %}} Outline for a {type} block. When you start writing, delete this line
+and the "endcomment" line at the end. Sections marked (optional) can be removed.
+
+{outline}
+{{% endcomment %}}
 """
+
+# Example front matter for sections that show structured fields.
+FIELD_EXAMPLES = {
+    "attributes": "attributes:\n  - name: Identifier\n    description: What it holds.",
+    "trigger": "trigger: What starts the process.",
+    "steps": (
+        "steps:\n  - id: first-step\n    title: First step\n    role: Who leads it\n"
+        "    description: What happens.\n    uses: [capability.example]\n"
+        "    decisions:\n      - decision: What is decided\n        accountable: Who decides\n"
+        "        records: What they record"
+    ),
+    "outcome": "outcome: What the process has produced when it ends.",
+    "operations": (
+        "operations:\n  - id: create\n    title: Create\n    description: What the operation does.\n"
+        "    automation: with-review   # allowed | with-review | people-only"
+    ),
+    "states": "states:\n  - id: open\n    name: Open\n    description: What this state means.",
+    "transitions": "transitions:\n  - { from: open, to: closed, via: close }",
+    "every_operation": "every_operation:\n  - Something true of every operation, such as recording who did it.",
+    "events": (
+        "events:\n  - id: created\n    name: Something created\n    description: When it's announced.\n"
+        "    raised_by: create   # an operation id; leave out for events like a deadline passing"
+    ),
+    "measures": "measures:\n  - name: A measure\n    description: What it shows.",
+    "maturity": (
+        "maturity:\n  - level: Basic\n    description: What it looks like.\n"
+        "    questions:\n      - A question that shows whether you're at this level?\n"
+        "  - level: Established\n    description: What it looks like.\n"
+        "    questions:\n      - A question that shows whether you're at this level?\n"
+        "  - level: Advanced\n    description: What it looks like.\n"
+        "    questions:\n      - A question that shows whether you're at this level?"
+    ),
+    "exceptions": (
+        "exceptions:\n  - title: What leaves the usual path\n    description: What happens then.\n"
+        "    continues_at: first-step"
+    ),
+}
+
+
+def outline(type_name: str, registry: dict) -> str:
+    """The type's sections as Markdown headings, each with its writing prompt."""
+    shared = registry.get("block_sections") or {}
+    skipped = set((registry.get("omit_sections") or {}).get(type_name) or [])
+    sections = [
+        s
+        for s in (shared.get("before") or [])
+        + ((registry.get("type_sections") or {}).get(type_name) or [])
+        + (shared.get("after") or [])
+        if s["heading"] not in skipped
+    ]
+    parts = []
+    for section in sections:
+        optional = "" if section.get("required") else " (optional)"
+        lines = [f"## {section['heading']}", "", f"<!-- {section.get('prompt', '')}{optional} -->"]
+        names = section.get("fields") or []
+        if names and section.get("include"):
+            examples = "\n".join(FIELD_EXAMPLES.get(name, name + ": []") for name in names)
+            lines += [
+                "",
+                f"{{% include {section['include']} %}}",
+                "",
+                f"<!-- Add to the front matter:\n{examples}\n-->",
+            ]
+        parts.append("\n".join(lines))
+    kinds = (registry.get("kinds") or {}).get(type_name)
+    if kinds:
+        parts.insert(0, f"<!-- Add `kind:` to the front matter: {', '.join(kinds)}. -->")
+    return "\n\n".join(parts)
+
 
 EXAMPLES = {
     "entity": ("references", "entity.document"),
@@ -63,7 +140,8 @@ def main(argv=None) -> int:
     parser.add_argument("--scope", default="shared")
     args = parser.parse_args(argv)
 
-    types = load("block_types.yml")["types"]
+    registry = load("block_types.yml")
+    types = registry["types"]
     if args.type not in types:
         print(f"Unknown type '{args.type}'. Choose one of: {', '.join(types)}.")
         return 1
@@ -93,6 +171,7 @@ def main(argv=None) -> int:
             domain=args.domain,
             example_rel=rel,
             example_target=target,
+            outline=outline(args.type, registry),
         ),
         encoding="utf-8",
     )

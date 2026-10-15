@@ -1,6 +1,7 @@
 ---
 id: control.case-authorization-check
 type: control
+kind: preventive
 title: Case Authorization Check
 summary: Every request to read or change a case is checked against the requester's authorization for that specific case.
 status: published

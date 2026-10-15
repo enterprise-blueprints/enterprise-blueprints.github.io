@@ -1,0 +1,24 @@
+{%- comment -%}
+  A process's exceptions: how work leaves the usual path. Put it under
+  "## Exceptions and rework":
+    {% include block-exceptions.html %}
+  Reads `exceptions` ({title, description, continues_at}) from the block's
+  front matter. `continues_at` is the id of the step where work picks up.
+{%- endcomment -%}
+{%- if page.exceptions.size > 0 -%}
+<ul class="flow-exceptions">
+{%- for ex in page.exceptions %}
+{%- assign ex_step = nil -%}
+{%- if ex.continues_at -%}{%- assign ex_step = page.steps | where: "id", ex.continues_at | first -%}{%- endif %}
+<li>
+<p class="flow-exceptions__title">{{ ex.title }}</p>
+{%- if ex.description %}
+<p class="flow-exceptions__description">{{ ex.description }}</p>
+{%- endif %}
+{%- if ex_step %}
+<p class="flow-exceptions__next"><span class="flow-decision__label">Continues at</span> <a href="#step-{{ ex_step.id }}">{{ ex_step.title }}</a></p>
+{%- endif %}
+</li>
+{%- endfor %}
+</ul>
+{%- endif -%}

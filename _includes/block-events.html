@@ -1,0 +1,24 @@
+{%- comment -%}
+  What a capability announces, as a table. Put it under "## Events":
+    {% include block-events.html %}
+  Reads `events` ({id, name, description, raised_by}) from the block's front
+  matter. `raised_by` is the id of the operation that raises the event; leave
+  it out for events that aren't caused by an operation, such as a deadline
+  passing.
+{%- endcomment -%}
+{%- if page.events.size > 0 -%}
+<table class="attribute-table data-table">
+<thead><tr><th scope="col">Event</th><th scope="col">What it means</th><th scope="col">Raised by</th></tr></thead>
+<tbody>
+{%- for event in page.events %}
+{%- assign event_op = nil -%}
+{%- if event.raised_by -%}{%- assign event_op = page.operations | where: "id", event.raised_by | first -%}{%- endif %}
+<tr id="event-{{ event.id }}">
+<th scope="row">{{ event.name }}</th>
+<td data-label="What it means">{{ event.description }}</td>
+<td data-label="Raised by">{% if event_op %}<a href="#op-{{ event_op.id }}">{{ event_op.title }}</a>{% else %}<span class="muted">The capability itself</span>{% endif %}</td>
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}

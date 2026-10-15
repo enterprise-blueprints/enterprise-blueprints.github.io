@@ -9,24 +9,24 @@
 # responsibilities mostly sit. It is explanatory only; it is not a runtime tier.
 
 groups:
-  - id: entity
-    label: Entities
-    types: [entity]
-  - id: capability
-    label: Capabilities
-    types: [capability]
-  - id: process
-    label: Processes
-    types: [process]
   - id: experience
     label: Experiences
     types: [experience]
-  - id: governance
-    label: Governance
-    types: [policy, control]
+  - id: process
+    label: Processes
+    types: [process]
+  - id: capability
+    label: Capabilities
+    types: [capability]
   - id: pattern
     label: Patterns
     types: [pattern]
+  - id: entity
+    label: Entities
+    types: [entity]
+  - id: governance
+    label: Governance
+    types: [policy, control]
 
 types:
   entity:
@@ -84,6 +84,166 @@ types:
       A reusable design or composition approach. Patterns guide how blocks are
       arranged; they are not an additional software tier.
     example: Human-in-the-Loop Review
+
+# The sections of a building block page, in order. Every block starts with
+# the `before` sections, continues with its type's own sections (under
+# `type_sections` below), and ends with the `after` sections, minus any the
+# type leaves out (under `omit_sections`).
+#
+#   heading   The exact `## ` heading authors use in the Markdown body.
+#   required  The validator warns when a draft or published block leaves it out.
+#   fields    Structured front matter the section shows. Keeping this content
+#             as data, not prose, means tools and apps can read it too.
+#   include   The include that shows those fields. Put {% include <name> %}
+#             under the heading.
+#   prompt    One line of guidance, used by new_block.py and the vocabulary page.
+#
+# Relationships, missions, and implementation guides are generated on every
+# page, so they aren't listed here.
+block_sections:
+  before:
+    - heading: Definition
+      required: true
+      prompt: What this block is, in plain words, and what it's for.
+  after:
+    - heading: In practice
+      prompt: Two or three short examples from different settings.
+    - heading: Agents and automation
+      prompt: Where AI agents or automation can help, and where a person must stay accountable.
+    - heading: Boundaries
+      required: true
+      prompt: What this block is not, and where neighboring blocks take over.
+    - heading: Considerations
+      prompt: Design advice, trade-offs, and common pitfalls.
+    - heading: Questions to ask
+      prompt: A short checklist an organization can use to assess itself against this block.
+    - heading: Related standards
+      prompt: Published standards or frameworks that cover the same ground. Point to them without claiming compliance.
+
+type_sections:
+  # An entity describes data only. How the data is used, changed, or governed
+  # belongs to the capabilities, processes, and policies built on it.
+  entity:
+    - heading: Key attributes
+      required: true
+      fields: [attributes]
+      include: block-attributes.html
+      prompt: The data fields the entity holds, as `attributes` in front matter. Describe each field without assuming how it will be used.
+  # A capability describes what the organization can do with its entities:
+  # the operations it offers, the states those operations move entities
+  # through, and the events it announces.
+  capability:
+    - heading: Operations
+      required: true
+      fields: [every_operation, operations]
+      include: block-operations.html
+      prompt: The actions the capability offers, and who may perform each one (`operations`), plus anything true of every operation, such as recording who did it (`every_operation`). Start each `every_operation` rule with a verb, because the page joins them into one sentence that begins "Every operation".
+    - heading: States
+      fields: [states, transitions]
+      include: block-states.html
+      prompt: The states its entities move through (`states`), and which operation moves them from one to the next (`transitions`).
+    - heading: Events
+      fields: [events]
+      include: block-events.html
+      prompt: What the capability announces when something happens, and the operation that raises each one, as `events` in front matter.
+    - heading: Measures
+      fields: [measures]
+      include: block-measures.html
+      prompt: How you can tell the capability is working, as `measures` in front matter.
+    - heading: Maturity levels
+      fields: [maturity]
+      include: block-maturity.html
+      prompt: What basic, established, and advanced look like, with questions that help an organization tell which level it's at, as `maturity` in front matter.
+  process:
+    - heading: Flow
+      required: true
+      fields: [trigger, steps, outcome]
+      include: block-flow.html
+      prompt: What starts the process (`trigger`), its steps in order, with who leads each one, the capabilities it uses, and the decisions made there (`steps`), and what it has produced when it ends (`outcome`).
+    - heading: Exceptions and rework
+      fields: [exceptions]
+      include: block-exceptions.html
+      prompt: How work leaves the usual path, and the step where it continues, as `exceptions` in front matter.
+  experience:
+    - heading: Who it's for
+      required: true
+      prompt: The people or agents who use it, and what they need from it.
+    - heading: Tasks it supports
+      required: true
+      prompt: The main things people do with it.
+    - heading: Channels
+      prompt: Where people reach it, such as web, mobile, phone, or an assistant.
+    - heading: Accessibility and design principles
+      prompt: The accessibility and design commitments it keeps.
+  policy:
+    - heading: Intent
+      required: true
+      prompt: Why the policy exists, and what harm it prevents.
+    - heading: Obligations
+      required: true
+      prompt: What must and must not happen, as plain statements.
+    - heading: Source of authority
+      prompt: The law, regulation, or decision the policy comes from, described generally.
+    - heading: Exceptions and waivers
+      prompt: When the policy can be set aside, and who can approve it.
+  control:
+    - heading: Objective
+      required: true
+      prompt: What the control prevents, detects, or corrects.
+    - heading: How it works
+      required: true
+      prompt: What the control checks or does, and when.
+    - heading: Evidence it produces
+      prompt: The records it leaves, so others can confirm it worked.
+    - heading: How to test it
+      prompt: How to show the control works, including what failure looks like.
+  pattern:
+    - heading: Problem
+      required: true
+      prompt: The recurring problem the pattern solves.
+    - heading: Context
+      prompt: The situations where the problem shows up.
+    - heading: Approach
+      required: true
+      prompt: How the pattern arranges building blocks to solve the problem.
+    - heading: Trade-offs
+      prompt: What the pattern costs, and what it makes harder.
+    - heading: When to use it
+      prompt: When the pattern fits, and when it doesn't.
+
+# Shared sections a type leaves out. Entities skip the sections about how a
+# block is used, because an entity makes no assumptions about its use.
+omit_sections:
+  entity: [In practice, Agents and automation, Questions to ask]
+  # A capability's questions belong to its maturity levels instead.
+  capability: [Questions to ask]
+
+# Who may perform a capability's operation, set with `automation:` on each
+# operation. These are defaults; a policy or a mission can be stricter.
+automation_levels:
+  allowed:
+    label: Agents may
+    description: An agent or automated system may perform it on its own.
+  with-review:
+    label: Agents propose
+    description: An agent may prepare it, but a person confirms it before it takes effect.
+  people-only:
+    label: People only
+    description: Only a person may perform it.
+
+# A type can define `kinds`, a short list a block of that type picks one
+# from with `kind:`. The block page shows it as a badge.
+kinds:
+  control:
+    preventive:
+      label: Preventive
+      description: Stops something unwanted from happening.
+    detective:
+      label: Detective
+      description: Notices and reports something unwanted after it happens.
+    corrective:
+      label: Corrective
+      description: Limits the damage and restores the expected state afterwards.
 
 # How a Mission Blueprint page arranges its building blocks.
 #   stack    Core types, top to bottom in the order they rely on each other.

@@ -16,6 +16,7 @@ lifecycle_note: >-
   These five stages illustrate a common way to organize investigative work.
   Organizations name and divide the stages differently, and matters can move
   back to an earlier stage when new information appears.
+lifecycle_process: process.investigation-lifecycle
 lifecycle:
   - id: intake
     title: Intake

@@ -1,0 +1,22 @@
+{%- comment -%}
+  An entity's key attributes as a table. Put it under "## Key attributes":
+    {% include block-attributes.html %}
+  Reads `attributes` ({name, description}) from the block's front matter.
+  An entity that specializes another also notes the attributes it inherits.
+{%- endcomment -%}
+{%- assign attr_parent = nil -%}
+{%- assign attr_parent_rel = page.relationships | where: "type", "specializes" | first -%}
+{%- if attr_parent_rel -%}{%- assign attr_parent = site.blocks | where: "slug", attr_parent_rel.target | first -%}{%- endif -%}
+{%- if attr_parent and attr_parent.attributes.size > 0 %}
+<p class="section-note">Also has all {{ attr_parent.attributes.size }} attributes of <a href="{{ attr_parent.url | relative_url }}#key-attributes">{{ attr_parent.title }}</a>, which it specializes. These are the attributes it adds.</p>
+{%- endif -%}
+{%- if page.attributes.size > 0 -%}
+<table class="attribute-table">
+<thead><tr><th scope="col">Attribute</th><th scope="col">What it holds</th></tr></thead>
+<tbody>
+{%- for attribute in page.attributes %}
+<tr><th scope="row">{{ attribute.name }}</th><td>{{ attribute.description }}</td></tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}

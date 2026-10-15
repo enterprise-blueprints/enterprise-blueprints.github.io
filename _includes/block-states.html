@@ -1,0 +1,29 @@
+{%- comment -%}
+  The states a capability moves its entities through, as a table. Put it
+  under "## States":
+    {% include block-states.html %}
+  Reads from the block's front matter:
+    states       {id, name, description}, in their usual order
+    transitions  {from, to, via}: state ids, and the id of the operation
+                 that makes the move
+  Each state lists the moves out of it, so loops such as reopening show too.
+{%- endcomment -%}
+{%- if page.states.size > 0 -%}
+{%- assign states_rel = page.relationships | where: "type", "manages" | first -%}
+{%- assign states_entity = nil -%}
+{%- if states_rel -%}{%- assign states_entity = site.blocks | where: "slug", states_rel.target | first -%}{%- endif %}
+<p class="section-note">{% if states_entity %}Each {{ states_entity.title | downcase }}{% else %}Each record{% endif %} is in exactly one of these states at a time, and moves between them only through the operations above.</p>
+<table class="attribute-table data-table">
+<thead><tr><th scope="col">State</th><th scope="col">What it means</th><th scope="col">Moves to</th></tr></thead>
+<tbody>
+{%- for state in page.states %}
+{%- assign moves = page.transitions | where: "from", state.id %}
+<tr id="state-{{ state.id }}">
+<th scope="row">{{ state.name }}</th>
+<td data-label="What it means">{{ state.description }}</td>
+<td data-label="Moves to">{% for move in moves %}{% assign move_to = page.states | where: "id", move.to | first %}{% assign move_op = nil %}{% if move.via %}{% assign move_op = page.operations | where: "id", move.via | first %}{% endif %}<span class="data-table__line"><a href="#state-{{ move.to }}">{{ move_to.name }}</a>{% if move_op %} <span class="muted">by <a href="#op-{{ move_op.id }}">{{ move_op.title | downcase }}</a></span>{% endif %}</span>{% endfor %}</td>
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}

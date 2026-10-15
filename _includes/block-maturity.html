@@ -1,0 +1,24 @@
+{%- comment -%}
+  What each level of a capability's maturity looks like, lowest first, as a
+  table. Put it under "## Maturity levels":
+    {% include block-maturity.html %}
+  Reads `maturity` ({level, description, questions}) from the block's front
+  matter. `questions` help an organization tell whether it has reached the
+  level.
+{%- endcomment -%}
+{%- if page.maturity.size > 0 -%}
+{%- assign maturity_count = page.maturity.size -%}
+<table class="attribute-table data-table maturity-table type-{{ page.type }}">
+<thead><tr><th scope="col">Level</th><th scope="col">What it looks like</th><th scope="col">Questions to ask</th></tr></thead>
+<tbody>
+{%- for m in page.maturity %}
+{%- assign m_level = forloop.index %}
+<tr>
+<th scope="row"><span class="maturity-meter" aria-hidden="true">{% for i in (1..maturity_count) %}<span class="maturity-meter__dot{% if i <= m_level %} is-on{% endif %}"></span>{% endfor %}</span>{{ m.level }}<span class="visually-hidden">, level {{ m_level }} of {{ maturity_count }}</span></th>
+<td data-label="What it looks like">{{ m.description }}</td>
+<td data-label="Questions to ask">{% if m.questions.size > 0 %}<ul class="maturity-questions">{% for q in m.questions %}<li>{{ q }}</li>{% endfor %}</ul>{% endif %}</td>
+</tr>
+{%- endfor %}
+</tbody>
+</table>
+{%- endif -%}
