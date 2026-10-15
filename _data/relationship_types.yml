@@ -14,6 +14,16 @@
 #   description    What the relationship means.
 #   reserved       When true, the relationship is defined for future use and
 #                  is not expected on building blocks yet.
+#   implies_use    Whether a mission that uses one end of the relationship
+#                  also relies on the other end:
+#                    forward  a mission that uses the source also relies on
+#                             the target (a process `uses` a capability).
+#                    reverse  a mission that uses the target also relies on
+#                             the source (a control `enforces` a policy).
+#                  Leave it out when the relationship isn't a dependency,
+#                  such as `applies_to` or `part_of`. Block pages follow only
+#                  these relationships to show where a block is used
+#                  indirectly, so mission usage is never written twice.
 #
 # To add a relationship type, add an entry here, then run
 # `python scripts/validate_content.py`. No template changes are needed.
@@ -23,6 +33,7 @@ manages:
   inverse_label: Managed by
   sources: [capability]
   targets: [entity]
+  implies_use: forward
   description: The capability manages the entity.
 
 uses:
@@ -30,6 +41,7 @@ uses:
   inverse_label: Used by process
   sources: [process]
   targets: [capability]
+  implies_use: forward
   description: The process employs the capability.
 
 supports:
@@ -44,6 +56,7 @@ provides_access_to:
   inverse_label: Accessed through
   sources: [experience]
   targets: [capability]
+  implies_use: forward
   description: The experience provides interaction with the capability.
 
 constrained_by:
@@ -51,6 +64,7 @@ constrained_by:
   inverse_label: Constrains
   sources: [entity, capability, process, experience]
   targets: [policy]
+  implies_use: forward
   description: The policy is an applicable requirement or restriction.
 
 enforces:
@@ -58,6 +72,7 @@ enforces:
   inverse_label: Enforced by
   sources: [control]
   targets: [policy]
+  implies_use: reverse
   description: The control helps implement or enforce the policy.
 
 depends_on:
@@ -65,6 +80,7 @@ depends_on:
   inverse_label: Required by
   sources: [capability]
   targets: [capability]
+  implies_use: forward
   description: >-
     A true logical dependency between capabilities, not merely a common
     integration.
@@ -90,6 +106,7 @@ specializes:
   sources: any
   targets: any
   same_type: true
+  implies_use: forward
   description: >-
     An explicit refinement of a more general concept, usually for a specific
     domain.

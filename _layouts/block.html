@@ -18,10 +18,64 @@ layout: default
 {%- if page.kind -%}{%- assign kind_def = site.data.block_types.kinds[page.type][page.kind] -%}{%- endif -%}
 {%- assign missions = site.missions | sort: "title" -%}
 
+{%- comment -%}
+  Indirect mission usage. `relies_on_me` collects the blocks whose use
+  means this block is used too, following only relationships marked
+  `implies_use` in _data/relationship_types.yml, up to three steps away:
+    forward  another block's relationship targets this one, or one we found
+             (a process `uses` this capability)
+    reverse  this block, or one we found, has the relationship
+             (this control `enforces` a policy, so using the policy relies on it)
+  A mission that lists any of those blocks, but not this one, uses this
+  block indirectly, through them. `relies_by_step` records how many steps
+  away each one is ("|2:process.x|"), so the page can name only the
+  nearest blocks a mission goes through.
+{%- endcomment -%}
+{%- assign relies_by_step = "|" -%}
+{%- assign implies_forward = "|" -%}
+{%- assign implies_reverse = "|" -%}
+{%- for rt in site.data.relationship_types -%}
+  {%- if rt[1].implies_use == "forward" -%}{%- assign implies_forward = implies_forward | append: rt[0] | append: "|" -%}{%- endif -%}
+  {%- if rt[1].implies_use == "reverse" -%}{%- assign implies_reverse = implies_reverse | append: rt[0] | append: "|" -%}{%- endif -%}
+{%- endfor -%}
+{%- assign relies_on_me = "|" | append: block_id | append: "|" -%}
+{%- assign frontier = block_id | split: "," -%}
+{%- for depth in (1..3) -%}
+  {%- if frontier.size == 0 -%}{%- break -%}{%- endif -%}
+  {%- assign next_frontier = "" -%}
+  {%- for f in frontier -%}
+    {%- for b in site.blocks -%}
+      {%- for rel in b.relationships -%}
+        {%- assign rel_key = "|" | append: rel.type | append: "|" -%}
+        {%- assign found = nil -%}
+        {%- if rel.target == f and implies_forward contains rel_key -%}{%- assign found = b.slug -%}{%- endif -%}
+        {%- if b.slug == f and implies_reverse contains rel_key -%}{%- assign found = rel.target -%}{%- endif -%}
+        {%- if found -%}
+          {%- assign found_key = "|" | append: found | append: "|" -%}
+          {%- unless relies_on_me contains found_key -%}
+            {%- assign relies_on_me = relies_on_me | append: found | append: "|" -%}
+            {%- assign relies_by_step = relies_by_step | append: depth | append: ":" | append: found | append: "|" -%}
+            {%- assign next_frontier = next_frontier | append: found | append: "," -%}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  {%- endfor -%}
+  {%- assign frontier = next_frontier | split: "," -%}
+{%- endfor -%}
+
 {%- assign mission_count = 0 -%}
+{%- assign indirect_count = 0 -%}
 {%- for m in missions -%}
   {%- assign hits = m.components | where: "ref", block_id -%}
-  {%- if hits.size > 0 -%}{%- assign mission_count = mission_count | plus: 1 -%}{%- endif -%}
+  {%- if hits.size > 0 -%}
+    {%- assign mission_count = mission_count | plus: 1 -%}
+  {%- else -%}
+    {%- for ref in m.components -%}
+      {%- assign ref_key = "|" | append: ref.ref | append: "|" -%}
+      {%- if relies_on_me contains ref_key -%}{%- assign indirect_count = indirect_count | plus: 1 -%}{%- break -%}{%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
 {%- endfor -%}
 
 {%- capture outgoing_html -%}
@@ -138,7 +192,10 @@ layout: default
       <section class="section" id="missions" aria-labelledby="missions-heading">
         <h2 id="missions-heading">Used in Mission Blueprints</h2>
         {%- if mission_count > 0 %}
-        <p class="section-note">The purpose shown is specific to each mission.</p>
+        {%- if indirect_count > 0 %}
+        <h3 class="usage-heading">Directly</h3>
+        {%- endif %}
+        <p class="section-note">These missions list the block themselves. The purpose shown is specific to each mission.</p>
         <ul class="usage-list">
           {%- for m in missions -%}
           {%- assign uses = m.components | where: "ref", block_id -%}
@@ -159,8 +216,41 @@ layout: default
           {%- endif -%}
           {%- endfor %}
         </ul>
-        {%- else %}
+        {%- elsif indirect_count == 0 %}
         <p class="empty">No Mission Blueprint uses this block yet.</p>
+        {%- endif %}
+
+        {%- if indirect_count > 0 %}
+        <h3 class="usage-heading" id="missions-indirect">Indirectly</h3>
+        <p class="section-note">These missions don't list the block, but they use blocks that rely on it, such as a process that uses this capability or a policy this control enforces.</p>
+        <ul class="usage-list">
+          {%- for m in missions -%}
+          {%- assign direct = m.components | where: "ref", block_id -%}
+          {%- if direct.size == 0 -%}
+          {%- assign through_refs = m.components | map: "ref" | uniq -%}
+          {%- assign through = "" -%}
+          {%- for depth in (1..3) -%}
+            {%- capture through -%}
+              {%- for ref in through_refs -%}
+                {%- assign step_key = "|" | append: depth | append: ":" | append: ref | append: "|" -%}
+                {%- if relies_by_step contains step_key %}<li>{% include block-ref.html id=ref %}</li>{% endif -%}
+              {%- endfor -%}
+            {%- endcapture -%}
+            {%- if through != "" -%}{%- break -%}{%- endif -%}
+          {%- endfor -%}
+          {%- if through != "" %}
+          <li class="usage usage--indirect">
+            <div class="usage__head">
+              <a class="usage__title" href="{{ m.url | relative_url }}">{{ m.title }}</a>
+              {% include status-badge.html status=m.status %}
+            </div>
+            <p class="usage__through-label">Through</p>
+            <ul class="ref-list usage__through">{{ through }}</ul>
+          </li>
+          {%- endif -%}
+          {%- endif -%}
+          {%- endfor %}
+        </ul>
         {%- endif %}
       </section>
 
@@ -204,7 +294,7 @@ layout: default
         </div>
         <div>
           <dt>Missions</dt>
-          <dd>{% if mission_count > 0 %}<a href="#missions">Used in {{ mission_count }}</a>{% else %}None yet{% endif %}</dd>
+          <dd>{% if mission_count > 0 %}<a href="#missions">Used in {{ mission_count }}</a>{% endif %}{% if mission_count > 0 and indirect_count > 0 %}<span class="muted"> · </span>{% endif %}{% if indirect_count > 0 %}<a href="#missions-indirect">{% if mission_count == 0 %}Used indirectly in{% else %}indirectly in{% endif %} {{ indirect_count }}</a>{% endif %}{% if mission_count == 0 and indirect_count == 0 %}None yet{% endif %}</dd>
         </div>
         <div>
           <dt>Implementations</dt>

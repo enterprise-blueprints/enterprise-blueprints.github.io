@@ -112,6 +112,8 @@ FORBIDDEN_KEYS = {
 }
 
 REQUIRED_RELATIONSHIP_FIELDS = ["label", "inverse_label", "sources", "targets", "description"]
+# How a relationship carries mission usage (see `implies_use` in _data/relationship_types.yml).
+IMPLIES_USE = ("forward", "reverse")
 
 
 @dataclass
@@ -262,6 +264,13 @@ def load_registries(root: Path, report: Report) -> Registries | None:
         for required in REQUIRED_RELATIONSHIP_FIELDS:
             if required not in definition:
                 report.error(where, f"relationship '{name}' is missing '{required}'.")
+        implies = definition.get("implies_use")
+        if implies is not None and implies not in IMPLIES_USE:
+            report.error(
+                where,
+                f"relationship '{name}' has implies_use '{implies}'. Use "
+                f"{' or '.join(repr(i) for i in IMPLIES_USE)}, or leave it out." + suggest(implies, IMPLIES_USE),
+            )
         for end in ("sources", "targets"):
             value = definition.get(end)
             if value == "any":

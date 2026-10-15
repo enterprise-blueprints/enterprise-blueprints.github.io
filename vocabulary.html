@@ -118,7 +118,7 @@ summary: The building block types, relationship types, and statuses used across 
             <td>{% if rt[1].sources == "any" %}Any type{% else %}{% for s in rt[1].sources %}{% if all_types[s] %}{{ all_types[s].label }}{% else %}Implementation guide{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}</td>
             <td>{% if rt[1].same_type %}The same type{% elsif rt[1].targets == "any" %}Any type{% else %}{% for s in rt[1].targets %}{{ all_types[s].label | default: s }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}</td>
             <td>{{ rt[1].inverse_label }}</td>
-            <td>{{ rt[1].description }}</td>
+            <td>{{ rt[1].description }}{% if rt[1].implies_use == "forward" %}<br><span class="muted">A mission that uses the first block also relies on the second.</span>{% elsif rt[1].implies_use == "reverse" %}<br><span class="muted">A mission that uses the second block also relies on the first.</span>{% endif %}</td>
             <td>{{ uses }}</td>
           </tr>
           {%- endfor %}

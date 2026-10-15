@@ -327,11 +327,14 @@ Measures are defined once, on the building block, and referenced here, so the mi
      sources: [policy]              # block types, or `any`
      targets: [capability, process] # block types, or `any`
      # same_type: true              # require source and target to share a type
+     # implies_use: forward         # a mission using the source relies on the target
      description: The policy sets rules for the capability or process.
    ```
 
 2. Use it in a block's `relationships`.
 3. Run `python scripts/validate_content.py`.
+
+Set `implies_use` only when the relationship is a real dependency: `forward` when a mission that uses the source also relies on the target, `reverse` when it's the other way around. It decides where a block shows as used indirectly (see [How generated references work](#how-generated-references-work)).
 
 Block pages and the vocabulary page pick it up automatically. Add relationship types deliberately: each one should carry a meaning that existing types don't. Avoid generic types such as `related_to`.
 
@@ -398,7 +401,9 @@ CI runs the validator and its tests before building, so invalid content never de
 The site derives every reverse view at build time with Liquid. It doesn't store any reciprocal data.
 
 - **Block → block:** a block page scans other blocks' `relationships` for its own ID and groups them by the inverse label ("Managed by", "Constrains", and so on).
-- **Block → missions:** a block page scans every mission's `components` for its ID and shows each mission with that mission's purpose and stage.
+- **Block → missions:** a block page scans every mission's `components` for its ID and shows each mission with that mission's purpose and stage. Those are the missions that use it **directly**.
+- **Block → missions, indirectly:** a block page also follows the relationships marked `implies_use` in `_data/relationship_types.yml`, up to three steps away, to find missions that rely on it without listing it. Entity Document, for example, is used indirectly by both missions, through Document Management, which `manages` it. Each is labeled "Indirectly" and names the nearest listed blocks it comes through. Only dependencies count: `uses`, `manages`, `provides_access_to`, `depends_on`, `constrained_by`, and `specializes` carry usage forward, and `enforces` carries it from a policy to its controls. `applies_to`, `supports`, `part_of`, and `references` don't, so a mission isn't credited with everything that happens to be connected.
+- **Measure → outcomes:** each measure's row lists the mission outcomes that reference it.
 - **Mission → missions:** each component on a mission page lists the other missions that also use it.
 - **Homepage:** blocks used by two or more missions are listed automatically.
 

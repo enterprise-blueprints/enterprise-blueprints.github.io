@@ -258,6 +258,12 @@ class RegistryErrors(ValidatorTestCase):
         path.write_text(text.replace("      next: supports\n", "      next: helps\n"), encoding="utf-8")
         self.assertFails("uses unknown relationship 'helps'")
 
+    def test_implies_use_must_be_forward_or_reverse(self):
+        path = self.root / "_data/relationship_types.yml"
+        text = path.read_text(encoding="utf-8")
+        path.write_text(text.replace("implies_use: reverse", "implies_use: backward", 1), encoding="utf-8")
+        self.assertFails("relationship 'enforces' has implies_use 'backward'")
+
 
 PROCESS = """\
 ---

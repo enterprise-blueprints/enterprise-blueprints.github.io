@@ -597,6 +597,11 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .usage__title { font-weight: 650; font-size: 1.0625rem; }
 .usage__roles { margin: 0; padding: 0; list-style: none; display: grid; gap: .35rem; color: var(--text-muted); font-size: .9688rem; }
 .usage__roles .stage-chip { margin-right: .35rem; }
+.usage-heading { margin: 1.5rem 0 .25rem; font-size: 1.0625rem; }
+.usage-heading:first-of-type { margin-top: .75rem; }
+.usage--indirect { border-style: dashed; }
+.usage__through-label { margin: 0 0 .35rem; font-size: .8125rem; font-weight: 650; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
+.usage__through { margin: 0; }
 
 /* Mission outcomes, lifecycle, components */
 
