@@ -90,7 +90,7 @@ layout: default
       {%- assign op_measures = 0 -%}
       {%- assign op_support = 0 -%}
       {%- for op in op_outcomes -%}
-        {%- if op.measures.size > 0 -%}{%- assign op_measures = op_measures | plus: 1 -%}{%- endif -%}
+        {%- if op.measures.size > 0 or op.indicators.size > 0 -%}{%- assign op_measures = op_measures | plus: 1 -%}{%- endif -%}
         {%- if op.supported_by.size > 0 -%}{%- assign op_support = op_support | plus: 1 -%}{%- endif -%}
       {%- endfor -%}
       {%- assign op_columns = 1 -%}
@@ -131,7 +131,7 @@ layout: default
         {%- endif -%}
       {%- endcapture %}
       <section class="section" id="operational-outcomes" aria-labelledby="operational-outcomes-heading">
-        <h2 id="operational-outcomes-heading">How the work contributes</h2>
+        <h2 id="operational-outcomes-heading">Operational outcomes</h2>
         <p class="section-note">Operational outcomes describe how well the work performs. Each one serves a mission outcome, and links to the measures and building blocks behind it.</p>
         <div class="prose">
         <table class="attribute-table data-table outcome-table">
@@ -141,6 +141,11 @@ layout: default
         </table>
         </div>
       </section>
+      {%- endif %}
+
+      {%- assign mission_model = site.data.mission_models[page.slug] -%}
+      {%- if mission_model %}
+      {% include mission-model.html model=mission_model %}
       {%- endif %}
 
       {%- if lifecycle.size > 0 %}
@@ -300,7 +305,25 @@ layout: default
         <p class="empty">This mission doesn't reference any building blocks yet.</p>
         {%- endif %}
       </section>
-    </article>
+      {%- if page.typical_systems.size > 0 %}
+      <section class="section" id="typical-systems" aria-labelledby="typical-systems-heading">
+        <h2 id="typical-systems-heading">Systems usually in place</h2>
+        <p class="section-note">What organizations doing this work usually have today, and the capabilities each one provides. Whether to keep, integrate, replace, or retire each one is a decision for each engagement.</p>
+        <div class="prose">
+        <table class="attribute-table data-table outcome-table">
+          <thead><tr><th scope="col" class="outcome-table__outcome">System</th><th scope="col">Provides</th></tr></thead>
+          <tbody>
+            {%- for system in page.typical_systems %}
+            <tr{% if system.id %} id="system-{{ system.id }}"{% endif %}>
+              <th scope="row"><span class="outcome-table__title">{{ system.name }}</span>{% if system.description %}<span class="outcome-table__statement">{{ system.description }}</span>{% endif %}</th>
+              <td data-label="Provides">{% if system.provides.size > 0 %}{% include trace-list.html refs=system.provides %}{% else %}<span class="muted">No shared capability</span>{% endif %}</td>
+            </tr>
+            {%- endfor %}
+          </tbody>
+        </table>
+        </div>
+      </section>
+      {%- endif %}    </article>
 
     <aside class="record-aside" aria-label="Mission details">
       <dl class="facts">

@@ -33,8 +33,22 @@ lifecycle:
     summary: What happens in this stage.
 
 roles:
-  - name: Example role
+  - id: example-role        # optional; lets a mission effectiveness model refer to the role
+    name: Example role
     description: What this role does in the mission.
+    concerns: What they care about most.   # optional
+    influence: medium       # optional: high | medium | low
+
+# Systems organizations doing this work usually have today. Optional.
+typical_systems:
+  - id: case-system
+    name: Case management system
+    kind: service
+    description: What it does today.
+    provides: [capability.case-management]
+
+# A mission effectiveness model, with the conditions and behaviors behind the outcomes,
+# goes in _data/mission_models/<this file's name>.yml. See the README.
 
 # Experiences someone could build for this mission. Suggestions, not building blocks.
 experience_ideas:

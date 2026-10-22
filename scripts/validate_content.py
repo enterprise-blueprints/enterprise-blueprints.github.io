@@ -50,7 +50,7 @@ FIELD_SPECS = {
     "attributes": FieldSpec("list", frozenset({"name", "description"}), ("name",)),
     "trigger": FieldSpec("text"),
     "outcome": FieldSpec("text"),
-    "steps": FieldSpec("list", frozenset({"id", "title", "description", "role", "uses", "decisions"}), ("id", "title")),
+    "steps": FieldSpec("list", frozenset({"id", "title", "description", "role", "uses", "decisions", "subprocess", "waits"}), ("id", "title")),
     "exceptions": FieldSpec("list", frozenset({"title", "description", "continues_at"}), ("title",)),
     "operations": FieldSpec(
         "list",
@@ -73,6 +73,9 @@ FIELD_SPECS = {
     "principles": FieldSpec("strings"),
     "participants": FieldSpec("list", frozenset({"name", "type", "description"}), ("name",)),
     "approach": FieldSpec("list", frozenset({"title", "description"}), ("title",)),
+    "requirements": FieldSpec(
+        "list", frozenset({"id", "title", "statement", "category", "steps", "capabilities", "policies"}), ("id", "title")
+    ),
     "use_when": FieldSpec("strings"),
     "avoid_when": FieldSpec("strings"),
 }
@@ -86,7 +89,7 @@ BLOCK_OPTIONAL += list(FIELD_SPECS)
 OUTCOME_KEYS = {"id", "title", "statement", "indicators"}
 INDICATOR_KEYS = {"name", "description"}
 # Operational outcomes: how well the work performs, traced to what supports it.
-OPERATIONAL_OUTCOME_KEYS = {"id", "statement", "contributes_to", "measures", "supported_by"}
+OPERATIONAL_OUTCOME_KEYS = {"id", "statement", "contributes_to", "measures", "indicators", "supported_by"}
 
 MISSION_REQUIRED = ["id", "title", "summary", "status", "components"]
 MISSION_OPTIONAL = [
@@ -98,6 +101,7 @@ MISSION_OPTIONAL = [
     "lifecycle_process",
     "roles",
     "experience_ideas",
+    "typical_systems",
     "layout",
 ]
 
@@ -107,7 +111,9 @@ IMPLEMENTATION_OPTIONAL = ["technology", "layout"]
 RELATIONSHIP_KEYS = {"type", "target", "note", "obligations"}
 COMPONENT_KEYS = {"ref", "purpose", "stage", "notes"}
 STAGE_KEYS = {"id", "title", "summary"}
-ROLE_KEYS = {"name", "description"}
+ROLE_KEYS = {"id", "name", "description", "concerns", "influence"}
+INFLUENCE_LEVELS = ("high", "medium", "low")
+SYSTEM_KEYS = {"id", "name", "kind", "description", "provides"}
 EXPERIENCE_IDEA_KEYS = {"title", "description"}
 
 # Keys that would break ID-based linking or stable URLs if authors set them.
@@ -226,6 +232,7 @@ class Registries:
     kinds: dict = field(default_factory=dict)
     automation_levels: dict = field(default_factory=dict)
     obligation_levels: dict = field(default_factory=dict)
+    requirement_categories: dict = field(default_factory=dict)
 
 
 def load_registries(root: Path, report: Report) -> Registries | None:
@@ -295,7 +302,7 @@ def load_registries(root: Path, report: Report) -> Registries | None:
     sections = load_sections(block_types_file, types, report)
     kinds = load_kinds(block_types_file, types, report)
     level_sets = {}
-    for name in ("automation_levels", "obligation_levels"):
+    for name in ("automation_levels", "obligation_levels", "requirement_categories"):
         levels = block_types_file.get(name) or {}
         if not isinstance(levels, dict):
             report.error("_data/block_types.yml", f"'{name}' must be a mapping.")
@@ -316,6 +323,7 @@ def load_registries(root: Path, report: Report) -> Registries | None:
     return Registries(
         types, groups, relationship_types, statuses, scopes, domains,
         sections, kinds, automation_levels, obligation_levels,
+        level_sets["requirement_categories"],
     )
 
 
@@ -751,6 +759,15 @@ def check_block_fields(
                         for key in decision:
                             if key not in DECISION_KEYS:
                                 report.warn(where, f"decision #{index} has unknown field '{key}'." + suggest(key, DECISION_KEYS))
+            # A step can point to a finer process that describes it in more detail.
+            subprocess = step.get("subprocess")
+            if subprocess is not None:
+                if subprocess not in blocks_by_id:
+                    report.error(where, f"subprocess '{subprocess}' does not exist." + missing_hint(str(subprocess), blocks_by_id, block_files))
+                elif blocks_by_id[subprocess].data.get("type") != "process":
+                    report.error(where, f"subprocess '{subprocess}' must be a process block.")
+                elif subprocess == record.data.get("id"):
+                    report.error(where, "subprocess points at this process itself.")
             step_uses = step.get("uses") or []
             if not isinstance(step_uses, list):
                 report.error(where, "'uses' must be a list of capability IDs.")
@@ -816,6 +833,9 @@ def check_block_fields(
                     f"process's steps ({', '.join(step_ids) or 'none'})." + suggest(target, step_ids),
                 )
 
+    if "requirements" in allowed_fields:
+        check_requirements(record, step_ids, blocks_by_id, registries, report, block_files)
+
     kind = record.data.get("kind")
     if kind is not None:
         options = registries.kinds.get(block_type)
@@ -827,6 +847,48 @@ def check_block_fields(
                 f"kind '{kind}' is not defined for {block_type} blocks in _data/block_types.yml. "
                 f"Allowed: {', '.join(options)}." + suggest(kind, options),
             )
+
+
+def check_requirements(record, step_ids, blocks_by_id, registries, report, block_files) -> None:
+    """A process's template requirements: known category, steps, capabilities, and policies.
+
+    `steps` names this process's steps; leaving it out makes the requirement
+    apply to the whole process. `policies` names policy blocks, or one
+    obligation as "policy.x#obligation-id".
+    """
+    entry_ids(record, "requirements", report)
+    categories = registries.requirement_categories
+    for requirement in record.data.get("requirements") or []:
+        if not isinstance(requirement, dict):
+            continue
+        where = f"{record.rel_path}: requirement '{requirement.get('id')}'"
+        category = requirement.get("category")
+        if category is not None and category not in categories:
+            report.error(
+                where,
+                f"category '{category}' isn't defined in _data/block_types.yml. "
+                f"Allowed: {', '.join(categories)}." + suggest(category, categories),
+            )
+        for key in ("steps", "capabilities", "policies"):
+            value = requirement.get(key)
+            if value is not None and not isinstance(value, list):
+                report.error(where, f"'{key}' must be a list.")
+        for step in requirement.get("steps") or []:
+            if step not in step_ids:
+                report.error(where, f"names step '{step}', which isn't one of this process's steps." + suggest(step, step_ids))
+        for ref in requirement.get("capabilities") or []:
+            if ref not in blocks_by_id:
+                report.error(where, f"names capability '{ref}', which does not exist." + missing_hint(str(ref), blocks_by_id, block_files))
+            elif blocks_by_id[ref].data.get("type") != "capability":
+                report.error(where, f"names '{ref}' as a capability, but it's a {blocks_by_id[ref].data.get('type')}.")
+        for ref in requirement.get("policies") or []:
+            policy_id, _, obligation = str(ref).partition("#")
+            if policy_id not in blocks_by_id:
+                report.error(where, f"names policy '{policy_id}', which does not exist." + missing_hint(policy_id, blocks_by_id, block_files))
+            elif blocks_by_id[policy_id].data.get("type") != "policy":
+                report.error(where, f"names '{policy_id}' as a policy, but it's a {blocks_by_id[policy_id].data.get('type')}.")
+            elif obligation and obligation not in part_ids(blocks_by_id[policy_id], "obligations"):
+                report.error(where, f"names obligation '{obligation}', which {policy_id} doesn't have.")
 
 
 def entry_ids(record: Record, name: str, report: Report) -> list[str]:
@@ -960,24 +1022,28 @@ def check_outcomes(record: Record, blocks_by_id: dict, report: Report, block_fil
     """
     rel = record.rel_path
     mission_ids = []
-    for outcome_id, outcome in outcome_entries(record, "outcomes", "outcome", OUTCOME_KEYS, report):
-        mission_ids.append(outcome_id)
+    def check_indicators(where, outcome):
         indicators = outcome.get("indicators")
         if indicators is None:
-            continue
+            return
         if not isinstance(indicators, list):
-            report.error(f"{rel}: outcome '{outcome_id}'", "'indicators' must be a list of {name, description}.")
-            continue
+            report.error(where, "'indicators' must be a list of {name, description}.")
+            return
         for index, indicator in enumerate(indicators, start=1):
             if not isinstance(indicator, dict) or is_blank(indicator.get("name")):
-                report.error(f"{rel}: outcome '{outcome_id}'", f"indicator #{index} needs a 'name'.")
+                report.error(where, f"indicator #{index} needs a 'name'.")
                 continue
             for key in indicator:
                 if key not in INDICATOR_KEYS:
-                    report.warn(f"{rel}: outcome '{outcome_id}'", f"indicator #{index} has unknown field '{key}'.")
+                    report.warn(where, f"indicator #{index} has unknown field '{key}'.")
+
+    for outcome_id, outcome in outcome_entries(record, "outcomes", "outcome", OUTCOME_KEYS, report):
+        mission_ids.append(outcome_id)
+        check_indicators(f"{rel}: outcome '{outcome_id}'", outcome)
 
     for outcome_id, outcome in outcome_entries(record, "operational_outcomes", "operational outcome", OPERATIONAL_OUTCOME_KEYS, report):
         where = f"{rel}: operational outcome '{outcome_id}'"
+        check_indicators(where, outcome)
         contributes = outcome.get("contributes_to")
         if contributes is not None:
             if not isinstance(contributes, list):
@@ -1036,6 +1102,155 @@ def check_trace_ref(where: str, key: str, ref, blocks_by_id: dict, report: Repor
         )
 
 
+MODEL_KEYS = {"mission", "factors", "outcome_notes", "links", "loops", "interventions"}
+FACTOR_KEYS = {"id", "type", "title", "description", "better", "pattern", "signals", "questions", "metrics", "steps", "known_by"}
+FACTOR_TYPES = ("condition", "behavior")
+BETTER = ("higher", "lower", "neutral")
+OUTCOME_NOTE_KEYS = {"signals", "questions", "steps", "known_by"}
+LINK_KEYS = {"from", "to", "effect", "confidence", "rationale", "lag", "applies_when", "evidence"}
+EFFECTS = ("increases", "decreases")
+CONFIDENCE = ("hypothesis", "supported", "established")
+LOOP_KEYS = {"id", "title", "kind", "factors", "description", "watch_for"}
+LOOP_KINDS = ("reinforcing", "balancing")
+INTERVENTION_KEYS = {"id", "title", "kind", "description", "need", "changes", "requirements"}
+INTERVENTION_KINDS = ("technology", "process", "policy", "people", "organization")
+
+
+def check_step_ref(where: str, ref, blocks_by_id: dict, report: Report, block_files: dict) -> None:
+    """A reference to one process step, as "process.x#step-id"."""
+    block_id, _, step = str(ref).partition("#")
+    if block_id not in blocks_by_id:
+        report.error(where, f"step '{ref}': '{block_id}' does not exist." + missing_hint(block_id, blocks_by_id, block_files))
+    elif blocks_by_id[block_id].data.get("type") != "process" or not step:
+        report.error(where, f"'{ref}' must name a process step, as 'process.x#step-id'.")
+    elif step not in part_ids(blocks_by_id[block_id], "steps"):
+        report.error(where, f"{block_id} has no step '{step}'." + suggest(step, part_ids(blocks_by_id[block_id], "steps")))
+
+
+def check_mission_models(root: Path, missions: list[Record], blocks_by_id: dict, report: Report, block_files: dict) -> int:
+    """Check each mission model in _data/mission_models/ against its mission and the blocks.
+
+    A mission model holds a mission's effectiveness graph: the conditions and
+    behaviors that shape its outcomes, how they influence each other, the
+    loops they form, and the interventions that would change them. The
+    outcomes themselves stay on the mission.
+    """
+    directory = root / "_data" / "mission_models"
+    if not directory.exists():
+        return 0
+    by_slug = {m.path.stem: m for m in missions}
+    count = 0
+    for path in sorted(directory.glob("*.yml")):
+        count += 1
+        rel = path.relative_to(root).as_posix()
+        data = load_yaml_file(path, report, root)
+        if not isinstance(data, dict):
+            report.error(rel, "must be a mapping with 'mission' and 'factors'.")
+            continue
+        for key in data:
+            if key not in MODEL_KEYS:
+                report.warn(rel, f"unknown field '{key}' will be ignored." + suggest(key, MODEL_KEYS))
+        mission = by_slug.get(path.stem)
+        expected = f"mission.{path.stem}"
+        if mission is None:
+            report.error(rel, f"has no mission. The file name must match a mission's file in _missions/ ({expected}).")
+            continue
+        if data.get("mission") != expected:
+            report.error(rel, f"'mission' must be '{expected}', to match its file name.")
+
+        outcome_ids = [
+            str(o["id"]) for key in ("outcomes", "operational_outcomes")
+            for o in mission.data.get(key) or [] if isinstance(o, dict) and o.get("id")
+        ]
+        role_ids = [str(r["id"]) for r in mission.data.get("roles") or [] if isinstance(r, dict) and r.get("id")]
+
+        def check_places(where, entry):
+            for ref in entry.get("steps") or []:
+                check_step_ref(where, ref, blocks_by_id, report, block_files)
+            for role in entry.get("known_by") or []:
+                if role not in role_ids:
+                    report.error(where, f"known_by '{role}' isn't one of the mission's role ids." + suggest(role, role_ids))
+
+        factor_ids = []
+        for index, factor in enumerate(data.get("factors") or [], start=1):
+            if not isinstance(factor, dict) or is_blank(factor.get("id")) or is_blank(factor.get("title")):
+                report.error(rel, f"factor #{index} needs an 'id' and a 'title'.")
+                continue
+            factor_id = str(factor["id"])
+            where = f"{rel}: factor '{factor_id}'"
+            if not SLUG_PATTERN.match(factor_id):
+                report.error(where, "id must be lowercase words joined by hyphens.")
+            if factor_id in factor_ids or factor_id in outcome_ids:
+                report.error(where, "id is already used by another factor or one of the mission's outcomes.")
+            factor_ids.append(factor_id)
+            for key in factor:
+                if key not in FACTOR_KEYS:
+                    report.warn(where, f"unknown field '{key}' will be ignored." + suggest(key, FACTOR_KEYS))
+            if factor.get("type") not in FACTOR_TYPES:
+                report.error(where, f"type must be {' or '.join(FACTOR_TYPES)}. The mission's outcomes are already factors.")
+            if factor.get("better") is not None and factor.get("better") not in BETTER:
+                report.error(where, f"better must be one of {', '.join(BETTER)}.")
+            check_places(where, factor)
+
+        for outcome_id, note in (data.get("outcome_notes") or {}).items():
+            where = f"{rel}: outcome note '{outcome_id}'"
+            if outcome_id not in outcome_ids:
+                report.error(where, "isn't one of the mission's outcomes." + suggest(outcome_id, outcome_ids))
+                continue
+            for key in note or {}:
+                if key not in OUTCOME_NOTE_KEYS:
+                    report.warn(where, f"unknown field '{key}' will be ignored." + suggest(key, OUTCOME_NOTE_KEYS))
+            check_places(where, note or {})
+
+        known = factor_ids + outcome_ids
+        for index, link in enumerate(data.get("links") or [], start=1):
+            where = f"{rel}: link #{index}"
+            if not isinstance(link, dict):
+                report.error(where, "must be a mapping with 'from', 'to', and 'effect'.")
+                continue
+            for key in link:
+                if key not in LINK_KEYS:
+                    report.warn(where, f"unknown field '{key}' will be ignored." + suggest(key, LINK_KEYS))
+            for end in ("from", "to"):
+                if link.get(end) not in known:
+                    report.error(where, f"'{end}: {link.get(end)}' isn't a factor or one of the mission's outcomes." + suggest(link.get(end), known))
+            if link.get("effect") not in EFFECTS:
+                report.error(where, f"effect must be {' or '.join(EFFECTS)}.")
+            if link.get("confidence") is not None and link.get("confidence") not in CONFIDENCE:
+                report.error(where, f"confidence must be one of {', '.join(CONFIDENCE)}.")
+
+        for index, loop in enumerate(data.get("loops") or [], start=1):
+            where = f"{rel}: loop '{(loop or {}).get('id', index)}'"
+            for key in loop or {}:
+                if key not in LOOP_KEYS:
+                    report.warn(where, f"unknown field '{key}' will be ignored." + suggest(key, LOOP_KEYS))
+            if (loop or {}).get("kind") not in LOOP_KINDS:
+                report.error(where, f"kind must be {' or '.join(LOOP_KINDS)}.")
+            for factor in (loop or {}).get("factors") or []:
+                if factor not in known:
+                    report.error(where, f"names '{factor}', which isn't a factor or outcome." + suggest(factor, known))
+
+        for index, intervention in enumerate(data.get("interventions") or [], start=1):
+            where = f"{rel}: intervention '{(intervention or {}).get('id', index)}'"
+            for key in intervention or {}:
+                if key not in INTERVENTION_KEYS:
+                    report.warn(where, f"unknown field '{key}' will be ignored." + suggest(key, INTERVENTION_KEYS))
+            if (intervention or {}).get("kind") not in INTERVENTION_KINDS:
+                report.error(where, f"kind must be one of {', '.join(INTERVENTION_KINDS)}.")
+            for change in (intervention or {}).get("changes") or []:
+                if (change or {}).get("factor") not in known:
+                    report.error(where, f"changes '{(change or {}).get('factor')}', which isn't a factor or outcome." + suggest((change or {}).get("factor"), known))
+                if (change or {}).get("effect") not in EFFECTS:
+                    report.error(where, f"each change needs an effect: {' or '.join(EFFECTS)}.")
+            for ref in (intervention or {}).get("requirements") or []:
+                block_id, _, requirement = str(ref).partition("#")
+                if block_id not in blocks_by_id or blocks_by_id[block_id].data.get("type") != "process":
+                    report.error(where, f"requirement '{ref}' must be 'process.x#requirement-id' on an existing process.")
+                elif requirement not in part_ids(blocks_by_id[block_id], "requirements"):
+                    report.error(where, f"{block_id} has no requirement '{requirement}'." + suggest(requirement, part_ids(blocks_by_id[block_id], "requirements")))
+    return count
+
+
 def check_mission(
     record: Record,
     blocks_by_id: dict[str, Record],
@@ -1064,6 +1279,7 @@ def check_mission(
     for key, allowed_keys, required in (
         ("roles", ROLE_KEYS, "name"),
         ("experience_ideas", EXPERIENCE_IDEA_KEYS, "title"),
+        ("typical_systems", SYSTEM_KEYS, "name"),
     ):
         entries = data.get(key)
         if entries is None:
@@ -1078,6 +1294,34 @@ def check_mission(
             for entry_key in entry:
                 if entry_key not in allowed_keys:
                     report.warn(rel, f"{key} #{index} has unknown field '{entry_key}'.")
+
+    # Roles and typical systems can have ids, so tools and mission models can refer to them.
+    for key in ("roles", "typical_systems"):
+        entries = [e for e in data.get(key) or [] if isinstance(e, dict)]
+        seen_ids = []
+        for entry in entries:
+            entry_id = entry.get("id")
+            if entry_id is None:
+                continue
+            if not SLUG_PATTERN.match(str(entry_id)):
+                report.error(rel, f"{key} id '{entry_id}' must be lowercase words joined by hyphens.")
+            if entry_id in seen_ids:
+                report.error(rel, f"{key} id '{entry_id}' is used more than once.")
+            seen_ids.append(entry_id)
+    for role in [r for r in data.get("roles") or [] if isinstance(r, dict)]:
+        influence = role.get("influence")
+        if influence is not None and influence not in INFLUENCE_LEVELS:
+            report.error(rel, f"role '{role.get('name')}' has influence '{influence}'. Use {', '.join(INFLUENCE_LEVELS)}.")
+    for system in [s for s in data.get("typical_systems") or [] if isinstance(s, dict)]:
+        provides = system.get("provides") or []
+        if not isinstance(provides, list):
+            report.error(rel, f"typical system '{system.get('name')}': 'provides' must be a list of capability IDs.")
+            continue
+        for ref in provides:
+            if ref not in blocks_by_id:
+                report.error(rel, f"typical system '{system.get('name')}' provides '{ref}', which does not exist." + missing_hint(str(ref), blocks_by_id, block_files))
+            elif blocks_by_id[ref].data.get("type") != "capability":
+                report.error(rel, f"typical system '{system.get('name')}' provides '{ref}', which isn't a capability.")
 
     stage_ids = []
     lifecycle = data.get("lifecycle")
@@ -1227,6 +1471,10 @@ def validate(root: Path) -> Report:
         check_identity(mission, f"mission.{mission.path.stem}", report)
         check_body(mission, report)
         check_mission(mission, blocks_by_id, registries, report, block_files)
+
+    models = check_mission_models(root, missions, blocks_by_id, report, block_files)
+    if models:
+        report.counts["mission models"] = models
 
     for guide in implementations:
         check_fields(guide, IMPLEMENTATION_REQUIRED, IMPLEMENTATION_OPTIONAL, report)

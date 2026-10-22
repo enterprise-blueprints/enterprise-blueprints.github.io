@@ -5,8 +5,9 @@
 
   Params:
     refs  a list of "block.id" or "block.id#item-id"
-    kind  "measure" when the items are the blocks' `measures`. Otherwise an
-          item is a process's step or a capability's operation.
+    kind  "measure" when the items are the blocks' `measures`, "requirement"
+          for a process's `requirements`. Otherwise an item is a process's
+          step or a capability's operation.
 
   The validator checks that every block and item exists.
 {%- endcomment -%}
@@ -29,6 +30,10 @@
       {%- assign tl_item = tl_block.measures | where: "id", tl_item_id | first -%}
       {%- assign tl_name = tl_item.name -%}
       {%- assign tl_anchor = "measure-" | append: tl_item_id -%}
+    {%- elsif include.kind == "requirement" -%}
+      {%- assign tl_item = tl_block.requirements | where: "id", tl_item_id | first -%}
+      {%- assign tl_name = tl_item.title -%}
+      {%- assign tl_anchor = "req-" | append: tl_item_id -%}
     {%- elsif tl_block.type == "process" -%}
       {%- assign tl_item = tl_block.steps | where: "id", tl_item_id | first -%}
       {%- assign tl_name = tl_item.title | append: " step" -%}

@@ -1,6 +1,6 @@
 # Handoff: library and Solution Studio, in tandem
 
-Where things stood on October 22, 2026, for picking up in a new session. Open `C:\Users\jerem\repos\blueprints-stack.code-workspace`, which has three folders:
+Where things stood at the end of October 22, 2026, for picking up in a new session. Open `C:\Users\jerem\repos\blueprints-stack.code-workspace`, which has three folders:
 
 | Folder | What it is | Status |
 | --- | --- | --- |
@@ -21,57 +21,66 @@ Work on both sides in tandem. The library defines the model, and Studio proves i
 
 ## State of the library
 
-**Pushed and live:** everything through `6df3c93` ("Add experience and pattern templates"): templates for all seven block types, structured front matter, capability tabs, and the redesigned Mission Blueprint pages.
+**Pushed and live:** everything through `916d4f9`, including the two outcome levels and these notes.
 
-**Committed, not pushed** (five commits on `main`):
+**Uncommitted, from the session of October 22:** the validator shows 0 warnings, all 101 tests pass, and links check out in both builds.
 
-- `5f80866` Light capability contracts: `takes`, `returns`, and `authority` on operations.
-- `078972c` Traceable outcomes, and measure ids on capabilities.
-- `4a8c201` Direct and indirect mission usage on block pages, through `implies_use` on relationship types.
-- `9ec0771` Planned Application Management capability, Grants policy and control placeholders, the How to Use guide, and the README's modeling decisions.
-- `f586552` The Solution Studio alignment note.
-
-**Uncommitted in the working tree**, all tested (85 tests pass, 0 validator warnings, links check):
-
-- **Two levels of outcomes on missions.** `outcomes` holds agency-level mission outcomes `{id, title, statement, indicators}`. The new `operational_outcomes` list `{id, statement, contributes_to, measures, supported_by}` holds how well the work performs. Project or solution outcomes belong in Studio, not the library. The mission page shows a Mission outcomes table, then "How the work contributes", grouped by mission outcome, with gaps shown.
-- **Outcome tables.** Outcomes are compact tables after the Overview (`_includes/trace-list.html` and `_includes/operational-outcome-row.html`). The old `trace-ref.html` is deleted.
-- **Contracts are easier to see.** Operations show full-size Takes and Returns lines with a divider, and a note under the heading says the operations form the capability's contract.
-- **Widths.** The page container is 80rem. Running text is capped at 54rem, while tables and flows use the full column. `wide: true` in front matter widens a `page` layout page (The Architecture uses it).
+- **New formats:**
+  - Process steps take `waits` and `subprocess`.
+  - Process blocks take `requirements`, shown as a Requirements table.
+  - Mission roles take `id`, `concerns`, and `influence`.
+  - Missions take `typical_systems`.
+  - Operational outcomes take `indicators`.
+  - Mission effectiveness models live in `_data/mission_models/<mission>.yml`, and show as a collapsed "Mission effectiveness model" section.
+  - `requirement_categories` is in `_data/block_types.yml`.
+- **Inspector General Investigations:** ported from the old library by `port_ig.py` in the session scratchpad, keeping the old ids.
+  - **The mission and its model:** 19 conditions and behaviors, 37 links, 2 loops, and 14 interventions.
+  - **Processes:** `process.oig-investigation` (it specializes Investigation Lifecycle) with five sub-processes, plus `process.oig-caseload-oversight`, with 37 requirements in all.
+  - **Capabilities:** 12 planned stubs from the old catalog.
+  - **Restated outcomes:** `backlog` and `rework` are restated as goals, with their links flipped to match.
+- **`_config.yml`** now sets `url` to the published address, so Studio can link back.
 
 Ask before committing or pushing. Both have been on request only.
 
 ## State of Solution Studio
 
-- **Its library connection is broken.** `src/server/library.ts` and `src/server/missions.ts` read `_data/missions/`, `_data/use-cases/`, and `_data/capabilities/` from `../enterprise-blueprints.github.io`. The rebuild removed those folders, so the mission picker is empty and the process and Define views have no templates. The old files are still in the `-old` folder.
-- **Uncommitted work in progress.** About 25 changed files on Define and the future process (`future-process.tsx`, `lib/define.ts`, and migration `0007_future_process`). It isn't ours to change. Ask whether to commit it before touching Studio.
-- **Saved data.** `data/studio.db` has four projects, three on the old `inspector-general-investigations` mission, with one process of 10 activities started from it.
-- **Stack:** Next.js 16.4 (read `AGENTS.md`: its APIs differ from older versions), React 19, SQLite through Drizzle, Azure OpenAI Responses API, Vitest. Run `npm run dev`, `npm test`, and `npm run typecheck`. `STUDIO_AI=demo` uses canned AI answers.
-- Studio also searches `../industry-blueprints.github.io` for patterns and reference architectures (`src/server/blueprints.ts`). That's a separate library, and out of scope for now.
+- **Committed:** your Define and future process work, as `0b8c9a2`.
+- **Uncommitted: Studio reads the v0.2 library.**
+  - **Loaders:** `src/server/library.ts` and `missions.ts` are rewritten. They read `_blocks/`, `_missions/`, and `_data/mission_models/` with gray-matter, and build Studio's existing `Mission` type, so the UI is unchanged.
+  - **IDs and links:** capability IDs are now full (`capability.case-management`), and URLs point to the new site.
+  - **Tests:** a new `test-library.ts` writes test fixtures, and a new `library.test.ts` checks the real library next to Studio (it skips when the library isn't there). All 55 tests pass, and typecheck and lint are clean.
+- **Saved projects:**
+  - "Sample OIG" loads the new IG mission, with its outcome links and `caseload` rating intact.
+  - The project whose process started from `complaint-intake` keeps its activities, because their ids are unchanged. But its process-level `missionRef` no longer matches anything. The new process is `process.oig-investigation`.
+- **Your running dev server:** PID 5336 rebuilds continuously ("Fast Refresh rebuilding" every few hundred milliseconds), so headless screenshots get stuck at "Opening project…". This was already happening before these changes, and it's worth a look.
+- **Stack:** Next.js 16.4 (read `AGENTS.md`: its APIs differ from older versions), React 19, SQLite through Drizzle, the Azure OpenAI Responses API, and Vitest. Run `npm run dev`, `npm test`, and `npm run typecheck`. `STUDIO_AI=demo` uses canned AI answers.
+- **Other library:** Studio also searches `../industry-blueprints.github.io` for patterns and reference architectures (`src/server/blueprints.ts`). That's a separate library, and out of scope for now.
 
 ## Decided so far
 
-- Seven block types, no more for now. Outcomes, measures, roles, and events live inside missions and blocks.
-- Capability contracts stay light: plain phrases, and no schemas.
-- Outcomes come in two levels in the library: mission and operational. These match Studio's `mission-outcome` and `operational-outcome` factor types.
-- Measures are defined once, on blocks. Mission indicators live on the mission.
-- Mission usage is written once and derived both ways, following only real dependencies.
-
-## Open questions, to settle at the start
-
-From the alignment note:
-
-1. **Where the rest of the effectiveness graph lives.** That's conditions, behaviors, causal links, loops, and interventions. The recommendation is on the mission, next to its outcomes, with factors pointing at process steps.
-2. **Template requirements.** The recommendation is `requirements` on process blocks, plus mission-specific ones on missions. They power Studio's Define stage.
-3. **Step granularity.** Studio's discovery wants about 30 activities, and Investigation Lifecycle has 5 steps. Sub-processes could give both.
-4. **Inspector General.** Its own mission specializing Investigations, or its graph on Investigations directly.
-5. **How Studio reads the library.** The recommendation is a JSON export built by the site, such as `/data/library.json`, checked by the validator, instead of parsing front matter.
+- **Block types:** seven, and no more for now. Outcomes, measures, roles, and events live inside missions and blocks.
+- **Capability contracts:** they stay light, as plain phrases with no schemas.
+- **Outcomes:** two levels in the library, mission and operational. They're Studio's `mission-outcome` and `operational-outcome` factors.
+- **Effectiveness graph:** the rest of it lives in a separate mission-model file for each mission.
+- **Finer detail:** it comes from sub-processes. A step's `subprocess` is a full process block.
+- **Template requirements:** they live on process blocks. Mission-specific ones go on that mission's own processes.
+- **Inspector General:** it's its own mission, composing the same shared blocks as Investigations.
+- **How Studio reads the library:** directly from its source files, not a JSON export. That means no build step, and the validator guards the shape. An export can come later if Studio needs to read the live site.
+- **Measures:** defined once, on blocks. Mission indicators live on the mission.
+- **Mission usage:** written once and derived both ways, following only real dependencies.
 
 ## Suggested next steps
 
-1. Settle the open questions above.
-2. **Library:** add the agreed fields (graph, requirements, role ids, typical systems), a shared case-management process, planned stubs for the 11 missing capabilities, and the JSON export. Port the IG mission content from the `-old` folder into the new shape.
-3. **Studio:** replace the two loader files with a reader for the export, mapped onto Studio's existing types. Switch to full IDs (`capability.case-management`) and the new URLs. Migrate or drop the old test projects.
-4. Then put the new library parts to work in Studio: policies and obligations as constraints in Define, controls in Validate, patterns and experiences in Design, capability states and events in Explore.
+1. Review and commit both repositories' changes.
+2. Fix the old project's process `missionRef` (`complaint-intake` → `process.oig-investigation`), or drop the old test projects.
+3. Write fuller pages for the most-used planned capabilities, such as Workflow, Notification, Identity, and Search.
+4. Put the newer library parts to work in Studio:
+   - policies and obligations as constraints in Define
+   - controls in Validate
+   - patterns and experiences in Design
+   - capability states and events in Explore
+5. Consider a shared, generic case lifecycle process once a second mission needs the same steps.
+6. Continue the discovery toolkit plan in `notes/discovery-toolkit.md`: Studio's tools and outcome-first readiness are done; next are question answers as evidence, then the question bank.
 
 ## Working notes
 

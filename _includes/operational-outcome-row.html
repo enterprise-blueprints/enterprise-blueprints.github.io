@@ -1,17 +1,18 @@
 {%- comment -%}
-  One row of a mission's "How the work contributes" table.
+  One row of a mission's "Operational outcomes" table.
 
   Params:
-    op        an operational outcome: a sentence, or {id, statement, measures, supported_by}
+    op        an operational outcome: a sentence, or {id, statement, measures,
+              indicators, supported_by}
     row_id    the row's anchor id, or "" when the outcome already appeared above
-    measures  how many outcomes have measures (0 hides the column)
+    measures  how many outcomes have measures or indicators (0 hides the column)
     support   how many outcomes have supported_by (0 hides the column)
 {%- endcomment -%}
 {%- assign oor = include.op %}
 <tr{% if include.row_id != "" %} id="{{ include.row_id }}"{% endif %}>
   <th scope="row">{{ oor.statement | default: oor }}</th>
   {%- if include.measures > 0 %}
-  <td data-label="Measured by">{% if oor.measures.size > 0 %}{% include trace-list.html refs=oor.measures kind="measure" %}{% endif %}</td>
+  <td data-label="Measured by">{% if oor.measures.size > 0 %}{% include trace-list.html refs=oor.measures kind="measure" %}{% endif %}{% for indicator in oor.indicators %}<span class="data-table__line indicator" title="{{ indicator.description | escape }}"><span class="indicator__name">{{ indicator.name }}</span></span>{% endfor %}</td>
   {%- endif %}
   {%- if include.support > 0 %}
   <td data-label="Supported by">{% if oor.supported_by.size > 0 %}{% include trace-list.html refs=oor.supported_by %}{% endif %}</td>

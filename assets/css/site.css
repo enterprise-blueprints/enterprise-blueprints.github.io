@@ -761,7 +761,20 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .op-contract { display: grid; gap: .2rem; margin-top: .55rem; padding-top: .5rem; border-top: 1px dashed var(--border); }
 .op-contract > span { display: block; }
 .op-contract strong { margin-right: .4rem; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
-.measure-outcomes { display: block; margin-top: .45rem; font-size: .875rem; color: var(--text-muted); }
+/* A mission model's parts, collapsed so the page stays short. */
+.model-part { margin: 0 0 .6rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.model-part > summary { padding: .7rem 1rem; font-weight: 650; cursor: pointer; }
+.model-part > summary:hover { color: var(--accent); }
+.model-part[open] > summary { border-bottom: 1px solid var(--border); }
+.prose .model-part > table { margin: 0; border: 0; border-radius: 0; }
+.model-effect { display: inline-block; width: 1em; font-weight: 700; color: var(--text-muted); }
+/* A process's template requirements: title and statement, kind, steps, and what they rely on. */
+.requirement__title { display: block; font-weight: 650; }
+.requirement__statement { display: block; margin-top: .2rem; font-weight: 400; color: var(--text-muted); }
+.requirement-kind { display: inline-block; font-size: .75rem; font-weight: 650; white-space: nowrap; padding: .2em .55em; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); color: var(--text); }
+.requirement-kind--nfr { background: var(--surface-muted); }
+.requirement-kind--constraint { background: var(--warning-bg); border-color: var(--warning-border); }
+@media (min-width: 46rem) { .prose .requirement-table th[scope="row"] { width: 46%; } }.measure-outcomes { display: block; margin-top: .45rem; font-size: .875rem; color: var(--text-muted); }
 .measure-outcomes strong { display: block; color: var(--text); font-weight: 650; }
 .op-authority { display: block; margin-top: .55rem; padding-top: .5rem; border-top: 1px dashed var(--border); min-width: 9rem; }
 

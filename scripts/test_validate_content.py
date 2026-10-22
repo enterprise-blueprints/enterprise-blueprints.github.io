@@ -69,7 +69,8 @@ Mission body.
 class ValidatorTestCase(unittest.TestCase):
     def setUp(self):
         self.root = Path(tempfile.mkdtemp())
-        shutil.copytree(REPO / "_data", self.root / "_data")
+        # The registries, without the real mission models: they belong to real missions.
+        shutil.copytree(REPO / "_data", self.root / "_data", ignore=shutil.ignore_patterns("mission_models"))
         for folder in ("_blocks", "_missions", "_implementations"):
             (self.root / folder).mkdir()
         self.write("_blocks/entity.case.md", CASE)
@@ -676,6 +677,138 @@ class OutcomeRules(ValidatorTestCase):
         self.write_outcomes(self.OUTCOMES.replace("    title: Wrongdoing is addressed\n", "    title: Wrongdoing is addressed\n    measures: [capability.case-management#time-to-accept]\n"))
         warnings = "\n".join(validate_content.validate(self.root).warnings)
         self.assertIn("outcome 'wrongdoing-addressed': unknown field 'measures' will be ignored", warnings)
+
+
+PROCESS_REQUIREMENTS = """\
+requirements:
+  - id: any-channel
+    title: Any channel
+    statement: Receive from any channel.
+    category: functional
+    steps: [open]
+    capabilities: [capability.case-management]
+"""
+
+
+class ProcessDetailRules(ValidatorTestCase):
+    def write_process(self, extra: str = "", step_extra: str = "") -> None:
+        text = PROCESS.replace("outcome: The case is open.\n", "outcome: The case is open.\n" + extra)
+        text = text.replace("    uses: [capability.case-management]\n", "    uses: [capability.case-management]\n" + step_extra)
+        self.write("_blocks/process.example.md", text)
+
+    def test_requirements_and_waits_are_valid(self):
+        self.write_process(PROCESS_REQUIREMENTS, "    waits: The requester's reply.\n")
+        self.assertEqual(self.errors(), "")
+
+    def test_requirement_step_must_exist(self):
+        self.write_process(PROCESS_REQUIREMENTS.replace("steps: [open]", "steps: [opne]"))
+        self.assertFails("names step 'opne', which isn't one of this process's steps", "Did you mean 'open'?")
+
+    def test_requirement_category_must_be_known(self):
+        self.write_process(PROCESS_REQUIREMENTS.replace("category: functional", "category: functionality"))
+        self.assertFails("category 'functionality' isn't defined", "Did you mean 'functional'?")
+
+    def test_requirement_capability_must_be_a_capability(self):
+        self.write_process(PROCESS_REQUIREMENTS.replace("capabilities: [capability.case-management]", "capabilities: [entity.case]"))
+        self.assertFails("names 'entity.case' as a capability, but it's a entity")
+
+    def test_subprocess_must_be_a_process(self):
+        self.write_process(step_extra="    subprocess: capability.case-management\n")
+        self.assertFails("subprocess 'capability.case-management' must be a process block")
+
+    def test_subprocess_must_exist(self):
+        self.write_process(step_extra="    subprocess: process.missing\n")
+        self.assertFails("subprocess 'process.missing' does not exist")
+
+
+class MissionDetailRules(ValidatorTestCase):
+    def write_mission(self, extra: str) -> None:
+        self.write("_missions/example.md", MISSION.replace("lifecycle:\n", extra + "lifecycle:\n"))
+
+    def test_roles_and_systems_are_valid(self):
+        self.write_mission(
+            "roles:\n  - { id: owner, name: Case owner, influence: high, concerns: Delay. }\n"
+            "typical_systems:\n  - { id: cms, name: Case system, kind: service, provides: [capability.case-management] }\n"
+        )
+        self.assertEqual(self.errors(), "")
+
+    def test_role_influence_must_be_known(self):
+        self.write_mission("roles:\n  - { id: owner, name: Case owner, influence: huge }\n")
+        self.assertFails("has influence 'huge'")
+
+    def test_system_must_provide_capabilities(self):
+        self.write_mission("typical_systems:\n  - { id: cms, name: Case system, provides: [entity.case] }\n")
+        self.assertFails("provides 'entity.case', which isn't a capability")
+
+
+MODEL = """\
+mission: mission.example
+factors:
+  - id: caseload
+    type: condition
+    title: Investigator caseload
+    better: lower
+    steps: [process.example#open]
+    known_by: [owner]
+outcome_notes:
+  timely:
+    questions: ["How long do cases take?"]
+links:
+  - { from: caseload, to: timely, effect: decreases, confidence: supported }
+loops:
+  - { id: crowding, title: Crowding, kind: reinforcing, factors: [caseload, timely] }
+interventions:
+  - id: dashboards
+    title: Workload dashboards
+    kind: technology
+    changes: [{ factor: caseload, effect: decreases }]
+    requirements: [process.example#any-channel]
+"""
+
+
+class MissionModelRules(ValidatorTestCase):
+    def setUp(self):
+        super().setUp()
+        self.write("_blocks/process.example.md", PROCESS.replace("outcome: The case is open.\n", "outcome: The case is open.\n" + PROCESS_REQUIREMENTS))
+        self.write("_missions/example.md", MISSION.replace(
+            "lifecycle:\n",
+            "roles:\n  - { id: owner, name: Case owner }\n"
+            "outcomes:\n  - { id: accountability, title: Accountability, statement: People are held to account. }\n"
+            "operational_outcomes:\n  - { id: timely, statement: Cases move quickly., contributes_to: [accountability] }\n"
+            "lifecycle:\n",
+        ))
+        (self.root / "_data" / "mission_models").mkdir(exist_ok=True)
+
+    def write_model(self, text: str = MODEL, name: str = "example") -> None:
+        (self.root / "_data" / "mission_models" / f"{name}.yml").write_text(text, encoding="utf-8")
+
+    def test_well_formed_model_is_valid(self):
+        self.write_model()
+        self.assertEqual(self.errors(), "")
+
+    def test_model_must_match_a_mission(self):
+        self.write_model(name="nowhere")
+        self.assertFails("has no mission")
+
+    def test_factor_type_must_be_condition_or_behavior(self):
+        self.write_model(MODEL.replace("type: condition", "type: mission-outcome"))
+        self.assertFails("type must be condition or behavior")
+
+    def test_link_must_join_known_factors(self):
+        self.write_model(MODEL.replace("to: timely,", "to: timley,"))
+        self.assertFails("'to: timley' isn't a factor or one of the mission's outcomes", "Did you mean 'timely'?")
+
+    def test_factor_step_must_exist(self):
+        self.write_model(MODEL.replace("process.example#open", "process.example#close"))
+        self.assertFails("process.example has no step 'close'")
+
+    def test_known_by_must_be_a_role(self):
+        self.write_model(MODEL.replace("known_by: [owner]", "known_by: [boss]"))
+        self.assertFails("known_by 'boss' isn't one of the mission's role ids")
+
+    def test_intervention_requirement_must_exist(self):
+        self.write_model(MODEL.replace("process.example#any-channel", "process.example#every-channel"))
+        self.assertFails("process.example has no requirement 'every-channel'")
 
 
 class SectionRegistryRules(ValidatorTestCase):

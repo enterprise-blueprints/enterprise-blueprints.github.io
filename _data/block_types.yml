@@ -171,6 +171,10 @@ type_sections:
       fields: [exceptions]
       include: block-exceptions.html
       prompt: How work leaves the usual path, and the step where it continues, as `exceptions` in front matter.
+    - heading: Requirements
+      fields: [requirements]
+      include: block-requirements.html
+      prompt: What most solutions for this work need, as `requirements` in front matter, each tied to the steps it supports, or to the whole process when it names no steps.
   # An experience is where people and agents do the work. It's described by
   # persona, with ideas for what it could include, rather than as a detailed
   # specification, so it doesn't have to change whenever the capabilities
@@ -283,6 +287,18 @@ obligation_levels:
   should:
     label: Should
     description: Expected, unless there's a good, recorded reason not to.
+
+# What kind of need a process requirement is, set with `category:`.
+requirement_categories:
+  functional:
+    label: Functional
+    description: Something a solution has to do.
+  nfr:
+    label: Quality
+    description: How well a solution has to do it, such as security, performance, or accessibility.
+  constraint:
+    label: Constraint
+    description: A limit a solution has to work within, often from policy or law.
 
 # A type can define `kinds`, a short list a block of that type picks one
 # from with `kind:`. The block page shows it as a badge.

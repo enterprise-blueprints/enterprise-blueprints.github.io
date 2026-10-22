@@ -182,9 +182,10 @@ Front matter fields:
 | `relationships` | no | A list of `{type, target, note}`. Intrinsic relationships only. A control's `enforces` relationship can also list `obligations: [ids]` from the policy it enforces. |
 | `attributes` | entities only | A list of `{name, description}`, shown as a table under Key attributes. |
 | `trigger` | processes only | One sentence: what starts the process. Shown at the top of the Flow. |
-| `steps` | processes only | A list of `{id, title, role, description, uses, decisions}`, in order. `uses` lists capability IDs, which must also be `uses` relationships. Each capability's page links back to the steps that use it. `decisions` is a list of `{decision, accountable, records}`. |
+| `steps` | processes only | A list of `{id, title, role, description, uses, decisions, waits, subprocess}`, in order. `uses` lists capability IDs, which must also be `uses` relationships. Each capability's page links back to the steps that use it. `decisions` is a list of `{decision, accountable, records}`. `waits` says what the work waits on there. `subprocess` names a finer process that describes the step in more detail; that process's page links back to the step. |
 | `outcome` | processes only | One sentence: what the process has produced when it ends. Shown at the bottom of the Flow. |
 | `exceptions` | processes only | A list of `{title, description, continues_at}`. `continues_at` is the id of the step where work picks up again. |
+| `requirements` | processes only | Template requirements: what most solutions for this work need. A list of `{id, title, statement, category, steps, capabilities, policies}`. `category` is `functional`, `nfr`, or `constraint`, from `requirement_categories` in `_data/block_types.yml`. `steps` names this process's steps; with none, it applies to the whole process. `policies` names policies, or one obligation as `policy.x#obligation-id`. Solution Studio offers these when a step changes. |
 | `operations` | capabilities only | A list of `{id, title, description, automation, takes, returns, authority}`. `automation` is `allowed`, `with-review`, or `people-only`, from `automation_levels` in `_data/block_types.yml`. Each operation's row also shows the state moves it makes and the events it raises. The optional `takes`, `returns`, and `authority` fields give the operation a light contract; see [Capability contracts](#capability-contracts). |
 | `every_operation` | capabilities only | A list of sentences that are true of every operation, such as "Records who performed it, when, and why." Start each with a verb: the page joins them into one sentence under the Operations heading, beginning "Every operation". |
 | `states`, `transitions` | capabilities only | `states` is a list of `{id, name, description}` in their usual order. `transitions` is a list of `{from, to, via}`: two state ids and the id of the operation that makes the move. |
@@ -276,11 +277,12 @@ Copy [`templates/mission.md`](templates/mission.md) to `_missions/<slug>.md` and
 | `components` | yes, unless `planned` | Blocks this mission uses. See below. |
 | `domains` | no | Keys from `_data/domains.yml`. A mission may draw on many domains. |
 | `outcomes` | no | Mission outcomes: the public value the work creates. Each is a short sentence, or `{id, title, statement, indicators}`. See below. |
-| `operational_outcomes` | no | How well the work performs. Each is a short sentence, or `{id, statement, contributes_to, measures, supported_by}`. See below. |
+| `operational_outcomes` | no | How well the work performs. Each is a short sentence, or `{id, statement, contributes_to, measures, indicators, supported_by}`. See below. |
 | `lifecycle` | no | A list of `{id, title, summary}` stages. Present them as illustrative. |
 | `lifecycle_note` | no | Replaces the default "these stages are illustrative" note. |
 | `lifecycle_process` | no | The ID of the process block the lifecycle summarizes. Each page then links to the other. |
-| `roles` | no | A list of `{name, description}`. |
+| `roles` | no | A list of `{id, name, description, concerns, influence}`. Only `name` is required. The `id` lets a mission effectiveness model and tools refer to the role; `influence` is `high`, `medium`, or `low`. |
+| `typical_systems` | no | Systems organizations doing this work usually have: `{id, name, kind, description, provides}`. `provides` lists capability IDs. Whether to keep or replace each one is decided per engagement, so it isn't here. |
 | `experience_ideas` | no | A list of `{title, description}`: experiences someone could build for this mission. They're suggestions, not building blocks. |
 
 Each component:
@@ -328,9 +330,41 @@ operational_outcomes:
       - pattern.human-in-the-loop-review            # or a whole block
 ```
 
-Measures are defined once, on the building block, and referenced here, so the mission never keeps its own copy. A reference is a block ID, optionally followed by `#` and the id of a measure, a step, or an operation. The validator checks that each one exists, and that `contributes_to` names the mission's own outcomes.
+Measures are defined once, on the building block, and referenced here, so the mission never keeps its own copy. A reference is a block ID, optionally followed by `#` and the id of a measure, a step, or an operation. An operational outcome can also list `indicators` `{name, description}` for measurement specific to the mission, such as allegations awaiting triage, that no building block carries. The validator checks that each reference exists, and that `contributes_to` names the mission's own outcomes.
 
-The mission page lists the mission outcomes with their indicators. Below that, "How the work contributes" shows the operational outcomes grouped under the mission outcomes they serve, with links to what measures and supports them. A mission outcome with nothing under it is shown as a gap. Each measure's row on its block page lists the operational outcomes that use it. Either list can also be plain sentences.
+The mission page lists the mission outcomes with their indicators. Below that, "Operational outcomes" shows the operational outcomes grouped under the mission outcomes they serve, with links to what measures and supports them. A mission outcome with nothing under it is shown as a gap. Each measure's row on its block page lists the operational outcomes that use it. Either list can also be plain sentences.
+
+### Mission effectiveness models
+
+A mission can have an effectiveness model in `_data/mission_models/<mission file name>.yml`. The model explains what shapes the mission's outcomes, so an architect can find where the work most needs to improve: Solution Studio uses it to rank opportunities with a customer. The outcomes stay on the mission. The model adds what drives them:
+
+```yaml
+mission: mission.inspector-general-investigations   # must match the file name
+factors:                    # conditions and behaviors
+  - id: caseload
+    type: condition         # condition | behavior
+    title: Investigator caseload
+    better: lower           # higher | lower | neutral
+    signals: [What you hear when it's a problem.]
+    questions: [What to ask the customer.]
+    metrics: [{ name: Open cases per investigator, measurement: How it's counted. }]
+    steps: [process.oig-investigative-work#assign-owner]   # where it shows up
+    known_by: [sac]         # mission role ids
+outcome_notes:              # optional discovery detail for the mission's outcomes
+  backlog: { questions: [How long do allegations wait for triage?] }
+links:                      # how factors and outcomes influence each other
+  - { from: caseload, to: timely-investigations, effect: decreases, confidence: supported, rationale: Why. }
+loops:                      # reinforcing or balancing loops
+  - { id: closure-pressure-loop, title: …, kind: reinforcing, factors: [caseload, rework] }
+interventions:              # what would change a factor, and the requirements that deliver it
+  - id: workload-dashboards
+    title: Workload dashboards
+    kind: technology        # technology | process | policy | people | organization
+    changes: [{ factor: caseload, effect: decreases }]
+    requirements: [process.oig-caseload-oversight#workload-visibility]
+```
+
+The validator checks every reference: steps, roles, factors and outcomes in links and loops, and the requirements interventions name. The mission page shows the model in a collapsed "Mission effectiveness model" section.
 
 ---
 

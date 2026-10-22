@@ -10,7 +10,9 @@ tagline: Build Experiences. Share Capabilities.
 description: >-
   An open reference library for designing the AI-native enterprise:
   reusable building blocks composed into mission blueprints.
-url: ""
+# The published site's address. Tools such as Solution Studio use it to link
+# back to pages; the site's own pages use relative links.
+url: "https://enterprise-blueprints.github.io"
 baseurl: ""
 
 # Optional. Set to the repository's GitHub URL (for example

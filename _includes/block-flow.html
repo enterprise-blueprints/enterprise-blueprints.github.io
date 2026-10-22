@@ -4,7 +4,9 @@
     {% include block-flow.html %}
   Reads from the block's front matter:
     trigger   what starts the process (text)
-    steps     {id, title, role, description, uses, decisions}, in order.
+    steps     {id, title, role, description, uses, decisions, subprocess},
+              in order. `subprocess` names a finer process that describes
+              the step in more detail.
               `uses` lists capability IDs; each capability's page links back
               to the steps that use it. `decisions` lists
               {decision, accountable, records}.
@@ -31,6 +33,9 @@
 {%- if step.description %}
 <p class="lifecycle__summary">{{ step.description }}</p>
 {%- endif %}
+{%- if step.waits %}
+<p class="lifecycle__role"><span class="lifecycle__role-label">Waits on</span> {{ step.waits }}</p>
+{%- endif %}
 </div>
 {%- if step.decisions.size > 0 %}
 <ul class="flow-decisions" aria-label="Decisions at this step">
@@ -43,6 +48,12 @@
 </li>
 {%- endfor %}
 </ul>
+{%- endif %}
+{%- if step.subprocess %}
+<div class="flow-uses">
+<span class="flow-decision__label" id="detail-{{ step.id }}">Detailed in</span>
+<ul class="lifecycle__blocks" aria-labelledby="detail-{{ step.id }}"><li>{% include block-ref.html id=step.subprocess %}</li></ul>
+</div>
 {%- endif %}
 {%- if step.uses.size > 0 %}
 <div class="flow-uses">
@@ -65,6 +76,16 @@
 </div>
 {%- endif %}
 </div>
+{%- comment -%} When this process details a step of another process, say which. {%- endcomment -%}
+{%- capture flow_parents -%}
+{%- for b in site.blocks -%}
+{%- assign parent_steps = b.steps | where: "subprocess", page.slug -%}
+{%- for s in parent_steps -%}, the <a href="{{ b.url | relative_url }}#step-{{ s.id }}">{{ s.title }}</a> step of {{ b.title }}{%- endfor -%}
+{%- endfor -%}
+{%- endcapture -%}
+{%- if flow_parents != "" %}
+<p class="section-note process-steps__note">This process describes{{ flow_parents | remove_first: "," }} in more detail.</p>
+{%- endif %}
 {%- if flow_missions.size > 0 %}
 <p class="section-note process-steps__note">{% for m in flow_missions %}<a href="{{ m.url | relative_url }}#lifecycle">{{ m.title }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %} {% if flow_missions.size == 1 %}shows{% else %}show{% endif %} these steps as {% if flow_missions.size == 1 %}its{% else %}their{% endif %} illustrative lifecycle.</p>
 {%- endif %}

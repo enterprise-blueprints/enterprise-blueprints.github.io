@@ -102,6 +102,12 @@ FIELD_EXAMPLES = {
         "  - level: Advanced\n    description: What it looks like.\n"
         "    questions:\n      - A question that shows whether you're at this level?"
     ),
+    "requirements": (
+        "requirements:\n  - id: first-requirement\n    title: A short name\n"
+        "    statement: What a solution has to do.\n    category: functional   # functional | nfr | constraint\n"
+        "    steps: [first-step]       # leave out for the whole process\n"
+        "    capabilities: [capability.example]"
+    ),
     "exceptions": (
         "exceptions:\n  - title: What leaves the usual path\n    description: What happens then.\n"
         "    continues_at: first-step"
