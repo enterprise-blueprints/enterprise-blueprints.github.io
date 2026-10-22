@@ -10,6 +10,8 @@ or the main README.
 
 ## Notes
 
+- [Handoff](handoff.md) — start here when resuming: the state of the library
+  and Solution Studio, what's decided, the open questions, and the next steps.
 - [Building block metamodel v0.2](building-block-metamodel-v0.2.md) — how the
   building block types relate, intrinsic and contextual relationships, and the
   case for treating patterns and governance differently from core elements.
