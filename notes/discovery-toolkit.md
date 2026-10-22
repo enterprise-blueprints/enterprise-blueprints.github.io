@@ -61,6 +61,6 @@ In Studio, the architect adds questions from the bank for the situation, sends t
 ## Plan
 
 1. **Tools and outcome-first readiness** in Studio: sections hidden per project, added from the sidebar; readiness and next actions built around outcomes, not notes. *Started October 22, 2026.*
-2. **Answers as evidence:** a set of answers becomes a source Analyze can read.
+2. **Answers as evidence:** a set of answers becomes a source Analyze can read. *Done October 22, 2026:* Questions has Copy questionnaire and Record, and a record of answers sits in Notes as a workshop or questionnaire.
 3. **The question bank:** its format in the library, the validator's checks, a kickoff set, and mission-specific sets. Then Studio's picker.
 4. **Later, one at a time:** metric targets, stakeholder concerns, and current-state systems as starting points for requirements.
