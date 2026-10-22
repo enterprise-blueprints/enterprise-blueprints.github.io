@@ -39,44 +39,108 @@ layout: default
       </div>
       {%- endif %}
 
-      {%- if page.outcomes and page.outcomes.size > 0 %}
-      <section class="section section--first" id="outcomes" aria-labelledby="outcomes-heading">
-        <h2 id="outcomes-heading">Mission outcomes</h2>
-        {%- comment -%}
-          An outcome is a sentence, or {id, statement, measures, supported_by}.
-          `measures` point at measures defined on building blocks, rather than
-          repeating them here; `supported_by` points at blocks, or at a
-          process's step or a capability's operation.
-        {%- endcomment %}
-        <ul class="outcomes">
-          {%- for outcome in page.outcomes %}
-          {%- if outcome.statement %}
-          <li class="outcome" id="outcome-{{ outcome.id }}">
-            <p class="outcome__statement">{{ outcome.statement }}</p>
-            {%- if outcome.measures.size > 0 or outcome.supported_by.size > 0 %}
-            <dl class="outcome__trace">
-              {%- if outcome.measures.size > 0 %}
-              <div><dt>Measured by</dt><dd>{% for ref in outcome.measures %}{% include trace-ref.html ref=ref kind="measure" %}{% endfor %}</dd></div>
-              {%- endif %}
-              {%- if outcome.supported_by.size > 0 %}
-              <div><dt>Supported by</dt><dd>{% for ref in outcome.supported_by %}{% include trace-ref.html ref=ref %}{% endfor %}</dd></div>
-              {%- endif %}
-            </dl>
-            {%- endif %}
-          </li>
-          {%- else %}
-          <li class="outcome"><p class="outcome__statement">{{ outcome }}</p></li>
-          {%- endif %}
-          {%- endfor %}
-        </ul>
-      </section>
-      {%- endif %}
-
       {%- assign body = content | strip -%}
       {%- if body != "" %}
       <div class="prose">
 {{ content }}
       </div>
+      {%- endif %}
+
+      {%- comment -%}
+        Mission outcomes are the public value the work creates:
+        {id, title, statement, indicators}. Operational outcomes are how well
+        the work performs: {id, statement, contributes_to, measures,
+        supported_by}. `contributes_to` names mission outcomes, and the
+        operational outcomes are shown grouped under them. `measures` point at
+        measures defined on building blocks, and `supported_by` at blocks, or
+        a process's step or a capability's operation. Either list can also be
+        plain sentences.
+      {%- endcomment -%}
+      {%- assign mission_outcomes = page.outcomes -%}
+      {%- assign op_outcomes = page.operational_outcomes -%}
+      {%- if mission_outcomes.size > 0 %}
+      {%- assign has_indicators = false -%}
+      {%- for outcome in mission_outcomes -%}{%- if outcome.indicators.size > 0 -%}{%- assign has_indicators = true -%}{%- endif -%}{%- endfor %}
+      <section class="section" id="outcomes" aria-labelledby="outcomes-heading">
+        <h2 id="outcomes-heading">Mission outcomes</h2>
+        <p class="section-note">The public value this work creates. The indicators are examples: each agency chooses its own.</p>
+        <div class="prose">
+        <table class="attribute-table data-table outcome-table">
+          <thead><tr><th scope="col" class="outcome-table__outcome">Outcome</th>{% if has_indicators %}<th scope="col">Example indicators</th>{% endif %}</tr></thead>
+          <tbody>
+            {%- for outcome in mission_outcomes %}
+            {%- if outcome.statement %}
+            <tr id="outcome-{{ outcome.id }}">
+              <th scope="row">{% if outcome.title %}<span class="outcome-table__title">{{ outcome.title }}</span>{% endif %}<span class="outcome-table__statement">{{ outcome.statement }}</span></th>
+              {%- if has_indicators %}
+              <td data-label="Example indicators">{% for indicator in outcome.indicators %}<span class="data-table__line indicator"><span class="indicator__name">{{ indicator.name }}</span>{% if indicator.description %} <span class="indicator__description">{{ indicator.description }}</span>{% endif %}</span>{% endfor %}</td>
+              {%- endif %}
+            </tr>
+            {%- else %}
+            <tr><th scope="row"><span class="outcome-table__statement">{{ outcome }}</span></th>{% if has_indicators %}<td data-label="Example indicators"></td>{% endif %}</tr>
+            {%- endif %}
+            {%- endfor %}
+          </tbody>
+        </table>
+        </div>
+      </section>
+      {%- endif %}
+
+      {%- if op_outcomes.size > 0 %}
+      {%- assign op_measures = 0 -%}
+      {%- assign op_support = 0 -%}
+      {%- for op in op_outcomes -%}
+        {%- if op.measures.size > 0 -%}{%- assign op_measures = op_measures | plus: 1 -%}{%- endif -%}
+        {%- if op.supported_by.size > 0 -%}{%- assign op_support = op_support | plus: 1 -%}{%- endif -%}
+      {%- endfor -%}
+      {%- assign op_columns = 1 -%}
+      {%- if op_measures > 0 -%}{%- assign op_columns = op_columns | plus: 1 -%}{%- endif -%}
+      {%- if op_support > 0 -%}{%- assign op_columns = op_columns | plus: 1 -%}{%- endif -%}
+      {%- comment -%} Group under the structured mission outcomes, if there are any. {%- endcomment -%}
+      {%- assign groups = mission_outcomes | where_exp: "o", "o.id" -%}
+      {%- assign shown = "|" -%}
+      {%- capture op_rows -%}
+        {%- for group in groups -%}
+          {%- assign group_ops = op_outcomes | where_exp: "op", "op.contributes_to contains group.id" %}
+          <tr class="outcome-group"><th scope="colgroup" colspan="{{ op_columns }}"><a href="#outcome-{{ group.id }}">{{ group.title | default: group.statement }}</a></th></tr>
+          {%- if group_ops.size == 0 %}
+          <tr class="outcome-group__empty"><td colspan="{{ op_columns }}">Nothing in this blueprint traces to this outcome yet.</td></tr>
+          {%- endif -%}
+          {%- for op in group_ops -%}
+            {%- assign op_key = "|" | append: op.id | append: "|" -%}
+            {%- assign row_id = "" -%}
+            {%- unless shown contains op_key -%}{%- assign row_id = "operational-" | append: op.id -%}{%- assign shown = shown | append: op.id | append: "|" -%}{%- endunless -%}
+            {% include operational-outcome-row.html op=op row_id=row_id measures=op_measures support=op_support %}
+          {%- endfor -%}
+        {%- endfor -%}
+        {%- comment -%} Anything not grouped above: plain sentences, or no contributes_to. {%- endcomment -%}
+        {%- capture other_rows -%}
+          {%- for op in op_outcomes -%}
+            {%- assign op_key = "|" | append: op.id | append: "|" -%}
+            {%- if op.statement and shown contains op_key -%}{%- continue -%}{%- endif -%}
+            {%- assign row_id = "" -%}
+            {%- if op.id -%}{%- assign row_id = "operational-" | append: op.id -%}{%- endif -%}
+            {% include operational-outcome-row.html op=op row_id=row_id measures=op_measures support=op_support %}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if other_rows != "" -%}
+          {%- if groups.size > 0 %}
+          <tr class="outcome-group"><th scope="colgroup" colspan="{{ op_columns }}">Other operational outcomes</th></tr>
+          {%- endif -%}
+          {{ other_rows }}
+        {%- endif -%}
+      {%- endcapture %}
+      <section class="section" id="operational-outcomes" aria-labelledby="operational-outcomes-heading">
+        <h2 id="operational-outcomes-heading">How the work contributes</h2>
+        <p class="section-note">Operational outcomes describe how well the work performs. Each one serves a mission outcome, and links to the measures and building blocks behind it.</p>
+        <div class="prose">
+        <table class="attribute-table data-table outcome-table">
+          <thead><tr><th scope="col" class="outcome-table__outcome">Operational outcome</th>{% if op_measures > 0 %}<th scope="col" class="outcome-table__measures">Measured by</th>{% endif %}{% if op_support > 0 %}<th scope="col">Supported by</th>{% endif %}</tr></thead>
+          <tbody>{{ op_rows }}
+          </tbody>
+        </table>
+        </div>
+      </section>
       {%- endif %}
 
       {%- if lifecycle.size > 0 %}

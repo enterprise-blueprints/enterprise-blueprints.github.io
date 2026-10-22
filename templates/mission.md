@@ -6,13 +6,23 @@ summary: An outcome-oriented sentence about what the mission achieves.
 status: draft               # planned | draft | published
 domains: [cross-cutting]    # keys from _data/domains.yml
 
-# An outcome can be a plain sentence, or traced to what supports it.
-# References are "block.id" or "block.id#item": a measure on the block, a
-# process's step, or a capability's operation.
+# Mission outcomes: the public value the agency creates. Not what one system
+# or project will change; those belong to the project.
 outcomes:
-  - A short sentence describing one outcome.
+  - id: public-value
+    title: A short name for the outcome
+    statement: One sentence on the public value the work creates.
+    indicators:                # optional examples; each agency chooses its own
+      - name: An indicator
+        description: What it shows.
+
+# Operational outcomes: how well the work performs. Each serves a mission
+# outcome. References are "block.id" or "block.id#item": a measure on the
+# block, a process's step, or a capability's operation.
+operational_outcomes:
   - id: timely-response
-    statement: A short sentence describing another outcome.
+    statement: A short sentence about how well the work performs.
+    contributes_to: [public-value]                              # mission outcome ids
     measures: [capability.case-management#time-to-accept]       # optional
     supported_by: [capability.case-management#accept]           # optional
 

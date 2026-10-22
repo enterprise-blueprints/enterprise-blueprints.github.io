@@ -5,15 +5,48 @@ summary: Solicit, review, award, and oversee grant funding so it reaches intende
 status: draft
 domains: [grants-management, cross-cutting]
 
+# Mission outcomes: the public value the work creates. The indicators are
+# examples; each agency chooses its own.
 outcomes:
+  - id: program-goals-met
+    title: Funding achieves the program's goals
+    statement: Awards go to work that delivers what the program was created to achieve.
+    indicators:
+      - name: Awardees meeting their targets
+        description: The share of awards whose agreed performance targets are met.
+      - name: Program goals met at closeout
+        description: How far the program's own goals were reached across its awards.
+  - id: fair-awards
+    title: Awards are fair and transparent
+    statement: Every applicant is judged by the same published rules, and anyone can see how decisions were made.
+    indicators:
+      - name: Successful appeals or protests
+        description: Decisions changed after an applicant challenged them.
+      - name: Applicants who found the process clear
+        description: Survey results from applicants, including those who weren't funded.
+  - id: funds-used-as-intended
+    title: Funds are used as intended
+    statement: Money is spent on what it was awarded for, and improper payments are prevented or recovered.
+    indicators:
+      - name: Improper payment rate
+        description: The share of payments made in the wrong amount, to the wrong party, or without the right support.
+      - name: Audit findings per award
+        description: Problems that audits find in how awards were managed or spent.
+
+# Operational outcomes: how well the work performs. Each contributes to a
+# mission outcome. This blueprint covers application and review, so nothing
+# traces to funds being used as intended yet.
+operational_outcomes:
   - id: submit-once
     statement: Applicants can submit complete applications and supporting documents once.
+    contributes_to: [fair-awards]
     supported_by:
       - process.grant-application-review#receipt
       - capability.application-management
       - capability.document-management#capture
   - id: consistent-review
     statement: Applications are reviewed consistently, with any automated scoring checked by a person.
+    contributes_to: [fair-awards, program-goals-met]
     supported_by:
       - process.grant-application-review#eligibility
       - process.grant-application-review#merit-review
@@ -21,6 +54,7 @@ outcomes:
       - pattern.human-in-the-loop-review
   - id: independent-review
     statement: Every application is judged by reviewers with no conflict of interest, and every finding, score, and recommendation can be explained later.
+    contributes_to: [fair-awards]
     supported_by:
       - policy.reviewer-conflicts-of-interest
       - control.conflict-of-interest-declaration

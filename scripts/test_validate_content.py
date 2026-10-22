@@ -610,8 +610,17 @@ class OutcomeRules(ValidatorTestCase):
     OUTCOMES = (
         "outcomes:\n"
         "  - A plain sentence still works.\n"
+        "  - id: wrongdoing-addressed\n"
+        "    title: Wrongdoing is addressed\n"
+        "    statement: Wrongdoing is found and corrected.\n"
+        "    indicators:\n"
+        "      - name: Funds recovered\n"
+        "        description: Money returned.\n"
+        "operational_outcomes:\n"
+        "  - A plain sentence still works.\n"
         "  - id: timely-triage\n"
         "    statement: Matters are triaged promptly.\n"
+        "    contributes_to: [wrongdoing-addressed]\n"
         "    measures: [capability.case-management#time-to-accept]\n"
         "    supported_by: [capability.case-management#accept, entity.case]\n"
     )
@@ -653,7 +662,20 @@ class OutcomeRules(ValidatorTestCase):
 
     def test_outcome_needs_a_statement(self):
         self.write_outcomes(self.OUTCOMES.replace("    statement: Matters are triaged promptly.\n", ""))
-        self.assertFails("outcome #2 must be a sentence, or have an 'id' and a 'statement'")
+        self.assertFails("operational outcome #2 must be a sentence, or have an 'id' and a 'statement'")
+
+    def test_contributes_to_must_name_a_mission_outcome(self):
+        self.write_outcomes(self.OUTCOMES.replace("[wrongdoing-addressed]", "[wrongdoing-adressed]"))
+        self.assertFails("contributes to 'wrongdoing-adressed', which isn't one of this mission's outcomes", "Did you mean 'wrongdoing-addressed'?")
+
+    def test_indicator_needs_a_name(self):
+        self.write_outcomes(self.OUTCOMES.replace("      - name: Funds recovered\n", "      - label: Funds recovered\n"))
+        self.assertFails("outcome 'wrongdoing-addressed'", "indicator #1 needs a 'name'")
+
+    def test_trace_fields_belong_on_operational_outcomes(self):
+        self.write_outcomes(self.OUTCOMES.replace("    title: Wrongdoing is addressed\n", "    title: Wrongdoing is addressed\n    measures: [capability.case-management#time-to-accept]\n"))
+        warnings = "\n".join(validate_content.validate(self.root).warnings)
+        self.assertIn("outcome 'wrongdoing-addressed': unknown field 'measures' will be ignored", warnings)
 
 
 class SectionRegistryRules(ValidatorTestCase):

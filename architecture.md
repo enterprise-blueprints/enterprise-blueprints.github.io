@@ -3,6 +3,7 @@ title: The Architecture
 permalink: /architecture/
 kicker: How Enterprise Blueprints works
 summary: One evolving architecture for the AI-native enterprise, presented through many connected views.
+wide: true
 ---
 
 ## The problem

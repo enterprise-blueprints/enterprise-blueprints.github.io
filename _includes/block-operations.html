@@ -13,6 +13,8 @@
 {%- endcomment -%}
 {%- if page.operations.size > 0 -%}
 {%- assign op_levels = site.data.block_types.automation_levels -%}
+<p class="section-note">Together, these operations are the capability's contract: what a person, an app, or an agent can ask it to do. Each row says what the operation takes and returns, the states it moves between, what it announces, and who may perform it.</p>
+
 {%- comment -%}
   The every_operation rules become one sentence: "Every operation checks
   ..., and records ...". Each rule starts with a verb; all but the last

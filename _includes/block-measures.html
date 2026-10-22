@@ -3,7 +3,7 @@
   "## Measures":
     {% include block-measures.html %}
   Reads `measures` ({id, name, description}) from the block's front matter.
-  A measure with an `id` can be referenced from a mission outcome as
+  A measure with an `id` can be referenced from an operational outcome as
   "block.id#measure-id"; the outcomes that do are listed under it.
 {%- endcomment -%}
 {%- if page.measures.size > 0 -%}
@@ -16,9 +16,9 @@
 {%- if measure.id -%}
 {%- assign measure_ref = page.slug | append: "#" | append: measure.id -%}
 {%- for m in missions_sorted -%}
-{%- for outcome in m.outcomes -%}
+{%- for outcome in m.operational_outcomes -%}
 {%- if outcome.measures contains measure_ref -%}
-<span class="data-table__line"><a href="{{ m.url | relative_url }}#outcome-{{ outcome.id }}">{{ m.title }}</a>: {{ outcome.statement }}</span>
+<span class="data-table__line"><a href="{{ m.url | relative_url }}#operational-{{ outcome.id }}">{{ m.title }}</a>: {{ outcome.statement }}</span>
 {%- endif -%}
 {%- endfor -%}
 {%- endfor -%}
@@ -26,7 +26,7 @@
 {%- endcapture %}
 <tr{% if measure.id %} id="measure-{{ measure.id }}"{% endif %}>
 <th scope="row">{{ measure.name }}</th>
-<td data-label="What it shows">{{ measure.description }}{% if measure_outcomes != "" %}<span class="measure-outcomes"><strong>Tracks a mission outcome</strong>{{ measure_outcomes }}</span>{% endif %}</td>
+<td data-label="What it shows">{{ measure.description }}{% if measure_outcomes != "" %}<span class="measure-outcomes"><strong>Tracks an operational outcome</strong>{{ measure_outcomes }}</span>{% endif %}</td>
 </tr>
 {%- endfor %}
 </tbody>

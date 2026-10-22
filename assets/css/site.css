@@ -138,8 +138,8 @@ img { max-width: 100%; height: auto; }
 }
 .skip-link:focus { top: 1rem; color: #fff; }
 
-.container { width: 100%; max-width: 74rem; margin: 0 auto; padding: 0 1.25rem; }
-.container--narrow { max-width: 48rem; }
+.container { width: 100%; max-width: 80rem; margin: 0 auto; padding: 0 1.25rem; }
+.container--narrow { max-width: 58rem; }
 
 .muted { color: var(--text-muted); }
 .label {
@@ -159,7 +159,7 @@ img { max-width: 100%; height: auto; }
   color: var(--accent);
   margin-bottom: .75rem;
 }
-.lede { font-size: 1.1875rem; color: var(--text-muted); max-width: 46rem; }
+.lede { font-size: 1.1875rem; color: var(--text-muted); max-width: 54rem; }
 .empty { color: var(--text-muted); font-style: italic; }
 .text-link { font-weight: 600; }
 .text-link::after { content: " \2192"; }
@@ -227,7 +227,8 @@ img { max-width: 100%; height: auto; }
 
 /* ---------- Prose ---------- */
 
-.prose { max-width: 46rem; }
+/* Tables, flows, and cards use the full column; running text keeps a readable line length. */
+.prose > p, .prose > ul, .prose > ol, .prose > blockquote, .prose > h2, .prose > h3 { max-width: 54rem; }
 .prose h2 { margin-top: 2.25rem; padding-top: .25rem; }
 .prose h3 { margin-top: 1.75rem; }
 .prose > :first-child { margin-top: 0; }
@@ -349,7 +350,7 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 
 .section-band { padding: 4rem 0; }
 .section-band--muted { background: var(--surface-muted); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.section-intro { max-width: 46rem; margin-bottom: 2rem; }
+.section-intro { max-width: 54rem; margin-bottom: 2rem; }
 .section-intro p { color: var(--text-muted); }
 
 .split { display: grid; gap: 2.5rem; align-items: center; }
@@ -528,7 +529,7 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .block-group[hidden] { display: none; }
 .block-group__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem 1rem; margin-bottom: 1rem; }
 .block-group__head h2 { margin: 0; }
-.block-group__desc { display: flex; flex-wrap: wrap; gap: 0 .75rem; margin: 0; color: var(--text-muted); font-size: .9375rem; max-width: 48rem; }
+.block-group__desc { display: flex; flex-wrap: wrap; gap: 0 .75rem; margin: 0; color: var(--text-muted); font-size: .9375rem; max-width: 56rem; }
 .card[hidden] { display: none; }
 
 /* ---------- Record pages (blocks, missions, guides) ---------- */
@@ -578,7 +579,7 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .section--first { margin-top: 0; }
 .record-main > .section + .prose { margin-top: 3rem; }
 .section > h2 { padding-bottom: .5rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
-.section-note { color: var(--text-muted); font-size: .9375rem; max-width: 46rem; }
+.section-note { color: var(--text-muted); font-size: .9375rem; max-width: 54rem; }
 
 .rel-columns { display: grid; gap: 1.5rem; margin-top: 1.25rem; }
 @media (min-width: 46rem) { .rel-columns { grid-template-columns: 1fr 1fr; } }
@@ -606,27 +607,24 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 
 /* Mission outcomes, lifecycle, components */
 
-.outcomes { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; }
-.outcomes li { position: relative; padding-left: 1.75rem; }
-.outcome__statement { margin: 0; }
-/* What an outcome is measured by and supported by, as small links. */
-.outcome__trace { display: grid; gap: .3rem; margin: .45rem 0 .35rem; font-size: .875rem; }
-.outcome__trace > div { display: flex; flex-wrap: wrap; align-items: baseline; gap: .3rem .5rem; }
-.outcome__trace dt { flex: 0 0 6.5rem; font-weight: 650; color: var(--text-muted); }
-.outcome__trace dd { display: flex; flex-wrap: wrap; gap: .3rem; margin: 0; flex: 1 1 14rem; }
-.trace-ref { display: inline-flex; align-items: baseline; gap: .35rem; padding: .1rem .5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); text-decoration: none; color: var(--text); }
-.trace-ref:hover { border-color: var(--border-strong); }
-.trace-ref__item { font-weight: 600; text-decoration: underline; text-underline-offset: .15em; }
-.trace-ref__of { color: var(--text-muted); font-size: .8125rem; }
-.outcomes li::before {
-  content: "";
-  position: absolute;
-  left: .2rem; top: .45em;
-  width: .7rem; height: .7rem;
-  border-radius: 50%;
-  border: 2px solid var(--t-capability);
-  background: var(--t-capability-bg);
-}
+/* Mission outcomes, as a table: each block on one line, with the steps,
+   operations, or measures it contributes after it. */
+.prose .attribute-table.outcome-table th[scope="row"] { font-weight: 600; white-space: normal; }
+.outcome-table__title { display: block; font-weight: 650; }
+.outcome-table__title + .outcome-table__statement { display: block; margin-top: .2rem; font-weight: 400; color: var(--text-muted); }
+.indicator + .indicator { margin-top: .4rem; }
+.indicator__name { font-weight: 600; }
+.indicator__description { color: var(--text-muted); }
+.prose .outcome-table .outcome-group th { padding-top: .7rem; padding-bottom: .5rem; background: var(--surface-muted); font-size: .8125rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; white-space: normal; }
+.prose .outcome-table .outcome-group a { color: var(--text); text-decoration: none; }
+.prose .outcome-table .outcome-group a:hover { text-decoration: underline; }
+.prose .outcome-table .outcome-group__empty td { color: var(--text-muted); font-style: italic; }
+@media (min-width: 46rem) { .prose .outcome-table__outcome { width: 36%; } .prose .outcome-table__measures { width: 26%; } }
+.trace-line { padding-left: .9rem; text-indent: -.9rem; }
+.trace-line::before { content: ""; display: inline-block; width: .5rem; height: .5rem; margin-right: .4rem; border-radius: 50%; background: var(--tc, var(--border-strong)); text-indent: 0; vertical-align: .1em; }
+.trace-line__block { font-weight: 600; }
+.trace-line__parts { color: var(--text-muted); }
+.trace-line .status-badge { margin-left: .4rem; font-size: .6875rem; vertical-align: .1em; text-indent: 0; }
 
 .lifecycle { display: grid; gap: .6rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
 .lifecycle__stage {
@@ -760,12 +758,12 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
 .automation--with-review { color: var(--text); background: var(--warning-bg); border-color: var(--warning-border); }
 .automation--people-only { color: var(--text); background: var(--surface-muted); }
 /* An operation's light contract: what it takes and returns, and who may do it. */
-.op-contract { display: block; margin-top: .35rem; font-size: .875rem; color: var(--text-muted); }
+.op-contract { display: grid; gap: .2rem; margin-top: .55rem; padding-top: .5rem; border-top: 1px dashed var(--border); }
 .op-contract > span { display: block; }
-.op-contract strong { color: var(--text); font-weight: 650; }
+.op-contract strong { margin-right: .4rem; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
 .measure-outcomes { display: block; margin-top: .45rem; font-size: .875rem; color: var(--text-muted); }
 .measure-outcomes strong { display: block; color: var(--text); font-weight: 650; }
-.op-authority { display: block; margin-top: .35rem; font-size: .8125rem; color: var(--text-muted); min-width: 8rem; }
+.op-authority { display: block; margin-top: .55rem; padding-top: .5rem; border-top: 1px dashed var(--border); min-width: 9rem; }
 
 /* Maturity levels, lowest first. The dots show how far up the scale a level is. */
 .maturity-meter { display: inline-flex; gap: .25rem; align-self: center; }

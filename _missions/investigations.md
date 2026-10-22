@@ -5,16 +5,59 @@ summary: Receive, assess, investigate, and resolve allegations fairly, promptly,
 status: draft
 domains: [investigations, cross-cutting]
 
-# Each outcome links to the measures and building blocks that support it.
-# Measures are defined once, on the building block, and referenced here.
+# Mission outcomes: the public value the work creates. The indicators are
+# examples; each agency chooses its own.
 outcomes:
+  - id: wrongdoing-addressed
+    title: Wrongdoing is addressed
+    statement: Fraud, waste, abuse, and misconduct are found, stopped, and corrected, and the people responsible are held accountable.
+    indicators:
+      - name: Substantiated matters with corrective action
+        description: The share of substantiated findings that lead to discipline, recovery, referral, or a change to the program.
+      - name: Funds recovered or put to better use
+        description: Money returned, saved, or redirected because of investigations.
+      - name: Time from report to resolution
+        description: How long matters take from the first report to a final outcome.
+  - id: trust-in-reporting
+    title: People trust the process
+    statement: Staff and the public report concerns, because they believe they'll be taken seriously, treated fairly, and protected from retaliation.
+    indicators:
+      - name: Reports over time
+        description: How many concerns arrive, and through which channels. A sudden drop can signal fear or fatigue.
+      - name: Retaliation complaints
+        description: Complaints from people who say they were harmed for reporting.
+      - name: Confidence in reporting
+        description: Survey results on whether staff would report a concern, and expect it to be handled well.
+  - id: fair-and-defensible
+    title: Conclusions are fair and hold up
+    statement: Findings are fair to everyone involved, and withstand review, appeal, and court.
+    indicators:
+      - name: Findings overturned or reopened
+        description: Findings changed on review, appeal, or because something was missed.
+      - name: Referrals accepted for action
+        description: The share of referrals that prosecutors or management accept and act on.
+  - id: problems-prevented
+    title: Problems don't recur
+    statement: What investigations find feeds back into programs, so the same problems are deterred and prevented.
+    indicators:
+      - name: Repeat reports
+        description: New reports about a program or issue that was already investigated.
+      - name: Recommendations implemented
+        description: The share of recommendations to programs that are carried out.
+
+# Operational outcomes: how well the work performs. Each contributes to a
+# mission outcome, and links to the measures and building blocks behind it.
+# Measures are defined once, on the building block, and referenced here.
+operational_outcomes:
   - id: every-concern-recorded
     statement: Every concern is recorded and acknowledged promptly, however it arrives, including those that are later screened out.
+    contributes_to: [trust-in-reporting, wrongdoing-addressed]
     supported_by:
       - process.investigation-lifecycle#intake
       - capability.case-management#record
   - id: timely-triage
     statement: Matters are triaged promptly and prioritized by risk, so serious concerns get attention first.
+    contributes_to: [wrongdoing-addressed]
     measures:
       - capability.case-management#time-to-accept
       - capability.case-management#unowned-cases
@@ -25,6 +68,7 @@ outcomes:
       - pattern.human-in-the-loop-review
   - id: evidence-preserved
     statement: Evidence is preserved with clear provenance and is available to those authorized to see it.
+    contributes_to: [fair-and-defensible]
     measures:
       - capability.document-management#holds-broken
     supported_by:
@@ -33,6 +77,7 @@ outcomes:
       - entity.investigative-document
   - id: defensible-findings
     statement: Findings are reviewed, recorded with their reasoning, and can withstand later scrutiny.
+    contributes_to: [fair-and-defensible]
     measures:
       - capability.case-management#recorded-reasons
     supported_by:
@@ -41,6 +86,7 @@ outcomes:
       - pattern.human-in-the-loop-review
   - id: restricted-information
     statement: Sensitive information about complainants and subjects stays restricted throughout.
+    contributes_to: [trust-in-reporting]
     supported_by:
       - policy.restricted-case-access
       - control.case-authorization-check

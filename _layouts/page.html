@@ -1,7 +1,8 @@
 ---
 layout: default
 ---
-<div class="container container--narrow">
+{%- comment -%} Set `wide: true` in front matter for a page with diagrams or tables. {%- endcomment -%}
+<div class="container{% unless page.wide %} container--narrow{% endunless %}">
   <header class="page-header">
     {%- if page.kicker %}
     <p class="kicker">{{ page.kicker }}</p>

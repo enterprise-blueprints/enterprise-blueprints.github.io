@@ -7,15 +7,16 @@ summary: Start from what a mission needs to achieve, follow the links down to re
 
 Enterprise Blueprints is meant to be walked through, not read cover to cover. The usual path runs from a mission's outcomes, through the processes and capabilities that achieve them, to the information and governance underneath, and finally to an implementation. Every step is a link, so you can stop at whatever depth you need.
 
-The example below follows one outcome from the {% include ref.html id="mission.investigations" text="Investigations" %} blueprint: matters are triaged promptly, and serious concerns get attention first.
+The example below follows one thread through the {% include ref.html id="mission.investigations" text="Investigations" %} blueprint, from wrongdoing being addressed down to how each concern is triaged.
 
 ## 1. Start with the mission's outcomes
 
-A Mission Blueprint opens with its outcomes: what the mission has to achieve, in plain terms. Each outcome links to how you'd know it's achieved and what makes it possible.
+A Mission Blueprint describes outcomes at two levels:
 
-[Timely triage]({{ '/missions/investigations/#outcome-timely-triage' | relative_url }}) is measured by *Time to accept*, and supported by the Triage step of the investigation process and by Case Management's *Accept* and *Screen out* operations.
+- **Mission outcomes** are the public value the agency creates, such as [Wrongdoing is addressed]({{ '/missions/investigations/#outcome-wrongdoing-addressed' | relative_url }}). They change rarely. Each one comes with example indicators, such as funds recovered, for the agency to choose from.
+- **Operational outcomes** describe how well the work performs, and each one serves a mission outcome. Under "Wrongdoing is addressed", [timely triage]({{ '/missions/investigations/#operational-timely-triage' | relative_url }}) is measured by *Time to accept*. It's supported by the Triage step of the investigation process, and by Case Management's *Accept* and *Screen out* operations.
 
-Outcomes are where to agree on priorities with the people who run the mission, before anyone talks about systems.
+Outcomes are where to agree on priorities with the people who run the mission, before anyone talks about systems. The outcomes a particular system or project sets out to change belong to that project. They link up to these, but they aren't part of the library.
 
 ## 2. Follow the outcome to the process
 

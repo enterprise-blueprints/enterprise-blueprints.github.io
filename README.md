@@ -275,7 +275,8 @@ Copy [`templates/mission.md`](templates/mission.md) to `_missions/<slug>.md` and
 | `id`, `title`, `summary`, `status` | yes | As for blocks. |
 | `components` | yes, unless `planned` | Blocks this mission uses. See below. |
 | `domains` | no | Keys from `_data/domains.yml`. A mission may draw on many domains. |
-| `outcomes` | no | A list of outcomes. Each is a short sentence, or `{id, statement, measures, supported_by}` to trace it. See below. |
+| `outcomes` | no | Mission outcomes: the public value the work creates. Each is a short sentence, or `{id, title, statement, indicators}`. See below. |
+| `operational_outcomes` | no | How well the work performs. Each is a short sentence, or `{id, statement, contributes_to, measures, supported_by}`. See below. |
 | `lifecycle` | no | A list of `{id, title, summary}` stages. Present them as illustrative. |
 | `lifecycle_note` | no | Replaces the default "these stages are illustrative" note. |
 | `lifecycle_process` | no | The ID of the process block the lifecycle summarizes. Each page then links to the other. |
@@ -296,14 +297,29 @@ The page shows each block's title, type, and summary from the block's own record
 
 List a block once. If it really plays different parts at different stages, list it once per stage, each with a distinct `stage`. The validator rejects other duplicates.
 
-### Tracing outcomes
+### Mission and operational outcomes
 
-An outcome can say how you'd know it's achieved, and what makes it possible:
+A mission describes outcomes at two levels. The outcomes a particular system or project sets out to change belong to that project, in a tool such as Solution Studio, not to the library.
+
+**Mission outcomes** (`outcomes`) are the public value the work creates, at the level of the agency. They change rarely. Each can list example `indicators`. Indicators belong to the mission, and each agency chooses its own.
 
 ```yaml
 outcomes:
+  - id: wrongdoing-addressed
+    title: Wrongdoing is addressed
+    statement: Fraud, waste, abuse, and misconduct are found, stopped, and corrected.
+    indicators:
+      - name: Funds recovered or put to better use
+        description: Money returned, saved, or redirected because of investigations.
+```
+
+**Operational outcomes** (`operational_outcomes`) describe how well the work performs. Each says which mission outcomes it serves, how you'd know it's achieved, and what makes it possible:
+
+```yaml
+operational_outcomes:
   - id: timely-triage
     statement: Matters are triaged promptly and prioritized by risk.
+    contributes_to: [wrongdoing-addressed]          # mission outcome ids
     measures:
       - capability.case-management#time-to-accept   # a measure defined on the block
     supported_by:
@@ -312,7 +328,9 @@ outcomes:
       - pattern.human-in-the-loop-review            # or a whole block
 ```
 
-Measures are defined once, on the building block, and referenced here, so the mission never keeps its own copy. A reference is a block ID, optionally followed by `#` and the id of a measure, a step, or an operation. The validator checks that each one exists. The mission page shows each outcome with links to what measures and supports it, and each measure's row on its block page lists the outcomes that use it.
+Measures are defined once, on the building block, and referenced here, so the mission never keeps its own copy. A reference is a block ID, optionally followed by `#` and the id of a measure, a step, or an operation. The validator checks that each one exists, and that `contributes_to` names the mission's own outcomes.
+
+The mission page lists the mission outcomes with their indicators. Below that, "How the work contributes" shows the operational outcomes grouped under the mission outcomes they serve, with links to what measures and supports them. A mission outcome with nothing under it is shown as a gap. Each measure's row on its block page lists the operational outcomes that use it. Either list can also be plain sentences.
 
 ---
 
@@ -403,7 +421,7 @@ The site derives every reverse view at build time with Liquid. It doesn't store 
 - **Block → block:** a block page scans other blocks' `relationships` for its own ID and groups them by the inverse label ("Managed by", "Constrains", and so on).
 - **Block → missions:** a block page scans every mission's `components` for its ID and shows each mission with that mission's purpose and stage. Those are the missions that use it **directly**.
 - **Block → missions, indirectly:** a block page also follows the relationships marked `implies_use` in `_data/relationship_types.yml`, up to three steps away, to find missions that rely on it without listing it. Entity Document, for example, is used indirectly by both missions, through Document Management, which `manages` it. Each is labeled "Indirectly" and names the nearest listed blocks it comes through. Only dependencies count: `uses`, `manages`, `provides_access_to`, `depends_on`, `constrained_by`, and `specializes` carry usage forward, and `enforces` carries it from a policy to its controls. `applies_to`, `supports`, `part_of`, and `references` don't, so a mission isn't credited with everything that happens to be connected.
-- **Measure → outcomes:** each measure's row lists the mission outcomes that reference it.
+- **Measure → outcomes:** each measure's row lists the operational outcomes that reference it.
 - **Mission → missions:** each component on a mission page lists the other missions that also use it.
 - **Homepage:** blocks used by two or more missions are listed automatically.
 
@@ -418,7 +436,8 @@ Choices that shape the model, and why. Change them deliberately.
 - **Seven building block types, no more for now.** Entity, Capability, Process, Experience, Policy, Control, and Pattern. Outcomes, measures, roles, and events are real concepts, but they live inside missions and blocks, with stable ids so they can be referenced, rather than as types of their own. Promote one only when it needs its own page and relationships.
 - **Each content type has one job.** A mission holds outcomes, context, participants, an illustrative lifecycle, and its composition of blocks. A process holds steps, decisions, handoffs between roles, exceptions, and the capabilities each step uses. A capability holds operations, states, events, and measures. An experience describes who it serves and how. A mission links to its process rather than repeating it.
 - **Capability contracts stay light.** An operation can say what it takes, what it returns, and who has authority to perform it, all in plain phrases. When it can be used comes from its states, and what it announces comes from its events. There are no data types or schemas: those belong to implementations. See [Capability contracts](#capability-contracts).
-- **Measures are defined once, on building blocks.** Mission outcomes reference them (`capability.case-management#time-to-accept`) instead of defining their own. For now only capabilities have measures. Add measures to other types when a real outcome needs one that no capability can carry.
+- **Outcomes come in two levels, and project outcomes stay out.** Mission outcomes are agency-level public value, with example indicators that belong to the mission. Operational outcomes are how well the work performs, and each one serves a mission outcome. The outcomes a particular solution sets out to change belong to the project, which links up to these.
+- **Measures are defined once, on building blocks.** Operational outcomes reference them (`capability.case-management#time-to-accept`) instead of defining their own. For now only capabilities have measures. Add measures to other types when a real outcome needs one that no capability can carry. Mission indicators are different: they describe the agency's results, so they live on the mission.
 - **Usage is written once and derived both ways.** A mission lists the blocks it uses directly. Indirect usage is derived by following only the relationships marked `implies_use`, up to three steps, so a mission isn't credited with every block that happens to be connected. Nobody maintains reverse references or lists of missions on blocks.
 - **Intrinsic relationships go on blocks, contextual ones on missions.** A relationship that's true wherever a block is used belongs on the block. How one mission uses a block goes in that mission's `purpose`.
 - **Ownership stays narrow.** Document Management keeps documents. It doesn't own a grant application's lifecycle: Application Management does, and the application's documents are documents in their own right.

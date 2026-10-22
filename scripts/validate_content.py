@@ -82,12 +82,17 @@ DECISION_KEYS = {"decision", "accountable", "records"}
 PARTICIPANT_ACTORS = ("person", "agent")
 BLOCK_OPTIONAL += list(FIELD_SPECS)
 
-OUTCOME_KEYS = {"id", "statement", "measures", "supported_by"}
+# Mission outcomes: the public value the work creates, with example indicators.
+OUTCOME_KEYS = {"id", "title", "statement", "indicators"}
+INDICATOR_KEYS = {"name", "description"}
+# Operational outcomes: how well the work performs, traced to what supports it.
+OPERATIONAL_OUTCOME_KEYS = {"id", "statement", "contributes_to", "measures", "supported_by"}
 
 MISSION_REQUIRED = ["id", "title", "summary", "status", "components"]
 MISSION_OPTIONAL = [
     "domains",
     "outcomes",
+    "operational_outcomes",
     "lifecycle",
     "lifecycle_note",
     "lifecycle_process",
@@ -909,37 +914,83 @@ def part_ids(block: Record, field_name: str) -> list[str]:
     ]
 
 
-def check_outcomes(record: Record, blocks_by_id: dict, report: Report, block_files: dict) -> None:
-    """An outcome is a sentence, or {id, statement, measures, supported_by}.
+def outcome_entries(record: Record, field_name: str, label: str, allowed: set, report: Report) -> list[tuple[str, dict]]:
+    """The structured entries of an outcome list, as (id, entry), checking ids and keys.
 
-    `measures` reference measures defined on building blocks ("block#measure-id"),
-    so a measure is defined once. `supported_by` references blocks, or a
-    process's step or a capability's operation ("block#item-id").
+    Plain sentences are allowed and skipped.
     """
     rel = record.rel_path
-    outcomes = record.data.get("outcomes")
-    if outcomes is None:
-        return
-    if not isinstance(outcomes, list):
-        report.error(rel, "'outcomes' must be a list.")
-        return
-    seen = []
-    for index, outcome in enumerate(outcomes, start=1):
-        if isinstance(outcome, str):
+    entries = record.data.get(field_name)
+    if entries is None:
+        return []
+    if not isinstance(entries, list):
+        report.error(rel, f"'{field_name}' must be a list.")
+        return []
+    found = []
+    for index, entry in enumerate(entries, start=1):
+        if isinstance(entry, str):
             continue
-        if not isinstance(outcome, dict) or is_blank(outcome.get("id")) or is_blank(outcome.get("statement")):
-            report.error(rel, f"outcome #{index} must be a sentence, or have an 'id' and a 'statement'.")
+        if not isinstance(entry, dict) or is_blank(entry.get("id")) or is_blank(entry.get("statement")):
+            report.error(rel, f"{label} #{index} must be a sentence, or have an 'id' and a 'statement'.")
             continue
-        outcome_id = str(outcome["id"])
-        where = f"{rel}: outcome '{outcome_id}'"
-        if not SLUG_PATTERN.match(outcome_id):
+        entry_id = str(entry["id"])
+        where = f"{rel}: {label} '{entry_id}'"
+        if not SLUG_PATTERN.match(entry_id):
             report.error(where, "id must be lowercase words joined by hyphens.")
-        if outcome_id in seen:
+        if entry_id in [i for i, _ in found]:
             report.error(where, "id is used more than once.")
-        seen.append(outcome_id)
-        for key in outcome:
-            if key not in OUTCOME_KEYS:
-                report.warn(where, f"unknown field '{key}' will be ignored." + suggest(key, OUTCOME_KEYS))
+        for key in entry:
+            if key not in allowed:
+                report.warn(where, f"unknown field '{key}' will be ignored." + suggest(key, allowed))
+        found.append((entry_id, entry))
+    return found
+
+
+def check_outcomes(record: Record, blocks_by_id: dict, report: Report, block_files: dict) -> None:
+    """Check a mission's outcomes and operational outcomes.
+
+    `outcomes` are mission outcomes, the public value the work creates:
+    {id, title, statement, indicators}. Indicators belong to the mission.
+
+    `operational_outcomes` are how well the work performs:
+    {id, statement, contributes_to, measures, supported_by}. `contributes_to`
+    names mission outcomes. `measures` reference measures defined on building
+    blocks ("block#measure-id"), so a measure is defined once. `supported_by`
+    references blocks, or a process's step or a capability's operation.
+    """
+    rel = record.rel_path
+    mission_ids = []
+    for outcome_id, outcome in outcome_entries(record, "outcomes", "outcome", OUTCOME_KEYS, report):
+        mission_ids.append(outcome_id)
+        indicators = outcome.get("indicators")
+        if indicators is None:
+            continue
+        if not isinstance(indicators, list):
+            report.error(f"{rel}: outcome '{outcome_id}'", "'indicators' must be a list of {name, description}.")
+            continue
+        for index, indicator in enumerate(indicators, start=1):
+            if not isinstance(indicator, dict) or is_blank(indicator.get("name")):
+                report.error(f"{rel}: outcome '{outcome_id}'", f"indicator #{index} needs a 'name'.")
+                continue
+            for key in indicator:
+                if key not in INDICATOR_KEYS:
+                    report.warn(f"{rel}: outcome '{outcome_id}'", f"indicator #{index} has unknown field '{key}'.")
+
+    for outcome_id, outcome in outcome_entries(record, "operational_outcomes", "operational outcome", OPERATIONAL_OUTCOME_KEYS, report):
+        where = f"{rel}: operational outcome '{outcome_id}'"
+        contributes = outcome.get("contributes_to")
+        if contributes is not None:
+            if not isinstance(contributes, list):
+                report.error(where, "'contributes_to' must be a list of mission outcome ids.")
+            else:
+                for target in contributes:
+                    if target not in mission_ids:
+                        report.error(
+                            where,
+                            f"contributes to '{target}', which isn't one of this mission's outcomes"
+                            + (f" ({', '.join(mission_ids)})." if mission_ids else ".")
+                            + suggest(target, mission_ids),
+                        )
         for key in ("measures", "supported_by"):
             refs = outcome.get(key)
             if refs is None:
