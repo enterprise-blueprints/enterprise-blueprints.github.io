@@ -1,0 +1,32 @@
+---
+import type { LibraryElement } from '../lib/library';
+
+interface Props {
+  elements: LibraryElement[];
+}
+
+const { elements } = Astro.props;
+---
+<div class="table-wrap">
+  <table class="stack-table element-table">
+    <thead>
+      <tr><th scope="col">Name</th><th scope="col">Description</th></tr>
+    </thead>
+    <tbody>
+      {elements.map((e) => (
+        <tr>
+          <th scope="row"><a class={`element-link type-${e.type}`} href={e.url}>{e.title}</a></th>
+          <td class="muted">{e.description}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  /* Every button fills the column and fits two lines, so they're all one size. */
+  .element-table .element-link { display: flex; width: 100%; min-height: 3.25rem; }
+  @media (min-width: 46rem) {
+    .element-table th[scope='row'] { width: 34%; }
+  }
+</style>

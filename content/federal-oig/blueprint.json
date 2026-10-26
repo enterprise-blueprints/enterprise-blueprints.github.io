@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "0.1.0",
+  "packageId": "org.enterprise-blueprints.federal-oig",
+  "version": "0.1.0",
+  "title": "Federal Office of Inspector General — Independent Oversight",
+  "description": "U.S. federal Office of Inspector General mission blueprint: one mission, five capabilities, and one vendor-neutral implementation pattern.",
+  "publisher": {
+    "name": "Enterprise Blueprints (independent reference project)",
+    "url": "https://enterprise-blueprints.github.io"
+  },
+  "license": "MIT",
+  "publishedAt": "2026-10-25",
+  "domain": "public-sector",
+  "jurisdictions": [
+    "United States — federal Offices of Inspector General"
+  ],
+  "tags": [
+    "office-of-inspector-general",
+    "federal-oversight",
+    "accountability",
+    "audits",
+    "investigations",
+    "reference-architecture"
+  ],
+  "sources": [
+    {
+      "id": "src:ig-act-404",
+      "title": "5 U.S.C. § 404 — Duties and responsibilities of Inspectors General",
+      "url": "https://uscode.house.gov/us/usc/119-121/t5/s404/",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-10-25",
+      "note": "Principal statutory duties of federal Inspectors General."
+    },
+    {
+      "id": "src:oversight-mission",
+      "title": "Oversight.gov — Mission of Inspectors General",
+      "url": "https://www.oversight.gov/about/inspectors-general/mission",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-10-25",
+      "note": "Describes independent oversight, prevention of fraud, waste and abuse, and reporting."
+    },
+    {
+      "id": "src:cigie-faq",
+      "title": "Council of the Inspectors General on Integrity and Efficiency — Frequently Asked Questions",
+      "url": "https://www.ignet.gov/node/54",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-10-25",
+      "note": "General description of OIG missions, independence, audits, investigations, and reporting."
+    },
+    {
+      "id": "src:oversight-hotline",
+      "title": "Oversight.gov — Report Fraud, Waste, Abuse or Retaliation",
+      "url": "https://www.oversight.gov/where-report-fraud-waste-abuse-or-retaliation",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-10-25",
+      "note": "Official routing information for reports of fraud, waste, abuse, or retaliation."
+    }
+  ],
+  "elements": [
+    {
+      "id": "eb:mission:independent-government-oversight",
+      "type": "mission",
+      "title": "Independent Oversight of Government Programs and Operations",
+      "description": "Provide independent and objective oversight to prevent and detect fraud, waste, and abuse; promote economy, efficiency, and effectiveness; and communicate findings and recommendations concerning federal programs and operations.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission",
+        "src:cigie-faq"
+      ],
+      "attributes": {
+        "sector": "public-sector",
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:complaint-allegation-disclosure-intake",
+      "type": "capability",
+      "title": "Complaint, Allegation & Disclosure Intake",
+      "description": "Ability to receive, acknowledge, classify, and appropriately route allegations of wrongdoing, fraud, waste, abuse, and relevant disclosures through authorized channels.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-hotline",
+        "src:cigie-faq"
+      ],
+      "applicabilityNotes": "Confidentiality and routing rules vary. Specific retaliation complaints or protected disclosures may need referral to another legally authorized entity.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:audit-inspection-evaluation",
+      "type": "capability",
+      "title": "Audit, Inspection & Evaluation",
+      "description": "Ability to plan, conduct, supervise, or coordinate independent, objective examinations of programs, operations, performance, and controls.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission",
+        "src:cigie-faq"
+      ],
+      "applicabilityNotes": "Methodologies, mandatory reviews, professional standards, and jurisdiction depend on the OIG and engagement.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:investigation-management",
+      "type": "capability",
+      "title": "Investigation Management",
+      "description": "Ability to assess allegations within jurisdiction, plan authorized investigative work, manage evidence and case progress, and document investigative results or referrals.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission",
+        "src:cigie-faq"
+      ],
+      "applicabilityNotes": "Law enforcement powers, case types, investigative jurisdiction, evidence handling, and disclosure restrictions vary by legal authority.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:recommendations-corrective-action-monitoring",
+      "type": "capability",
+      "title": "Recommendations & Corrective Action Monitoring",
+      "description": "Ability to issue findings or recommendations where authorized, track responses and progress, and monitor implementation of corrective measures.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission"
+      ],
+      "applicabilityNotes": "OIGs generally recommend and monitor; they do not universally possess authority to implement or compel agency corrective actions.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:oversight-reporting-communication",
+      "type": "capability",
+      "title": "Oversight Reporting & Communication",
+      "description": "Ability to communicate independent oversight findings, recommendations, material risks, and work results to the appropriate officials and public audiences consistent with law.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission",
+        "src:cigie-faq"
+      ],
+      "applicabilityNotes": "Reporting cadence, content, recipients, and confidentiality depend on legal requirements and the sensitivity of the work. Whistleblower education and coordination may be separate supporting functions.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:implementationPattern:oversight-intake-case-tracking",
+      "type": "implementationPattern",
+      "title": "Oversight Intake & Case Tracking",
+      "description": "Vendor-neutral architecture for authorized intake, assignment, referral, status tracking, appropriate access controls, evidence linkage, audit trails, and records retention.",
+      "status": "reference",
+      "sourceIds": [
+        "src:oversight-hotline",
+        "src:cigie-faq"
+      ],
+      "attributes": {
+        "vendorNeutral": true
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel:oig-capability-mission-1",
+      "from": "eb:capability:complaint-allegation-disclosure-intake",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-capability-mission-2",
+      "from": "eb:capability:audit-inspection-evaluation",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-capability-mission-3",
+      "from": "eb:capability:investigation-management",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-capability-mission-4",
+      "from": "eb:capability:recommendations-corrective-action-monitoring",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-capability-mission-5",
+      "from": "eb:capability:oversight-reporting-communication",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-candidate-pattern-1",
+      "from": "eb:capability:complaint-allegation-disclosure-intake",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:oversight-intake-case-tracking"
+    },
+    {
+      "id": "rel:oig-candidate-pattern-2",
+      "from": "eb:capability:investigation-management",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:oversight-intake-case-tracking"
+    }
+  ]
+}

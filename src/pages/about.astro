@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site';
+import { href } from '../lib/paths';
+---
+<Base title="About" description="What Enterprise Blueprints is and how its content is made.">
+  <div class="container container--narrow">
+    <header class="page-header">
+      <h1>About Enterprise Blueprints</h1>
+      <p class="lede">
+        An open reference library of public-sector missions, the capabilities they depend on, and
+        vendor-neutral patterns that might realize them.
+      </p>
+    </header>
+    <div class="prose">
+      <h2>What it is</h2>
+      <p>
+        Each mission describes a type of public organization, such as U.S. federal Offices of Inspector
+        General. Capabilities describe what that kind of organization must be able to do. Implementation
+        patterns describe reusable approaches to realizing those capabilities.
+      </p>
+      <p>
+        Statements about law and official responsibilities cite primary sources, with the date each source
+        was last reviewed.
+      </p>
+
+      <h2>Using the content</h2>
+      <p>
+        The site's content and code are released under the MIT License. Every item has a stable ID, so tools
+        can refer to it. The <a href={href('sources/')}>sources page</a> lists every reference the library
+        cites, and the source is on <a href={site.repositoryUrl}>GitHub</a>.
+      </p>
+    </div>
+  </div>
+</Base>

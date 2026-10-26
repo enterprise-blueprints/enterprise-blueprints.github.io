@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import TypeBadge from '../components/TypeBadge.astro';
+import { elementsOfType, related, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
+import { formatDate, plural } from '../lib/format';
+import { href } from '../lib/paths';
+
+const missions = elementsOfType('mission').map((m) => {
+  const capabilities = related(m, 'supports_mission', 'incoming');
+  const patterns = new Set(capabilities.flatMap((c) => related(c, 'candidate_pattern', 'outgoing')));
+  const reviewed = lastReviewed(sourcesOf(m));
+  return { ...m, capabilities, patterns, reviewed };
+});
+const first = missions[0];
+---
+<Base>
+  <section class="hero">
+    <div class="container">
+      <p class="kicker">An independent, open reference library</p>
+      <h1 class="hero__title">Reference blueprints for public-sector missions</h1>
+      <p class="hero__lede">
+        Enterprise Blueprints describes what public organizations are responsible for, the capabilities that
+        work depends on, and vendor-neutral patterns that might realize them. Every page links to its sources.
+      </p>
+      <p class="hero__actions">
+        {missions.length === 1
+          ? <a class="button button--primary" href={first.url}>Explore the mission</a>
+          : <a class="button button--primary" href={href('missions/')}>Browse missions</a>}
+        <a class="button" href={href('capabilities/')}>Browse capabilities</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section-band" aria-labelledby="missions-heading">
+    <div class="container">
+      <div class="section-intro">
+        <h2 id="missions-heading">Missions</h2>
+        <p>
+          Each mission describes a type of public organization. Start from a mission and follow it to the
+          capabilities it relies on.
+        </p>
+      </div>
+      <div class="mission-grid">
+        {missions.map((m) => (
+          <article class={`card type-${m.type}`}>
+            <div class="card__meta"><TypeBadge type={m.type} /></div>
+            <h3 class="card__title"><a href={m.url}>{m.title}</a></h3>
+            <p class="card__summary">{m.description}</p>
+            <ul class="card__facts">
+              <li><strong>{m.capabilities.length}</strong> {m.capabilities.length === 1 ? 'capability' : 'capabilities'}</li>
+              <li><strong>{m.patterns.size}</strong> candidate {m.patterns.size === 1 ? 'pattern' : 'patterns'}</li>
+              {m.reviewed && <li>Sources reviewed {formatDate(m.reviewed)}</li>}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-band section-band--muted" aria-labelledby="library-heading">
+    <div class="container">
+      <div class="section-intro">
+        <h2 id="library-heading">How the library is organized</h2>
+        <p>
+          The library uses a small shared vocabulary. Each item has a stable ID and typed links to related
+          items, so people and tools can follow the same connections.
+        </p>
+      </div>
+      <ul class="type-list">
+        {typesInUse().map(([type, t]) => (
+          <li>
+            <a class={`element-link type-${type}`} href={href(`${t.section}/`)}>
+              {t.plural} <span class="type-list__count">({plural(elementsOfType(type).length, 'item', 'items')})</span>
+            </a>
+            <p>{t.definition}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

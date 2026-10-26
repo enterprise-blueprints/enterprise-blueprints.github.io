@@ -1,0 +1,92 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import TypeBadge from '../../components/TypeBadge.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import ElementTable from '../../components/ElementTable.astro';
+import SourceList from '../../components/SourceList.astro';
+import { elements, relationGroups, sourcesOf, lastReviewed } from '../../lib/library';
+import { statuses } from '../../lib/vocabulary';
+import { attributeLabel, attributeValue, formatDate } from '../../lib/format';
+import { href } from '../../lib/paths';
+
+export const getStaticPaths = (() =>
+  elements.map((element) => ({
+    params: { section: element.typeInfo.section, slug: element.slug },
+    props: { element },
+  }))) satisfies GetStaticPaths;
+
+const { element } = Astro.props;
+const pkg = element.package;
+const groups = relationGroups(element);
+const sources = sourcesOf(element);
+const reviewed = lastReviewed(sources);
+const scope = element.jurisdictions ?? pkg.jurisdictions ?? [];
+const attributes = Object.entries(element.attributes ?? {});
+---
+<Base title={element.title} description={element.description}>
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href={href('')}>Home</a></li>
+        <li><a href={href(`${element.typeInfo.section}/`)}>{element.typeInfo.plural}</a></li>
+        <li aria-current="page">{element.title}</li>
+      </ol>
+    </nav>
+
+    <header class="record-header">
+      <div class="record-header__meta">
+        <TypeBadge type={element.type} />
+        <StatusBadge status={element.status} />
+      </div>
+      <h1>{element.title}</h1>
+      <p class="lede">{element.description}</p>
+    </header>
+
+    <div class="record-layout">
+      <div class="record-main">
+        {element.applicabilityNotes && (
+          <div class="notice">
+            <p><strong>Applicability.</strong> {element.applicabilityNotes}</p>
+          </div>
+        )}
+
+        {groups.map((g) => (
+          <section class="section">
+            <h2>{g.heading}</h2>
+            {g.notes.map((n) => <p class="section-note">{n}</p>)}
+            <ElementTable elements={g.elements} />
+          </section>
+        ))}
+
+        {sources.length > 0 && (
+          <section class="section">
+            <h2>Sources</h2>
+            <SourceList sources={sources} />
+          </section>
+        )}
+      </div>
+
+      <aside class="record-aside" aria-label="Details">
+        <dl class="facts">
+          <div><dt>ID</dt><dd><code class="element-id">{element.id}</code></dd></div>
+          <div><dt>Type</dt><dd>{element.typeInfo.label}</dd></div>
+          {element.status && <div><dt>Status</dt><dd>{statuses[element.status]}</dd></div>}
+          <div><dt>Package</dt><dd>{pkg.title} <span class="muted">v{pkg.version}</span></dd></div>
+          {scope.length > 0 && <div><dt>Scope</dt><dd>{scope.join('; ')}</dd></div>}
+          {reviewed && <div><dt>Sources reviewed</dt><dd>{formatDate(reviewed)}</dd></div>}
+          {attributes.length > 0 && (
+            <div>
+              <dt>Attributes</dt>
+              <dd>
+                {attributes.map(([key, value]) => (
+                  <div>{attributeLabel(key)}: <span class="muted">{attributeValue(value)}</span></div>
+                ))}
+              </dd>
+            </div>
+          )}
+        </dl>
+      </aside>
+    </div>
+  </div>
+</Base>
