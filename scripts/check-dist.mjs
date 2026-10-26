@@ -1,6 +1,7 @@
 // Checks a built site. Every internal link and asset must start with the base
-// path and resolve to a built file, and every package in the catalog must
-// match its digest and its source file in content/.
+// path and resolve to a built file, every package in the catalog must match
+// its digest and its source file in content/, and the vocabulary must cover
+// every element, with a page for each.
 //
 // Usage: node scripts/check-dist.mjs [dist] [base path]
 //   node scripts/check-dist.mjs dist
@@ -68,10 +69,30 @@ if (!existsSync(join(dist, catalog.schema))) {
   errors.push(`${catalog.schema} differs from schemas/blueprint-package.schema.json`);
 }
 
+const vocabulary = catalog.vocabulary && existsSync(join(dist, catalog.vocabulary)) ? JSON.parse(readFileSync(join(dist, catalog.vocabulary), 'utf8')) : null;
+if (!vocabulary) errors.push(`catalog: vocabulary ${catalog.vocabulary} doesn't exist`);
+let elementCount = 0;
+for (const entry of vocabulary ? catalog.packages : []) {
+  const pkg = JSON.parse(readFileSync(join(dist, entry.href), 'utf8'));
+  for (const element of pkg.elements) {
+    elementCount++;
+    const type = vocabulary.types[element.type];
+    if (!type) {
+      errors.push(`vocabulary: no type ${element.type} for ${element.id}`);
+      continue;
+    }
+    const page = type.page.replace('{key}', element.id.split(':')[2]);
+    if (!resolves(page)) errors.push(`vocabulary: page ${page} for ${element.id} doesn't resolve`);
+  }
+  for (const relation of pkg.relations) {
+    if (!vocabulary.predicates[relation.predicate]) errors.push(`vocabulary: no predicate ${relation.predicate} for ${relation.id}`);
+  }
+}
+
 if (errors.length) {
   console.error(`check-dist found ${errors.length} problem(s) in ${dist}:\n  ${errors.join('\n  ')}`);
   process.exit(1);
 }
 console.log(
-  `check-dist: ${pages.length} pages, ${linkCount} internal links, ${catalog.packages.length} package(s) OK in ${dist}`,
+  `check-dist: ${pages.length} pages, ${linkCount} internal links, ${catalog.packages.length} package(s), ${elementCount} element pages OK in ${dist}`,
 );

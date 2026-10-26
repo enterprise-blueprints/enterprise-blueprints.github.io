@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { published, schemaPath } from '../lib/publish';
+import { published, schemaPath, vocabulary } from '../lib/publish';
 import { formatDate } from '../lib/format';
 import { href } from '../lib/paths';
 ---
@@ -51,6 +51,13 @@ import { href } from '../lib/paths';
         <a href={href('catalog.json')}><code>catalog.json</code></a> lists every package with its version,
         license, and digest. Its <code>href</code> values are relative to the catalog's own address, so tools
         can find each package from the catalog alone.
+      </p>
+      <h2>Vocabulary</h2>
+      <p>
+        <a href={href('vocabulary.json')}><code>vocabulary.json</code></a> names the
+        {Object.keys(vocabulary().types).length} element types and {Object.keys(vocabulary().predicates).length} relationships packages
+        use, with their labels and definitions. Each type's <code>page</code> gives the address of an element's page, where
+        <code>{'{key}'}</code> is the last part of the element ID.
       </p>
       <h2>Schema</h2>
       <p>
