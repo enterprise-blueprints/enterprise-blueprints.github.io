@@ -1,0 +1,20 @@
+[33m             Error: Permission denied @ rb_sysopen - C:/Users/jerem/repos/enterprise-blueprints.github.io/assets/fonts/InterVariable.woff2[0m
+[33m             Error: Run jekyll build --trace for more information.[0m
+[31m  Liquid Exception: Invalid syntax for include tag. File contains invalid characters or sequences: ../assets/diagrams/enterprise-capability-map.html Valid syntax: {% include_relative file.ext param='value' param2='value' %} in foundations/enterprise-capability-map.md[0m
+[33m             Error: Invalid syntax for include tag. File contains invalid characters or sequences: ../assets/diagrams/enterprise-capability-map.html Valid syntax: {% include_relative file.ext param='value' param2='value' %} [0m
+[33m             Error: Run jekyll build --trace for more information.[0m
+[31m  Liquid Exception: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} in missions/inspector-general-investigations.md[0m
+[33m             Error: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} [0m
+[33m             Error: Run jekyll build --trace for more information.[0m
+[31m  Liquid Exception: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} in missions/inspector-general-investigations.md[0m
+[33m             Error: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} [0m
+[33m             Error: Run jekyll build --trace for more information.[0m
+[31m  Liquid Exception: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} in missions/inspector-general-investigations.md[0m
+[33m             Error: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} [0m
+[33m             Error: Run jekyll build --trace for more information.[0m
+[31m  Liquid Exception: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} in missions/inspector-general-investigations.md[0m
+[33m             Error: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} [0m
+[33m             Error: Run jekyll build --trace for more information.[0m
+[31m  Liquid Exception: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} in missions/inspector-general-investigations.md[0m
+[33m             Error: Invalid syntax for include tag: model=site.data.missions[page.mission] Valid syntax: {% include file.ext param='value' param2='value' %} [0m
+[33m             Error: Run jekyll build --trace for more information.[0m

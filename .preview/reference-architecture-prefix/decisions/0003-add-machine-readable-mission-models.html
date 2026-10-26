@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add machine-readable mission models · Enterprise Blueprints</title>
+  <meta name="description" content="Add Missions as a content type whose models are structured data that the site renders and tools can read.">
+  <link rel="icon" href="/review/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/review/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/review/assets/css/site.css">
+  <script src="/review/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/review/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/review/foundations/">Explore</a><a href="/review/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/review/decisions/">Decisions</a><span class="status status-draft">Draft</span></div><article class="prose"><h1 id="add-machine-readable-mission-models">Add machine-readable mission models</h1>
+
+<h2 id="context">Context</h2>
+
+<p>Use cases explain a domain’s people, process, and intended outcomes. They don’t explain why an organization performs the way it does, or which changes would improve it most.</p>
+
+<p>The Mission Effectiveness Graph idea addresses that gap. It connects the conditions and behaviors in a line of work to the operational and mission outcomes they produce. Each connection is a hypothesis that evidence can strengthen or contradict. Interventions show what could change a factor.</p>
+
+<p>Solution architects need this knowledge during discovery, inside their own tools. Prose alone can be read and quoted, but a tool can’t follow its relationships, rank opportunities, or turn a factor into an outcome with metrics.</p>
+
+<h2 id="decision">Decision</h2>
+
+<p>Add <strong>Missions</strong> as a library section. Each mission has two parts:</p>
+
+<ul>
+  <li>A YAML model in <code class="language-plaintext highlighter-rouge">_data/missions/&lt;slug&gt;.yml</code>, holding factors, relationships, loops, and interventions. This is the source of truth.</li>
+  <li>A Markdown article in <code class="language-plaintext highlighter-rouge">missions/&lt;slug&gt;.md</code> that introduces the mission and renders the model through <code class="language-plaintext highlighter-rouge">_includes/mission-model.html</code>.</li>
+</ul>
+
+<p>The site also publishes every model as JSON at <code class="language-plaintext highlighter-rouge">/missions/index.json</code>. Tools can read the YAML from a local clone or the JSON from the site.</p>
+
+<p>Mission models include every kind of intervention: technology, process, policy, people, and organization. Only technology interventions are candidates for a solution. The others are kept for discussion and completeness.</p>
+
+<p>Inspector General Investigations is the first mission.</p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<ul>
+  <li><strong>Prose only, like other artifacts.</strong> Simpler to author, but tools would have to guess the structure.</li>
+  <li><strong>A separate repository or service for the graph.</strong> Keeps the graph independent, but splits the library and its reading surface. It can be revisited if the graph grows beyond what static files serve well.</li>
+  <li><strong>A full graph database.</strong> Unnecessary at this size, and it would make the content harder to review and version.</li>
+</ul>
+
+<h2 id="consequences">Consequences</h2>
+
+<p>Missions are the library’s first machine-readable content. The format is documented in the <a href="/review/missions/">Missions index</a>, and templates exist for both files. Formal schema validation remains deferred. Authors keep IDs stable because tools and past engagements refer to them.</p>
+
+<p>Relationships start as hypotheses. Marking one <code class="language-plaintext highlighter-rouge">supported</code> or <code class="language-plaintext highlighter-rouge">established</code> requires evidence in the model.</p>
+
+<p>Customer-specific findings stay in the engagement. Only generalized lessons come back to the library.</p>
+</article><p class="draft-note">This article is a working draft. Its ideas and definitions may change as the architecture develops.</p><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/decisions/0003-add-machine-readable-mission-models.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/review/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

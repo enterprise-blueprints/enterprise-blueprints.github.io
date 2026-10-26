@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add machine-readable use case processes · Enterprise Blueprints</title>
+  <meta name="description" content="Give use cases a structured process, scenarios, and template requirements that the site renders and tools can read.">
+  <link rel="icon" href="/review/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/review/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/review/assets/css/site.css">
+  <script src="/review/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/review/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/review/foundations/">Explore</a><a href="/review/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/review/decisions/">Decisions</a><span class="status status-draft">Draft</span></div><article class="prose"><h1 id="add-machine-readable-use-case-processes">Add machine-readable use case processes</h1>
+
+<h2 id="context">Context</h2>
+
+<p>Use cases describe a domain’s personas and process in prose. Missions describe what drives effectiveness in a line of work. Neither says which requirements a solution usually needs, or which shared capabilities could fulfill them.</p>
+
+<p>Solution architects keep rebuilding the same starting requirements for familiar kinds of work, such as case management. Tools can’t help them reuse those requirements while they exist only as prose.</p>
+
+<p>A process also connects the other kinds of content. Mission factors show up at particular activities. Requirements support particular activities. Activities use shared capabilities from <a href="/review/foundations/enterprise-capability-map.html">The Enterprise Capability Map</a>. Missions that run on the same kind of work can share its process, requirements, and capabilities.</p>
+
+<h2 id="decision">Decision</h2>
+
+<p>Give use cases an optional machine-readable model, following the pattern of <a href="/review/decisions/0003-add-machine-readable-mission-models.html">mission models</a>:</p>
+
+<ul>
+  <li>A YAML file in <code class="language-plaintext highlighter-rouge">_data/use-cases/&lt;slug&gt;.yml</code> holds personas, phases with their activities, scenarios, and template requirements. It is the source of truth for that content.</li>
+  <li>The use case article keeps its prose overview and renders the model through <code class="language-plaintext highlighter-rouge">_includes/use-case-model.html</code>.</li>
+  <li>The site publishes every use case model as JSON at <code class="language-plaintext highlighter-rouge">/use-cases/index.json</code>.</li>
+</ul>
+
+<p>Each activity names its actor, what it produces, what it decides or waits on, and the capabilities it uses. Each requirement names the activities it supports, the capabilities that could fulfill it, and the policy areas that apply. Scenarios are paths through the activities that a design must handle.</p>
+
+<p>The process stays light: phases, activities, and scenarios, without gateway notation or swimlanes. Capability and entity IDs refer to the capability map until those artifacts exist.</p>
+
+<p>Public Sector Case Management is the first use case with a model.</p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<ul>
+  <li><strong>Requirements on each mission.</strong> Simpler for one mission, but every mission that runs on case management would repeat the same requirements. Missions will instead name the use cases they run on and add their own specializations.</li>
+  <li><strong>BPMN process definitions.</strong> A recognized standard, but far heavier to author and review than this content needs. An export can be added later.</li>
+  <li><strong>Prose tables only.</strong> Readable, but tools would have to guess the structure.</li>
+</ul>
+
+<h2 id="consequences">Consequences</h2>
+
+<p>The format is documented in the <a href="/review/use-cases/">Use Cases index</a>, with a <a href="../templates/use-case.yml">data template</a>. Authors keep activity, scenario, and requirement IDs stable, because missions and tools refer to them.</p>
+
+<p>Template requirements are starting points to confirm with a customer, not mandatory requirements.</p>
+
+<p>Missions name the use cases they run on through <code class="language-plaintext highlighter-rouge">processes</code>, which specialize a use case’s process with the mission’s own activities and requirements. Factors name the activities where they show up, technology interventions name the requirements that deliver them, roles name the personas they act as, and systems name the capabilities they provide. A starter capability catalog will give the capability IDs their own artifacts.</p>
+</article><p class="draft-note">This article is a working draft. Its ideas and definitions may change as the architecture develops.</p><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/decisions/0004-add-machine-readable-use-case-processes.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/review/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

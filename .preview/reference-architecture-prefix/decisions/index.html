@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture Decisions · Enterprise Blueprints</title>
+  <meta name="description" content="The choices we make and the reasons behind them.">
+  <link rel="icon" href="/review/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/review/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/review/assets/css/site.css">
+  <script src="/review/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/review/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/review/foundations/">Explore</a><a href="/review/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="page"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="page"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="category-main"><p class="eyebrow">Knowledge library</p><h1>Architecture Decisions</h1><p class="page-lead">The choices we make and the reasons behind them.</p><div class="category-intro"><span>5 articles</span><span>Living architecture, developed in the open.</span></div><div class="article-list">
+<a class="content-card" href="/review/decisions/0001-add-use-cases-and-rename-objects-to-entities.html">
+  <div class="card-meta"><span>Decisions</span><span class="status status-published">Published</span></div>
+  <h3>Add Use Cases and rename Objects to Entities</h3>
+  <p>Introduce business context through Use Cases and name canonical business concepts Entities.</p>
+  <span class="card-action">Read architecture decision <span aria-hidden="true">→</span></span>
+</a>
+
+<a class="content-card" href="/review/decisions/0005-add-a-machine-readable-capability-catalog.html">
+  <div class="card-meta"><span>Decisions</span><span class="status status-draft">Draft</span></div>
+  <h3>Add a machine-readable capability catalog</h3>
+  <p>Describe business and shared capabilities as structured data in one catalog that use cases, missions, and tools refer to by ID.</p>
+  <span class="card-action">Read architecture decision <span aria-hidden="true">→</span></span>
+</a>
+
+<a class="content-card" href="/review/decisions/0003-add-machine-readable-mission-models.html">
+  <div class="card-meta"><span>Decisions</span><span class="status status-draft">Draft</span></div>
+  <h3>Add machine-readable mission models</h3>
+  <p>Add Missions as a content type whose models are structured data that the site renders and tools can read.</p>
+  <span class="card-action">Read architecture decision <span aria-hidden="true">→</span></span>
+</a>
+
+<a class="content-card" href="/review/decisions/0004-add-machine-readable-use-case-processes.html">
+  <div class="card-meta"><span>Decisions</span><span class="status status-draft">Draft</span></div>
+  <h3>Add machine-readable use case processes</h3>
+  <p>Give use cases a structured process, scenarios, and template requirements that the site renders and tools can read.</p>
+  <span class="card-action">Read architecture decision <span aria-hidden="true">→</span></span>
+</a>
+
+<a class="content-card" href="/review/decisions/0002-build-experiences-share-capabilities.html">
+  <div class="card-meta"><span>Decisions</span><span class="status status-published">Published</span></div>
+  <h3>Adopt Build Experiences. Share Capabilities.</h3>
+  <p>Use an active design principle to connect tailored experiences with shared enterprise capabilities.</p>
+  <span class="card-action">Read architecture decision <span aria-hidden="true">→</span></span>
+</a>
+</div></main></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/review/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add a machine-readable capability catalog · Enterprise Blueprints</title>
+  <meta name="description" content="Describe business and shared capabilities as structured data in one catalog that use cases, missions, and tools refer to by ID.">
+  <link rel="icon" href="/review/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/review/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/review/assets/css/site.css">
+  <script src="/review/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/review/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/review/foundations/">Explore</a><a href="/review/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/review/decisions/">Decisions</a><span class="status status-draft">Draft</span></div><article class="prose"><h1 id="add-a-machine-readable-capability-catalog">Add a machine-readable capability catalog</h1>
+
+<h2 id="context">Context</h2>
+
+<p><a href="/review/foundations/enterprise-capability-map.html">The Enterprise Capability Map</a> names example business and shared capabilities, such as Notification, Approval, and Document Management. Use case processes and missions now refer to capabilities by ID: activities name the capabilities they use, requirements name the capabilities that could fulfill them, and typical systems name the capabilities they provide.</p>
+
+<p>Those IDs need somewhere to point. Architects also need a consistent description of each capability to ask whether a customer already has it, has it several times over, or needs it. That is the habit of searching before building.</p>
+
+<h2 id="decision">Decision</h2>
+
+<p>Describe capabilities as structured data, one YAML file per capability in <code class="language-plaintext highlighter-rouge">_data/capabilities/&lt;slug&gt;.yml</code>. Each states the capability’s layer (business or shared), responsibility, boundaries, operations at a logical level, entities, policy areas, dependencies, signs that it is missing or duplicated, and questions to ask.</p>
+
+<p>One article, the <a href="/review/capabilities/catalog.html">Capability Catalog</a>, renders every capability and shows where the library uses it. The site publishes the catalog as JSON at <code class="language-plaintext highlighter-rouge">/capabilities/index.json</code>.</p>
+
+<p>The starter catalog holds the capability map’s examples, with Case Management as a business capability, plus Reporting. Entities and policy areas remain plain IDs until their own artifacts exist.</p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<ul>
+  <li><strong>One prose article per capability.</strong> Room for depth, but fourteen thin articles would add little before their contracts are developed. A capability can still get its own article when it needs one, using the <a href="../templates/capability.md">capability template</a>.</li>
+  <li><strong>Full capability contracts now.</strong> Inputs, outputs, failure behavior, and service levels matter, but they deserve the foundation articles on capability contracts first.</li>
+  <li><strong>IDs without definitions.</strong> Tools could match on IDs, but readers couldn’t tell what a capability covers or where its boundaries lie.</li>
+</ul>
+
+<h2 id="consequences">Consequences</h2>
+
+<p>The format is documented in the <a href="/review/capabilities/">Capabilities index</a>, with a <a href="../templates/capability.yml">data template</a>. Authors keep capability IDs stable, because use cases, missions, and tools refer to them.</p>
+
+<p>Operation names such as <code class="language-plaintext highlighter-rouge">Notification.send</code> describe responsibilities, not interfaces. The catalog doesn’t imply one central platform for any capability.</p>
+</article><p class="draft-note">This article is a working draft. Its ideas and definitions may change as the architecture develops.</p><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/decisions/0005-add-a-machine-readable-capability-catalog.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/review/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

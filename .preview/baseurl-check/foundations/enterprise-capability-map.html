@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Enterprise Capability Map · Enterprise Blueprints</title>
+  <meta name="description" content="A shared map connects business capabilities, reusable actions, enterprise entities, policy, and technology.">
+  <link rel="icon" href="/preview/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/preview/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/preview/assets/css/site.css">
+  <script src="/preview/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/preview/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/preview/foundations/">Explore</a><a href="/preview/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/preview/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/preview/foundations/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/preview/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/preview/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/preview/foundations/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/preview/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/preview/foundations/">Foundations</a><span class="status status-draft">Draft</span></div><article class="prose"><h1 id="the-enterprise-capability-map">The Enterprise Capability Map</h1>
+
+<p>An enterprise can have hundreds of applications and still struggle to explain what it can do.</p>
+
+<p>The application inventory tells us which products the organization owns. It may tell us who supports them, how much they cost, and when their contracts expire.</p>
+
+<p>It rarely tells us which responsibilities those applications share.</p>
+
+<p>A benefits system sends notifications. A grants system sends notifications. A licensing system sends notifications.</p>
+
+<p>Each may have its own document storage, person records, approval process, and audit trail.</p>
+
+<p>From the perspective of an individual application, these choices can seem reasonable.</p>
+
+<p>From the perspective of the enterprise, they raise a different question:</p>
+
+<blockquote>
+  <p>Which capabilities belong to a particular program, and which should the enterprise provide for many programs?</p>
+</blockquote>
+
+<p>That question becomes more important as employees and agents gain the ability to create software.</p>
+
+<p>The <a href="/preview/foundations/ai-native-enterprise.html">AI-Native Enterprise</a> describes why easier software creation increases the need for durable architecture. A capability map gives that architecture a common starting point.</p>
+
+<p>It helps us see the work the enterprise performs, the actions experiences can reuse, the information those actions depend on, and the rules that govern them.</p>
+
+<h2 id="start-with-what-the-enterprise-does">Start With What the Enterprise Does</h2>
+
+<p>A public sector organization administers benefits, manages grants, handles cases, issues licenses, reviews permits, conducts inspections, procures goods and services, and coordinates emergency response.</p>
+
+<p>These are business capabilities.</p>
+
+<p>They describe what the organization needs to be able to do. They do not prescribe an application, a department structure, or a particular technology.</p>
+
+<p>Licensing remains a business capability whether someone applies through a website, a service counter, or an assisted process.</p>
+
+<p>The interface may change.</p>
+
+<p>The responsibility remains.</p>
+
+<p>Business capabilities also contain rules that belong to the work itself. A licensing program determines which qualifications matter. A grants program determines which costs a grant allows. An inspection program determines what an inspector must assess.</p>
+
+<p>Sharing enterprise architecture does not remove those responsibilities.</p>
+
+<p>It gives programs a common foundation for carrying them out.</p>
+
+<h2 id="a-shared-map">A Shared Map</h2>
+
+<p>The map below uses public sector examples. The same relationships apply to other enterprises.</p>
+
+<p>Business capabilities consume and compose shared enterprise capabilities. Those capabilities operate on enterprise entities and authoritative state. Enterprise policy governs the work across these boundaries. Technology implements the architecture.</p>
+
+<figure class="capability-map" aria-labelledby="capability-map-caption">
+  <div class="capability-map-logical">
+    <div class="capability-map-stack">
+      <section class="capability-map-layer" aria-labelledby="map-business">
+        <p class="capability-map-heading" id="map-business">Business capabilities</p>
+        <ul class="capability-map-items">
+          <li>Benefits</li><li>Grants</li><li>Cases</li><li>Licensing</li>
+          <li>Permitting</li><li>Inspection</li><li>Procurement</li><li>Emergency Management</li>
+        </ul>
+      </section>
+      <p class="capability-map-relationship"><span aria-hidden="true">↓</span> Consume and compose</p>
+      <section class="capability-map-layer" aria-labelledby="map-shared">
+        <p class="capability-map-heading" id="map-shared"><a href="/preview/capabilities/">Shared enterprise capabilities</a></p>
+        <ul class="capability-map-items">
+          <li>Person Information</li><li>Organization Information</li><li>Identity</li><li>Address Validation</li>
+          <li>Document Management</li><li>Notification</li><li>Payment</li><li>Scheduling</li>
+          <li>Workflow</li><li>Approval</li><li>Search</li><li>Signature</li>
+        </ul>
+      </section>
+      <p class="capability-map-relationship"><span aria-hidden="true">↓</span> Operate on</p>
+      <section class="capability-map-layer" aria-labelledby="map-entities">
+        <p class="capability-map-heading" id="map-entities"><a href="/preview/entities/">Enterprise entities and authoritative state</a></p>
+        <ul class="capability-map-items">
+          <li>Person</li><li>Organization</li><li>Address</li><li>Document</li>
+          <li>Case</li><li>Payment</li><li>Decision</li><li>Other domain entities</li>
+        </ul>
+      </section>
+    </div>
+    <section class="capability-map-policy" aria-labelledby="map-policy">
+      <p class="capability-map-heading" id="map-policy"><a href="/preview/policies/">Enterprise policy</a></p>
+      <p class="capability-map-scope">Governs every layer and its technology implementation.</p>
+      <ul class="capability-map-items">
+        <li>Identity</li><li>Authorization</li><li>Privacy</li><li>Audit</li><li>Records</li>
+        <li>Security</li><li>Accessibility</li><li>AI Policy</li><li>Data Governance</li>
+      </ul>
+    </section>
+  </div>
+  <p class="capability-map-relationship"><span aria-hidden="true">↑</span> Technology realizes the logical architecture</p>
+  <section class="capability-map-layer capability-map-technology" aria-labelledby="map-technology">
+    <p class="capability-map-heading" id="map-technology"><a href="/preview/implementations/">Technology implementations</a></p>
+    <ul class="capability-map-items">
+      <li>Power Platform</li><li>Salesforce</li><li>ServiceNow</li>
+      <li>Custom Apps</li><li>Cloud Services</li><li>SaaS</li>
+    </ul>
+  </section>
+  <figcaption id="capability-map-caption">Public sector capability map. Examples illustrate responsibilities, not a complete catalog or a requirement for one central system.</figcaption>
+</figure>
+
+<p>The examples are a starting point. They do not form a complete capability catalog, and they do not imply that every organization needs one central platform.</p>
+
+<p>An agency may share a capability across its programs. Several agencies may agree on a contract while operating separate implementations. A program may retain a specialized capability when its responsibilities require one.</p>
+
+<p>The map makes those choices visible.</p>
+
+<h2 id="shared-capabilities-provide-reusable-actions">Shared Capabilities Provide Reusable Actions</h2>
+
+<p>A business process often needs actions that many other processes also need.</p>
+
+<p>Retrieve information about a person.</p>
+
+<p>Validate an address.</p>
+
+<p>Store a document.</p>
+
+<p>Send a notification.</p>
+
+<p>Request an approval.</p>
+
+<p>Retrieve payment status.</p>
+
+<p>These actions are candidates for shared enterprise capabilities.</p>
+
+<p>An application, workflow, or agent should be able to use them through a clear contract. That contract describes what the capability accepts, what it returns, who may use it, and what happens when it cannot complete the action.</p>
+
+<p>The implementation may use an API, a workflow, an event, a service, or an agent tool.</p>
+
+<p>The capability describes the responsibility that these mechanisms fulfill.</p>
+
+<p>A notification capability, for example, could accept a recipient, an approved message, and a delivery preference. It could return a delivery identifier and expose delivery status. The consuming experience would not need to implement each delivery channel itself.</p>
+
+<p>But reuse requires more than making an action available.</p>
+
+<p>Someone must own the capability. Consumers need to understand its limits. Changes need to preserve the commitments on which other systems depend.</p>
+
+<p>A shared capability creates a shared responsibility.</p>
+
+<h2 id="entities-give-capabilities-their-meaning">Entities Give Capabilities Their Meaning</h2>
+
+<p>Person is not an action.</p>
+
+<p>Neither is Organization, Address, or Case.</p>
+
+<p>These are entities: concepts that the enterprise needs to define and understand.</p>
+
+<p>A capability acts on those concepts.</p>
+
+<p>Person Information may retrieve an authorized view of a person record. Address Validation may assess an address. Case Management may create a case or assign responsibility for it.</p>
+
+<p>The distinction matters.</p>
+
+<p>An organization can expose a person lookup service while still having incompatible definitions of Person. It can share a document service while leaving unclear which document is the official record.</p>
+
+<p>Shared access alone does not establish shared meaning.</p>
+
+<p>The enterprise needs to define identifiers, relationships, lifecycle rules, ownership, and authoritative sources. It also needs to explain which information a consumer may see and which actions may change it.</p>
+
+<p>Authoritative state does not require one database for the whole enterprise.</p>
+
+<p>One system may own contact details. Another may own a program’s eligibility determination. A third may own the financial record of a payment.</p>
+
+<p>The architecture must make that authority explicit and explain how the records relate.</p>
+
+<p>Otherwise, a new experience can create another competing version of the truth without anyone intending it.</p>
+
+<h2 id="policy-applies-across-the-architecture">Policy Applies Across the Architecture</h2>
+
+<p>Every part of the map operates within rules.</p>
+
+<p>Identity establishes who or what is acting. Authorization determines which actions that actor may perform. Privacy constrains how information is collected, used, and disclosed.</p>
+
+<p>Records requirements shape what the organization must retain. Audit requirements shape the evidence it must preserve. Security, accessibility, AI policy, and data governance affect both the shared capabilities and the experiences that use them.</p>
+
+<p>These concerns cross architectural boundaries.</p>
+
+<p>A shared document capability can enforce access restrictions and record retrievals. The application that presents those documents still needs to provide an accessible experience and avoid disclosing information through its interface.</p>
+
+<p>A payment capability can enforce approval requirements. The business program still needs to establish who has authority to approve a particular payment.</p>
+
+<p>The enterprise should place each control where it can enforce the requirement reliably. Some controls belong inside a capability. Others belong in an experience, a system of record, an operational platform, or a human process.</p>
+
+<p>The map helps us ask where each responsibility belongs.</p>
+
+<p>It does not make that decision for us.</p>
+
+<h2 id="where-control-planes-fit">Where Control Planes Fit</h2>
+
+<p>A capability map describes what the enterprise can do.</p>
+
+<p>A control plane describes how the enterprise directs and governs the systems that do it.</p>
+
+<p>In this series, we will use that term for the mechanisms that define and distribute rules, configure permitted behavior, and oversee their operation. The systems performing the work must then enforce the applicable rules and produce evidence of what happened.</p>
+
+<p>Consider authorization.</p>
+
+<p>The enterprise defines who may access a restricted case. It distributes that policy to the relevant systems. A capability evaluates a request before returning the case. The system records enough evidence to support review.</p>
+
+<p>Defining the rule, enforcing the rule, and reviewing the result are related responsibilities.</p>
+
+<p>They may involve different components and different owners.</p>
+
+<p>We should describe those responsibilities before deciding whether one platform or several products will fulfill them.</p>
+
+<p>The policy area in the map represents the concerns these controls address. It does not claim that every concern has its own control plane, or that every policy can become an automated check.</p>
+
+<h2 id="technology-realizes-the-architecture">Technology Realizes the Architecture</h2>
+
+<p>Power Platform, Salesforce, ServiceNow, custom applications, cloud services, and SaaS products can implement parts of this architecture.</p>
+
+<p>A single product may support several business and shared capabilities. One capability may also depend on several products.</p>
+
+<p>The map does not require a one-to-one relationship.</p>
+
+<p>It asks us to explain the mapping.</p>
+
+<p>Which responsibilities does the product fulfill?</p>
+
+<p>Which authoritative records does it maintain?</p>
+
+<p>Which policies does it enforce?</p>
+
+<p>Where does it leave gaps?</p>
+
+<p>A logical approval capability can remain recognizable even when its implementation changes. Its consumers still need to know who may request approval, who may decide, which outcomes are possible, and where the decision becomes part of the record.</p>
+
+<p>The product supports those commitments.</p>
+
+<p>The commitments give us a way to assess the product.</p>
+
+<h2 id="follow-a-case-through-the-map">Follow a Case Through the Map</h2>
+
+<p>Consider the <a href="/preview/use-cases/public-sector-case-management.html">core Case Management use case</a>.</p>
+
+<p>A case can begin with an external submission or an internal request. The enterprise receives it, determines what work is required, assigns responsibility, gathers information, reaches an outcome, communicates it, and closes the case.</p>
+
+<p>The business capability owns the purpose of that work and the rules of the case type.</p>
+
+<p>The experience could be a public form, an internal application, a staff workspace, or an agent assisting an authorized employee.</p>
+
+<p>Each experience may compose the same underlying capabilities.</p>
+
+<p>It may retrieve participant information, store supporting documents, schedule an appointment, request an approval, or send a notification.</p>
+
+<p>Those capabilities operate on entities such as Case, Person, Organization, Document, Task, and Decision. The architecture identifies where their authoritative state lives and who may change it.</p>
+
+<p>Policy applies throughout.</p>
+
+<p>Receiving a submission does not automatically establish the submitter’s identity or authority. Access to one case does not automatically grant access to another. An agent’s ability to prepare a recommendation does not automatically authorize it to make the decision.</p>
+
+<p>The technology implementation must preserve those boundaries.</p>
+
+<p>The same case might use several systems. That can work when the responsibilities, identifiers, contracts, and authoritative records are clear.</p>
+
+<p>The user should not need to understand those systems to complete the work.</p>
+
+<h2 id="use-the-map-to-make-better-decisions">Use the Map to Make Better Decisions</h2>
+
+<p>The capability map gives teams a way to examine a proposed experience before creating another application.</p>
+
+<p>Start with the business responsibility.</p>
+
+<p>Identify the actions the experience needs. Look for existing capabilities that can provide them. Establish the entities and authoritative records involved. Determine which policies apply and where the architecture must enforce them.</p>
+
+<p>Then select or extend the technology implementation.</p>
+
+<p>Sometimes the right decision will be to reuse a capability. Sometimes it will be to improve one. Sometimes the organization will need a new capability or a program-specific implementation.</p>
+
+<p>Sharing has costs. A common capability needs dependable ownership, support, and change management. It can also create a dependency that several programs must plan around.</p>
+
+<p>The goal is to share responsibilities that benefit from shared ownership while preserving the differences that matter to the work.</p>
+
+<p>This draft leaves several choices open: how organizations establish capability ownership, how consumers discover available contracts, how separate implementations maintain shared meaning, and how controls produce evidence across system boundaries.</p>
+
+<p>The next foundation articles will develop those questions through experiences, authoritative state, policy and control planes, and capability contracts.</p>
+
+<p>The map gives them a common frame.</p>
+
+<p><strong>Build Experiences. Share Capabilities.</strong></p>
+</article><p class="draft-note">This article is a working draft. Its ideas and definitions may change as the architecture develops.</p><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/foundations/enterprise-capability-map.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/preview/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

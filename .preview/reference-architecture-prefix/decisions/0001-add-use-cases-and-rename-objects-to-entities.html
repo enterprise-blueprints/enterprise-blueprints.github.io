@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Use Cases and rename Objects to Entities · Enterprise Blueprints</title>
+  <meta name="description" content="Introduce business context through Use Cases and name canonical business concepts Entities.">
+  <link rel="icon" href="/review/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/review/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/review/assets/css/site.css">
+  <script src="/review/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/review/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/review/foundations/">Explore</a><a href="/review/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/decisions/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/review/decisions/">Decisions</a><span class="status status-published">Published</span></div><article class="prose"><h1 id="add-use-cases-and-rename-objects-to-entities">Add Use Cases and rename Objects to Entities</h1>
+
+<h2 id="context">Context</h2>
+
+<p><a href="/review/charter/project-charter-v0.3.html">Charter v0.3</a> establishes the founding content model and uses the term Objects for canonical business concepts. The repository needs a place to introduce public-sector and enterprise use cases through their overview, personas, and process before developing the supporting architecture.</p>
+
+<p>The project owner requested a Use Cases section and the more specific name Entities for the Objects category during repository incubation.</p>
+
+<h2 id="decision">Decision</h2>
+
+<p>Add <a href="/review/use-cases/">Use Cases</a> as a content category with metadata type <code class="language-plaintext highlighter-rouge">use-case</code>. Use cases introduce business context, participants, processes, outcomes, and constraints. They link to blueprints that describe supporting logical architecture.</p>
+
+<p>Rename Objects to <a href="/review/entities/">Entities</a>, using the directory <code class="language-plaintext highlighter-rouge">entities/</code>, template <code class="language-plaintext highlighter-rouge">entity.md</code>, metadata type <code class="language-plaintext highlighter-rouge">entity</code>, and ID prefix <code class="language-plaintext highlighter-rouge">entity:</code>. Entities retain the original meaning: canonical business concepts with identifiers, lifecycle, relationships, and governance, rather than physical database tables.</p>
+
+<p>Preserve Charter v0.3 as the historical founding draft. This decision records the current additions and terminology, now incorporated into <a href="/review/charter/project-charter-v0.4.html">Charter v0.4</a>.</p>
+
+<h2 id="alternatives">Alternatives</h2>
+
+<ul>
+  <li>Put domain introductions inside blueprints. A dedicated use case gives readers business context independently of architectural detail.</li>
+  <li>Retain Objects. Entities is the project owner’s preferred term for the same canonical business concepts.</li>
+  <li>Rewrite Charter v0.3 in place. Preserving the versioned charter and recording the change keeps its founding text intact.</li>
+</ul>
+
+<h2 id="consequences">Consequences</h2>
+
+<p>Navigation, templates, metadata examples, and authoring guidance use Use Cases and Entities. Blueprints link to their use case context when available.</p>
+
+<p>Only scaffolding and placeholder metadata existed under Objects, so this rename does not change any authored entity IDs. Future authored IDs remain stable under the authoring conventions.</p>
+
+<p>The published status records an established repository decision; it does not publish or deploy a website.</p>
+</article><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/decisions/0001-add-use-cases-and-rename-objects-to-entities.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/review/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

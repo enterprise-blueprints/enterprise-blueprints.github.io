@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Public Sector Case Management · Enterprise Blueprints</title>
+  <meta name="description" content="How an organization manages a matter from an internal or external source through resolution.">
+  <link rel="icon" href="/preview/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/preview/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/preview/assets/css/site.css">
+  <script src="/preview/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/preview/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/preview/foundations/">Explore</a><a href="/preview/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/preview/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/preview/use-cases/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/preview/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/preview/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/preview/use-cases/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/preview/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/preview/use-cases/">Use cases</a><span class="status status-draft">Draft</span></div><article class="prose"><h1 id="public-sector-case-management">Public Sector Case Management</h1>
+
+<h2 id="overview">Overview</h2>
+
+<p>Case management helps an organization resolve a matter over time. A case brings together the people, information, tasks, decisions, and actions needed to handle that matter.</p>
+
+<p>A case can start inside or outside the organization. An employee may raise an issue. A team may identify work that needs attention. A person or another organization may submit a request, report, or referral.</p>
+
+<p>The organization records the matter, assigns responsibility, gathers information, and carries out the work. It records the outcome and closes the case when the work reaches an agreed endpoint.</p>
+
+<p>This use case describes core case management. Public-sector organizations provide the starting context, but the same concepts can support casework across an enterprise.</p>
+
+<h3 id="intended-outcomes">Intended outcomes</h3>
+
+<ul>
+  <li>Participants know how to raise a matter and what happens next.</li>
+  <li>Staff can find the case history, current owner, and outstanding work.</li>
+  <li>Teams can transfer work without losing information or responsibility.</li>
+  <li>Decision-makers can explain their decisions.</li>
+  <li>The organization keeps a record of its actions and the outcome.</li>
+</ul>
+
+<h3 id="boundaries">Boundaries</h3>
+
+<p>The core process covers the work from receipt through closure. It also supports related cases, follow-up work, and review of an outcome.</p>
+
+<p>Each organization defines when to open a case, who may act, and what counts as completion. Specialized case types add their own rules. A benefits application, an employee concern, and a service request can share case management concepts without sharing every process step.</p>
+
+<p>A message or task does not always create a new case. Staff may add a message to an existing case or complete a task as part of that case.</p>
+
+<h3 id="example">Example</h3>
+
+<p>An employee or an external participant reports an issue. Staff record it and check whether an existing case covers the same matter. A coordinator assigns an owner. The owner gathers information and asks another team to complete a task. Staff record the result, update the relevant participants, and close the case.</p>
+
+<p>The source of the report may change who participates and what information they can see. The core need remains the same: keep the work, information, and responsibility connected.</p>
+
+<h2 id="personas">Personas</h2>
+
+<p>These roles describe the people involved. An organization may combine roles or require different people to perform them.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Persona</th>
+      <th>Responsibilities</th>
+      <th>Needs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Initiator</td>
+      <td>Raise a matter and provide information, from inside or outside the organization</td>
+      <td>Clear instructions, confirmation of receipt, and updates</td>
+    </tr>
+    <tr>
+      <td>Participant</td>
+      <td>Provide information or respond to work that affects them</td>
+      <td>A way to contribute and access the information they may see</td>
+    </tr>
+    <tr>
+      <td>Representative</td>
+      <td>Act for another participant</td>
+      <td>Clear authority and limits on what they may submit or receive</td>
+    </tr>
+    <tr>
+      <td>Intake staff</td>
+      <td>Record the matter, check completeness, and direct it to the right team</td>
+      <td>Intake guidance and relevant case history</td>
+    </tr>
+    <tr>
+      <td>Case owner or coordinator</td>
+      <td>Manage the case and coordinate the work</td>
+      <td>Current information, tasks, responsibility, and progress</td>
+    </tr>
+    <tr>
+      <td>Specialist or supporting team</td>
+      <td>Assess an issue or complete assigned work</td>
+      <td>A clear task and enough information to complete it</td>
+    </tr>
+    <tr>
+      <td>Decision-maker or reviewer</td>
+      <td>Make or review a decision</td>
+      <td>Evidence, decision criteria, and a record of the reasons</td>
+    </tr>
+    <tr>
+      <td>Supervisor</td>
+      <td>Manage workload and resolve delays or escalations</td>
+      <td>Visibility into ownership, outstanding work, and outcomes</td>
+    </tr>
+    <tr>
+      <td>Records or oversight staff</td>
+      <td>Review the history and support records handling</td>
+      <td>Reliable records and appropriate access</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="process">Process</h2>
+
+<p>These stages describe common work. They do not prescribe case statuses or a fixed sequence. Teams may repeat stages or work on several tasks at once.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stage</th>
+      <th>Work</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1. Receive</td>
+      <td>Staff record a matter from an internal or external source</td>
+      <td>A record of the matter and its source</td>
+    </tr>
+    <tr>
+      <td>2. Review and route</td>
+      <td>Staff check responsibility, urgency, missing information, and related cases</td>
+      <td>A new case, an update to an existing case, a request for information, or a referral</td>
+    </tr>
+    <tr>
+      <td>3. Assign</td>
+      <td>A coordinator identifies an owner and supporting teams</td>
+      <td>Clear responsibility for the case and its tasks</td>
+    </tr>
+    <tr>
+      <td>4. Assess</td>
+      <td>Staff gather information, consult participants, and identify the work needed</td>
+      <td>An assessment and next steps</td>
+    </tr>
+    <tr>
+      <td>5. Decide and act</td>
+      <td>Authorized people make decisions and carry out the work</td>
+      <td>Recorded decisions, actions, and reasons</td>
+    </tr>
+    <tr>
+      <td>6. Communicate</td>
+      <td>Staff explain progress, outcomes, and outstanding work to relevant participants</td>
+      <td>Updates and recorded responses</td>
+    </tr>
+    <tr>
+      <td>7. Close</td>
+      <td>The owner checks completion and records the outcome</td>
+      <td>A closed case and any follow-up work</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Staff communicate throughout the process. Closing a case does not delete its history. Participants may disagree with an outcome or request further review.</p>
+
+<h3 id="variations">Variations</h3>
+
+<ul>
+  <li><strong>Missing information:</strong> Staff request what they need and record who must respond.</li>
+  <li><strong>Related matters:</strong> Staff link related cases or reports and preserve their histories.</li>
+  <li><strong>Referral:</strong> Staff direct the matter to another team or organization and record the reason.</li>
+  <li><strong>Reassignment:</strong> The current owner transfers the case with its information and outstanding work. The organization identifies who takes responsibility.</li>
+  <li><strong>Withdrawal or cancellation:</strong> Staff record why the work stopped and identify any remaining obligations.</li>
+  <li><strong>Review or reopening:</strong> A reviewer examines the outcome. Staff preserve earlier decisions and record new work in the same case or a linked case.</li>
+  <li><strong>Parallel work:</strong> Several teams complete different tasks within the case. The owner tracks the overall outcome.</li>
+</ul>
+
+<h2 id="constraints-and-open-questions">Constraints and open questions</h2>
+
+<h3 id="core-requirements">Core requirements</h3>
+
+<p>The organization needs clear ownership and authority to act. An internal source does not automatically grant access to every case. An external source does not always require an online account. Staff must support the channels and access rules that apply to the work.</p>
+
+<p>Each case type defines its privacy, accessibility, records, deadlines, and review requirements. The core model must support those requirements without imposing one set of rules on every case.</p>
+
+<p>AI tools may help staff organize information or draft updates. People remain responsible for consequential decisions in this draft. Any delegated action needs a defined scope, authority, and record of what happened.</p>
+
+<h3 id="questions-for-the-supporting-architecture">Questions for the supporting architecture</h3>
+
+<ol>
+  <li>What information must a case hold, regardless of its source or type?</li>
+  <li>What distinguishes a case from a message, task, or related matter?</li>
+  <li>How does the organization establish ownership and transfer responsibility?</li>
+  <li>Who may open, view, contribute to, act on, or review a case?</li>
+  <li>How does the case record decisions, actions, changes, and outcomes?</li>
+  <li>How do case types add their own process steps and rules?</li>
+  <li>How does the organization manage the record after closure?</li>
+</ol>
+
+<h3 id="scenarios-to-check">Scenarios to check</h3>
+
+<p>The blueprint should support cases from both internal and external sources. It should also support missing information, reassignment, related cases, different access rights, parallel tasks, and review of an outcome. Each scenario should show who owns the case, what work remains, and why people took each action.</p>
+
+<h2 id="related-architecture">Related architecture</h2>
+
+<p>The supporting blueprint and reusable definitions remain to be written. Concepts to explore include Case, Participant, Interaction, Task, Document, Assignment, and Decision.</p>
+
+<p>The <a href="/preview/blueprints/">Blueprints</a> section will describe the logical design. <a href="/preview/implementations/">Implementations</a> will describe product choices and technology mappings.</p>
+
+<p>This draft follows <a href="/preview/charter/project-charter-v0.5.html">Charter v0.5</a>. Return to the <a href="/preview/use-cases/">Use Cases index</a>.</p>
+</article><p class="draft-note">This article is a working draft. Its ideas and definitions may change as the architecture develops.</p><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/use-cases/public-sector-case-management.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/preview/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

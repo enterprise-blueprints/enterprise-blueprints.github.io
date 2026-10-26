@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-Native Enterprise Reference Architecture · Enterprise Blueprints</title>
+  <meta name="description" content="A layered logical architecture connects adaptable experiences, governed capabilities, orchestration, and enterprise entities and state.">
+  <link rel="icon" href="/review/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/review/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/review/assets/css/site.css">
+  <script src="/review/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/review/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/review/foundations/">Explore</a><a href="/review/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/reference-architecture/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/reference-architecture/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/review/reference-architecture/">Reference architecture</a><span class="status status-draft">Draft</span></div><article class="prose"><h1 id="ai-native-enterprise-reference-architecture">AI-Native Enterprise Reference Architecture</h1>
+
+<p><strong>Build Experiences. Share Capabilities.</strong></p>
+
+<p>An AI-native enterprise allows people and agents to discover, compose, and operate governed capabilities. Experiences can change quickly while business meaning, authority, and records remain durable.</p>
+
+<p>This reference architecture describes the responsibilities that make that possible. A blueprint applies them to a particular problem. An implementation explains how selected technologies fulfill them and provides evidence that they work.</p>
+
+<h2 id="purpose-and-boundaries">Purpose and boundaries</h2>
+
+<p>The model starts with public-sector work and is intended to apply across the enterprise. It builds on <a href="/review/foundations/enterprise-capability-map.html">The Enterprise Capability Map</a> and the provisional stack in <a href="/review/charter/project-charter-v0.5.html">Charter v0.5</a>.</p>
+
+<p>Mission outcomes, business responsibilities, personas, and process establish the context above the stack. <a href="/review/use-cases/">Use cases</a> and <a href="/review/missions/">mission models</a> describe that context. The layers explain how the enterprise supports the work.</p>
+
+<p>The capability map expands the Enterprise Capabilities layer into business and shared capabilities and connects them to Enterprise Entities and State. This reference architecture places that focused view within the full stack, adding Experiences and Orchestration. Both views use the same cross-cutting controls and separate technology implementation view.</p>
+
+<p>This is a proposed logical model. Layers identify responsibilities; they do not prescribe separate products, services, databases, or deployment tiers. Calls can skip orchestration when an action is simple. Events and results can travel between layers. One component can fulfill several responsibilities, and several components can share one responsibility.</p>
+
+<h2 id="the-layered-model">The layered model</h2>
+
+<figure class="architecture-diagram enterprise-stack" aria-labelledby="enterprise-stack-caption">
+  <div class="diagram-header">
+    <svg class="diagram-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+    <div><p class="diagram-eyebrow">Enterprise Blueprints / Reference model</p><p class="diagram-title">AI-native enterprise</p></div>
+  </div>
+  <div class="enterprise-stack-context">
+    <p class="enterprise-stack-label">Business context</p>
+    <ul class="diagram-context-items"><li>Mission outcomes</li><li>Personas</li><li>Business responsibilities</li><li>Process</li></ul>
+  </div>
+  <p class="diagram-relationship enterprise-stack-connector"><span aria-hidden="true">↓</span> Informs the architecture</p>
+  <div class="enterprise-stack-model">
+    <div class="enterprise-stack-layers">
+      <p class="enterprise-stack-label">Logical layers</p>
+      <ol class="enterprise-stack-list">
+        <li class="enterprise-stack-layer"><span class="enterprise-stack-number" aria-hidden="true">01</span><div class="diagram-layer-content"><p class="enterprise-stack-title"><a href="/review/reference-architecture/ai-native-enterprise.html#experiences">Experiences</a></p><small>Express intent and present permitted actions.</small><ul class="diagram-chips"><li>Public services</li><li>Staff workspaces</li><li>Generated interfaces</li><li>Assistants</li></ul></div></li>
+        <li class="enterprise-stack-layer"><span class="enterprise-stack-number" aria-hidden="true">02</span><div class="diagram-layer-content"><p class="enterprise-stack-title"><a href="/review/reference-architecture/ai-native-enterprise.html#enterprise-capabilities">Enterprise Capabilities</a></p><small>Provide reusable actions through governed contracts.</small><ul class="diagram-chips"><li>Case Management</li><li>Documents</li><li>Approval</li><li>Notification</li></ul></div></li>
+        <li class="enterprise-stack-layer"><span class="enterprise-stack-number" aria-hidden="true">03</span><div class="diagram-layer-content"><p class="enterprise-stack-title"><a href="/review/reference-architecture/ai-native-enterprise.html#orchestration">Orchestration</a></p><small>Coordinate work to fulfill capability commitments.</small><ul class="diagram-chips"><li>Workflows</li><li>Agent plans</li><li>Tasks</li><li>Human decisions</li></ul></div></li>
+        <li class="enterprise-stack-layer"><span class="enterprise-stack-number" aria-hidden="true">04</span><div class="diagram-layer-content"><p class="enterprise-stack-title"><a href="/review/reference-architecture/ai-native-enterprise.html#enterprise-entities-and-state">Enterprise Entities and State</a></p><small>Preserve meaning and durable state under explicit authority.</small><ul class="diagram-chips"><li>Shared meaning</li><li>Relationships</li><li>Authoritative state</li><li>History</li></ul></div></li>
+      </ol>
+    </div>
+    <div class="diagram-controls enterprise-stack-controls">
+      <p class="diagram-control-label">Cross-cutting controls</p>
+      <section class="diagram-control enterprise-stack-control" aria-labelledby="enterprise-stack-trust">
+        <svg class="diagram-control-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+        <p class="enterprise-stack-title" id="enterprise-stack-trust"><a href="/review/reference-architecture/ai-native-enterprise.html#security-trust-and-policy">Security, Trust, and Policy</a></p>
+        <ul class="diagram-control-items"><li>Information protection</li><li>Identity &amp; delegation</li><li>Authorization &amp; privacy</li><li>Records &amp; accessibility</li><li>Human oversight</li></ul>
+      </section>
+      <section class="diagram-control diagram-control-operations enterprise-stack-control" aria-labelledby="enterprise-stack-operations">
+        <svg class="diagram-control-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+        <p class="enterprise-stack-title" id="enterprise-stack-operations"><a href="/review/reference-architecture/ai-native-enterprise.html#operations-and-assurance">Operations and Assurance</a></p>
+        <ul class="diagram-control-items"><li>Observability &amp; audit</li><li>AI evaluation &amp; recovery</li><li>Availability &amp; incidents</li><li>Lifecycle &amp; ownership</li><li>Cost</li></ul>
+      </section>
+      <p class="diagram-control-scope">Across every layer and its technology implementations.</p>
+    </div>
+  </div>
+  <div class="diagram-realization enterprise-stack-realization">
+    <p class="enterprise-stack-label">Separate realization view</p>
+    <p class="enterprise-stack-title"><a href="/review/reference-architecture/ai-native-enterprise.html#mapping-to-technology-implementations">Technology implementations</a></p>
+    <ul class="diagram-chips"><li>Products</li><li>Configurations</li><li>Custom code</li><li>Adapters</li><li>Operating procedures</li></ul>
+    <small>Map to all layers and controls. One product can fulfill several responsibilities; one capability can use several products.</small>
+  </div>
+  <figcaption id="enterprise-stack-caption">Proposed AI-native enterprise stack. Read top to bottom as logical responsibilities, not a mandatory call sequence or deployment topology. AI can participate across layers under explicit authority.</figcaption>
+</figure>
+
+<p>The stack separates four responsibilities: Experiences, Enterprise Capabilities, Orchestration, and Enterprise Entities and State. Security, Trust, and Policy govern every layer. Operations and Assurance sustain the whole model. Technology realizations map to all four layers and both sets of controls.</p>
+
+<h3 id="experiences">Experiences</h3>
+
+<p><strong>Help a person or agent understand and carry out the work.</strong></p>
+
+<p>Examples include a public form, a staff workspace, an assisted service channel, a generated interface, and a conversational assistant. An agent can also consume capabilities without a visual interface.</p>
+
+<p>Experiences present information, collect intent, and request permitted actions. They support accessibility, clear outcomes, and recovery when work cannot complete. A generated experience needs an owner, a permitted scope, and a lifecycle before it handles enterprise work.</p>
+
+<p>An experience may maintain presentation state or a draft. Authoritative changes go through governed capabilities. Hiding a button does not enforce authorization, and a generated interface cannot grant itself new permissions.</p>
+
+<h3 id="enterprise-capabilities">Enterprise Capabilities</h3>
+
+<p><strong>Provide owned, reusable responsibilities through explicit contracts.</strong></p>
+
+<p>The <a href="/review/capabilities/catalog.html">Capability Catalog</a> distinguishes business capabilities, such as Case Management, from shared capabilities, such as Document Management, Notification, and Approval. Both belong here. Sharing does not eliminate the rules that belong to a program.</p>
+
+<p>A capability contract should describe its operations, inputs, outputs, events, authorized actors, preconditions, policy obligations, failure behavior, and ownership. Consumers also need versioning and service commitments. The current catalog supplies starter responsibilities and operations; it does not yet establish complete executable contracts.</p>
+
+<p>APIs, events, workflows, and agent tools can expose a capability. Discovering an action in a catalog does not authorize its use. A tool description helps a model select an action; enforcement at the capability boundary determines whether it may execute.</p>
+
+<p>Capabilities describe what the enterprise provides. Orchestration below them coordinates the work needed to fulfill those commitments. For example, opening a case may coordinate checks, assignment, and notifications while preserving the meaning, authority, and result of the case capability’s contract.</p>
+
+<h3 id="orchestration">Orchestration</h3>
+
+<p><strong>Coordinate steps, dependencies, and human decisions to fulfill capability commitments.</strong></p>
+
+<p>Workflows, agent plans, task coordination, and event-driven processes carry out the work behind capability contracts. Coordination needs explicit process state, responsibility for the next step, waiting conditions, deadlines, and recovery behavior. These steps can evolve while the capability’s contract remains stable.</p>
+
+<p>Orchestration can also compose several capabilities toward a broader outcome. An experience or agent may initiate that coordination, but each invoked capability retains its own contract and enforcement boundary. The layer’s position describes a responsibility; it does not require all calls to travel downward through the stack.</p>
+
+<p>An agent may propose the next action. The orchestrator must check whether that action is permitted before invoking it, and the receiving capability must enforce its own boundary. Consequential decisions remain with authorized people in this draft, consistent with the current case management use case and Approval capability.</p>
+
+<p>Orchestration is a responsibility, not a requirement for one enterprise workflow engine. <a href="/review/capabilities/catalog.html">Workflow and Approval</a> remain reusable capabilities with contracts at the capability boundary; their coordination mechanisms fulfill orchestration responsibilities. A case process composes those services with case-specific rules without creating a second owner for their records or decisions.</p>
+
+<h3 id="enterprise-entities-and-state">Enterprise Entities and State</h3>
+
+<p><strong>Preserve shared business meaning, authoritative state, and history under accountable ownership.</strong></p>
+
+<p>Entities such as Case, Person, Document, Task, and Decision need defined meaning, identifiers, relationships, lifecycle rules, provenance, and authority. Contracts and events should preserve those meanings across system boundaries.</p>
+
+<p>Within this layer, shared semantics explain what a concept means; authoritative state identifies its accepted values and who controls them. Each record or field needs an identified authoritative source and rules for changes, retention, correction, and reconciliation. The authoritative case history, document record, decision record, and financial record may live in different systems.</p>
+
+<p>The layer also includes governed data views, reference data, analytical data products, and derived search representations. An AI retrieval index or generated summary is derived information. Its sources, freshness, access restrictions, and permitted uses must be known. Permission to retrieve a summary must not expose source information the actor cannot access. A model’s output becomes an authoritative record only through an explicitly authorized recording process.</p>
+
+<p>The logical architecture defines meaning and authority. Implementation guidance identifies the databases, platforms, and systems of record that maintain them. A shared logical model can span several physical systems without requiring one enterprise schema or a duplicate master database.</p>
+
+<p>Capabilities mediate authoritative changes. State and history can reside inside a capability implementation. The diagram does not require another network call or database tier beneath every capability.</p>
+
+<h2 id="controls-across-the-stack">Controls across the stack</h2>
+
+<h3 id="security-trust-and-policy">Security, Trust, and Policy</h3>
+
+<p>Security protects information and actions against unauthorized access, disclosure, modification, and disruption. Trust establishes identities, provenance, and delegated authority. Policy defines permitted behavior and obligations, including privacy, records requirements, accessibility, and human oversight. These responsibilities apply across all four layers and their technology implementations.</p>
+
+<p>An agent’s identity and delegated authority must be distinguishable from those of the person or organization it assists. Each capability must enforce the scope of that authority when it receives a request.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Example security responsibilities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Experiences</td>
+      <td>Secure sessions and safe presentation of sensitive information</td>
+    </tr>
+    <tr>
+      <td>Enterprise Capabilities</td>
+      <td>Authorization, request validation, and constraints on agent actions</td>
+    </tr>
+    <tr>
+      <td>Orchestration</td>
+      <td>Delegated scope across steps and protection of workflow state</td>
+    </tr>
+    <tr>
+      <td>Enterprise Entities and State</td>
+      <td>Protection of authoritative state, restricted derived views, and data integrity</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Policy definition, distribution, enforcement, and review are separate responsibilities. A control plane can manage rules and permitted configurations; the components carrying out the work must enforce applicable rules and produce evidence. Some obligations remain human procedures.</p>
+
+<p>Place each control where it can reliably enforce the requirement. Accessibility in experiences, capability authorization, and record retention need different enforcement points. Shared controls support local obligations without removing the program owner’s accountability.</p>
+
+<p>The charter’s provisional diagram places Trust and Policy in the stack. This draft names the concern Security, Trust, and Policy and shows it alongside the layers to make its reach explicit. That placement is a proposal for refinement, not a change to the preserved charter.</p>
+
+<h3 id="operations-and-assurance">Operations and Assurance</h3>
+
+<p>Trace work across requests, workflow instances, capability invocations, and records. Distinguish the initiating actor, delegated agent, approving person, and executing component where applicable. Retain enough evidence to explain what happened while limiting unnecessary sensitive information in telemetry.</p>
+
+<p>Owners need to manage availability, incidents, deployment, contract changes, cost, evaluation, and retirement. Monitoring, incident response, and control evaluation provide evidence that security and policy controls work. AI evaluation should exercise task quality, restricted information access, attempted actions outside delegated scope, and recovery when a model or tool fails. Runtime controls still apply when an evaluation passes.</p>
+
+<h2 id="mapping-to-technology-implementations">Mapping to technology implementations</h2>
+
+<p>An implementation realizes the logical architecture through selected products, configurations, custom code, integration mechanisms, and operating procedures. Technology is a separate realization view of the whole model.</p>
+
+<p>The mapping is many-to-many: one product can provide an experience, orchestration, capability operations, and records; one capability can depend on several products. Replacing a product should preserve logical obligations or explicitly document the differences.</p>
+
+<p>Use the <a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/templates/implementation.md">implementation template on GitHub</a> to identify the source architecture and revision, then describe each mapping:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mapping field</th>
+      <th>What an implementation must explain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Logical source</td>
+      <td>Stable artifact ID and source revision; capability operation or layer responsibility covered</td>
+    </tr>
+    <tr>
+      <td>Realization</td>
+      <td>Product, component, configuration, adapter, or human procedure that fulfills it</td>
+    </tr>
+    <tr>
+      <td>Contract and authority</td>
+      <td>Inputs, results, failure behavior, authoritative state, and who may act</td>
+    </tr>
+    <tr>
+      <td>Controls</td>
+      <td>Where relevant requirements are enforced and what evidence is produced</td>
+    </tr>
+    <tr>
+      <td>Coverage and gaps</td>
+      <td>Supported behavior, extensions, limitations, and departures from the logical model</td>
+    </tr>
+    <tr>
+      <td>Validation and ownership</td>
+      <td>Scenarios exercised, observed results, operational owner, and change responsibilities</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These are proposed documentation fields, not an implemented mapping schema. Initial vendor-specific mappings should begin with a small case management flow so they can test the architecture before expanding it.</p>
+
+<h2 id="follow-a-case-through-the-layers">Follow a case through the layers</h2>
+
+<p>The <a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management use case</a> provides the first check. These are illustrative logical responsibilities, not a completed blueprint or running implementation.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Work</th>
+      <th>Responsibility and boundary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Receive a matter</td>
+      <td>An experience collects a submission through an appropriate channel. Submission alone does not establish identity or authority.</td>
+    </tr>
+    <tr>
+      <td>Open and assign a case</td>
+      <td>Case Management exposes the catalog’s <code class="language-plaintext highlighter-rouge">Case.create</code> and <code class="language-plaintext highlighter-rouge">Case.assign</code> operations, enforces access, and records an accountable owner. Orchestration coordinates the steps needed to fulfill those commitments.</td>
+    </tr>
+    <tr>
+      <td>Gather information</td>
+      <td>Document Management and other capabilities provide authorized information using shared identifiers. Enterprise Entities and State defines shared meaning, authoritative sources, and provenance for derived summaries.</td>
+    </tr>
+    <tr>
+      <td>Prepare and make a decision</td>
+      <td>An agent may prepare a recommendation. Approval routes it to an authorized person; the case records reasons, evidence, and the decision-maker.</td>
+    </tr>
+    <tr>
+      <td>Notify and close</td>
+      <td>Notification reports delivery outcomes. Case Management checks closure requirements and preserves the case history.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If notification fails after the decision is recorded, the process retains that decision and tracks communication as outstanding work. A retry must not create a second decision. If access is revoked while an agent is waiting, the next capability call must evaluate current authority before proceeding.</p>
+
+<p>For each flow, name the actor, capability operation, state owner, enforcement point, and evidence produced. That makes the stack testable.</p>
+
+<h2 id="tradeoffs-and-open-questions">Tradeoffs and open questions</h2>
+
+<p>Separating responsibilities makes reuse and authority easier to discuss, but it can obscure how much work a single platform already performs. Implementation mappings must show those overlaps. Shared capabilities also introduce dependencies that require dependable ownership and change management.</p>
+
+<p>Questions for the next iteration:</p>
+
+<ol>
+  <li>Does placing orchestration beneath capability contracts clarify how commitments are fulfilled, including when Workflow is itself a capability?</li>
+  <li>How should Enterprise Entities and State express shared meaning, authority, and derived information across agencies and existing systems?</li>
+  <li>Which contract fields must be machine-readable before an agent can safely discover and compose actions?</li>
+  <li>How should delegated scope, expiry, revocation, and required human approval be represented and enforced?</li>
+  <li>Which failure and recovery scenarios should every implementation demonstrate?</li>
+</ol>
+
+<p>Start by reviewing these boundaries, then compose the Case Management blueprint and map one small flow to an implementation. Feedback from that flow should refine the logical model.</p>
+</article><p class="draft-note">This article is a working draft. Its ideas and definitions may change as the architecture develops.</p><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/reference-architecture/ai-native-enterprise.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/review/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

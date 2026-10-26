@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Public Sector Case Management · Enterprise Blueprints</title>
+  <meta name="description" content="How an organization manages a matter from an internal or external source through resolution.">
+  <link rel="icon" href="/review/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/review/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/review/assets/css/site.css">
+  <script src="/review/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/review/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/review/foundations/">Explore</a><a href="/review/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/use-cases/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/use-cases/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/review/use-cases/">Use cases</a><span class="status status-draft">Draft</span></div><article class="prose"><h1 id="public-sector-case-management">Public Sector Case Management</h1>
+
+<h2 id="overview">Overview</h2>
+
+<p>Case management helps an organization resolve a matter over time. A case brings together the people, information, tasks, decisions, and actions needed to handle that matter.</p>
+
+<p>A case can start inside or outside the organization. An employee may raise an issue. A team may identify work that needs attention. A person or another organization may submit a request, report, or referral.</p>
+
+<p>The organization records the matter, assigns responsibility, gathers information, and carries out the work. It records the outcome and closes the case when the work reaches an agreed endpoint.</p>
+
+<p>This use case describes core case management. Public-sector organizations provide the starting context, but the same concepts can support casework across an enterprise.</p>
+
+<h3 id="intended-outcomes">Intended outcomes</h3>
+
+<ul>
+  <li>Participants know how to raise a matter and what happens next.</li>
+  <li>Staff can find the case history, current owner, and outstanding work.</li>
+  <li>Teams can transfer work without losing information or responsibility.</li>
+  <li>Decision-makers can explain their decisions.</li>
+  <li>The organization keeps a record of its actions and the outcome.</li>
+</ul>
+
+<h3 id="boundaries">Boundaries</h3>
+
+<p>The core process covers the work from receipt through closure. It also supports related cases, follow-up work, and review of an outcome.</p>
+
+<p>Each organization defines when to open a case, who may act, and what counts as completion. Specialized case types add their own rules. A benefits application, an employee concern, and a service request can share case management concepts without sharing every process step.</p>
+
+<p>A message or task does not always create a new case. Staff may add a message to an existing case or complete a task as part of that case.</p>
+
+<h3 id="example">Example</h3>
+
+<p>An employee or an external participant reports an issue. Staff record it and check whether an existing case covers the same matter. A coordinator assigns an owner. The owner gathers information and asks another team to complete a task. Staff record the result, update the relevant participants, and close the case.</p>
+
+<p>The source of the report may change who participates and what information they can see. The core need remains the same: keep the work, information, and responsibility connected.</p>
+
+<h2 id="personas">Personas</h2>
+
+<p>These roles describe the people involved. An organization may combine roles or require different people to perform them.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Persona</th>
+      <th>Responsibilities</th>
+      <th>Needs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Initiator</td>
+      <td>Raise a matter and provide information, from inside or outside the organization</td>
+      <td>Clear instructions, confirmation of receipt, and updates</td>
+    </tr>
+    <tr>
+      <td>Participant</td>
+      <td>Provide information or respond to work that affects them</td>
+      <td>A way to contribute and access the information they may see</td>
+    </tr>
+    <tr>
+      <td>Representative</td>
+      <td>Act for another participant</td>
+      <td>Clear authority and limits on what they may submit or receive</td>
+    </tr>
+    <tr>
+      <td>Intake staff</td>
+      <td>Record the matter, check completeness, and direct it to the right team</td>
+      <td>Intake guidance and relevant case history</td>
+    </tr>
+    <tr>
+      <td>Case owner</td>
+      <td>Manage the case and coordinate the work</td>
+      <td>Current information, tasks, responsibility, and progress</td>
+    </tr>
+    <tr>
+      <td>Specialist or supporting team</td>
+      <td>Assess an issue or complete assigned work</td>
+      <td>A clear task and enough information to complete it</td>
+    </tr>
+    <tr>
+      <td>Decision-maker or reviewer</td>
+      <td>Make or review a decision</td>
+      <td>Evidence, decision criteria, and a record of the reasons</td>
+    </tr>
+    <tr>
+      <td>Supervisor or coordinator</td>
+      <td>Assign cases, manage workload, and resolve delays or escalations</td>
+      <td>Visibility into ownership, outstanding work, and outcomes</td>
+    </tr>
+    <tr>
+      <td>Records or oversight staff</td>
+      <td>Review the history and support records handling</td>
+      <td>Reliable records and appropriate access</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="process">Process</h2>
+
+<p>These stages describe common work. They do not prescribe case statuses or a fixed sequence. Teams may repeat stages or work on several tasks at once.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stage</th>
+      <th>Work</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1. Receive</td>
+      <td>Staff record a matter from an internal or external source</td>
+      <td>A record of the matter and its source</td>
+    </tr>
+    <tr>
+      <td>2. Review and route</td>
+      <td>Staff check responsibility, urgency, missing information, and related cases</td>
+      <td>A new case, an update to an existing case, a request for information, or a referral</td>
+    </tr>
+    <tr>
+      <td>3. Assign</td>
+      <td>A coordinator identifies an owner and supporting teams</td>
+      <td>Clear responsibility for the case and its tasks</td>
+    </tr>
+    <tr>
+      <td>4. Assess</td>
+      <td>Staff gather information, consult participants, and identify the work needed</td>
+      <td>An assessment and next steps</td>
+    </tr>
+    <tr>
+      <td>5. Decide and act</td>
+      <td>Authorized people make decisions and carry out the work</td>
+      <td>Recorded decisions, actions, and reasons</td>
+    </tr>
+    <tr>
+      <td>6. Communicate</td>
+      <td>Staff explain progress, outcomes, and outstanding work to relevant participants</td>
+      <td>Updates and recorded responses</td>
+    </tr>
+    <tr>
+      <td>7. Close</td>
+      <td>The owner checks completion and records the outcome</td>
+      <td>A closed case and any follow-up work</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Staff communicate throughout the process, and supervisors oversee ownership, outstanding work, and delays alongside every stage. Closing a case does not delete its history. Participants may disagree with an outcome or request further review.</p>
+
+<h3 id="variations">Variations</h3>
+
+<ul>
+  <li><strong>Missing information:</strong> Staff request what they need and record who must respond.</li>
+  <li><strong>Related matters:</strong> Staff link related cases or reports and preserve their histories.</li>
+  <li><strong>Referral:</strong> Staff direct the matter to another team or organization and record the reason.</li>
+  <li><strong>Reassignment:</strong> The current owner transfers the case with its information and outstanding work. The organization identifies who takes responsibility.</li>
+  <li><strong>Withdrawal or cancellation:</strong> Staff record why the work stopped and identify any remaining obligations.</li>
+  <li><strong>Review or reopening:</strong> A reviewer examines the outcome. Staff preserve earlier decisions and record new work in the same case or a linked case.</li>
+  <li><strong>Parallel work:</strong> Several teams complete different tasks within the case. The owner tracks the overall outcome.</li>
+</ul>
+
+<h2 id="process-model">Process model</h2>
+
+<p>The rest of this section breaks the stages into activities, the scenarios a design must handle, and template requirements. Its data lives in <a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/_data/use-cases/public-sector-case-management.yml"><code class="language-plaintext highlighter-rouge">_data/use-cases/public-sector-case-management.yml</code></a>, and tools can read every use case as JSON at <a href="/review/use-cases/index.json"><code class="language-plaintext highlighter-rouge">/use-cases/index.json</code></a>. Missions that run on case management, such as <a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>, specialize this process with their own activities and requirements.</p>
+
+<p>Capability names link to the <a href="/review/capabilities/catalog.html">Capability Catalog</a>, which follows <a href="/review/foundations/enterprise-capability-map.html">The Enterprise Capability Map</a>.</p>
+
+<div class="mission-model use-case-model">
+<h2 id="activities">Process in detail</h2>
+<p>Each phase lists the activities that usually happen in it, who does them, what they decide or wait on, and the shared capabilities they use. Activities marked <em>some cases</em> happen only in certain scenarios.</p>
+<h3 id="phase-receive">Receive</h3>
+<p>Staff record a matter from an internal or external source.</p>
+<table>
+<thead><tr><th>Activity</th><th>Who</th><th>Decides or waits on</th><th>Uses</th></tr></thead>
+<tbody>
+<tr id="activity-receive-matter"><td><strong>Receive the matter</strong><br />Record a report, request, or referral from any channel, with its source, channel, and time received. An external source may not have an account, and some matters arrive anonymously.</td><td>Intake staff<br /><em>With:</em> initiator, representative</td><td></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a>, <a href="/review/capabilities/catalog.html#capability-identity">Identity</a><br /><em>Produces:</em> interaction</td></tr>
+<tr id="activity-acknowledge-receipt"><td><strong>Acknowledge receipt</strong><br />Confirm receipt and explain what happens next, when the initiator can be contacted.</td><td>Intake staff<br /><em>With:</em> initiator</td><td></td><td><a href="/review/capabilities/catalog.html#capability-notification">Notification</a><br /><em>Produces:</em> interaction</td></tr>
+<tr id="activity-identify-participants"><td><strong>Identify the participants</strong><br />Record who is involved and in what role, matched to existing person and organization records where possible. Confirm that a representative has authority to act.</td><td>Intake staff</td><td>Does the representative have authority to act for this participant?</td><td><a href="/review/capabilities/catalog.html#capability-person-information">Person Information</a>, <a href="/review/capabilities/catalog.html#capability-organization-information">Organization Information</a><br /><em>Produces:</em> participant</td></tr>
+</tbody>
+</table>
+<h3 id="phase-review-route">Review and route</h3>
+<p>Staff check responsibility, urgency, missing information, and related cases.</p>
+<table>
+<thead><tr><th>Activity</th><th>Who</th><th>Decides or waits on</th><th>Uses</th></tr></thead>
+<tbody>
+<tr id="activity-check-related"><td><strong>Check for existing and related cases</strong><br />Search earlier matters, cases, and participants for the same or a related matter.</td><td>Intake staff</td><td>Is this a new matter, an update to an existing case, or related to one?</td><td><a href="/review/capabilities/catalog.html#capability-search">Search</a>, <a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a></td></tr>
+<tr id="activity-check-completeness"><td><strong>Check completeness and urgency</strong><br />Decide whether the information is enough to act on, and how urgent the matter is.</td><td>Intake staff</td><td>Is anything missing, and how urgent is it?</td><td></td></tr>
+<tr id="activity-request-information"><td><strong>Request missing information</strong> <span class="mission-tag">Some cases</span><br />Ask the initiator or another party for what is missing, and record who must respond and by when.</td><td>Intake staff<br /><em>With:</em> initiator, participant</td><td><em>Waits on:</em> The response to the request.</td><td><a href="/review/capabilities/catalog.html#capability-notification">Notification</a>, <a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a><br /><em>Produces:</em> task, interaction</td></tr>
+<tr id="activity-route-matter"><td><strong>Route the matter</strong><br />Open a case, add the matter to an existing case, refer it, or close it without action, and record the reason.</td><td>Intake staff</td><td>Open a case, update an existing one, refer it, or take no action?</td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a>, <a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a><br /><em>Produces:</em> case, decision</td></tr>
+<tr id="activity-refer-matter"><td><strong>Refer the matter</strong> <span class="mission-tag">Some cases</span><br />Send the matter to another team or organization, with the reason and what was shared.</td><td>Intake staff</td><td></td><td><a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a>, <a href="/review/capabilities/catalog.html#capability-notification">Notification</a><br /><em>Produces:</em> interaction, document</td></tr>
+</tbody>
+</table>
+<h3 id="phase-assign">Assign</h3>
+<p>A coordinator identifies an owner and supporting teams.</p>
+<table>
+<thead><tr><th>Activity</th><th>Who</th><th>Decides or waits on</th><th>Uses</th></tr></thead>
+<tbody>
+<tr id="activity-assign-owner"><td><strong>Assign an owner</strong><br />Give the case one accountable owner, considering workload and expertise.</td><td>Supervisor or coordinator</td><td>Who owns this case?</td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a>, <a href="/review/capabilities/catalog.html#capability-reporting">Reporting</a><br /><em>Produces:</em> assignment</td></tr>
+<tr id="activity-plan-work"><td><strong>Plan the work</strong><br />Identify the tasks, the supporting teams, and when each piece of work is due.</td><td>Case owner<br /><em>With:</em> specialist or supporting team</td><td></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a><br /><em>Produces:</em> task, assignment</td></tr>
+<tr id="activity-reassign-case"><td><strong>Transfer the case</strong> <span class="mission-tag">Some cases</span><br />Move the case to a new owner with its information and outstanding work, and record who takes responsibility.</td><td>Supervisor or coordinator<br /><em>With:</em> case owner</td><td></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a>, <a href="/review/capabilities/catalog.html#capability-notification">Notification</a><br /><em>Produces:</em> assignment</td></tr>
+</tbody>
+</table>
+<h3 id="phase-assess">Assess</h3>
+<p>Staff gather information, consult participants, and identify the work needed.</p>
+<table>
+<thead><tr><th>Activity</th><th>Who</th><th>Decides or waits on</th><th>Uses</th></tr></thead>
+<tbody>
+<tr id="activity-gather-information"><td><strong>Gather information</strong><br />Collect documents, records, and other information the case needs, from inside and outside the organization.</td><td>Case owner<br /><em>With:</em> participant</td><td><em>Waits on:</em> Information held by other teams or organizations.</td><td><a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a>, <a href="/review/capabilities/catalog.html#capability-search">Search</a>, <a href="/review/capabilities/catalog.html#capability-person-information">Person Information</a><br /><em>Produces:</em> document, interaction</td></tr>
+<tr id="activity-complete-task"><td><strong>Complete an assigned task</strong><br />A specialist or supporting team carries out a piece of work and records the result against the case.</td><td>Specialist or supporting team</td><td><em>Waits on:</em> The supporting team&#39;s capacity.</td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a><br /><em>Produces:</em> task, document</td></tr>
+<tr id="activity-consult-participants"><td><strong>Consult participants</strong><br />Meet with or contact participants to understand the matter, and record what they said.</td><td>Case owner<br /><em>With:</em> participant, representative</td><td><em>Waits on:</em> Participants&#39; availability.</td><td><a href="/review/capabilities/catalog.html#capability-scheduling">Scheduling</a>, <a href="/review/capabilities/catalog.html#capability-notification">Notification</a><br /><em>Produces:</em> interaction</td></tr>
+<tr id="activity-record-assessment"><td><strong>Record the assessment</strong><br />Summarize what is known, what remains, and the next steps.</td><td>Case owner</td><td>Is there enough to decide, or is more work needed?</td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a><br /><em>Produces:</em> document</td></tr>
+</tbody>
+</table>
+<h3 id="phase-decide-act">Decide and act</h3>
+<p>Authorized people make decisions and carry out the work.</p>
+<table>
+<thead><tr><th>Activity</th><th>Who</th><th>Decides or waits on</th><th>Uses</th></tr></thead>
+<tbody>
+<tr id="activity-prepare-recommendation"><td><strong>Prepare a recommendation</strong><br />Set out the options, the evidence, and the recommended outcome for the decision-maker.</td><td>Case owner</td><td></td><td><a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a><br /><em>Produces:</em> document</td></tr>
+<tr id="activity-make-decision"><td><strong>Make and record the decision</strong><br />An authorized person decides the outcome and records the reasons and the evidence relied on.</td><td>Decision-maker or reviewer</td><td>What is the outcome, and why?<br /><br /><em>Waits on:</em> The decision-maker&#39;s review.</td><td><a href="/review/capabilities/catalog.html#capability-approval">Approval</a>, <a href="/review/capabilities/catalog.html#capability-signature">Signature</a>, <a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a><br /><em>Produces:</em> decision</td></tr>
+<tr id="activity-carry-out-actions"><td><strong>Carry out the actions</strong><br />Complete the work the decision requires, and record each action.</td><td>Case owner<br /><em>With:</em> specialist or supporting team</td><td></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a><br /><em>Produces:</em> task</td></tr>
+</tbody>
+</table>
+<h3 id="phase-communicate">Communicate</h3>
+<p>Staff explain progress, outcomes, and outstanding work to relevant participants.</p>
+<table>
+<thead><tr><th>Activity</th><th>Who</th><th>Decides or waits on</th><th>Uses</th></tr></thead>
+<tbody>
+<tr id="activity-update-participants"><td><strong>Update participants</strong><br />Tell participants how the case is progressing and what is still needed from them, as far as they may know.</td><td>Case owner<br /><em>With:</em> initiator, participant, representative</td><td></td><td><a href="/review/capabilities/catalog.html#capability-notification">Notification</a><br /><em>Produces:</em> interaction</td></tr>
+<tr id="activity-communicate-outcome"><td><strong>Communicate the outcome</strong><br />Issue the outcome and its reasons to the people entitled to it, with any right to request a review.</td><td>Case owner<br /><em>With:</em> initiator, participant, representative</td><td></td><td><a href="/review/capabilities/catalog.html#capability-notification">Notification</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a>, <a href="/review/capabilities/catalog.html#capability-signature">Signature</a><br /><em>Produces:</em> interaction, document</td></tr>
+<tr id="activity-record-responses"><td><strong>Record responses</strong><br />Record replies, objections, and requests for review against the case.</td><td>Case owner</td><td></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a><br /><em>Produces:</em> interaction</td></tr>
+</tbody>
+</table>
+<h3 id="phase-close">Close</h3>
+<p>The owner checks completion and records the outcome.</p>
+<table>
+<thead><tr><th>Activity</th><th>Who</th><th>Decides or waits on</th><th>Uses</th></tr></thead>
+<tbody>
+<tr id="activity-check-completion"><td><strong>Check for outstanding work</strong><br />Confirm that tasks, actions, and communications are complete, or record what continues as follow-up.</td><td>Case owner</td><td>Is the case ready to close?</td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a></td></tr>
+<tr id="activity-close-case"><td><strong>Record the outcome and close</strong><br />Record the final outcome and close the case. Closing keeps the full history.</td><td>Case owner</td><td></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a><br /><em>Produces:</em> case</td></tr>
+<tr id="activity-withdraw-case"><td><strong>Withdraw or cancel</strong> <span class="mission-tag">Some cases</span><br />Stop the work, recording why and any obligations that remain.</td><td>Case owner</td><td></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a><br /><em>Produces:</em> decision</td></tr>
+<tr id="activity-review-outcome"><td><strong>Review an outcome</strong> <span class="mission-tag">Some cases</span><br />A reviewer examines an outcome after a participant disagrees or a review is required.</td><td>Decision-maker or reviewer<br /><em>With:</em> participant, representative</td><td>Uphold the outcome, change it, or reopen the work?</td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a><br /><em>Produces:</em> decision</td></tr>
+<tr id="activity-reopen-case"><td><strong>Reopen the work</strong> <span class="mission-tag">Some cases</span><br />Reopen the case or open a linked case, preserving the earlier decisions.</td><td>Case owner</td><td></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a><br /><em>Produces:</em> case</td></tr>
+<tr id="activity-manage-record"><td><strong>Manage the closed record</strong><br />Retain, restrict, transfer, or dispose of the case record according to its schedule.</td><td>Records or oversight staff</td><td></td><td><a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a></td></tr>
+</tbody>
+</table>
+<h3 id="phase-oversee">Oversee</h3>
+<p>Work that runs alongside every stage: watching ownership, outstanding work, and delays. This runs alongside every phase.</p>
+<table>
+<thead><tr><th>Activity</th><th>Who</th><th>Decides or waits on</th><th>Uses</th></tr></thead>
+<tbody>
+<tr id="activity-monitor-workload"><td><strong>Monitor workload and progress</strong><br />Watch who owns what, how old each case is, and what each case is waiting on.</td><td>Supervisor or coordinator</td><td></td><td><a href="/review/capabilities/catalog.html#capability-reporting">Reporting</a></td></tr>
+<tr id="activity-resolve-delay"><td><strong>Resolve a delay or escalation</strong><br />Step in when a case or task stalls, and record what was done.</td><td>Supervisor or coordinator<br /><em>With:</em> case owner</td><td>Escalate, reassign, add help, or wait?</td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a>, <a href="/review/capabilities/catalog.html#capability-notification">Notification</a><br /><em>Produces:</em> decision</td></tr>
+</tbody>
+</table>
+<h2 id="scenarios">Scenarios</h2>
+<p>Each scenario is a path through the process that a design must handle. Every scenario should show who owns the case, what work remains, and why people took each action.</p>
+<table>
+<thead><tr><th>Scenario</th><th>Path</th><th>What a design must show</th></tr></thead>
+<tbody>
+<tr id="scenario-internal-source"><td><strong>A matter raised inside the organization</strong><br />An employee or team raises an issue that needs attention.</td><td><a href="#activity-receive-matter">Receive the matter</a> → <a href="#activity-check-related">Check for existing and related cases</a> → <a href="#activity-route-matter">Route the matter</a> → <a href="#activity-assign-owner">Assign an owner</a> → <a href="#activity-plan-work">Plan the work</a> → <a href="#activity-gather-information">Gather information</a> → <a href="#activity-record-assessment">Record the assessment</a> → <a href="#activity-make-decision">Make and record the decision</a> → <a href="#activity-communicate-outcome">Communicate the outcome</a> → <a href="#activity-close-case">Record the outcome and close</a></td><td>An internal source doesn&#39;t grant access to every case, and the case records who raised it.</td></tr>
+<tr id="scenario-external-source"><td><strong>A matter from outside, without an account</strong><br />A member of the public submits a report through a public channel.</td><td><a href="#activity-receive-matter">Receive the matter</a> → <a href="#activity-acknowledge-receipt">Acknowledge receipt</a> → <a href="#activity-identify-participants">Identify the participants</a> → <a href="#activity-check-related">Check for existing and related cases</a> → <a href="#activity-check-completeness">Check completeness and urgency</a> → <a href="#activity-route-matter">Route the matter</a></td><td>The submitter gets a confirmation and knows what happens next, without needing an account.</td></tr>
+<tr id="scenario-missing-information"><td><strong>Information is missing</strong><br />The matter can&#39;t move until someone provides more information.</td><td><a href="#activity-check-completeness">Check completeness and urgency</a> → <a href="#activity-request-information">Request missing information</a> → <a href="#activity-check-completeness">Check completeness and urgency</a> → <a href="#activity-route-matter">Route the matter</a></td><td>The case shows who must respond, by when, and what happens if they don&#39;t.</td></tr>
+<tr id="scenario-related-matters"><td><strong>Related matters</strong><br />A new matter concerns the same issue, people, or organization as an existing case.</td><td><a href="#activity-receive-matter">Receive the matter</a> → <a href="#activity-check-related">Check for existing and related cases</a> → <a href="#activity-route-matter">Route the matter</a></td><td>Staff see the possible match before opening a new case, and linked cases keep their own histories.</td></tr>
+<tr id="scenario-referral"><td><strong>Referral</strong><br />The matter belongs to another team or organization.</td><td><a href="#activity-check-related">Check for existing and related cases</a> → <a href="#activity-route-matter">Route the matter</a> → <a href="#activity-refer-matter">Refer the matter</a> → <a href="#activity-close-case">Record the outcome and close</a></td><td>The record shows why the matter was referred, to whom, and what was shared.</td></tr>
+<tr id="scenario-reassignment"><td><strong>Reassignment</strong><br />The owner changes jobs, goes on leave, or the case needs different expertise.</td><td><a href="#activity-monitor-workload">Monitor workload and progress</a> → <a href="#activity-reassign-case">Transfer the case</a> → <a href="#activity-plan-work">Plan the work</a></td><td>Nothing is lost in the transfer: information, outstanding tasks, and deadlines move with the case, and someone is always responsible.</td></tr>
+<tr id="scenario-parallel-work"><td><strong>Parallel work</strong><br />Several teams complete different tasks within the same case.</td><td><a href="#activity-plan-work">Plan the work</a> → <a href="#activity-complete-task">Complete an assigned task</a> → <a href="#activity-complete-task">Complete an assigned task</a> → <a href="#activity-record-assessment">Record the assessment</a></td><td>The owner can see every open task and its status, and the case can&#39;t close while one is outstanding.</td></tr>
+<tr id="scenario-restricted-access"><td><strong>Different access rights</strong><br />Participants and staff may see different parts of the same case.</td><td><a href="#activity-gather-information">Gather information</a> → <a href="#activity-update-participants">Update participants</a> → <a href="#activity-communicate-outcome">Communicate the outcome</a></td><td>Each person sees only what they may see, and the record shows who viewed or received what.</td></tr>
+<tr id="scenario-withdrawal"><td><strong>Withdrawal or cancellation</strong><br />The initiator withdraws, or the work stops for another reason.</td><td><a href="#activity-withdraw-case">Withdraw or cancel</a> → <a href="#activity-update-participants">Update participants</a> → <a href="#activity-close-case">Record the outcome and close</a></td><td>The record shows why the work stopped and what obligations remain.</td></tr>
+<tr id="scenario-review-reopen"><td><strong>Review or reopening</strong><br />A participant disagrees with the outcome, or new information arrives after closure.</td><td><a href="#activity-record-responses">Record responses</a> → <a href="#activity-review-outcome">Review an outcome</a> → <a href="#activity-reopen-case">Reopen the work</a> → <a href="#activity-make-decision">Make and record the decision</a></td><td>Earlier decisions stay in the record, and the new work is in the same case or a linked one.</td></tr>
+</tbody>
+</table>
+<h2 id="requirements">Template requirements</h2>
+<p>Requirements that most case management solutions need, in vendor-neutral terms. Treat them as a starting point to confirm with the customer: keep what applies, change what differs, and add what the case type needs. Each one lists the activities it supports and the shared capabilities that could fulfill it.</p>
+<h3 id="requirements-receive">Receive</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Capabilities</th></tr></thead>
+<tbody>
+<tr id="requirement-receive-any-channel"><td><strong>Receive matters from every supported channel</strong><br />Record matters from every supported channel, internal or external, with the source, channel, and time received.</td><td>Functional</td><td><a href="#activity-receive-matter">Receive the matter</a><br /><em>Scenarios:</em> <a href="#scenario-internal-source">a matter raised inside the organization</a>, <a href="#scenario-external-source">a matter from outside, without an account</a></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a></td></tr>
+
+<tr id="requirement-submit-without-account"><td><strong>Accept submissions without an account</strong><br />Accept external submissions without an online account, and anonymously where the case type allows, while recording what is known about the submitter.</td><td>Functional</td><td><a href="#activity-receive-matter">Receive the matter</a><br /><em>Scenarios:</em> <a href="#scenario-external-source">a matter from outside, without an account</a></td><td><a href="/review/capabilities/catalog.html#capability-identity">Identity</a><br /><em>Policy:</em> identity, privacy</td></tr>
+
+<tr id="requirement-attach-documents"><td><strong>Accept supporting documents</strong><br />Accept documents and other files with a submission or later in the case, and keep them with the case.</td><td>Functional</td><td><a href="#activity-receive-matter">Receive the matter</a><br /><a href="#activity-gather-information">Gather information</a></td><td><a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a></td></tr>
+
+<tr id="requirement-acknowledge-receipt"><td><strong>Confirm receipt and explain next steps</strong><br />Send the initiator a confirmation with a reference and what happens next, when they can be contacted.</td><td>Functional</td><td><a href="#activity-acknowledge-receipt">Acknowledge receipt</a><br /><em>Scenarios:</em> <a href="#scenario-external-source">a matter from outside, without an account</a></td><td><a href="/review/capabilities/catalog.html#capability-notification">Notification</a></td></tr>
+
+<tr id="requirement-record-participants"><td><strong>Record participants and their roles</strong><br />Record each participant and their role in the case, matched to existing person and organization records where possible, including representatives and the authority they hold.</td><td>Functional</td><td><a href="#activity-identify-participants">Identify the participants</a></td><td><a href="/review/capabilities/catalog.html#capability-person-information">Person Information</a>, <a href="/review/capabilities/catalog.html#capability-organization-information">Organization Information</a></td></tr>
+
+</tbody>
+</table>
+<h3 id="requirements-review-route">Review and route</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Capabilities</th></tr></thead>
+<tbody>
+<tr id="requirement-find-related-cases"><td><strong>Find existing and related cases</strong><br />Search existing matters, cases, and participants when a matter arrives, and show possible matches before a new case is opened.</td><td>Functional</td><td><a href="#activity-check-related">Check for existing and related cases</a><br /><em>Scenarios:</em> <a href="#scenario-related-matters">related matters</a></td><td><a href="/review/capabilities/catalog.html#capability-search">Search</a></td></tr>
+
+<tr id="requirement-link-cases"><td><strong>Link related cases</strong><br />Link related matters and cases while each keeps its own history.</td><td>Functional</td><td><a href="#activity-check-related">Check for existing and related cases</a><br /><a href="#activity-route-matter">Route the matter</a><br /><a href="#activity-reopen-case">Reopen the work</a><br /><em>Scenarios:</em> <a href="#scenario-related-matters">related matters</a>, <a href="#scenario-review-reopen">review or reopening</a></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a></td></tr>
+
+<tr id="requirement-triage-criteria"><td><strong>Check completeness and urgency against criteria</strong><br />Check each matter against the case type&#39;s completeness and urgency criteria, and record its priority and anything missing.</td><td>Functional</td><td><a href="#activity-check-completeness">Check completeness and urgency</a><br /><em>Scenarios:</em> <a href="#scenario-missing-information">information is missing</a></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a>, <a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a></td></tr>
+
+<tr id="requirement-record-routing"><td><strong>Record each routing decision and its reason</strong><br />Record whether a matter opened a case, updated one, was referred, or needed no action, with the reason and who decided.</td><td>Functional</td><td><a href="#activity-route-matter">Route the matter</a></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a>, <a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a></td></tr>
+
+<tr id="requirement-track-information-requests"><td><strong>Track requests for information</strong><br />Send requests for missing information, record who must respond and by when, and remind or escalate when a response is overdue.</td><td>Functional</td><td><a href="#activity-request-information">Request missing information</a><br /><a href="#activity-gather-information">Gather information</a><br /><em>Scenarios:</em> <a href="#scenario-missing-information">information is missing</a></td><td><a href="/review/capabilities/catalog.html#capability-notification">Notification</a>, <a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a></td></tr>
+
+<tr id="requirement-record-referrals"><td><strong>Record referrals</strong><br />Refer a matter to another team or organization, recording the reason, the recipient, and what was shared.</td><td>Functional</td><td><a href="#activity-refer-matter">Refer the matter</a><br /><em>Scenarios:</em> <a href="#scenario-referral">referral</a></td><td><a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a>, <a href="/review/capabilities/catalog.html#capability-notification">Notification</a></td></tr>
+
+</tbody>
+</table>
+<h3 id="requirements-assign">Assign</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Capabilities</th></tr></thead>
+<tbody>
+<tr id="requirement-one-accountable-owner"><td><strong>Every open case has one accountable owner</strong><br />Give every open case one accountable owner at all times, and record each change of owner.</td><td>Functional</td><td><a href="#activity-assign-owner">Assign an owner</a><br /><a href="#activity-reassign-case">Transfer the case</a><br /><em>Scenarios:</em> <a href="#scenario-reassignment">reassignment</a></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a></td></tr>
+
+<tr id="requirement-assign-tasks"><td><strong>Assign tasks with due dates</strong><br />Assign tasks to people and teams with due dates, and show each task&#39;s status on the case.</td><td>Functional</td><td><a href="#activity-plan-work">Plan the work</a><br /><a href="#activity-complete-task">Complete an assigned task</a><br /><em>Scenarios:</em> <a href="#scenario-parallel-work">parallel work</a></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a></td></tr>
+
+<tr id="requirement-transfer-with-history"><td><strong>Transfer a case without losing work</strong><br />Transfer a case with its information, outstanding tasks, and deadlines, and notify the new owner.</td><td>Functional</td><td><a href="#activity-reassign-case">Transfer the case</a><br /><em>Scenarios:</em> <a href="#scenario-reassignment">reassignment</a></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a>, <a href="/review/capabilities/catalog.html#capability-notification">Notification</a></td></tr>
+
+</tbody>
+</table>
+<h3 id="requirements-assess">Assess</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Capabilities</th></tr></thead>
+<tbody>
+<tr id="requirement-case-record"><td><strong>Keep the case&#39;s information together</strong><br />Keep the case&#39;s documents, notes, interactions, tasks, and decisions in one record that authorized staff can review in order.</td><td>Functional</td><td><a href="#activity-gather-information">Gather information</a><br /><a href="#activity-consult-participants">Consult participants</a><br /><a href="#activity-record-assessment">Record the assessment</a></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a></td></tr>
+
+<tr id="requirement-schedule-meetings"><td><strong>Schedule meetings with participants</strong><br />Schedule interviews and meetings with participants, send reminders, and record what was discussed.</td><td>Functional</td><td><a href="#activity-consult-participants">Consult participants</a></td><td><a href="/review/capabilities/catalog.html#capability-scheduling">Scheduling</a>, <a href="/review/capabilities/catalog.html#capability-notification">Notification</a></td></tr>
+
+<tr id="requirement-record-task-results"><td><strong>Record task results against the case</strong><br />Record each task&#39;s result and supporting documents against the case it serves.</td><td>Functional</td><td><a href="#activity-complete-task">Complete an assigned task</a><br /><em>Scenarios:</em> <a href="#scenario-parallel-work">parallel work</a></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a></td></tr>
+
+</tbody>
+</table>
+<h3 id="requirements-decide-act">Decide and act</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Capabilities</th></tr></thead>
+<tbody>
+<tr id="requirement-record-decisions"><td><strong>Record each decision with its reasons</strong><br />Record each decision with its outcome, reasons, the evidence relied on, who made it, and when.</td><td>Functional</td><td><a href="#activity-make-decision">Make and record the decision</a><br /><a href="#activity-route-matter">Route the matter</a><br /><a href="#activity-review-outcome">Review an outcome</a></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a></td></tr>
+
+<tr id="requirement-route-for-approval"><td><strong>Route decisions to someone with authority</strong><br />Send decisions that need approval to a person with the authority to make them, and record the approval.</td><td>Functional</td><td><a href="#activity-make-decision">Make and record the decision</a></td><td><a href="/review/capabilities/catalog.html#capability-approval">Approval</a><br /><em>Policy:</em> authorization</td></tr>
+
+<tr id="requirement-people-decide"><td><strong>People make consequential decisions</strong><br />AI may organize information or draft a recommendation, but an authorized person makes and records each consequential decision.</td><td>Constraint</td><td><a href="#activity-prepare-recommendation">Prepare a recommendation</a><br /><a href="#activity-make-decision">Make and record the decision</a><br /><a href="#activity-review-outcome">Review an outcome</a></td><td><a href="/review/capabilities/catalog.html#capability-approval">Approval</a><br /><em>Policy:</em> ai policy, authorization</td></tr>
+
+<tr id="requirement-track-actions"><td><strong>Track the actions a decision requires</strong><br />Turn a decision&#39;s required actions into tasks with owners, and record when each is complete.</td><td>Functional</td><td><a href="#activity-carry-out-actions">Carry out the actions</a></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a></td></tr>
+
+</tbody>
+</table>
+<h3 id="requirements-communicate">Communicate</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Capabilities</th></tr></thead>
+<tbody>
+<tr id="requirement-update-participants"><td><strong>Keep participants informed</strong><br />Send participants progress updates through their preferred channel, limited to what each may know.</td><td>Functional</td><td><a href="#activity-update-participants">Update participants</a><br /><em>Scenarios:</em> <a href="#scenario-restricted-access">different access rights</a></td><td><a href="/review/capabilities/catalog.html#capability-notification">Notification</a></td></tr>
+
+<tr id="requirement-issue-outcome-notices"><td><strong>Issue outcome notices</strong><br />Issue the outcome and its reasons to those entitled to them, including any right to request a review, and keep the notice in the record.</td><td>Functional</td><td><a href="#activity-communicate-outcome">Communicate the outcome</a></td><td><a href="/review/capabilities/catalog.html#capability-notification">Notification</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a>, <a href="/review/capabilities/catalog.html#capability-signature">Signature</a></td></tr>
+
+<tr id="requirement-record-responses"><td><strong>Record responses and review requests</strong><br />Record replies, objections, and requests for review against the case.</td><td>Functional</td><td><a href="#activity-record-responses">Record responses</a><br /><em>Scenarios:</em> <a href="#scenario-review-reopen">review or reopening</a></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a></td></tr>
+
+</tbody>
+</table>
+<h3 id="requirements-close">Close</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Capabilities</th></tr></thead>
+<tbody>
+<tr id="requirement-check-before-closing"><td><strong>Check for outstanding work before closing</strong><br />Show open tasks, actions, and communications before a case closes, and record any that continue as follow-up.</td><td>Functional</td><td><a href="#activity-check-completion">Check for outstanding work</a><br /><a href="#activity-close-case">Record the outcome and close</a><br /><em>Scenarios:</em> <a href="#scenario-parallel-work">parallel work</a></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a></td></tr>
+
+<tr id="requirement-record-withdrawal"><td><strong>Record why work stopped</strong><br />When a case is withdrawn or cancelled, record why and any obligations that remain.</td><td>Functional</td><td><a href="#activity-withdraw-case">Withdraw or cancel</a><br /><em>Scenarios:</em> <a href="#scenario-withdrawal">withdrawal or cancellation</a></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a></td></tr>
+
+<tr id="requirement-review-and-reopen"><td><strong>Review and reopen without losing history</strong><br />Review an outcome and reopen the work, in the same case or a linked one, without changing earlier decisions.</td><td>Functional</td><td><a href="#activity-review-outcome">Review an outcome</a><br /><a href="#activity-reopen-case">Reopen the work</a><br /><em>Scenarios:</em> <a href="#scenario-review-reopen">review or reopening</a></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a></td></tr>
+
+<tr id="requirement-retain-records"><td><strong>Retain and dispose of records by schedule</strong><br />Apply a records schedule to each case, keep the record after closure, and dispose of it or transfer it only as the schedule allows.</td><td>Constraint</td><td><a href="#activity-manage-record">Manage the closed record</a><br /><a href="#activity-close-case">Record the outcome and close</a></td><td><a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a><br /><em>Policy:</em> records</td></tr>
+
+</tbody>
+</table>
+<h3 id="requirements-oversee">Oversee</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Capabilities</th></tr></thead>
+<tbody>
+<tr id="requirement-workload-visibility"><td><strong>Show ownership, outstanding work, and case age</strong><br />Show supervisors who owns each case, how old it is, what it&#39;s waiting on, and each person&#39;s workload.</td><td>Functional</td><td><a href="#activity-monitor-workload">Monitor workload and progress</a><br /><a href="#activity-assign-owner">Assign an owner</a></td><td><a href="/review/capabilities/catalog.html#capability-reporting">Reporting</a></td></tr>
+
+<tr id="requirement-flag-stalled-work"><td><strong>Flag stalled and overdue work</strong><br />Flag cases and tasks that are overdue or haven&#39;t moved within an expected time, and notify the owner and supervisor.</td><td>Functional</td><td><a href="#activity-monitor-workload">Monitor workload and progress</a><br /><a href="#activity-resolve-delay">Resolve a delay or escalation</a></td><td><a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a>, <a href="/review/capabilities/catalog.html#capability-notification">Notification</a></td></tr>
+
+</tbody>
+</table>
+<h3 id="requirements-across">Across the process</h3>
+<table>
+<thead><tr><th>Requirement</th><th>Type</th><th>Supports</th><th>Capabilities</th></tr></thead>
+<tbody>
+<tr id="requirement-case-type-rules"><td><strong>Let each case type add its own steps and rules</strong><br />Let each case type define its own steps, information, deadlines, access rules, and completion criteria on the shared case model.</td><td>Functional</td><td></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a>, <a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a></td></tr>
+
+<tr id="requirement-case-access-control"><td><strong>Control who may see and act on each case</strong><br />Control who may open, view, contribute to, act on, or review each case and each part of it, based on role, case type, and involvement.</td><td>Quality</td><td><em>Scenarios:</em> <a href="#scenario-restricted-access">different access rights</a>, <a href="#scenario-internal-source">a matter raised inside the organization</a></td><td><a href="/review/capabilities/catalog.html#capability-identity">Identity</a><br /><em>Policy:</em> authorization, privacy</td></tr>
+
+<tr id="requirement-audit-trail"><td><strong>Record who did what, when, and why</strong><br />Record every view, change, decision, and disclosure with the person or system that made it, when, and why.</td><td>Quality</td><td></td><td><a href="/review/capabilities/catalog.html#capability-case-management">Case Management</a><br /><em>Policy:</em> audit</td></tr>
+
+<tr id="requirement-protect-personal-information"><td><strong>Protect personal information</strong><br />Collect, use, and disclose personal information only as the case type allows, and limit each view to what the viewer may see.</td><td>Constraint</td><td><em>Scenarios:</em> <a href="#scenario-restricted-access">different access rights</a></td><td><a href="/review/capabilities/catalog.html#capability-person-information">Person Information</a><br /><em>Policy:</em> privacy</td></tr>
+
+<tr id="requirement-accessible-experiences"><td><strong>Accessible experiences for staff and the public</strong><br />Make every staff and public experience accessible, including forms, notices, and documents.</td><td>Constraint</td><td></td><td><em>Policy:</em> accessibility</td></tr>
+
+</tbody>
+</table>
+</div>
+
+<h2 id="constraints-and-open-questions">Constraints and open questions</h2>
+
+<h3 id="core-requirements">Core requirements</h3>
+
+<p>The organization needs clear ownership and authority to act. An internal source does not automatically grant access to every case. An external source does not always require an online account. Staff must support the channels and access rules that apply to the work.</p>
+
+<p>Each case type defines its privacy, accessibility, records, deadlines, and review requirements. The core model must support those requirements without imposing one set of rules on every case.</p>
+
+<p>AI tools may help staff organize information or draft updates. People remain responsible for consequential decisions in this draft. Any delegated action needs a defined scope, authority, and record of what happened.</p>
+
+<h3 id="questions-for-the-supporting-architecture">Questions for the supporting architecture</h3>
+
+<ol>
+  <li>What information must a case hold, regardless of its source or type?</li>
+  <li>What distinguishes a case from a message, task, or related matter?</li>
+  <li>How does the organization establish ownership and transfer responsibility?</li>
+  <li>Who may open, view, contribute to, act on, or review a case?</li>
+  <li>How does the case record decisions, actions, changes, and outcomes?</li>
+  <li>How do case types add their own process steps and rules?</li>
+  <li>How does the organization manage the record after closure?</li>
+</ol>
+
+<h3 id="scenarios-to-check">Scenarios to check</h3>
+
+<p>The blueprint should support cases from both internal and external sources. It should also support missing information, reassignment, related cases, different access rights, parallel tasks, and review of an outcome. Each scenario should show who owns the case, what work remains, and why people took each action.</p>
+
+<h2 id="related-architecture">Related architecture</h2>
+
+<p>The supporting blueprint and reusable definitions remain to be written. Concepts to explore include Case, Participant, Interaction, Task, Document, Assignment, and Decision.</p>
+
+<p>The <a href="/review/blueprints/">Blueprints</a> section will describe the logical design. <a href="/review/implementations/">Implementations</a> will describe product choices and technology mappings.</p>
+
+<p>This draft follows <a href="/review/charter/project-charter-v0.5.html">Charter v0.5</a>. Return to the <a href="/review/use-cases/">Use Cases index</a>.</p>
+</article><p class="draft-note">This article is a working draft. Its ideas and definitions may change as the architecture develops.</p><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/use-cases/public-sector-case-management.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/review/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

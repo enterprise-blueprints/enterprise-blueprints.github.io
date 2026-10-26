@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Capability Catalog · Enterprise Blueprints</title>
+  <meta name="description" content="A starter catalog of business and shared enterprise capabilities: what each is responsible for, its operations, and where the library uses it.">
+  <link rel="icon" href="/review/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/review/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/review/assets/css/site.css">
+  <script src="/review/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/review/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/review/foundations/">Explore</a><a href="/review/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/capabilities/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/review/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/review/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/review/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/review/missions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#missions"></use></svg>
+<span>Missions</span></a></li>
+    
+    <li><a class="nav-link" href="/review/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link is-current" href="/review/capabilities/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/review/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/review/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/review/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/review/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/review/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link" href="/review/about/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/review/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/review/capabilities/">Capabilities</a><span class="status status-draft">Draft</span></div><article class="prose"><h1 id="capability-catalog">Capability Catalog</h1>
+
+<h2 id="overview">Overview</h2>
+
+<p><a href="/review/foundations/enterprise-capability-map.html">The Enterprise Capability Map</a> describes business capabilities that consume and compose shared enterprise capabilities. This catalog gives those capabilities a first, concrete form.</p>
+
+<p>Each entry states the capability’s responsibility and boundaries, its operations at a logical level, the entities it acts on, and the policy areas that govern it. It also lists the signs that a capability is missing or duplicated, and questions to ask before building a new one. Those support the habit of searching before building.</p>
+
+<p>Use cases and missions refer to these capabilities by ID. Activities name the capabilities they use, requirements name the capabilities that could fulfill them, and typical systems name the capabilities they provide today. Each entry shows where the library uses it.</p>
+
+<h2 id="how-to-read-this-catalog">How to read this catalog</h2>
+
+<p>Operations use names such as <code class="language-plaintext highlighter-rouge">Notification.send</code> to describe a responsibility, not an interface. An implementation may provide one through an API, an event, a workflow, or an agent tool. Inputs, outputs, failure behavior, and service levels belong in fuller capability contracts, which later artifacts will develop.</p>
+
+<p>The catalog is a starting point, not a complete inventory, and it doesn’t imply one central platform. An organization may share a capability across its programs, run separate implementations that agree on a contract, or keep a specialized capability where its work requires one.</p>
+
+<p>Case Management appears as a business capability, as it does in the capability map. Reporting appears among the shared capability examples to support oversight and statistics.</p>
+
+<p>The data lives in <a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/tree/main/_data/capabilities"><code class="language-plaintext highlighter-rouge">_data/capabilities/</code></a>, one file per capability. Tools can read the whole catalog as JSON at <a href="/review/capabilities/index.json"><code class="language-plaintext highlighter-rouge">/capabilities/index.json</code></a>. The rest of this page is generated from that data.</p>
+
+<div class="mission-model capability-catalog">
+<h2 id="business">Business capabilities</h2>
+<p>What the enterprise does. Programs own the rules of their work</p>
+<h3 id="capability-case-management">Case Management</h3>
+<p>Keep a matter&#39;s people, information, tasks, decisions, and history together from receipt to closure, with one accountable owner at a time.</p>
+<p><em>Boundaries:</em> Each program defines its own case types, rules, and completion criteria; Case Management gives them a common model to build on. It links to documents, people, and tasks held by other capabilities rather than owning them.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Case.create</code></td><td>Open a case from a matter, with its source and case type.</td><td>source, matter details, case type</td><td>case ID</td></tr>
+<tr><td><code>Case.get</code></td><td>Return the view of a case that the requester may see.</td><td>case ID, purpose</td><td>authorized case view</td></tr>
+<tr><td><code>Case.assign</code></td><td>Give the case an accountable owner, and record the change.</td><td>case ID, owner</td><td>assignment</td></tr>
+<tr><td><code>Case.link</code></td><td>Link related cases while each keeps its own history.</td><td>case IDs, relationship</td><td>link</td></tr>
+<tr><td><code>Case.recordDecision</code></td><td>Record a decision with its reasons, evidence, and decision-maker.</td><td>case ID, decision, reasons, evidence</td><td>decision ID</td></tr>
+<tr><td><code>Case.close</code></td><td>Record the outcome and close the case, keeping its history.</td><td>case ID, outcome</td><td>closed case</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> case, participant, interaction, task, assignment, decision<br /><em>Policy:</em> authorization, privacy, audit, records<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-person-information">Person Information</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a>, <a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a>, <a href="/review/capabilities/catalog.html#capability-search">Search</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Each program keeps its own case tracker or spreadsheet. Staff re-key the same matter into more than one system. Nobody can say who owns a case after it changes hands.</p>
+<p><em>Questions to ask:</em> Which systems hold cases, or records that work like cases, today? Do different teams mean different things by a case?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 10 activities, 11 template requirements</li><li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>: 4 mission requirements; typically provided today by Legacy case management system</li></ul>
+<h2 id=" a business capability gives them a common model to build on."></h2>
+<p></p>
+<h2 id="shared">Shared enterprise capabilities</h2>
+<p>Reusable actions that experiences, workflows, and agents use through a clear contract.</p>
+<h3 id="capability-address-validation">Address Validation</h3>
+<p>Check that an address exists and is deliverable, and return it in a standard form.</p>
+<p><em>Boundaries:</em> It assesses addresses; it doesn&#39;t decide which address is a person&#39;s or organization&#39;s address of record.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Address.validate</code></td><td>Check and standardize an address.</td><td>address</td><td>standardized address, validation result</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> address<br /><em>Policy:</em> data governance</p>
+<p><em>Signs it’s missing or duplicated:</em> Notices come back undeliverable. Each form validates addresses differently, or not at all.</p>
+<p><em>Questions to ask:</em> How often are notices returned as undeliverable?</p>
+<h3 id="capability-approval">Approval</h3>
+<p>Route a decision to a person with the authority to make it, and record the decision, the reasons, and who made it.</p>
+<p><em>Boundaries:</em> The business program establishes who has authority for each decision; Approval enforces and records it. An agent may prepare a recommendation, but a consequential decision needs an authorized person.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Approval.request</code></td><td>Ask for a decision from someone with the authority to make it.</td><td>subject, decision needed, criteria, supporting evidence</td><td>request ID</td></tr>
+<tr><td><code>Approval.decide</code></td><td>Record an approver&#39;s decision and reasons.</td><td>request ID, outcome, reasons</td><td>decision ID</td></tr>
+<tr><td><code>Approval.getStatus</code></td><td>Report where a request stands and who it is waiting on.</td><td>request ID</td><td>status</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> decision<br /><em>Policy:</em> authorization, audit, ai policy<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-workflow">Workflow</a>, <a href="/review/capabilities/catalog.html#capability-identity">Identity</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Approvals happen by email reply. The same decision goes up two or three levels. Nobody can show who approved something, or when.</p>
+<p><em>Questions to ask:</em> Which decisions need approval, and who may give it? Where do requests most often wait for a decision?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 1 activity, 2 template requirements</li></ul>
+<h3 id="capability-document-management">Document Management</h3>
+<p>Store, classify, version, and retrieve documents and files, and apply the records rules that govern them.</p>
+<p><em>Boundaries:</em> It knows how a document is classified, secured, retained, and retrieved. The consuming process decides which documents belong to its work and which one is the official version.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Document.store</code></td><td>Store a document with its classification and the record it belongs to.</td><td>file, classification, related record</td><td>document ID</td></tr>
+<tr><td><code>Document.get</code></td><td>Return a document the requester may see, and record the retrieval.</td><td>document ID, purpose</td><td>document</td></tr>
+<tr><td><code>Document.classify</code></td><td>Set or change a document&#39;s classification and access restrictions.</td><td>document ID, classification</td><td>classification</td></tr>
+<tr><td><code>Document.applyRetention</code></td><td>Apply a records schedule, and hold, transfer, or dispose of the document as it allows.</td><td>document ID, records schedule</td><td>retention status</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> document<br /><em>Policy:</em> records, privacy, security, audit, accessibility<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-identity">Identity</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Case files live on shared drives and personal laptops. Nobody is sure which copy of a document is the official one. Retention is applied by hand, or not at all.</p>
+<p><em>Questions to ask:</em> Where do documents for this work live today, and who can change them? Which records schedules apply, and who applies them?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 9 activities, 6 template requirements</li><li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>: 5 mission requirements; typically provided today by Evidence logs and file shares, Document and records management</li></ul>
+<h3 id="capability-identity">Identity</h3>
+<p>Establish who or what is acting, whether staff, a member of the public, a partner, or an agent, and with what level of assurance.</p>
+<p><em>Boundaries:</em> Identity says who is acting. What they may do is an authorization decision, made under enterprise policy using that identity.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Identity.authenticate</code></td><td>Sign a person, system, or agent in.</td><td>credentials</td><td>authenticated identity, assurance level</td></tr>
+<tr><td><code>Identity.verify</code></td><td>Check evidence that a person is who they claim to be.</td><td>person details, evidence</td><td>verification result, assurance level</td></tr>
+<tr><td><code>Identity.getAttributes</code></td><td>Return the attributes of an identity that a consumer may use, such as role and organization.</td><td>identity, purpose</td><td>attributes</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> person, organization<br /><em>Policy:</em> identity, security, privacy, audit</p>
+<p><em>Signs it’s missing or duplicated:</em> Applications keep their own user accounts and passwords. External partners share accounts, or can&#39;t get one. Accounts stay active after people change jobs.</p>
+<p><em>Questions to ask:</em> How do staff, the public, and partners sign in today, and to how many systems? Which actions need a higher level of identity assurance?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 1 activity, 2 template requirements</li><li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>: 3 mission requirements; typically provided today by Identity provider (PIV and single sign-on)</li></ul>
+<h3 id="capability-notification">Notification</h3>
+<p>Deliver approved messages to people through their preferred channels, and report whether each one was delivered.</p>
+<p><em>Boundaries:</em> The consuming process decides what to say and to whom; Notification delivers it. The process keeps the message in its own record when the message is part of that record.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Notification.send</code></td><td>Send an approved message to a recipient.</td><td>recipient, approved message, delivery preference</td><td>delivery ID</td></tr>
+<tr><td><code>Notification.getStatus</code></td><td>Report whether a message was delivered, opened, or failed.</td><td>delivery ID</td><td>delivery status</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> person, organization, interaction<br /><em>Policy:</em> privacy, records, accessibility<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-person-information">Person Information</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Several systems each send their own email. Nobody can say whether a notice was delivered. People can&#39;t choose how they&#39;re contacted.</p>
+<p><em>Questions to ask:</em> Which systems send messages to staff, the public, or partners today? Do any notices have legal or records requirements?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 8 activities, 8 template requirements</li><li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>: 2 mission requirements; typically provided today by Email and calendar</li></ul>
+<h3 id="capability-organization-information">Organization Information</h3>
+<p>Provide an authorized view of an organization, such as a company, vendor, grantee, or agency, from the authoritative records, and match new information to it.</p>
+<p><em>Boundaries:</em> It reads and matches; it changes an authoritative record only where its owner has agreed. Registration and vendor management processes own their own records.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Organization.lookup</code></td><td>Find organizations that match identifying details.</td><td>identifying details</td><td>candidate matches</td></tr>
+<tr><td><code>Organization.get</code></td><td>Return the view of an organization that the requester may see.</td><td>organization ID, purpose</td><td>authorized organization view</td></tr>
+<tr><td><code>Organization.match</code></td><td>Say whether new details belong to an existing organization.</td><td>organization details</td><td>match, confidence</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> organization, address<br /><em>Policy:</em> authorization, audit, data governance</p>
+<p><em>Signs it’s missing or duplicated:</em> Vendors and grantees are recorded separately in each program. Nobody can list every case involving the same company.</p>
+<p><em>Questions to ask:</em> Which system is authoritative for vendors, grantees, and other organizations?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 1 activity, 1 template requirement</li></ul>
+<h3 id="capability-payment">Payment</h3>
+<p>Take and make payments, and report their status, under the enterprise&#39;s financial controls.</p>
+<p><em>Boundaries:</em> The financial system of record keeps the ledger. Programs decide what is owed or payable; Payment carries it out and reports back.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Payment.request</code></td><td>Request a payment to or from a person or organization.</td><td>payer or payee, amount, purpose, approval</td><td>payment ID</td></tr>
+<tr><td><code>Payment.getStatus</code></td><td>Report whether a payment is pending, made, or failed.</td><td>payment ID</td><td>payment status</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> payment, person, organization<br /><em>Policy:</em> authorization, audit, security, records<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-approval">Approval</a>, <a href="/review/capabilities/catalog.html#capability-identity">Identity</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Staff check payment status in a separate financial system. Several programs integrate with the financial system in different ways.</p>
+<p><em>Questions to ask:</em> Does this work take or make payments, and through which systems?</p>
+<h3 id="capability-person-information">Person Information</h3>
+<p>Provide an authorized view of a person from the authoritative records, and match new information to a person the enterprise already knows.</p>
+<p><em>Boundaries:</em> It reads and matches; it changes an authoritative record only where its owner has agreed. Each program still decides what it needs to know about a person and why.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Person.lookup</code></td><td>Find people who match identifying details.</td><td>identifying details, purpose</td><td>candidate matches</td></tr>
+<tr><td><code>Person.get</code></td><td>Return the view of a person that the requester may see for a stated purpose.</td><td>person ID, purpose</td><td>authorized person view</td></tr>
+<tr><td><code>Person.match</code></td><td>Say whether new details belong to an existing person, and how confident the match is.</td><td>person details</td><td>match, confidence</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> person, address<br /><em>Policy:</em> privacy, authorization, audit, data governance</p>
+<p><em>Signs it’s missing or duplicated:</em> The same person has different identifiers in different systems. Staff search several systems to find someone&#39;s current details.</p>
+<p><em>Questions to ask:</em> Which system is authoritative for each kind of person: employees, members of the public, partners? How do you tell whether two records describe the same person?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 2 activities, 2 template requirements</li><li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>: 1 mission requirement; typically provided today by Agency HR and personnel system</li></ul>
+<h3 id="capability-reporting">Reporting</h3>
+<p>Provide measures and views of the work from authoritative data, such as workload, age, status, and results, with consistent definitions.</p>
+<p><em>Boundaries:</em> It reports from the systems of record and doesn&#39;t become another source of truth. Each measure has an owner and an agreed definition.<br /><em>Note:</em> Not among the capability map&#39;s examples. Added because oversight and statistics need it in almost every program.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Report.get</code></td><td>Return a measure or view, filtered to what the requester may see.</td><td>measure, filters</td><td>results</td></tr>
+<tr><td><code>Report.schedule</code></td><td>Produce a report on a schedule and deliver it.</td><td>measure, filters, schedule, recipients</td><td>schedule ID</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> case, task, assignment, decision<br /><em>Policy:</em> authorization, privacy, data governance<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-identity">Identity</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Statistics are reconciled by hand in spreadsheets. Each office counts the same thing differently. Supervisors can&#39;t see workload without asking.</p>
+<p><em>Questions to ask:</em> How long does it take to answer a question like “how many cases did we close last year?” Who defines each measure, and who checks it?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 2 activities, 1 template requirement</li><li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>: 2 mission requirements; typically provided today by Legacy case management system, Statistics spreadsheets</li></ul>
+<h3 id="capability-scheduling">Scheduling</h3>
+<p>Find availability and book, change, and cancel appointments between staff, the public, and partners.</p>
+<p><em>Boundaries:</em> It manages time and attendance; the consuming process records what an appointment was for and what happened in it.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Schedule.findAvailability</code></td><td>Find times when the required people and resources are free.</td><td>participants, duration, time window</td><td>available times</td></tr>
+<tr><td><code>Schedule.book</code></td><td>Book an appointment and invite the participants.</td><td>participants, time, purpose, location or channel</td><td>appointment ID</td></tr>
+<tr><td><code>Schedule.change</code></td><td>Move or cancel an appointment and tell the participants.</td><td>appointment ID, change</td><td>updated appointment</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> appointment, person<br /><em>Policy:</em> privacy, accessibility<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-notification">Notification</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Interviews and appointments are arranged over several emails. Missed appointments aren&#39;t recorded anywhere.</p>
+<p><em>Questions to ask:</em> How are interviews and appointments arranged today?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 1 activity, 1 template requirement</li><li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>: typically provided today by Email and calendar</li></ul>
+<h3 id="capability-search">Search</h3>
+<p>Find records, documents, people, and organizations across the enterprise, limited to what the requester may see.</p>
+<p><em>Boundaries:</em> It finds and points to information; the systems of record stay authoritative. Results respect each record&#39;s access rules.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Search.query</code></td><td>Search within a scope, returning only results the requester may see.</td><td>terms, scope</td><td>results</td></tr>
+<tr><td><code>Search.findRelated</code></td><td>Suggest records that may be related to a given one.</td><td>record</td><td>possible matches</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> case, person, organization, document<br /><em>Policy:</em> authorization, privacy, audit<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-identity">Identity</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Staff ask colleagues whether a related case exists. Searching means opening several systems one by one.</p>
+<p><em>Questions to ask:</em> Before starting work, how do staff check what the organization already knows? How far back, and across which systems, can they search?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 2 activities, 1 template requirement</li><li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>: 1 mission requirement; typically provided today by Legacy case management system</li></ul>
+<h3 id="capability-signature">Signature</h3>
+<p>Collect signatures on documents and decisions, and let anyone with access verify them later.</p>
+<p><em>Boundaries:</em> It records who signed and protects the signed document from change. Whether a signature is legally sufficient for a given purpose is a policy question.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Signature.request</code></td><td>Ask one or more people to sign a document.</td><td>document ID, signers, order</td><td>signature request ID</td></tr>
+<tr><td><code>Signature.verify</code></td><td>Confirm who signed a document and that it hasn&#39;t changed since.</td><td>document ID</td><td>verification result</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> document, decision<br /><em>Policy:</em> identity, records, audit<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-identity">Identity</a>, <a href="/review/capabilities/catalog.html#capability-document-management">Document Management</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Documents are printed, signed, and scanned. Signed versions are hard to tell apart from drafts.</p>
+<p><em>Questions to ask:</em> Which documents need a signature, and of what kind?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 2 activities, 1 template requirement</li></ul>
+<h3 id="capability-workflow">Workflow</h3>
+<p>Coordinate tasks across people and systems: who does what, by when, and what happens when it&#39;s late.</p>
+<p><em>Boundaries:</em> It moves work and tracks it. Who has authority to decide belongs to Approval and enterprise policy, and the rules of each process belong to the program that owns it.</p>
+<table>
+<thead><tr><th>Operation</th><th>What it does</th><th>Accepts</th><th>Returns</th></tr></thead>
+<tbody>
+<tr><td><code>Task.create</code></td><td>Create a task with an assignee and a due date.</td><td>work, assignee, due date, related record</td><td>task ID</td></tr>
+<tr><td><code>Task.assign</code></td><td>Assign or reassign a task, keeping its history.</td><td>task ID, assignee</td><td>assignment</td></tr>
+<tr><td><code>Task.complete</code></td><td>Record a task&#39;s result.</td><td>task ID, result</td><td>completed task</td></tr>
+<tr><td><code>Task.escalate</code></td><td>Raise an overdue or stalled task to the right person.</td><td>task ID, reason</td><td>escalation</td></tr>
+</tbody>
+</table>
+<p><em>Acts on:</em> task, assignment<br /><em>Policy:</em> authorization, audit<br /><em>Depends on:</em> <a href="/review/capabilities/catalog.html#capability-notification">Notification</a>, <a href="/review/capabilities/catalog.html#capability-identity">Identity</a></p>
+<p><em>Signs it’s missing or duplicated:</em> Work is tracked in email, personal lists, and spreadsheets. Overdue work turns up in meetings instead of being flagged. Each application has its own task list.</p>
+<p><em>Questions to ask:</em> How does someone know what they need to do today, and what is overdue? What happens when a task waits on someone outside the team?</p>
+<p><em>Used in the library:</em></p>
+<ul><li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a>: 9 activities, 11 template requirements</li><li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a>: 5 mission requirements; typically provided today by Legacy case management system</li></ul>
+</div>
+
+<h2 id="related-architecture">Related architecture</h2>
+
+<ul>
+  <li><a href="/review/foundations/enterprise-capability-map.html">The Enterprise Capability Map</a> groups business and shared capabilities within the Enterprise Capabilities layer and connects them to enterprise entities and state.</li>
+  <li><a href="/review/reference-architecture/ai-native-enterprise.html">AI-Native Enterprise Reference Architecture</a> places those capabilities within the full four-layer model and its cross-cutting controls.</li>
+  <li><a href="/review/use-cases/public-sector-case-management.html">Public Sector Case Management</a> shows which capabilities each case management activity uses.</li>
+  <li><a href="/review/missions/inspector-general-investigations.html">Inspector General Investigations</a> shows which capabilities typical systems provide today.</li>
+</ul>
+</article><p class="draft-note">This article is a working draft. Its ideas and definitions may change as the architecture develops.</p><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/capabilities/catalog.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/review/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>

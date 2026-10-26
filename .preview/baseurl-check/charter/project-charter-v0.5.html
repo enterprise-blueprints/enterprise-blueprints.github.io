@@ -1,0 +1,1266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Charter v0.5 · Enterprise Blueprints</title>
+  <meta name="description" content="Open architecture for the AI-native enterprise">
+  <link rel="icon" href="/preview/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/preview/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/preview/assets/css/site.css">
+  <script src="/preview/assets/js/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/preview/"><span class="brand-mark" aria-hidden="true">EB</span><span>Enterprise<br><strong>Blueprints</strong></span></a>
+    <p class="header-tagline">Open architecture for the AI-native enterprise</p>
+    <nav class="header-links" aria-label="Primary"><a href="/preview/foundations/">Explore</a><a href="/preview/about/">About</a><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io">GitHub <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <details class="mobile-navigation"><summary>Browse the library</summary><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/preview/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link is-current" href="/preview/about/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</details>
+  <div class="library-shell article-shell"><aside class="library-nav"><nav aria-label="Knowledge library">
+  <p class="nav-label">Knowledge library</p>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="/preview/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#home"></use></svg>
+<span>Home</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/foundations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#foundations"></use></svg>
+<span>Foundations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/reference-architecture/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#reference-architecture"></use></svg>
+<span>Reference Architecture</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/use-cases/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#use-cases"></use></svg>
+<span>Use Cases</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/entities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#entities"></use></svg>
+<span>Entities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/capabilities/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#capabilities"></use></svg>
+<span>Capabilities</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/patterns/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#patterns"></use></svg>
+<span>Patterns</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/policies/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#policies"></use></svg>
+<span>Policies</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/blueprints/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#blueprints"></use></svg>
+<span>Blueprints</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/implementations/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#implementations"></use></svg>
+<span>Implementations</span></a></li>
+    
+    <li><a class="nav-link" href="/preview/decisions/"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#decisions"></use></svg>
+<span>Architecture Decisions</span></a></li>
+    
+    <li class="nav-about"><a class="nav-link is-current" href="/preview/about/" aria-current="location"><svg class="section-icon" width="24" height="24" aria-hidden="true" focusable="false"><use href="/preview/assets/brand/icons.svg#about"></use></svg>
+<span>About the initiative</span></a></li>
+  </ul>
+</nav>
+</aside><main id="main-content" class="article-main"><div class="article-meta"><a href="/preview/about/">About</a></div><article class="prose"><h1 id="enterprise-blueprints">Enterprise Blueprints</h1>
+<h2 id="project-charter-v05">Project Charter v0.5</h2>
+
+<p><strong>Tagline:</strong> Open architecture for the AI-native enterprise<br />
+<strong>Scope:</strong> Public sector first. Applicable across the enterprise.<br />
+<strong>Core thesis:</strong> Build Experiences. Share Capabilities.</p>
+
+<hr />
+
+<h2 id="1-purpose">1. Purpose</h2>
+
+<p><strong>Enterprise Blueprints</strong> is an open architecture initiative for designing organizations and systems for an era in which humans and AI agents can create applications, automate work, and compose software capabilities on demand.</p>
+
+<p>Its primary focus is not how to generate applications faster.</p>
+
+<p>Its focus is the enterprise architecture required to make dynamically generated software safe, coherent, reusable, governable, interoperable, and sustainable.</p>
+
+<p>The initiative is organized around a central question:</p>
+
+<blockquote>
+  <p><strong>Which enterprise capabilities, entities, policies, and architectural constraints should every AI-created application inherit rather than recreate?</strong></p>
+</blockquote>
+
+<p>Enterprise Blueprints develops practical, vendor-neutral architecture for the AI-native enterprise, using public-sector use cases as its primary proving ground.</p>
+
+<hr />
+
+<h2 id="2-mission">2. Mission</h2>
+
+<p>Enterprise Blueprints exists to help architects, technologists, leaders, and builders understand and implement the architectural foundations required for AI-native organizations.</p>
+
+<p>The initiative will:</p>
+
+<ul>
+  <li>develop vendor-neutral logical architecture;</li>
+  <li>define reusable enterprise entities, capabilities, policies, and patterns;</li>
+  <li>apply those concepts to real public-sector use cases;</li>
+  <li>create reusable reference architectures and blueprints;</li>
+  <li>map logical architecture to multiple implementation technologies;</li>
+  <li>build practical reference implementations;</li>
+  <li>document architectural tradeoffs and decisions;</li>
+  <li>test architecture through implementation;</li>
+  <li>and progressively make architecture understandable by both people and machines.</li>
+</ul>
+
+<p>The initiative’s core knowledge is intended to remain freely available as an industry resource.</p>
+
+<hr />
+
+<h2 id="3-scope">3. Scope</h2>
+
+<h3 id="public-sector-first">Public sector first</h3>
+
+<p>Public-sector use cases are the initiative’s primary proving ground.</p>
+
+<p>Government environments provide particularly useful architecture challenges because systems frequently must account for:</p>
+
+<ul>
+  <li>identity;</li>
+  <li>privacy;</li>
+  <li>accessibility;</li>
+  <li>records management;</li>
+  <li>auditability;</li>
+  <li>complex authorization;</li>
+  <li>human decision-making;</li>
+  <li>appeals and due process;</li>
+  <li>organizational boundaries;</li>
+  <li>interoperability;</li>
+  <li>procurement constraints;</li>
+  <li>continuity of operations;</li>
+  <li>and long system lifecycles.</li>
+</ul>
+
+<p>Initial domains may include:</p>
+
+<ul>
+  <li>Case Management</li>
+  <li>Grants Management</li>
+  <li>Permitting</li>
+  <li>Licensing</li>
+  <li>Inspections</li>
+  <li>Benefits Administration</li>
+  <li>Constituent Services</li>
+  <li>Procurement</li>
+  <li>Public Records</li>
+  <li>Emergency Management</li>
+  <li>Asset Management</li>
+</ul>
+
+<h3 id="applicable-across-the-enterprise">Applicable across the enterprise</h3>
+
+<p>Enterprise Blueprints is not limited to government technology.</p>
+
+<p>The initiative’s underlying concepts—shared capabilities, canonical entities, durable state, policy inheritance, delegated authorization, composable services, and machine-readable architecture—may apply across industries.</p>
+
+<p>Public-sector use cases are the primary environment in which these ideas will be developed, tested, and taught.</p>
+
+<hr />
+
+<h2 id="4-core-thesis">4. Core Thesis</h2>
+
+<p>Software creation is becoming dramatically cheaper.</p>
+
+<p>Enterprise coherence is not.</p>
+
+<p>As AI makes it possible for individuals, departments, and agents to generate applications and workflows on demand, organizations risk multiplying:</p>
+
+<ul>
+  <li>incompatible data models;</li>
+  <li>duplicated business logic;</li>
+  <li>inconsistent security;</li>
+  <li>fragmented records;</li>
+  <li>inaccessible applications;</li>
+  <li>unmanaged integrations;</li>
+  <li>redundant automation;</li>
+  <li>conflicting business rules;</li>
+  <li>unowned production systems;</li>
+  <li>and competing definitions of organizational reality.</li>
+</ul>
+
+<p>The response should not be to prevent people from creating software.</p>
+
+<p>The response should be to make dynamically created software inherit a strong enterprise foundation.</p>
+
+<p>This leads to the initiative’s central architectural idea:</p>
+
+<h1 id="build-experiences-share-capabilities">Build Experiences. Share Capabilities.</h1>
+
+<p>Create apps, workflows, and agents that fit the work. Build on shared enterprise capabilities.</p>
+
+<p>Those capabilities operate on shared enterprise entities and authoritative state. Identity, policy, and governance define who may act and under what conditions.</p>
+
+<p>Experiences can change as needs change. The enterprise foundations remain durable and intentional.</p>
+
+<hr />
+
+<h2 id="5-the-ai-native-enterprise">5. The AI-Native Enterprise</h2>
+
+<p>Within Enterprise Blueprints, an <strong>AI-native enterprise</strong> is not merely an organization that uses AI tools.</p>
+
+<p>It is an organization whose architecture assumes that humans and AI systems may dynamically discover, compose, and operate governed enterprise capabilities.</p>
+
+<p>This implies an environment in which:</p>
+
+<ul>
+  <li>enterprise capabilities are explicitly defined;</li>
+  <li>important business concepts have stable semantics;</li>
+  <li>systems of record remain authoritative;</li>
+  <li>access is controlled through explicit identity and authorization;</li>
+  <li>policies can travel with data and capabilities;</li>
+  <li>agents can discover approved actions;</li>
+  <li>software experiences can be generated dynamically;</li>
+  <li>and architectural constraints can increasingly be understood by machines.</li>
+</ul>
+
+<p>A simplified architectural direction is:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User or Agent Intent
+        │
+        ▼
+Generated Experience
+App / UI / Workflow / Agent
+        │
+        │ composes
+        ▼
+Enterprise Capabilities
+        │
+        │ operate on
+        ▼
+Enterprise Entities &amp; Data
+        │
+        │ governed by
+        ▼
+Identity, Policy &amp; Trust
+        │
+        │ connected to
+        ▼
+Authoritative Systems of Record
+</code></pre></div></div>
+
+<p>Applications should increasingly become consumers of enterprise architecture rather than isolated containers of enterprise architecture.</p>
+
+<hr />
+
+<h2 id="6-primary-audience">6. Primary Audience</h2>
+
+<p>Enterprise Blueprints is intended for people involved in designing, governing, building, or modernizing enterprise technology.</p>
+
+<p>Its primary audience includes:</p>
+
+<ul>
+  <li>enterprise architects;</li>
+  <li>solution architects;</li>
+  <li>application architects;</li>
+  <li>data architects;</li>
+  <li>security and identity architects;</li>
+  <li>cloud and platform architects;</li>
+  <li>software engineers;</li>
+  <li>low-code developers;</li>
+  <li>technical leads;</li>
+  <li>product and platform teams;</li>
+  <li>CIO, CTO, CDO, and AI leadership organizations;</li>
+  <li>government modernization teams;</li>
+  <li>program and technology leaders;</li>
+  <li>consultants and systems integrators;</li>
+  <li>and technically inclined public-sector practitioners.</li>
+</ul>
+
+<p>Material should be rigorous enough to help experienced architects while remaining understandable to practitioners who do not work primarily in formal enterprise architecture.</p>
+
+<hr />
+
+<h2 id="7-architectural-principles">7. Architectural Principles</h2>
+
+<h3 id="71-architecture-before-implementation">7.1 Architecture Before Implementation</h3>
+
+<p>Logical architecture should be defined independently of any specific technology vendor or product.</p>
+
+<p>Products implement architecture.</p>
+
+<p>Products do not define the architecture.</p>
+
+<p>Technology-specific terminology should not determine the logical model unless the concept genuinely belongs at the implementation layer.</p>
+
+<h3 id="72-capabilities-before-applications">7.2 Capabilities Before Applications</h3>
+
+<p>Organizations should identify reusable things the enterprise needs to be able to do rather than repeatedly implementing those functions inside individual applications.</p>
+
+<p>Examples include:</p>
+
+<ul>
+  <li>identify a person;</li>
+  <li>retrieve a case;</li>
+  <li>store a document;</li>
+  <li>request an approval;</li>
+  <li>send a notification;</li>
+  <li>verify eligibility;</li>
+  <li>retrieve payment status.</li>
+</ul>
+
+<p>Applications and agents should compose these capabilities wherever practical.</p>
+
+<h3 id="73-shared-semantics-before-local-data-models">7.3 Shared Semantics Before Local Data Models</h3>
+
+<p>Important organizational concepts should have explicit definitions.</p>
+
+<p>Examples include:</p>
+
+<ul>
+  <li>Person</li>
+  <li>Organization</li>
+  <li>Case</li>
+  <li>Document</li>
+  <li>Payment</li>
+  <li>Grant</li>
+  <li>Contract</li>
+  <li>Employee</li>
+  <li>Vendor</li>
+  <li>Location</li>
+</ul>
+
+<p>Individual applications should not casually invent competing definitions of canonical enterprise concepts.</p>
+
+<h3 id="74-durable-state-disposable-experiences">7.4 Durable State, Disposable Experiences</h3>
+
+<p>User experiences may increasingly be generated dynamically.</p>
+
+<p>Authoritative organizational state should not be.</p>
+
+<p>Systems of record, identifiers, lifecycle rules, provenance, and retention requirements should remain explicit and governed.</p>
+
+<h3 id="75-policy-should-travel-with-capability">7.5 Policy Should Travel With Capability</h3>
+
+<p>Applications should not be expected to independently remember every enterprise requirement.</p>
+
+<p>Where feasible, shared capabilities should enforce or carry required policy concerning:</p>
+
+<ul>
+  <li>authorization;</li>
+  <li>privacy;</li>
+  <li>audit;</li>
+  <li>records management;</li>
+  <li>accessibility;</li>
+  <li>data classification;</li>
+  <li>human approval;</li>
+  <li>segregation of duties;</li>
+  <li>and other organizational constraints.</li>
+</ul>
+
+<p>The governed path should be the easiest path.</p>
+
+<h3 id="76-identity-follows-the-actor">7.6 Identity Follows the Actor</h3>
+
+<p>Software and agents should operate through explicit identity and authorization models.</p>
+
+<p>An agent’s ability to act should be understandable in terms of:</p>
+
+<ul>
+  <li>who initiated the action;</li>
+  <li>which identity is executing it;</li>
+  <li>what authority has been delegated;</li>
+  <li>what purpose the action serves;</li>
+  <li>what data may be accessed;</li>
+  <li>and which actions require human confirmation.</li>
+</ul>
+
+<p>Broad, opaque service-account authority should not be the default model for agentic systems.</p>
+
+<h3 id="77-humans-and-agents-are-both-enterprise-actors">7.7 Humans and Agents Are Both Enterprise Actors</h3>
+
+<p>Future architecture should assume that business capabilities may be invoked by:</p>
+
+<ul>
+  <li>humans;</li>
+  <li>traditional applications;</li>
+  <li>workflows;</li>
+  <li>AI assistants;</li>
+  <li>autonomous or semi-autonomous agents;</li>
+  <li>and other enterprise services.</li>
+</ul>
+
+<p>Capabilities should therefore have explicit contracts, authorization, observability, and policy boundaries.</p>
+
+<h3 id="78-search-before-build">7.8 Search Before Build</h3>
+
+<p>A dynamically generated solution should ideally discover existing enterprise:</p>
+
+<ul>
+  <li>entities;</li>
+  <li>capabilities;</li>
+  <li>APIs;</li>
+  <li>tools;</li>
+  <li>workflows;</li>
+  <li>policies;</li>
+  <li>and applications</li>
+</ul>
+
+<p>before creating something new.</p>
+
+<p>Reuse should increasingly be supported by enterprise platforms and AI rather than relying entirely on individual developer awareness.</p>
+
+<h3 id="79-architecture-should-support-graduation">7.9 Architecture Should Support Graduation</h3>
+
+<p>Not every generated application requires enterprise-scale governance on its first day.</p>
+
+<p>Architecture should support progression such as:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Personal
+   ↓
+Team
+   ↓
+Department
+   ↓
+Enterprise / Mission Critical
+</code></pre></div></div>
+
+<p>Controls should become stronger as scope, sensitivity, dependency, and organizational importance increase.</p>
+
+<h3 id="710-architecture-must-be-testable-through-implementation">7.10 Architecture Must Be Testable Through Implementation</h3>
+
+<p>Reference architecture should not exist only as diagrams.</p>
+
+<p>Important concepts should eventually be tested through working reference implementations.</p>
+
+<p>Implementation experience should be allowed to reveal weaknesses in the logical architecture.</p>
+
+<h3 id="711-implementation-diversity-is-a-feature">7.11 Implementation Diversity Is a Feature</h3>
+
+<p>The same logical architecture should be capable of being realized through different technology stacks.</p>
+
+<p>Possible implementations may include:</p>
+
+<ul>
+  <li>Microsoft Power Platform;</li>
+  <li>custom application development;</li>
+  <li>Salesforce;</li>
+  <li>ServiceNow;</li>
+  <li>cloud-native services;</li>
+  <li>open-source technologies;</li>
+  <li>and future platforms.</li>
+</ul>
+
+<p>A successful logical architecture should survive changes in implementation technology.</p>
+
+<h3 id="712-architecture-should-become-machine-readable">7.12 Architecture Should Become Machine-Readable</h3>
+
+<p>Over time, important parts of the architecture should be represented in structured formats that software and AI agents can consume.</p>
+
+<p>This may include:</p>
+
+<ul>
+  <li>entity definitions;</li>
+  <li>capability contracts;</li>
+  <li>relationships;</li>
+  <li>operations;</li>
+  <li>events;</li>
+  <li>policies;</li>
+  <li>architectural constraints;</li>
+  <li>and implementation mappings.</li>
+</ul>
+
+<p>A long-term goal is to explore whether coding agents can generate software that conforms to an explicit enterprise architecture rather than inventing architecture during generation.</p>
+
+<hr />
+
+<h2 id="8-content-model">8. Content Model</h2>
+
+<p>Enterprise Blueprints organizes knowledge into distinct artifact types.</p>
+
+<h3 id="foundations">Foundations</h3>
+
+<p>Durable architectural ideas and principles.</p>
+
+<p>Examples:</p>
+
+<ul>
+  <li>The AI-Native Enterprise</li>
+  <li>Build Experiences. Share Capabilities.</li>
+  <li>Build Capabilities, Not Applications</li>
+  <li>Durable State, Disposable Experiences</li>
+</ul>
+
+<h3 id="reference-architecture">Reference Architecture</h3>
+
+<p>The overall logical model describing the major layers and responsibilities of an AI-native enterprise.</p>
+
+<h3 id="use-cases">Use Cases</h3>
+
+<p>Introductions to recognizable public-sector and enterprise use cases that establish business context before describing supporting architecture.</p>
+
+<p>A Use Case describes:</p>
+
+<ul>
+  <li><strong>Overview:</strong> the need, domain context, intended outcomes, and scope;</li>
+  <li><strong>Personas:</strong> the people and organizations involved, their goals, responsibilities, and needs;</li>
+  <li><strong>Process:</strong> the typical trigger, major steps, handoffs, decisions, and outcome;</li>
+  <li>relevant constraints, variations, assumptions, and open questions.</li>
+</ul>
+
+<p>Use Cases remain understandable without architecture or product knowledge. They introduce the work; Blueprints describe the logical architecture that supports it. Use Cases and their supporting Blueprints should link to one another as they develop.</p>
+
+<h3 id="entities">Entities</h3>
+
+<p>Canonical business concepts and their meaning, lifecycle, identifiers, relationships, and governance considerations.</p>
+
+<p>Entities represent concepts, not physical database tables.</p>
+
+<h3 id="capabilities">Capabilities</h3>
+
+<p>Reusable things the enterprise can do.</p>
+
+<p>Capabilities describe responsibilities, operations, events, dependencies, and policy requirements without assuming a specific implementation platform.</p>
+
+<h3 id="patterns">Patterns</h3>
+
+<p>Reusable architectural approaches to recurring problems.</p>
+
+<p>Examples may include:</p>
+
+<ul>
+  <li>human-in-the-loop decisions;</li>
+  <li>delegated agent authorization;</li>
+  <li>event-driven processing;</li>
+  <li>generated interfaces over governed data;</li>
+  <li>personal-to-production graduation;</li>
+  <li>approval before agent action.</li>
+</ul>
+
+<h3 id="policies">Policies</h3>
+
+<p>Architectural implications of concerns such as:</p>
+
+<ul>
+  <li>identity;</li>
+  <li>authorization;</li>
+  <li>privacy;</li>
+  <li>audit;</li>
+  <li>records;</li>
+  <li>accessibility;</li>
+  <li>security;</li>
+  <li>data governance;</li>
+  <li>human oversight.</li>
+</ul>
+
+<p>Enterprise Blueprints provides architectural guidance rather than legal advice.</p>
+
+<h3 id="blueprints">Blueprints</h3>
+
+<p>A <strong>Blueprint</strong> is a composed logical architecture for a recognizable business or technical problem.</p>
+
+<p>A Blueprint combines:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Entities
++
+Capabilities
++
+Patterns
++
+Policies
+=
+Blueprint
+</code></pre></div></div>
+
+<p>Examples may include:</p>
+
+<ul>
+  <li>Public Sector Case Management Blueprint</li>
+  <li>Permitting Blueprint</li>
+  <li>Grants Management Blueprint</li>
+</ul>
+
+<p>Blueprints remain vendor-neutral. Each Blueprint should link to its related Use Case when available for the overview, personas, and process that establish its business context.</p>
+
+<h3 id="implementations">Implementations</h3>
+
+<p>Technology-specific mappings that demonstrate how a logical Blueprint or architecture can be realized using particular products or development approaches.</p>
+
+<p>Implementation content must identify the logical architecture it implements.</p>
+
+<h3 id="labs">Labs</h3>
+
+<p>Hands-on exercises and runnable examples used to demonstrate implementation.</p>
+
+<h3 id="architecture-decisions">Architecture Decisions</h3>
+
+<p>Explicit records of important architectural choices, rationale, tradeoffs, and alternatives.</p>
+
+<hr />
+
+<h2 id="9-reference-architecture-direction">9. Reference Architecture Direction</h2>
+
+<p>The initial Enterprise Blueprints reference architecture will explore layers such as:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌──────────────────────────────────────────────┐
+│ EXPERIENCE                                   │
+│ Apps │ Generated UI │ Assistants │ Agents    │
+├──────────────────────────────────────────────┤
+│ ORCHESTRATION                                │
+│ Workflow │ Agents │ Rules │ Human Decisions │
+├──────────────────────────────────────────────┤
+│ ENTERPRISE CAPABILITIES                      │
+│ Case │ Document │ Payment │ Notification... │
+├──────────────────────────────────────────────┤
+│ SEMANTICS &amp; DATA                             │
+│ Entities │ Relationships │ MDM │ Data Products│
+├──────────────────────────────────────────────┤
+│ TRUST &amp; POLICY                               │
+│ Identity │ Authorization │ Audit │ Privacy   │
+├──────────────────────────────────────────────┤
+│ SYSTEMS OF RECORD                            │
+│ ERP │ CRM │ Case │ HR │ Grants │ Finance    │
+└──────────────────────────────────────────────┘
+</code></pre></div></div>
+
+<p>Cross-cutting concerns may include:</p>
+
+<ul>
+  <li>Observability</li>
+  <li>Security</li>
+  <li>Governance</li>
+  <li>Lifecycle</li>
+  <li>Accessibility</li>
+  <li>Records Management</li>
+  <li>Evaluation</li>
+  <li>FinOps</li>
+  <li>DevSecOps</li>
+</ul>
+
+<p>This model is provisional and will evolve through application to real use cases.</p>
+
+<hr />
+
+<h2 id="10-vendor-neutrality">10. Vendor Neutrality</h2>
+
+<p>The logical architecture is vendor-neutral.</p>
+
+<p>Technology vendors may appear in:</p>
+
+<ul>
+  <li>implementation guidance;</li>
+  <li>reference implementations;</li>
+  <li>comparisons;</li>
+  <li>examples;</li>
+  <li>labs;</li>
+  <li>and discussions of available capabilities.</li>
+</ul>
+
+<p>Vendor terminology should not determine the definitions of logical enterprise entities, capabilities, Blueprints, or architectural layers.</p>
+
+<p>Vendor-specific implementations are examples, not endorsements.</p>
+
+<p>Enterprise Blueprints should clearly distinguish:</p>
+
+<p><strong>what the architecture requires</strong></p>
+
+<p>from</p>
+
+<p><strong>how a particular technology can implement it.</strong></p>
+
+<hr />
+
+<h2 id="11-open-knowledge">11. Open Knowledge</h2>
+
+<p>Enterprise Blueprints exists as a free industry resource.</p>
+
+<p>Its public architecture should provide substantive value regardless of whether a reader ever engages commercially with its creator.</p>
+
+<p>Where practical, project artifacts should be:</p>
+
+<ul>
+  <li>publicly accessible;</li>
+  <li>linkable;</li>
+  <li>versioned;</li>
+  <li>reusable;</li>
+  <li>adaptable;</li>
+  <li>open to critique;</li>
+  <li>and open to community contribution.</li>
+</ul>
+
+<p>The initiative should not operate as a gated marketing funnel.</p>
+
+<hr />
+
+<h2 id="12-licensing-philosophy">12. Licensing Philosophy</h2>
+
+<p>Enterprise Blueprints should make reuse straightforward.</p>
+
+<p>The provisional licensing model is:</p>
+
+<h3 id="software-and-machine-readable-artifacts">Software and Machine-Readable Artifacts</h3>
+
+<p>Code, reference implementations, example software, machine-readable schemas, and similar software artifacts will generally be released under the:</p>
+
+<p><strong>MIT License</strong></p>
+
+<p>The intention is to allow organizations and individuals to reuse, modify, distribute, and incorporate these artifacts with minimal restriction.</p>
+
+<h3 id="documentation-and-diagrams">Documentation and Diagrams</h3>
+
+<p>Written architecture content, diagrams, educational materials, and similar creative works will generally be released under:</p>
+
+<p><strong>Creative Commons Attribution 4.0 International — CC BY 4.0</strong></p>
+
+<p>The intention is to allow agencies, enterprises, educators, architects, and others to reuse and adapt the material while preserving attribution.</p>
+
+<p>Specific repositories or artifacts may clarify their applicable license where necessary.</p>
+
+<p>Licensing decisions should support the initiative’s broader goal:</p>
+
+<blockquote>
+  <p><strong>Make useful architecture easy to use.</strong></p>
+</blockquote>
+
+<hr />
+
+<h2 id="13-project-identity">13. Project Identity</h2>
+
+<p>The public initiative is named:</p>
+
+<h1 id="enterprise-blueprints-1">Enterprise Blueprints</h1>
+
+<p>Its primary tagline is:</p>
+
+<blockquote>
+  <p><strong>Open architecture for the AI-native enterprise</strong></p>
+</blockquote>
+
+<p>Its scope statement is:</p>
+
+<blockquote>
+  <p><strong>Public sector first. Applicable across the enterprise.</strong></p>
+</blockquote>
+
+<p>Its signature architectural question is:</p>
+
+<blockquote>
+  <p><strong>Which enterprise capabilities, entities, and policies should every AI-created application inherit rather than recreate?</strong></p>
+</blockquote>
+
+<p>Its central architectural thesis is:</p>
+
+<blockquote>
+  <p><strong>Build Experiences. Share Capabilities.</strong></p>
+</blockquote>
+
+<hr />
+
+<h2 id="14-github-identity">14. GitHub Identity</h2>
+
+<p>Enterprise Blueprints uses the independent GitHub organization:</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">enterprise-blueprints</code></strong></p>
+
+<p>The organization is distinct from:</p>
+
+<ul>
+  <li>the creator’s personal GitHub identity;</li>
+  <li>Civgentic;</li>
+  <li>and individual technology vendors.</li>
+</ul>
+
+<p>The initial initiative should favor a small number of repositories—potentially a single primary repository—rather than prematurely splitting the work across many repositories.</p>
+
+<p>The initial repository may contain structures such as:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>foundations/
+reference-architecture/
+use-cases/
+entities/
+capabilities/
+patterns/
+policies/
+blueprints/
+implementations/
+labs/
+decisions/
+schemas/
+site/
+</code></pre></div></div>
+
+<p>Repository boundaries may evolve as reference implementations and machine-readable specifications become more substantial.</p>
+
+<hr />
+
+<h2 id="15-youtube-identity">15. YouTube Identity</h2>
+
+<p>The public YouTube channel is named:</p>
+
+<p><strong>Enterprise Blueprints</strong></p>
+
+<p>YouTube serves as the teaching, storytelling, and demonstration layer of the initiative.</p>
+
+<p>The initial programming structure is:</p>
+
+<h3 id="architecture-ahead">Architecture Ahead</h3>
+
+<p>Foundational and future-facing enterprise architecture concepts.</p>
+
+<h3 id="public-sector-blueprints">Public Sector Blueprints</h3>
+
+<p>Vendor-neutral architecture of specific public-sector domains.</p>
+
+<p>Individual domains such as Case Management, Grants Management, and Permitting may become seasons.</p>
+
+<h3 id="build-the-blueprint">Build the Blueprint</h3>
+
+<p>Hands-on implementation of logical Blueprints using real technologies.</p>
+
+<h3 id="architecture-review">Architecture Review</h3>
+
+<p>A later non-serial format for timely technology developments with meaningful architecture implications.</p>
+
+<p>The channel should not function as a sales funnel. Its purpose is to freely teach, demonstrate, and develop the ideas represented by Enterprise Blueprints.</p>
+
+<hr />
+
+<h2 id="16-relationship-to-civgentic">16. Relationship to Civgentic</h2>
+
+<p><strong>Civgentic</strong> is the independent consulting business established by the initiative’s creator.</p>
+
+<p>Enterprise Blueprints and Civgentic are related but serve different purposes.</p>
+
+<h3 id="enterprise-blueprints-exists-to">Enterprise Blueprints exists to:</h3>
+
+<ul>
+  <li>develop ideas;</li>
+  <li>teach;</li>
+  <li>document architecture;</li>
+  <li>provide open resources;</li>
+  <li>create reference models;</li>
+  <li>build reference implementations;</li>
+  <li>enable discussion;</li>
+  <li>and contribute to the industry.</li>
+</ul>
+
+<h3 id="civgentic-exists-to">Civgentic exists to:</h3>
+
+<ul>
+  <li>provide commercial advisory services;</li>
+  <li>help organizations apply architectural ideas to their specific environments;</li>
+  <li>perform assessments;</li>
+  <li>design future-state architectures;</li>
+  <li>support modernization planning;</li>
+  <li>provide solution and enterprise architecture expertise;</li>
+  <li>and assist with implementation architecture where appropriate.</li>
+</ul>
+
+<p>Commercial work does not determine the logical architecture or editorial conclusions of Enterprise Blueprints.</p>
+
+<p>Enterprise Blueprints should not contain routine consulting sales calls to action.</p>
+
+<p>A simple disclosure of the creator’s relationship to Civgentic and a link for readers who independently want professional services is sufficient.</p>
+
+<p>Civgentic may point to Enterprise Blueprints as evidence of its founder’s architectural work.</p>
+
+<p>Enterprise Blueprints should not need Civgentic in order to justify its existence.</p>
+
+<hr />
+
+<h2 id="17-relationship-to-vendors-and-sponsors">17. Relationship to Vendors and Sponsors</h2>
+
+<p>Enterprise Blueprints should remain intellectually independent of technology vendors.</p>
+
+<p>If vendor relationships, sponsorships, commercial affiliations, or other material relationships ever exist, they should be disclosed clearly.</p>
+
+<p>Such relationships should not determine:</p>
+
+<ul>
+  <li>architectural conclusions;</li>
+  <li>logical models;</li>
+  <li>product placement;</li>
+  <li>implementation recommendations;</li>
+  <li>editorial coverage;</li>
+  <li>or whether competing approaches can be discussed.</li>
+</ul>
+
+<p>The initiative’s credibility depends on preserving a clear distinction between architecture and promotion.</p>
+
+<hr />
+
+<h2 id="18-relationship-to-contributors">18. Relationship to Contributors</h2>
+
+<p>Enterprise Blueprints should be designed so that other practitioners can eventually contribute.</p>
+
+<p>Contributors may add:</p>
+
+<ul>
+  <li>corrections;</li>
+  <li>architectural discussion;</li>
+  <li>use-case expertise;</li>
+  <li>new patterns;</li>
+  <li>implementation mappings;</li>
+  <li>platform-specific reference implementations;</li>
+  <li>diagrams;</li>
+  <li>examples;</li>
+  <li>structured specifications;</li>
+  <li>and technical improvements.</li>
+</ul>
+
+<p>Contributors should not need to endorse or participate in Civgentic’s commercial activities.</p>
+
+<p>The open initiative should be capable of becoming larger than any one individual, implementation technology, or consulting firm.</p>
+
+<hr />
+
+<h2 id="19-editorial-principles">19. Editorial Principles</h2>
+
+<p>Enterprise Blueprints material should strive to be:</p>
+
+<h3 id="practical">Practical</h3>
+
+<p>Architecture should help someone make a design decision or build something better.</p>
+
+<h3 id="explicit">Explicit</h3>
+
+<p>Important assumptions, tradeoffs, boundaries, dependencies, and architectural decisions should be visible.</p>
+
+<h3 id="understandable">Understandable</h3>
+
+<p>Avoid unnecessary architecture jargon where simpler language works.</p>
+
+<h3 id="durable">Durable</h3>
+
+<p>Favor concepts that remain useful as individual products, vendors, and AI models change.</p>
+
+<h3 id="vendor-neutral-at-the-logical-layer">Vendor-Neutral at the Logical Layer</h3>
+
+<p>Use technology products to demonstrate architecture rather than allowing products to define it.</p>
+
+<h3 id="evidence-seeking">Evidence-Seeking</h3>
+
+<p>Use implementation experience, public-sector realities, standards, research, and practitioner feedback to improve the architecture.</p>
+
+<h3 id="revisable">Revisable</h3>
+
+<p>Architecture is not scripture.</p>
+
+<p>Models should be versioned and changed when real use cases demonstrate that they are incomplete or wrong.</p>
+
+<h3 id="open">Open</h3>
+
+<p>The initiative’s default posture should favor sharing, reuse, adaptation, and discussion.</p>
+
+<hr />
+
+<h2 id="20-anti-goals">20. Anti-Goals</h2>
+
+<p>Enterprise Blueprints is not intended to become:</p>
+
+<h3 id="a-power-platform-tutorial-site">A Power Platform Tutorial Site</h3>
+
+<p>Power Platform may provide early reference implementations because of the creator’s experience, but it does not define the architecture.</p>
+
+<h3 id="an-ai-news-channel">An AI News Channel</h3>
+
+<p>Current developments may be discussed where they affect architecture, but the initiative should not depend on constant AI product news.</p>
+
+<h3 id="a-vendor-comparison-site">A Vendor Comparison Site</h3>
+
+<p>Technology comparisons may support architecture decisions, but ranking products is not the initiative’s primary purpose.</p>
+
+<h3 id="a-formal-enterprise-architecture-methodology">A Formal Enterprise Architecture Methodology</h3>
+
+<p>The initiative may borrow useful ideas from established disciplines, but its purpose is to help people design systems rather than require adherence to a particular certification or methodology.</p>
+
+<h3 id="a-complete-encyclopedia-created-in-advance">A Complete Encyclopedia Created in Advance</h3>
+
+<p>The body of knowledge should grow through real use cases and implementations.</p>
+
+<h3 id="a-consulting-sales-funnel">A Consulting Sales Funnel</h3>
+
+<p>Public material should provide substantive value independently of Civgentic or any commercial service.</p>
+
+<h3 id="a-vendor-owned-framework">A Vendor-Owned Framework</h3>
+
+<p>The initiative should remain portable across implementation technologies.</p>
+
+<hr />
+
+<h2 id="21-development-method">21. Development Method</h2>
+
+<p>Enterprise Blueprints will grow iteratively.</p>
+
+<p>The preferred architecture cycle is:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Investigate a real domain
+        ↓
+Model its concepts
+        ↓
+Define logical capabilities
+        ↓
+Identify policy requirements
+        ↓
+Design architecture
+        ↓
+Extract reusable patterns
+        ↓
+Implement enough to test it
+        ↓
+Teach and publish
+        ↓
+Receive feedback
+        ↓
+Refine
+</code></pre></div></div>
+
+<p>The taxonomy should emerge from architecture work rather than architecture work being forced into a predetermined taxonomy.</p>
+
+<hr />
+
+<h2 id="22-initial-focus">22. Initial Focus</h2>
+
+<p>The first Use Case and major Blueprint will address:</p>
+
+<h1 id="public-sector-case-management">Public Sector Case Management</h1>
+
+<p>The Use Case will introduce the domain, personas, and process. Its supporting Blueprint will test and expand the framework through concepts such as:</p>
+
+<ul>
+  <li>Case</li>
+  <li>Person</li>
+  <li>Organization</li>
+  <li>Case Participant</li>
+  <li>Interaction</li>
+  <li>Task</li>
+  <li>Document</li>
+  <li>Assignment</li>
+  <li>Decision</li>
+  <li>Audit</li>
+  <li>Authorization</li>
+  <li>Records Management</li>
+  <li>Human decision-making</li>
+  <li>AI assistance</li>
+  <li>agent actions</li>
+  <li>event-driven processing</li>
+</ul>
+
+<p>The initial reference implementation will primarily use Microsoft Power Platform technologies because of the creator’s current implementation experience.</p>
+
+<p>The Power Platform implementation will remain explicitly separate from the logical architecture.</p>
+
+<hr />
+
+<h2 id="23-publishing-model">23. Publishing Model</h2>
+
+<p>Enterprise Blueprints will use three complementary public surfaces.</p>
+
+<h3 id="knowledge-site">Knowledge Site</h3>
+
+<p>The canonical source for the living architecture.</p>
+
+<p>It should contain:</p>
+
+<ul>
+  <li>Foundations</li>
+  <li>Reference Architecture</li>
+  <li>Use Cases</li>
+  <li>Entities</li>
+  <li>Capabilities</li>
+  <li>Patterns</li>
+  <li>Policies</li>
+  <li>Blueprints</li>
+  <li>Implementations</li>
+  <li>Architecture Decisions</li>
+  <li>Glossary</li>
+  <li>links to Labs and source artifacts</li>
+</ul>
+
+<h3 id="youtube">YouTube</h3>
+
+<p>The teaching, storytelling, and demonstration layer.</p>
+
+<h3 id="github">GitHub</h3>
+
+<p>The source-controlled layer for:</p>
+
+<ul>
+  <li>documentation;</li>
+  <li>structured definitions;</li>
+  <li>diagrams;</li>
+  <li>Architecture Decision Records;</li>
+  <li>machine-readable specifications;</li>
+  <li>sample code;</li>
+  <li>reference implementations;</li>
+  <li>Labs;</li>
+  <li>issues;</li>
+  <li>and contribution workflows.</li>
+</ul>
+
+<p>Each surface should point to the others without unnecessarily duplicating their purpose.</p>
+
+<hr />
+
+<h2 id="24-content-relationship">24. Content Relationship</h2>
+
+<p>The primary content layers should reinforce one another:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Architecture Ahead
+      │
+      │ explains principles
+      ▼
+Public Sector Blueprints
+      │
+      │ applies principles
+      ▼
+Build the Blueprint
+      │
+      │ implements principles
+      ▼
+Reference Implementation
+</code></pre></div></div>
+
+<p>The Knowledge Site remains the canonical architecture source throughout this process.</p>
+
+<p>YouTube teaches the architecture.</p>
+
+<p>GitHub makes it inspectable and executable.</p>
+
+<hr />
+
+<h2 id="25-initial-success-criteria">25. Initial Success Criteria</h2>
+
+<p>The initiative’s first stage will be successful when:</p>
+
+<ol>
+  <li>A new visitor can quickly understand what Enterprise Blueprints is and why it exists.</li>
+  <li>The logical reference architecture can be explained without mentioning a particular vendor.</li>
+  <li>The phrase <strong>Build Experiences. Share Capabilities.</strong> corresponds to a clearly defined architectural model rather than remaining merely a slogan.</li>
+  <li>A Case Management Use Case introduces the domain, personas, and process, and its supporting Blueprint describes reusable entities, capabilities, patterns, and policies.</li>
+  <li>The Case Management Blueprint can be mapped cleanly to a Power Platform implementation.</li>
+  <li>Architecture lessons discovered during implementation can flow back into the logical framework.</li>
+  <li>YouTube episodes and website material reinforce the same body of knowledge.</li>
+  <li>A practitioner can use the core material without purchasing anything.</li>
+  <li>Another implementation platform can eventually realize the same logical Blueprint without redefining it.</li>
+  <li>Community contributors can participate without becoming contributors to Civgentic.</li>
+  <li>Architecture artifacts can progressively become machine-readable without requiring a fundamental redesign of the knowledge model.</li>
+</ol>
+
+<hr />
+
+<h2 id="26-long-term-direction">26. Long-Term Direction</h2>
+
+<p>Enterprise Blueprints should progressively explore a future in which organizations maintain machine-readable catalogs of:</p>
+
+<ul>
+  <li>enterprise entities;</li>
+  <li>enterprise capabilities;</li>
+  <li>policies;</li>
+  <li>approved actions;</li>
+  <li>systems of record;</li>
+  <li>architectural constraints;</li>
+  <li>events;</li>
+  <li>reusable patterns;</li>
+  <li>and implementation mappings.</li>
+</ul>
+
+<p>AI systems could use that architecture when dynamically creating applications and workflows.</p>
+
+<p>Over time, Enterprise Blueprints may explore whether an AI coding agent can consume an explicit enterprise architecture and generate software that conforms to it.</p>
+
+<p>The long-term question is not simply:</p>
+
+<blockquote>
+  <p><strong>Can AI build enterprise software?</strong></p>
+</blockquote>
+
+<p>It is:</p>
+
+<blockquote>
+  <p><strong>Can an enterprise make its architecture explicit enough that AI can build software without reinventing the enterprise every time?</strong></p>
+</blockquote>
+
+<hr />
+
+<h2 id="27-current-project-decisions">27. Current Project Decisions</h2>
+
+<p>The following decisions are provisionally established as of Charter v0.5:</p>
+
+<ul>
+  <li><strong>Project name:</strong> Enterprise Blueprints</li>
+  <li><strong>Tagline:</strong> Open architecture for the AI-native enterprise</li>
+  <li><strong>Scope:</strong> Public sector first. Applicable across the enterprise.</li>
+  <li><strong>Core thesis:</strong> Build Experiences. Share Capabilities.</li>
+  <li><strong>GitHub organization:</strong> <code class="language-plaintext highlighter-rouge">enterprise-blueprints</code></li>
+  <li><strong>YouTube channel:</strong> Enterprise Blueprints</li>
+  <li><strong>Commercial organization:</strong> Civgentic, maintained separately</li>
+  <li><strong>Content model:</strong> Use Cases introduce business context; Entities name canonical business concepts</li>
+  <li><strong>Primary logical architecture:</strong> vendor-neutral</li>
+  <li><strong>Initial proving ground:</strong> Public Sector Case Management</li>
+  <li><strong>Initial implementation ecosystem:</strong> Microsoft Power Platform</li>
+  <li><strong>Software license:</strong> MIT</li>
+  <li><strong>Documentation and diagram license:</strong> CC BY 4.0</li>
+  <li><strong>Initial repository strategy:</strong> begin consolidated; split only when scale justifies it</li>
+  <li><strong>Long-term direction:</strong> machine-readable architecture consumable by humans and AI systems</li>
+</ul>
+
+<p>These decisions may be revised through documented Architecture Decision Records as the initiative develops.</p>
+
+<hr />
+
+<h2 id="28-status">28. Status</h2>
+
+<p><strong>Version:</strong> 0.5<br />
+<strong>Status:</strong> Draft / Founding Charter<br />
+<strong>Repository foundation:</strong> Established with category indexes, authoring guidance, content templates, metadata conventions, and licensing. Formal external contribution procedures remain deferred during solo incubation.<br />
+<strong>Current content:</strong> AI-Native Enterprise and Public Sector Case Management are drafts. The custom Jekyll site provides a local reading preview.<br />
+<strong>Next milestone:</strong> Refine the foundation and use case drafts, then develop the core Case Management Blueprint.</p>
+
+<hr />
+
+<h2 id="29-version-history">29. Version History</h2>
+
+<ul>
+  <li><strong>v0.5:</strong> Adopts Build Experiences. Share Capabilities. as the signature architectural principle. Keeps shared semantics, authoritative state, identity, policy, and governance as durable foundations. Updates content and site progress.</li>
+  <li><strong>v0.4:</strong> Adds Use Cases as domain introductions with overview, personas, and process; renames Objects to Entities throughout the current content model; updates the repository and publishing models and Case Management direction. Records the established repository foundation and next content milestone.</li>
+  <li><strong>v0.3:</strong> Preserved as the historical founding draft in <a href="/preview/charter/project-charter-v0.3.html">project-charter-v0.3.md</a>.</li>
+</ul>
+
+<p><a href="/preview/decisions/0001-add-use-cases-and-rename-objects-to-entities.html">Architecture Decision 0001</a> records the rationale for the content-model changes.</p>
+
+<p><a href="/preview/decisions/0002-build-experiences-share-capabilities.html">Architecture Decision 0002</a> records the signature principle and its meaning.</p>
+</article><div class="article-end"><a href="https://github.com/enterprise-blueprints/enterprise-blueprints.github.io/blob/main/charter/project-charter-v0.5.md">View source on GitHub ↗</a><a href="#main-content">Back to top ↑</a></div></main><aside class="contents-panel" aria-label="On this page"><p class="nav-label">On this page</p><nav id="article-contents"></nav></aside></div>
+
+  <footer class="site-footer"><span>Enterprise Blueprints<br><small>Public sector first. Applicable across the enterprise.</small></span><span><a href="/preview/LICENSING.html">CC BY 4.0 documentation · MIT software</a><br><small>An open, independent architecture initiative.</small></span></footer>
+</body>
+</html>
