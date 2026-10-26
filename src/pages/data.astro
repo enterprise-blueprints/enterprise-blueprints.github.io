@@ -1,0 +1,69 @@
+---
+import Base from '../layouts/Base.astro';
+import { published, schemaPath } from '../lib/publish';
+import { formatDate } from '../lib/format';
+import { href } from '../lib/paths';
+---
+<Base title="Data" description="Download the library's packages, catalog, and schema as JSON.">
+  <div class="container">
+    <header class="page-header">
+      <h1>Data</h1>
+      <p class="lede">
+        Every page on this site is generated from versioned JSON packages. You can download them for your own
+        tools, and each one has a SHA-256 digest you can check.
+      </p>
+    </header>
+
+    <div class="table-wrap">
+      <table class="stack-table">
+        <thead>
+          <tr>
+            <th scope="col">Package</th>
+            <th scope="col">Version</th>
+            <th scope="col">Published</th>
+            <th scope="col">License</th>
+            <th scope="col">Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          {published.map((p) => (
+            <tr>
+              <th scope="row">
+                {p.data.title}
+                <p class="digest">SHA-256 <code>{p.sha256}</code></p>
+              </th>
+              <td data-label="Version" class="nowrap">{p.data.version}</td>
+              <td data-label="Published" class="nowrap">{formatDate(p.data.publishedAt)}</td>
+              <td data-label="License">{p.data.license}</td>
+              <td data-label="Download">
+                <div><a href={href(p.path)}>blueprint.json</a></div>
+                <div><a href={href(`${p.path}.sha256`)}>blueprint.json.sha256</a></div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose">
+      <h2>Catalog</h2>
+      <p>
+        <a href={href('catalog.json')}><code>catalog.json</code></a> lists every package with its version,
+        license, and digest. Its <code>href</code> values are relative to the catalog's own address, so tools
+        can find each package from the catalog alone.
+      </p>
+      <h2>Schema</h2>
+      <p>
+        Packages follow the <a href={href(schemaPath)}>package JSON Schema</a>. A package version never
+        changes once it's published; changes go into a new version.
+      </p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  th[scope='row'] { min-width: 16rem; }
+  .prose { margin-top: 2.5rem; }
+  .digest { margin: .3rem 0 0; font-size: .8125rem; font-weight: 400; color: var(--text-muted); }
+  .digest code { font-size: .75rem; }
+</style>

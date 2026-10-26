@@ -19,23 +19,33 @@ export interface RelationGroup {
   elements: LibraryElement[];
 }
 
+/** A package as stored: its folder under content/, its exact text, and its data. */
+export interface PackageFile {
+  name: string;
+  text: string;
+  data: BlueprintPackage;
+}
+
 const files = import.meta.glob<string>('/content/*/blueprint.json', {
   query: '?raw',
   import: 'default',
   eager: true,
 });
 
-function load(): BlueprintPackage[] {
+function load(): PackageFile[] {
   const errors: string[] = [];
-  const loaded: BlueprintPackage[] = [];
+  const loaded: PackageFile[] = [];
   for (const [path, text] of Object.entries(files)) {
     const data: unknown = JSON.parse(text);
     const problems = validatePackage(data);
     errors.push(...problems.map((p) => `${path}: ${p}`));
-    if (!problems.length) loaded.push(data as BlueprintPackage);
+    if (!problems.length) loaded.push({ name: path.split('/')[2], text, data: data as BlueprintPackage });
   }
+  const packageIds = new Set<string>();
   const seen = new Map<string, string>();
-  for (const pkg of loaded) {
+  for (const { data: pkg } of loaded) {
+    if (packageIds.has(pkg.packageId)) errors.push(`package ${pkg.packageId} is defined twice`);
+    packageIds.add(pkg.packageId);
     for (const e of pkg.elements) {
       const other = seen.get(e.id);
       if (other) errors.push(`element ${e.id} is defined in both ${other} and ${pkg.packageId}`);
@@ -49,7 +59,8 @@ function load(): BlueprintPackage[] {
   return loaded;
 }
 
-export const packages = load();
+export const packageFiles = load();
+export const packages = packageFiles.map((f) => f.data);
 
 export const elements: LibraryElement[] = packages.flatMap((pkg) =>
   pkg.elements.map((e) => {

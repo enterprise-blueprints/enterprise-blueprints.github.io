@@ -6,4 +6,6 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: process.env.SITE_URL || 'https://enterprise-blueprints.github.io',
   base: process.env.BASE_PATH || '/',
+  // CI builds a second copy under a test base path into another folder.
+  outDir: process.env.OUT_DIR || 'dist',
 });

@@ -15,6 +15,7 @@ const path = Astro.url.pathname;
 const nav = [
   ...typesInUse().map(([, t]) => ({ label: t.navLabel, url: href(`${t.section}/`) })),
   { label: 'Sources', url: href('sources/') },
+  { label: 'Data', url: href('data/') },
   { label: 'About', url: href('about/') },
 ];
 ---

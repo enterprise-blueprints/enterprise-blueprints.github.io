@@ -107,7 +107,7 @@ export function validatePackage(data: unknown): string[] {
     if (!predicate) {
       errors.push(`relation ${r.id} uses unknown predicate "${r.predicate}"`);
     } else if (from && to && (!predicate.from.includes(from.type) || !predicate.to.includes(to.type))) {
-      errors.push(`relation ${r.id}: "${r.predicate}" can't link a ${from.type} to a ${to.type}`);
+      errors.push(`relation ${r.id}: "${r.predicate}" can't link ${from.type} ${r.from} to ${to.type} ${r.to}`);
     }
     for (const s of r.sourceIds ?? []) {
       if (!sourceIds.has(s)) errors.push(`relation ${r.id} cites unknown source ${s}`);

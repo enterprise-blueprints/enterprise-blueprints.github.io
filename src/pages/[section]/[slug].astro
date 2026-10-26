@@ -9,6 +9,7 @@ import { elements, relationGroups, sourcesOf, lastReviewed } from '../../lib/lib
 import { statuses } from '../../lib/vocabulary';
 import { attributeLabel, attributeValue, formatDate } from '../../lib/format';
 import { href } from '../../lib/paths';
+import { downloadUrl } from '../../lib/publish';
 
 export const getStaticPaths = (() =>
   elements.map((element) => ({
@@ -72,7 +73,13 @@ const attributes = Object.entries(element.attributes ?? {});
           <div><dt>ID</dt><dd><code class="element-id">{element.id}</code></dd></div>
           <div><dt>Type</dt><dd>{element.typeInfo.label}</dd></div>
           {element.status && <div><dt>Status</dt><dd>{statuses[element.status]}</dd></div>}
-          <div><dt>Package</dt><dd>{pkg.title} <span class="muted">v{pkg.version}</span></dd></div>
+          <div>
+            <dt>Package</dt>
+            <dd>
+              {pkg.title} <span class="muted">v{pkg.version}</span>
+              <div><a href={downloadUrl(pkg)}>Download JSON</a></div>
+            </dd>
+          </div>
           {scope.length > 0 && <div><dt>Scope</dt><dd>{scope.join('; ')}</dd></div>}
           {reviewed && <div><dt>Sources reviewed</dt><dd>{formatDate(reviewed)}</dd></div>}
           {attributes.length > 0 && (
