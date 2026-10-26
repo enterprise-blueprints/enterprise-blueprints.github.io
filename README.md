@@ -27,8 +27,9 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
 
 ## How it's organized
 
-- `content/<package>/blueprint.json` holds each package: its sources, elements, and relations. Every page
-  is generated from these files.
+- `content/<package>/<version>/blueprint.json` holds each package version: its sources, elements,
+  relations, and discovery questions. The pages show the latest version of each package; every version
+  stays published.
 - `schemas/blueprint-package.schema.json` is the package format (schemaVersion 0.1.0). Solution Studio
   keeps an identical copy.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
@@ -36,8 +37,8 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
 - `src/lib/package.ts` validates a package: the JSON Schema first, then unique IDs, known types and
   predicates, and references that resolve. Any problem stops the build.
 - `src/lib/publish.ts` defines the published data files, listed below.
-- `src/pages/` has the home page, one index and one detail template for every element type, and the
-  sources, data, and about pages.
+- `src/pages/` has the home page, one index and one detail template for every element type, the
+  discovery pages, and the sources, data, and about pages.
 
 ## Published data
 
@@ -45,23 +46,32 @@ Every build publishes these files next to the pages:
 
 | Path | What it is |
 | --- | --- |
-| `catalog.json` | Every package with its version, license, and SHA-256 digest. Its `href` values are relative to the catalog. |
+| `catalog.json` | Every published package version with its license and SHA-256 digest, the latest marked `latest: true`. Its `href` values are relative to the catalog. |
+| `vocabulary.json` | The element types and relationships, with labels, definitions, and each type's page address. |
 | `packages/<name>/<version>/blueprint.json` | A package, byte for byte as stored in `content/`. |
 | `packages/<name>/<version>/blueprint.json.sha256` | The package digest, in `sha256sum -c` format. |
 | `schemas/blueprint-package-0.1.0.schema.json` | The package JSON Schema. |
 
 `pnpm check:dist` confirms each published package matches its source file and its digest.
+`pnpm check:published` confirms every version the live site already publishes is still in the build,
+byte for byte.
 
 ## Edit content
 
-Edit `content/federal-oig/blueprint.json`, then run `pnpm verify`. If the build fails, its message names
-each problem. A new element type or predicate needs an entry in `src/lib/vocabulary.ts` first.
+Edit the latest version, such as `content/federal-oig/0.2.0/blueprint.json`, then run `pnpm verify`. If
+the build fails, its message names each problem. A new element type or predicate needs an entry in
+`src/lib/vocabulary.ts` first.
 
-A published package version shouldn't change. Once a version is live, raise `version` in the package for
-any change, so tools that pinned the old digest keep working.
+A published version never changes. Once a version is live, copy it to a new folder such as
+`content/federal-oig/0.3.0/`, raise `version` to match, and make the changes there. Tools that pinned the old
+digest keep working, and the deploy refuses a build that changes a live version.
 
-To add a second package, create `content/<name>/blueprint.json` with its own `packageId`. Element IDs must
-be unique across all packages. The site picks it up automatically.
+**Discovery questions** live in a package's `assessments`. IDs look like `assessment:<name>` and
+`question:<name>`. A choice or yes-or-no answer can point to an element through `candidateMappings`, with a
+short interpretation; text and number answers are recorded as said and point nowhere.
+
+To add a second package, create `content/<name>/<version>/blueprint.json` with its own `packageId`. Element
+IDs must be unique across all packages. The site picks it up automatically.
 
 ## Deploy
 

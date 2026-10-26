@@ -60,6 +60,12 @@ jobs:
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
+      # A version the live site already publishes must come through unchanged.
+      - name: Check published versions are unchanged
+        run: node scripts/check-published.mjs dist "$SITE_URL"
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url || 'https://enterprise-blueprints.github.io' }}
+
       # Also build under a project-site path, so a link that skips href()
       # is caught even though the real site is served from the root.
       - name: Check under a project-site base path

@@ -1,0 +1,522 @@
+{
+  "schemaVersion": "0.1.0",
+  "packageId": "org.enterprise-blueprints.federal-oig",
+  "version": "0.2.0",
+  "title": "Federal Office of Inspector General — Independent Oversight",
+  "description": "U.S. federal Office of Inspector General mission blueprint: one mission, five capabilities, one vendor-neutral implementation pattern, and a discovery question set for intake and case handling.",
+  "publisher": {
+    "name": "Enterprise Blueprints (independent reference project)",
+    "url": "https://enterprise-blueprints.github.io"
+  },
+  "license": "MIT",
+  "publishedAt": "2026-10-26",
+  "domain": "public-sector",
+  "jurisdictions": [
+    "United States — federal Offices of Inspector General"
+  ],
+  "tags": [
+    "office-of-inspector-general",
+    "federal-oversight",
+    "accountability",
+    "audits",
+    "investigations",
+    "reference-architecture"
+  ],
+  "sources": [
+    {
+      "id": "src:ig-act-404",
+      "title": "5 U.S.C. § 404 — Duties and responsibilities of Inspectors General",
+      "url": "https://www.govinfo.gov/link/uscode/5/404?link-type=html",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-10-26",
+      "note": "Principal statutory duties of federal Inspectors General."
+    },
+    {
+      "id": "src:oversight-mission",
+      "title": "Oversight.gov — Mission of Inspectors General",
+      "url": "https://www.oversight.gov/about/inspectors-general/mission",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-10-25",
+      "note": "Describes independent oversight, prevention of fraud, waste and abuse, and reporting."
+    },
+    {
+      "id": "src:cigie-faq",
+      "title": "Council of the Inspectors General on Integrity and Efficiency — Frequently Asked Questions",
+      "url": "https://www.ignet.gov/node/54",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-10-26",
+      "note": "General description of OIG missions, independence, audits, investigations, and reporting."
+    },
+    {
+      "id": "src:oversight-hotline",
+      "title": "Oversight.gov — Report Fraud, Waste, Abuse or Retaliation",
+      "url": "https://www.oversight.gov/where-report-fraud-waste-abuse-or-retaliation",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-10-26",
+      "note": "Official routing information for reports of fraud, waste, abuse, or retaliation."
+    }
+  ],
+  "elements": [
+    {
+      "id": "eb:mission:independent-government-oversight",
+      "type": "mission",
+      "title": "Independent Oversight of Government Programs and Operations",
+      "description": "Provide independent and objective oversight to prevent and detect fraud, waste, and abuse; promote economy, efficiency, and effectiveness; and communicate findings and recommendations concerning federal programs and operations.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission",
+        "src:cigie-faq"
+      ],
+      "attributes": {
+        "sector": "public-sector",
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:complaint-allegation-disclosure-intake",
+      "type": "capability",
+      "title": "Complaint, Allegation & Disclosure Intake",
+      "description": "Ability to receive, acknowledge, classify, and appropriately route allegations of wrongdoing, fraud, waste, abuse, and relevant disclosures through authorized channels.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-hotline",
+        "src:cigie-faq"
+      ],
+      "applicabilityNotes": "Confidentiality and routing rules vary. Specific retaliation complaints or protected disclosures may need referral to another legally authorized entity.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:audit-inspection-evaluation",
+      "type": "capability",
+      "title": "Audit, Inspection & Evaluation",
+      "description": "Ability to plan, conduct, supervise, or coordinate independent, objective examinations of programs, operations, performance, and controls.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission",
+        "src:cigie-faq"
+      ],
+      "applicabilityNotes": "Methodologies, mandatory reviews, professional standards, and jurisdiction depend on the OIG and engagement.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:investigation-management",
+      "type": "capability",
+      "title": "Investigation Management",
+      "description": "Ability to assess allegations within jurisdiction, plan authorized investigative work, manage evidence and case progress, and document investigative results or referrals.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission",
+        "src:cigie-faq"
+      ],
+      "applicabilityNotes": "Law enforcement powers, case types, investigative jurisdiction, evidence handling, and disclosure restrictions vary by legal authority.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:recommendations-corrective-action-monitoring",
+      "type": "capability",
+      "title": "Recommendations & Corrective Action Monitoring",
+      "description": "Ability to issue findings or recommendations where authorized, track responses and progress, and monitor implementation of corrective measures.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission"
+      ],
+      "applicabilityNotes": "OIGs generally recommend and monitor; they do not universally possess authority to implement or compel agency corrective actions.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:capability:oversight-reporting-communication",
+      "type": "capability",
+      "title": "Oversight Reporting & Communication",
+      "description": "Ability to communicate independent oversight findings, recommendations, material risks, and work results to the appropriate officials and public audiences consistent with law.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:oversight-mission",
+        "src:cigie-faq"
+      ],
+      "applicabilityNotes": "Reporting cadence, content, recipients, and confidentiality depend on legal requirements and the sensitivity of the work. Whistleblower education and coordination may be separate supporting functions.",
+      "attributes": {
+        "scope": "US-federal-OIG"
+      }
+    },
+    {
+      "id": "eb:implementationPattern:oversight-intake-case-tracking",
+      "type": "implementationPattern",
+      "title": "Oversight Intake & Case Tracking",
+      "description": "Vendor-neutral architecture for authorized intake, assignment, referral, status tracking, appropriate access controls, evidence linkage, audit trails, and records retention.",
+      "status": "reference",
+      "sourceIds": [
+        "src:oversight-hotline",
+        "src:cigie-faq"
+      ],
+      "attributes": {
+        "vendorNeutral": true
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel:oig-capability-mission-1",
+      "from": "eb:capability:complaint-allegation-disclosure-intake",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-capability-mission-2",
+      "from": "eb:capability:audit-inspection-evaluation",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-capability-mission-3",
+      "from": "eb:capability:investigation-management",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-capability-mission-4",
+      "from": "eb:capability:recommendations-corrective-action-monitoring",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-capability-mission-5",
+      "from": "eb:capability:oversight-reporting-communication",
+      "predicate": "supports_mission",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:oig-candidate-pattern-1",
+      "from": "eb:capability:complaint-allegation-disclosure-intake",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:oversight-intake-case-tracking"
+    },
+    {
+      "id": "rel:oig-candidate-pattern-2",
+      "from": "eb:capability:investigation-management",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:oversight-intake-case-tracking"
+    }
+  ],
+  "assessments": [
+    {
+      "id": "assessment:intake-and-case-handling",
+      "title": "Intake and case handling discovery",
+      "description": "Questions for the first conversations about how an office receives matters, works them, and reports on them. They ask about the office’s operations, never about individual matters or the people involved. Some answers point to capabilities or patterns worth exploring.",
+      "questions": [
+        {
+          "id": "question:intake-channels",
+          "prompt": "Through which channels does the office receive complaints, allegations, and disclosures?",
+          "kind": "multiple-choice",
+          "options": [
+            {
+              "value": "online-form",
+              "label": "An online form"
+            },
+            {
+              "value": "hotline-phone",
+              "label": "A hotline phone number"
+            },
+            {
+              "value": "email",
+              "label": "Email"
+            },
+            {
+              "value": "mail",
+              "label": "Postal mail"
+            },
+            {
+              "value": "in-person",
+              "label": "In person"
+            },
+            {
+              "value": "referrals",
+              "label": "Referrals from the agency, other offices, or Congress"
+            }
+          ],
+          "candidateMappings": [
+            {
+              "answerValue": "online-form",
+              "elementId": "eb:capability:complaint-allegation-disclosure-intake",
+              "interpretation": "Matters reach the office this way, so intake is part of the picture."
+            },
+            {
+              "answerValue": "hotline-phone",
+              "elementId": "eb:capability:complaint-allegation-disclosure-intake",
+              "interpretation": "Matters reach the office this way, so intake is part of the picture."
+            },
+            {
+              "answerValue": "email",
+              "elementId": "eb:capability:complaint-allegation-disclosure-intake",
+              "interpretation": "Matters reach the office this way, so intake is part of the picture."
+            },
+            {
+              "answerValue": "mail",
+              "elementId": "eb:capability:complaint-allegation-disclosure-intake",
+              "interpretation": "Matters reach the office this way, so intake is part of the picture."
+            },
+            {
+              "answerValue": "in-person",
+              "elementId": "eb:capability:complaint-allegation-disclosure-intake",
+              "interpretation": "Matters reach the office this way, so intake is part of the picture."
+            },
+            {
+              "answerValue": "referrals",
+              "elementId": "eb:capability:complaint-allegation-disclosure-intake",
+              "interpretation": "Matters reach the office this way, so intake is part of the picture."
+            }
+          ]
+        },
+        {
+          "id": "question:intake-triage",
+          "prompt": "After a matter arrives, how is it reviewed and routed?",
+          "kind": "single-choice",
+          "options": [
+            {
+              "value": "staff-review",
+              "label": "Staff review each one and route it by hand"
+            },
+            {
+              "value": "rules-assisted",
+              "label": "Staff review with the help of defined criteria or tooling"
+            },
+            {
+              "value": "informal",
+              "label": "It varies; there’s no consistent process"
+            },
+            {
+              "value": "unsure",
+              "label": "Not sure"
+            }
+          ],
+          "candidateMappings": [
+            {
+              "answerValue": "staff-review",
+              "elementId": "eb:capability:complaint-allegation-disclosure-intake",
+              "interpretation": "Review and routing are manual, which may be worth improving within intake."
+            },
+            {
+              "answerValue": "informal",
+              "elementId": "eb:capability:complaint-allegation-disclosure-intake",
+              "interpretation": "Review and routing vary, which suggests a gap within intake."
+            },
+            {
+              "answerValue": "informal",
+              "elementId": "eb:implementationPattern:oversight-intake-case-tracking",
+              "interpretation": "A consistent intake and assignment flow is part of the case tracking pattern."
+            }
+          ]
+        },
+        {
+          "id": "question:case-tracking",
+          "prompt": "Where is the status of investigative work tracked today?",
+          "kind": "single-choice",
+          "options": [
+            {
+              "value": "case-system",
+              "label": "A dedicated case management system"
+            },
+            {
+              "value": "shared-system",
+              "label": "A system shared with the wider agency"
+            },
+            {
+              "value": "documents",
+              "label": "Spreadsheets, documents, or email"
+            },
+            {
+              "value": "several",
+              "label": "Several of these, depending on the team"
+            }
+          ],
+          "candidateMappings": [
+            {
+              "answerValue": "case-system",
+              "elementId": "eb:capability:investigation-management",
+              "interpretation": "Investigative work is tracked in a dedicated system."
+            },
+            {
+              "answerValue": "shared-system",
+              "elementId": "eb:capability:investigation-management",
+              "interpretation": "Investigative work is tracked in a shared system, which may raise access questions."
+            },
+            {
+              "answerValue": "documents",
+              "elementId": "eb:capability:investigation-management",
+              "interpretation": "Investigative work is tracked in documents, which may be a gap in investigation management."
+            },
+            {
+              "answerValue": "documents",
+              "elementId": "eb:implementationPattern:oversight-intake-case-tracking",
+              "interpretation": "Tracking in documents suggests the case tracking pattern is worth exploring."
+            },
+            {
+              "answerValue": "several",
+              "elementId": "eb:capability:investigation-management",
+              "interpretation": "Investigative work is tracked in several places, which may make status hard to see."
+            },
+            {
+              "answerValue": "several",
+              "elementId": "eb:implementationPattern:oversight-intake-case-tracking",
+              "interpretation": "Tracking in several places suggests the case tracking pattern is worth exploring."
+            }
+          ]
+        },
+        {
+          "id": "question:evidence-linkage",
+          "prompt": "Do investigators need to keep evidence and records linked to the work they belong to?",
+          "kind": "boolean",
+          "candidateMappings": [
+            {
+              "answerValue": "true",
+              "elementId": "eb:capability:investigation-management",
+              "interpretation": "Evidence management is part of investigation management."
+            },
+            {
+              "answerValue": "true",
+              "elementId": "eb:implementationPattern:oversight-intake-case-tracking",
+              "interpretation": "Evidence linkage and audit trails are part of the case tracking pattern."
+            }
+          ]
+        },
+        {
+          "id": "question:identity-protection",
+          "prompt": "Must the identity of people who report be kept from staff who don’t need to know it?",
+          "kind": "boolean",
+          "candidateMappings": [
+            {
+              "answerValue": "true",
+              "elementId": "eb:capability:complaint-allegation-disclosure-intake",
+              "interpretation": "Protecting the identity of people who report shapes how intake works."
+            },
+            {
+              "answerValue": "true",
+              "elementId": "eb:implementationPattern:oversight-intake-case-tracking",
+              "interpretation": "Appropriate access controls are part of the case tracking pattern."
+            }
+          ]
+        },
+        {
+          "id": "question:audit-work",
+          "prompt": "Does the office plan and carry out audits, inspections, or evaluations?",
+          "kind": "boolean",
+          "candidateMappings": [
+            {
+              "answerValue": "true",
+              "elementId": "eb:capability:audit-inspection-evaluation",
+              "interpretation": "The office does audit, inspection, or evaluation work."
+            }
+          ]
+        },
+        {
+          "id": "question:recommendation-tracking",
+          "prompt": "How does the office follow recommendations until they’re closed?",
+          "kind": "single-choice",
+          "options": [
+            {
+              "value": "system",
+              "label": "In a system built for it"
+            },
+            {
+              "value": "documents",
+              "label": "In spreadsheets or documents"
+            },
+            {
+              "value": "inconsistent",
+              "label": "Not consistently"
+            },
+            {
+              "value": "not-applicable",
+              "label": "The office doesn’t issue recommendations"
+            }
+          ],
+          "candidateMappings": [
+            {
+              "answerValue": "system",
+              "elementId": "eb:capability:recommendations-corrective-action-monitoring",
+              "interpretation": "Recommendations are tracked in a system."
+            },
+            {
+              "answerValue": "documents",
+              "elementId": "eb:capability:recommendations-corrective-action-monitoring",
+              "interpretation": "Recommendations are tracked in documents, which may make follow-up hard to see."
+            },
+            {
+              "answerValue": "inconsistent",
+              "elementId": "eb:capability:recommendations-corrective-action-monitoring",
+              "interpretation": "Recommendations aren’t followed consistently, which suggests a gap in monitoring."
+            }
+          ]
+        },
+        {
+          "id": "question:reporting",
+          "prompt": "Which reports and communications does the office produce?",
+          "kind": "multiple-choice",
+          "options": [
+            {
+              "value": "semiannual",
+              "label": "Semiannual reports to Congress"
+            },
+            {
+              "value": "work-reports",
+              "label": "Audit, inspection, and evaluation reports"
+            },
+            {
+              "value": "investigative-summaries",
+              "label": "Summaries of investigative results"
+            },
+            {
+              "value": "public-updates",
+              "label": "Public website updates"
+            }
+          ],
+          "candidateMappings": [
+            {
+              "answerValue": "semiannual",
+              "elementId": "eb:capability:oversight-reporting-communication",
+              "interpretation": "The office reports to Congress."
+            },
+            {
+              "answerValue": "work-reports",
+              "elementId": "eb:capability:oversight-reporting-communication",
+              "interpretation": "The office publishes reports on its work."
+            },
+            {
+              "answerValue": "investigative-summaries",
+              "elementId": "eb:capability:oversight-reporting-communication",
+              "interpretation": "The office communicates investigative results."
+            },
+            {
+              "answerValue": "public-updates",
+              "elementId": "eb:capability:oversight-reporting-communication",
+              "interpretation": "The office communicates with the public."
+            }
+          ]
+        },
+        {
+          "id": "question:monthly-volume",
+          "prompt": "About how many new matters does the office receive in a typical month?",
+          "kind": "number"
+        },
+        {
+          "id": "question:hardest-part",
+          "prompt": "What’s the hardest part of taking a matter from intake to closure today?",
+          "kind": "text"
+        }
+      ]
+    }
+  ]
+}

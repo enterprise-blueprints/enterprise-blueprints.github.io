@@ -32,7 +32,7 @@ import { href } from '../lib/paths';
                 {p.data.title}
                 <p class="digest">SHA-256 <code>{p.sha256}</code></p>
               </th>
-              <td data-label="Version" class="nowrap">{p.data.version}</td>
+              <td data-label="Version" class="nowrap">{p.data.version}{p.latest && <span class="latest">Latest</span>}</td>
               <td data-label="Published" class="nowrap">{formatDate(p.data.publishedAt)}</td>
               <td data-label="License">{p.data.license}</td>
               <td data-label="Download">
@@ -48,8 +48,8 @@ import { href } from '../lib/paths';
     <div class="prose">
       <h2>Catalog</h2>
       <p>
-        <a href={href('catalog.json')}><code>catalog.json</code></a> lists every package with its version,
-        license, and digest. Its <code>href</code> values are relative to the catalog's own address, so tools
+        <a href={href('catalog.json')}><code>catalog.json</code></a> lists every published version of every
+        package, with its license and digest, and marks the latest. Its <code>href</code> values are relative to the catalog's own address, so tools
         can find each package from the catalog alone.
       </p>
       <h2>Vocabulary</h2>
@@ -73,4 +73,5 @@ import { href } from '../lib/paths';
   .prose { margin-top: 2.5rem; }
   .digest { margin: .3rem 0 0; font-size: .8125rem; font-weight: 400; color: var(--text-muted); }
   .digest code { font-size: .75rem; }
+  .latest { margin-left: .4rem; padding: .05rem .45rem; border-radius: 999px; font-size: .75rem; background: var(--surface-muted); color: var(--text-muted); }
 </style>

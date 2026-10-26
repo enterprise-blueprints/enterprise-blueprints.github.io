@@ -39,6 +39,34 @@ export interface Relation {
   sourceIds?: string[];
 }
 
+export interface QuestionOption {
+  value: string;
+  label: string;
+}
+
+/** An answer that points to an element worth exploring, and why. */
+export interface CandidateMapping {
+  answerValue: string;
+  elementId: string;
+  interpretation: string;
+}
+
+export interface Question {
+  id: string;
+  prompt: string;
+  kind: 'single-choice' | 'multiple-choice' | 'text' | 'number' | 'boolean';
+  options?: QuestionOption[];
+  candidateMappings?: CandidateMapping[];
+}
+
+/** A set of discovery questions. */
+export interface Assessment {
+  id: string;
+  title: string;
+  description?: string;
+  questions: Question[];
+}
+
 export interface BlueprintPackage {
   schemaVersion: '0.1.0';
   packageId: string;
@@ -54,6 +82,7 @@ export interface BlueprintPackage {
   sources?: Source[];
   elements: Element[];
   relations: Relation[];
+  assessments?: Assessment[];
 }
 
 const ajv = new Ajv2020({ allErrors: true, strict: true });
@@ -117,5 +146,46 @@ export function validatePackage(data: unknown): string[] {
     edges.add(edge);
   }
 
+  errors.push(...assessmentProblems(pkg.assessments ?? [], elementsById));
+  return errors;
+}
+
+const CHOICE = new Set(['single-choice', 'multiple-choice']);
+
+/**
+ * Question sets: IDs that name what they are, choices with distinct values,
+ * and mappings that use a real answer and point at a real element. Text and
+ * number answers are recorded as said, so they don't map to anything.
+ */
+function assessmentProblems(assessments: Assessment[], elementsById: Map<string, Element>): string[] {
+  const errors: string[] = [];
+  for (const id of duplicates(assessments.map((a) => a.id))) errors.push(`duplicate assessment ID ${id}`);
+  const questions = assessments.flatMap((a) => a.questions);
+  for (const id of duplicates(questions.map((q) => q.id))) errors.push(`duplicate question ID ${id}`);
+
+  for (const a of assessments) {
+    if (!/^assessment:[a-z0-9][a-z0-9-]*$/.test(a.id)) errors.push(`assessment ${a.id} should look like assessment:<name>`);
+    if (!a.questions.length) errors.push(`assessment ${a.id} has no questions`);
+  }
+  for (const q of questions) {
+    if (!/^question:[a-z0-9][a-z0-9-]*$/.test(q.id)) errors.push(`question ${q.id} should look like question:<name>`);
+    const options = q.options ?? [];
+    const choice = CHOICE.has(q.kind);
+    if (choice && options.length < 2) errors.push(`question ${q.id} needs at least two options`);
+    if (!choice && options.length) errors.push(`question ${q.id} is ${q.kind}, so it can't have options`);
+    for (const v of duplicates(options.map((o) => o.value))) errors.push(`question ${q.id} repeats option ${v}`);
+
+    const answers = choice ? new Set(options.map((o) => o.value)) : q.kind === 'boolean' ? new Set(['true', 'false']) : new Set<string>();
+    for (const m of q.candidateMappings ?? []) {
+      if (!answers.size) {
+        errors.push(`question ${q.id} is ${q.kind}, so its answers can't map to elements`);
+        break;
+      }
+      if (!answers.has(m.answerValue)) errors.push(`question ${q.id} maps answer "${m.answerValue}", which isn't one of its answers`);
+      if (!elementsById.has(m.elementId)) errors.push(`question ${q.id} maps to unknown element ${m.elementId}`);
+    }
+    const pairs = (q.candidateMappings ?? []).map((m) => `${m.answerValue} → ${m.elementId}`);
+    for (const pair of duplicates(pairs)) errors.push(`question ${q.id} repeats mapping ${pair}`);
+  }
   return errors;
 }

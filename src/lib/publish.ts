@@ -45,6 +45,7 @@ export function catalog() {
       title: p.data.title,
       license: p.data.license,
       publishedAt: p.data.publishedAt,
+      latest: p.latest,
       href: p.path,
       sha256: p.sha256,
     })),

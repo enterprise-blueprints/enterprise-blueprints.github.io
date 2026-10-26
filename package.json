@@ -15,6 +15,7 @@
     "check": "astro check",
     "test": "vitest run",
     "check:dist": "node scripts/check-dist.mjs dist",
+    "check:published": "node scripts/check-published.mjs dist",
     "verify": "pnpm check && pnpm test && pnpm build && pnpm check:dist"
   },
   "pnpm": {

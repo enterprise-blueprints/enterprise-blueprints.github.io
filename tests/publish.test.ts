@@ -24,3 +24,17 @@ describe('vocabulary', () => {
     expect(catalog().vocabulary).toBe('vocabulary.json');
   });
 });
+
+describe('catalog', () => {
+  it('lists every version and marks only the newest as latest', () => {
+    const versions = catalog().packages.map((p) => [p.version, p.latest]);
+    expect(versions).toEqual([
+      ['0.1.0', false],
+      ['0.2.0', true],
+    ]);
+  });
+
+  it('shows the latest version on the pages', () => {
+    expect(packages.map((p) => p.version)).toEqual(['0.2.0']);
+  });
+});

@@ -56,12 +56,17 @@ for (const entry of catalog.packages) {
   }
   const bytes = readFileSync(file);
   if (sha256(bytes) !== entry.sha256) errors.push(`catalog: digest for ${entry.href} doesn't match the file`);
-  const name = entry.href.split('/')[1];
-  if (!bytes.equals(readFileSync(join('content', name, 'blueprint.json')))) {
-    errors.push(`${entry.href} differs from content/${name}/blueprint.json`);
+  const [, name, version] = entry.href.split('/');
+  const source = join('content', name, version, 'blueprint.json');
+  if (!existsSync(source) || !bytes.equals(readFileSync(source))) {
+    errors.push(`${entry.href} differs from content/${name}/${version}/blueprint.json`);
   }
   const digestFile = readFileSync(`${file}.sha256`, 'utf8');
   if (digestFile !== `${entry.sha256}  blueprint.json\n`) errors.push(`${entry.href}.sha256 doesn't match the catalog`);
+}
+for (const id of new Set(catalog.packages.map((p) => p.packageId))) {
+  const latest = catalog.packages.filter((p) => p.packageId === id && p.latest);
+  if (latest.length !== 1) errors.push(`catalog: ${id} has ${latest.length} versions marked latest`);
 }
 if (!existsSync(join(dist, catalog.schema))) {
   errors.push(`catalog: schema ${catalog.schema} doesn't exist`);
