@@ -80,7 +80,7 @@ Ask before committing or pushing. Both have been on request only.
    - patterns and experiences in Design
    - capability states and events in Explore
 5. Consider a shared, generic case lifecycle process once a second mission needs the same steps.
-6. Continue the discovery toolkit plan in `notes/discovery-toolkit.md`: Studio's tools, outcome-first readiness, and question answers as evidence are done; next is the question bank.
+6. Continue the discovery toolkit plan in `notes/discovery-toolkit.md`: Studio's tools, outcome-first readiness, question answers as evidence, and the question bank are done. Next: more question sets (security and compliance, data and migration, integration), then step 4.
 
 ## Working notes
 

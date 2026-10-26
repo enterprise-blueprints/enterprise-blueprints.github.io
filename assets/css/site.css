@@ -905,3 +905,9 @@ a.block-ref:hover .block-ref__title { text-decoration-color: currentColor; }
   .record-layout { display: block; }
   a { color: inherit; }
 }
+
+/* The question bank: sets grouped under "For any engagement" and "For one mission". */
+.question-bank__group { margin-top: 2.5rem; }
+.question-set__title { margin-bottom: .35rem; }
+.prose .question-table td[data-label="Informs"], .prose .question-table td[data-label="Ask"] { white-space: nowrap; }
+@media (max-width: 45.99rem) { .prose .question-table td[data-label="Informs"], .prose .question-table td[data-label="Ask"] { white-space: normal; } }

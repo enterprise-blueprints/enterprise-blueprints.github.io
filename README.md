@@ -108,6 +108,7 @@ What the workflow does:
 ├── vocabulary.html             Vocabulary reference, generated from _data/
 ├── blocks.html                 Building Blocks index, with type filter
 ├── missions.html               Mission Blueprints index
+├── question-bank.html          Question bank, generated from _data/question_bank/
 ├── implementations.html        Implementation Guides index
 ├── about.md                    About
 ├── _blocks/                    One file per building block (all types)
@@ -119,7 +120,9 @@ What the workflow does:
 │   ├── statuses.yml            planned, draft, published
 │   ├── scopes.yml              shared, domain
 │   ├── domains.yml             Domains used as metadata
-│   └── navigation.yml          Main navigation
+│   ├── navigation.yml          Main navigation
+│   ├── mission_models/         One effectiveness model per mission, by its file name
+│   └── question_bank/          One file per question set
 ├── _layouts/                   default, page, block, mission, implementation
 ├── _includes/                  Reference links, badges, cards, architecture diagram
 ├── assets/                     site.css, site.js, favicon
@@ -365,6 +368,27 @@ interventions:              # what would change a factor, and the requirements t
 ```
 
 The validator checks every reference: steps, roles, factors and outcomes in links and loops, and the requirements interventions name. The mission page shows the model in a collapsed "Mission effectiveness model" section.
+
+### Question bank
+
+The question bank holds questions to ask in discovery, in sets. Each set is a file in `_data/question_bank/`, named for the set. A set is for any engagement, or names a `mission` and is for that mission only:
+
+```yaml
+title: Kickoff
+summary: Why the work matters now, what success looks like, who decides, and what can't change.
+when: At the start of an engagement, with the sponsor and the people who run the work.
+mission: mission.inspector-general-investigations   # optional: a set for one mission
+questions:
+  - id: why-now             # unique in the set
+    text: Why is this work happening now, and what happens if nothing changes?
+    why: It shows the urgency, and the cost of doing nothing that any solution has to beat.
+    informs: [outcome]      # outcome | metric | stakeholder | system | process | constraint | quality
+    ask: [hotline]          # only in a mission's set: the mission's role ids
+```
+
+`why` says what the answer changes, so whoever asks knows why it matters. `informs` says what the answer feeds: the parts of discovery, plus constraints and quality requirements. The validator checks the fields, the mission, and the role ids. The Question bank page (`/missions/question-bank/`) lists the sets, standalone ones first, and each mission page links to its own. Sets list in file-name order. A mission's effectiveness model also has questions, on its factors; a mission's set holds the ones that don't belong to a factor.
+
+Solution Studio reads the same files: an architect adds questions from a set, sends them ahead as a questionnaire, and records the answers as evidence.
 
 ---
 

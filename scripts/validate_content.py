@@ -1251,6 +1251,84 @@ def check_mission_models(root: Path, missions: list[Record], blocks_by_id: dict,
     return count
 
 
+QUESTION_SET_KEYS = {"title", "summary", "when", "mission", "questions"}
+QUESTION_KEYS = {"id", "text", "why", "informs", "ask"}
+# What an answer feeds: the parts of discovery, plus constraints and quality
+# requirements for Define.
+QUESTION_INFORMS = ("outcome", "metric", "stakeholder", "system", "process", "constraint", "quality")
+
+
+def check_question_bank(root: Path, missions: list[Record], report: Report) -> int:
+    """Check each question set in _data/question_bank/.
+
+    A set is standalone, for any engagement, or names a mission and is for
+    that mission only. Only a mission's set can say whom to ask, by the
+    mission's role ids.
+    """
+    directory = root / "_data" / "question_bank"
+    if not directory.exists():
+        return 0
+    by_id = {m.data.get("id"): m for m in missions}
+    count = 0
+    for path in sorted(directory.glob("*.yml")):
+        count += 1
+        rel = path.relative_to(root).as_posix()
+        if not SLUG_PATTERN.match(path.stem):
+            report.error(rel, "the file name must be lowercase words joined by hyphens, such as kickoff.yml.")
+        data = load_yaml_file(path, report, root)
+        if not isinstance(data, dict):
+            report.error(rel, "must be a mapping with 'title', 'summary', and 'questions'.")
+            continue
+        for key in data:
+            if key not in QUESTION_SET_KEYS:
+                report.warn(rel, f"unknown field '{key}' will be ignored." + suggest(key, QUESTION_SET_KEYS))
+        for key in ("title", "summary"):
+            if is_blank(data.get(key)):
+                report.error(rel, f"needs a '{key}'.")
+
+        role_ids = None
+        mission_id = data.get("mission")
+        if not is_blank(mission_id):
+            mission = by_id.get(mission_id)
+            if mission is None:
+                report.error(rel, f"mission '{mission_id}' doesn't exist." + suggest(mission_id, [i for i in by_id if i]))
+            else:
+                role_ids = [str(r["id"]) for r in mission.data.get("roles") or [] if isinstance(r, dict) and r.get("id")]
+
+        questions = data.get("questions")
+        if not isinstance(questions, list) or not questions:
+            report.error(rel, "needs a list of 'questions'.")
+            continue
+        seen = set()
+        for index, question in enumerate(questions, start=1):
+            if not isinstance(question, dict) or is_blank(question.get("id")) or is_blank(question.get("text")):
+                report.error(rel, f"question #{index} needs an 'id' and a 'text'.")
+                continue
+            question_id = str(question["id"])
+            where = f"{rel}: question '{question_id}'"
+            if not SLUG_PATTERN.match(question_id):
+                report.error(where, "the id must be lowercase words joined by hyphens.")
+            if question_id in seen:
+                report.error(where, "the id is used twice in this set.")
+            seen.add(question_id)
+            for key in question:
+                if key not in QUESTION_KEYS:
+                    report.warn(where, f"unknown field '{key}' will be ignored." + suggest(key, QUESTION_KEYS))
+            if is_blank(question.get("why")):
+                report.warn(where, "add 'why': what the answer changes, so the architect knows why to ask.")
+            for value in question.get("informs") or []:
+                if value not in QUESTION_INFORMS:
+                    report.error(where, f"informs '{value}' isn't one of: {', '.join(QUESTION_INFORMS)}." + suggest(value, QUESTION_INFORMS))
+            ask = question.get("ask") or []
+            if ask and role_ids is None:
+                report.error(where, "'ask' names mission roles, so only a set with a 'mission' can have it.")
+            elif role_ids is not None:
+                for role in ask:
+                    if role not in role_ids:
+                        report.error(where, f"ask '{role}' isn't one of the mission's role ids." + suggest(role, role_ids))
+    return count
+
+
 def check_mission(
     record: Record,
     blocks_by_id: dict[str, Record],
@@ -1475,6 +1553,10 @@ def validate(root: Path) -> Report:
     models = check_mission_models(root, missions, blocks_by_id, report, block_files)
     if models:
         report.counts["mission models"] = models
+
+    question_sets = check_question_bank(root, missions, report)
+    if question_sets:
+        report.counts["question sets"] = question_sets
 
     for guide in implementations:
         check_fields(guide, IMPLEMENTATION_REQUIRED, IMPLEMENTATION_OPTIONAL, report)

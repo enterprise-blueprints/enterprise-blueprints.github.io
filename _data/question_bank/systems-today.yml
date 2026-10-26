@@ -1,0 +1,38 @@
+# Questions about the systems in place today. See "Question bank" in the
+# README for the format.
+title: Current-state systems
+summary: The systems, spreadsheets, and mailboxes that hold the work today, what connects them, and what has to stay.
+when: Once the scope is clear, with the people who run and support today's systems.
+questions:
+  - id: inventory
+    text: Which systems, spreadsheets, and shared mailboxes hold this work today?
+    why: Informal tools hold as much of the work as formal systems, and both have to be accounted for.
+    informs: [system]
+  - id: owners
+    text: Who owns and supports each system, and is it under a contract?
+    why: Owners have to agree to changes, and contracts can fix how long a system stays.
+    informs: [system, stakeholder, constraint]
+  - id: fate
+    text: Which systems have to stay, which could be replaced, and which are already being retired?
+    why: It decides what the solution integrates with, replaces, or retires.
+    informs: [system]
+  - id: hand-copying
+    text: Where do people copy information from one system into another by hand?
+    why: Re-keying is slow and error-prone, and removing it is often an outcome in itself.
+    informs: [process, outcome]
+  - id: connections
+    text: What does each system exchange with the others, and how, such as files, APIs, or email?
+    why: Today's connections become integration requirements, or work the solution takes over.
+    informs: [system, process]
+  - id: data-history
+    text: How much data does each system hold, and how much history has to move to a new one?
+    why: Volume and history shape migration effort, storage, and performance needs.
+    informs: [system, quality]
+  - id: workarounds
+    text: What do people work around in today's systems?
+    why: Workarounds show what the systems don't support, and where the process really differs from the documented one.
+    informs: [process, quality]
+  - id: sensitive-data
+    text: Which systems hold sensitive data, and what rules apply to it?
+    why: Data rules become constraints and quality requirements for security, privacy, and retention.
+    informs: [constraint, quality]

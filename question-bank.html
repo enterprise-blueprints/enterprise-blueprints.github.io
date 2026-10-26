@@ -1,0 +1,59 @@
+---
+layout: default
+title: Question bank
+permalink: /missions/question-bank/
+summary: Questions to ask in discovery, in sets for common situations and for particular missions. Each says why it's worth asking and what the answer informs.
+---
+{%- comment -%}
+  The question sets in _data/question_bank/: standalone sets first, then the
+  sets for one mission. Solution Studio reads the same files.
+{%- endcomment -%}
+{%- assign sets = site.data.question_bank -%}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ '/missions/' | relative_url }}">Mission Blueprints</a></li>
+      <li><span aria-current="page">{{ page.title }}</span></li>
+    </ol>
+  </nav>
+  <header class="page-header">
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }} Use a set to prepare a workshop, or send it ahead as a questionnaire. The answers feed a project's outcomes, stakeholders, systems, processes, and requirements.</p>
+  </header>
+
+  {%- for pass in (1..2) %}
+  {%- if pass == 1 %}
+  <h2 class="question-bank__group">For any engagement</h2>
+  {%- else %}
+  <h2 class="question-bank__group">For one mission</h2>
+  {%- endif %}
+  {%- for entry in sets %}
+  {%- assign slug = entry[0] -%}
+  {%- assign set = entry[1] -%}
+  {%- if pass == 1 and set.mission %}{% continue %}{% endif -%}
+  {%- if pass == 2 and set.mission == nil %}{% continue %}{% endif -%}
+  {%- assign set_mission = nil -%}
+  {%- if set.mission %}{% assign set_mission = site.missions | where: "id", set.mission | first %}{% endif %}
+  <section class="section" id="{{ slug }}" aria-labelledby="{{ slug }}-heading">
+    <h3 id="{{ slug }}-heading" class="question-set__title">{{ set.title }}</h3>
+    <p class="section-note">{{ set.summary }}{% if set.when %} <strong>When:</strong> {{ set.when }}{% endif %}{% if set_mission %} <strong>Mission:</strong> <a href="{{ set_mission.url | relative_url }}">{{ set_mission.title }}</a>.{% endif %}</p>
+    <div class="prose">
+    <table class="attribute-table data-table question-table">
+      <thead><tr><th scope="col">Question</th><th scope="col">Informs</th>{% if set_mission %}<th scope="col">Ask</th>{% endif %}</tr></thead>
+      <tbody>
+      {%- for q in set.questions %}
+      <tr id="{{ slug }}-{{ q.id }}">
+        <th scope="row" class="data-table__plain"><span class="requirement__title">{{ q.text }}</span>{% if q.why %}<span class="requirement__statement">{{ q.why }}</span>{% endif %}</th>
+        <td data-label="Informs">{% for i in q.informs %}<span class="data-table__line">{{ i | capitalize }}</span>{% endfor %}</td>
+        {%- if set_mission %}
+        <td data-label="Ask">{% for role_id in q.ask %}{% assign role = set_mission.roles | where: "id", role_id | first %}<span class="data-table__line">{{ role.name | default: role_id }}</span>{% endfor %}</td>
+        {%- endif %}
+      </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    </div>
+  </section>
+  {%- endfor %}
+  {%- endfor %}
+</div>

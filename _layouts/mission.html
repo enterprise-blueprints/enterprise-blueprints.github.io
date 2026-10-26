@@ -351,6 +351,17 @@ layout: default
           <dd><a href="#lifecycle">{{ lifecycle.size }} illustrative stages</a></dd>
         </div>
         {%- endif %}
+        {%- capture mission_sets -%}
+          {%- for entry in site.data.question_bank -%}
+            {%- if entry[1].mission == mission_id -%}<a href="{{ '/missions/question-bank/' | relative_url }}#{{ entry[0] }}">{{ entry[1].title }}</a>{%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if mission_sets != "" %}
+        <div>
+          <dt>Discovery questions</dt>
+          <dd>{{ mission_sets }}</dd>
+        </div>
+        {%- endif %}
       </dl>
       {% include edit-link.html %}
     </aside>

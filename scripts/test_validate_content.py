@@ -69,8 +69,8 @@ Mission body.
 class ValidatorTestCase(unittest.TestCase):
     def setUp(self):
         self.root = Path(tempfile.mkdtemp())
-        # The registries, without the real mission models: they belong to real missions.
-        shutil.copytree(REPO / "_data", self.root / "_data", ignore=shutil.ignore_patterns("mission_models"))
+        # The registries, without the real mission models and question sets: they belong to real missions.
+        shutil.copytree(REPO / "_data", self.root / "_data", ignore=shutil.ignore_patterns("mission_models", "question_bank"))
         for folder in ("_blocks", "_missions", "_implementations"):
             (self.root / folder).mkdir()
         self.write("_blocks/entity.case.md", CASE)
@@ -854,6 +854,62 @@ class ImplementationRules(ValidatorTestCase):
     def test_block_may_not_use_realizes(self):
         self.write("_blocks/capability.case-management.md", CASE_MANAGEMENT.replace("type: manages", "type: realizes"))
         self.assertFails("is not allowed from type 'capability'")
+
+
+QUESTION_SET = """\
+title: Example questions
+summary: For tests.
+mission: mission.example
+questions:
+  - { id: why-now, text: "Why now?", why: It shows the urgency., informs: [outcome], ask: [owner] }
+"""
+
+
+class QuestionBankRules(ValidatorTestCase):
+    def setUp(self):
+        super().setUp()
+        self.write("_missions/example.md", MISSION.replace("lifecycle:\n", "roles:\n  - { id: owner, name: Case owner }\nlifecycle:\n"))
+        (self.root / "_data" / "question_bank").mkdir()
+
+    def write_set(self, text: str = QUESTION_SET, name: str = "example") -> None:
+        (self.root / "_data" / "question_bank" / f"{name}.yml").write_text(text, encoding="utf-8")
+
+    def warnings(self) -> str:
+        # Only the question bank's: the shared fixtures have warnings of their own.
+        return "\n".join(w for w in validate_content.validate(self.root).warnings if "question_bank" in w)
+
+    def test_well_formed_set_is_valid(self):
+        self.write_set()
+        self.assertEqual(self.errors(), "")
+        self.assertEqual(self.warnings(), "")
+
+    def test_a_standalone_set_needs_no_mission(self):
+        self.write_set(QUESTION_SET.replace("mission: mission.example\n", "").replace(", ask: [owner]", ""))
+        self.assertEqual(self.errors(), "")
+
+    def test_mission_must_exist(self):
+        self.write_set(QUESTION_SET.replace("mission.example", "mission.exampel"))
+        self.assertFails("mission 'mission.exampel' doesn't exist", "Did you mean 'mission.example'?")
+
+    def test_ask_needs_a_mission(self):
+        self.write_set(QUESTION_SET.replace("mission: mission.example\n", ""))
+        self.assertFails("only a set with a 'mission' can have it")
+
+    def test_ask_must_be_a_mission_role(self):
+        self.write_set(QUESTION_SET.replace("ask: [owner]", "ask: [boss]"))
+        self.assertFails("ask 'boss' isn't one of the mission's role ids")
+
+    def test_informs_must_be_known(self):
+        self.write_set(QUESTION_SET.replace("informs: [outcome]", "informs: [outcomes]"))
+        self.assertFails("informs 'outcomes' isn't one of", "Did you mean 'outcome'?")
+
+    def test_question_ids_are_unique(self):
+        self.write_set(QUESTION_SET + "  - { id: why-now, text: 'Again?', why: Twice. }\n")
+        self.assertFails("the id is used twice in this set")
+
+    def test_a_question_without_why_warns(self):
+        self.write_set(QUESTION_SET.replace(" why: It shows the urgency.,", ""))
+        self.assertIn("add 'why'", self.warnings())
 
 
 if __name__ == "__main__":
