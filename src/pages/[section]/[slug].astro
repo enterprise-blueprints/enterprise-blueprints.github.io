@@ -7,8 +7,9 @@ import ElementTable from '../../components/ElementTable.astro';
 import SourceList from '../../components/SourceList.astro';
 import MissionStack from '../../components/MissionStack.astro';
 import OutcomeMatrix from '../../components/OutcomeMatrix.astro';
-import { elements, missionBlueprint, relationGroups, sourcesOf, lastReviewed, questionsAbout, usedBy } from '../../lib/library';
-import { predicates, statuses } from '../../lib/vocabulary';
+import PatternCompare from '../../components/PatternCompare.astro';
+import { elements, missionBlueprint, patternDetails, relationGroups, relationNote, sourcesOf, lastReviewed, questionsAbout, usedBy } from '../../lib/library';
+import { patternFields, predicates, statuses } from '../../lib/vocabulary';
 import { attributeLabel, attributeValue, formatDate } from '../../lib/format';
 import { href } from '../../lib/paths';
 import { downloadUrl } from '../../lib/publish';
@@ -25,15 +26,19 @@ const groups = relationGroups(element);
 const sources = sourcesOf(element);
 const reviewed = lastReviewed(sources);
 const scope = element.jurisdictions ?? pkg.jurisdictions ?? [];
-const attributes = Object.entries(element.attributes ?? {});
+const isPattern = element.type === 'implementationPattern';
+const pattern = isPattern ? patternDetails(element) : null;
+// A pattern's own fields have sections of their own.
+const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => !isPattern || !(key === 'approach' || key in patternFields));
 const questions = questionsAbout(element);
 const users = usedBy(element);
 // A mission shows everything under it, band by band, and which capabilities serve which outcomes.
 const blueprint = element.type === 'mission' ? missionBlueprint(element) : null;
 const stacked = Boolean(blueprint?.capabilities.length);
-// The stack already shows the mission's outcomes and capabilities.
+// The stack already shows the mission's outcomes and capabilities, and a capability compares its patterns.
 const covered = [predicates.seeks.outgoing, predicates.supports_mission.incoming];
-const shownGroups = stacked ? groups.filter((g) => !covered.includes(g.heading)) : groups;
+const patternGroup = groups.find((g) => g.heading === predicates.candidate_pattern.outgoing);
+const shownGroups = groups.filter((g) => g !== patternGroup && !(stacked && covered.includes(g.heading)));
 ---
 <Base title={element.title} description={element.description}>
   <div class="container">
@@ -49,6 +54,7 @@ const shownGroups = stacked ? groups.filter((g) => !covered.includes(g.heading))
       <div class="record-header__meta">
         <TypeBadge type={element.type} />
         <StatusBadge status={element.status} />
+        {pattern?.approach && <span class="approach-badge">{pattern.approach}</span>}
       </div>
       <h1>{element.title}</h1>
       <p class="lede">{element.description}</p>
@@ -72,13 +78,44 @@ const shownGroups = stacked ? groups.filter((g) => !covered.includes(g.heading))
           </div>
         )}
 
-        {shownGroups.map((g) => (
+        {pattern && pattern.fields.length > 0 && (
+          <div class="pattern-fields">
+            {pattern.fields.map((f) => (
+              <section class={`pattern-field pattern-field--${f.key}`}>
+                <h2>{f.label}</h2>
+                <ul>{f.items.map((s) => <li>{s}</li>)}</ul>
+              </section>
+            ))}
+          </div>
+        )}
+
+        {shownGroups.map((g) => {
+          // A pattern's capabilities each carry what their link says, such as a mission's caveat.
+          const perRow = isPattern && g.heading === predicates.candidate_pattern.incoming;
+          const notes = perRow
+            ? new Map(g.elements.flatMap((c) => {
+                const note = relationNote(c, 'candidate_pattern', element);
+                return note ? [[c.id, note] as const] : [];
+              }))
+            : undefined;
+          return (
+            <section class="section">
+              <h2>{g.heading}</h2>
+              {!perRow && g.notes.map((n) => <p class="section-note">{n}</p>)}
+              <ElementTable elements={g.elements} notes={notes} />
+            </section>
+          );
+        })}
+
+        {patternGroup && (
           <section class="section">
-            <h2>{g.heading}</h2>
-            {g.notes.map((n) => <p class="section-note">{n}</p>)}
-            <ElementTable elements={g.elements} />
+            <h2>Compare the candidate patterns</h2>
+            <p class="section-note">
+              Example approaches that might realize this capability, with when each one fits and what to watch for.
+            </p>
+            <PatternCompare capability={element} patterns={patternGroup.elements} />
           </section>
-        ))}
+        )}
 
         {questions.length > 0 && (
           <section class="section">
@@ -142,4 +179,11 @@ const shownGroups = stacked ? groups.filter((g) => !covered.includes(g.heading))
   .discovery-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .9rem; }
   .discovery-list > li > a { font-weight: 600; }
   .discovery-list ul { margin: .3rem 0 0; padding-left: 1.1rem; display: grid; gap: .2rem; font-size: .95rem; }
+  .approach-badge { font-size: .8125rem; font-weight: 600; padding: .15rem .55rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-muted); }
+  .pattern-fields { display: grid; gap: 1rem; margin-bottom: 2rem; }
+  @media (min-width: 46rem) { .pattern-fields { grid-template-columns: 1fr 1fr; } }
+  .pattern-field { padding: 1rem 1.15rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+  .pattern-field--parts, .pattern-field--watchFor { grid-column: 1 / -1; }
+  .pattern-field h2 { margin: 0 0 .5rem; font-size: 1rem; }
+  .pattern-field ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; }
 </style>

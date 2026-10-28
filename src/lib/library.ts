@@ -5,7 +5,7 @@
 // elements. Any validation problem stops the build.
 
 import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
-import { elementTypes, predicates, type ElementTypeInfo } from './vocabulary';
+import { elementTypes, patternApproaches, patternFields, predicates, type ElementTypeInfo } from './vocabulary';
 import { href } from './paths';
 
 export interface LibraryElement extends Element {
@@ -215,7 +215,27 @@ export function missionBlueprint(mission: LibraryElement): MissionBlueprint {
     capabilities,
     measures: unique(outcomes.flatMap((o) => o.measures)),
     requirements: unique(capabilities.flatMap((c) => c.requirements)),
-    patterns: unique(capabilities.flatMap((c) => c.patterns)),
+    patterns: unique(capabilities.flatMap((c) => c.patterns)).sort((a, b) => order(a) - order(b)),
+  };
+}
+
+/** What a relation between two elements says about itself, such as a mission's caveat on a shared pattern. */
+export function relationNote(from: LibraryElement, predicate: string, to: LibraryElement): string | undefined {
+  return relations.find((r) => r.from === from.id && r.predicate === predicate && r.to === to.id)?.description;
+}
+
+export interface PatternDetails {
+  /** The approach's label, such as "Configure a product". */
+  approach?: string;
+  fields: { key: string; label: string; items: string[] }[];
+}
+
+/** An implementation pattern's own fields, in vocabulary order. */
+export function patternDetails(pattern: LibraryElement): PatternDetails {
+  const a = pattern.attributes ?? {};
+  return {
+    approach: typeof a.approach === 'string' ? patternApproaches[a.approach] : undefined,
+    fields: Object.entries(patternFields).flatMap(([key, f]) => (Array.isArray(a[key]) ? [{ key, label: f.label, items: a[key] as string[] }] : [])),
   };
 }
 

@@ -74,6 +74,12 @@ digest keep working, and the deploy refuses a build that changes a live version.
 `question:<name>`. A choice or yes-or-no answer can point to an element through `candidateMappings`, with a
 short interpretation; text and number answers are recorded as said and point nowhere.
 
+**Implementation patterns** are examples, and each one describes itself in `attributes` so patterns can be
+compared side by side: `approach` (`product`, `platform`, `combine`, or `build`), and `parts`, `strengths`,
+`fitsWhen`, and `watchFor`, each a list of short statements. `src/lib/vocabulary.ts` defines them, and
+`vocabulary.json` publishes their labels. A `candidate_pattern` relation's `description` says what the pattern
+means for that capability, such as a mission's caveat on a shared pattern.
+
 To add a package, create `content/<name>/<version>/blueprint.json` with its own `packageId`. The site picks
 it up automatically. Element IDs are unique across all packages: each element is defined once.
 

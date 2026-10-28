@@ -107,6 +107,22 @@ export const predicates: Record<string, PredicateInfo> = {
   },
 };
 
+// An implementation pattern describes itself in `attributes`, with these
+// fields, so patterns can be compared side by side.
+export const patternApproaches: Record<string, string> = {
+  product: 'Configure a product',
+  platform: 'Extend a platform the agency has',
+  combine: 'Combine tools',
+  build: 'Build to fit',
+};
+
+export const patternFields: Record<string, { label: string; definition: string }> = {
+  parts: { label: 'What it’s made of', definition: 'The main pieces of the pattern.' },
+  strengths: { label: 'Strengths', definition: 'What the pattern does well.' },
+  fitsWhen: { label: 'Fits when', definition: 'Situations where the pattern is a good fit.' },
+  watchFor: { label: 'Watch for', definition: 'Tradeoffs and risks to plan for.' },
+};
+
 export const sourceKinds: Record<string, string> = {
   'official-reference': 'Official reference',
   research: 'Research',

@@ -3,9 +3,11 @@ import type { LibraryElement } from '../lib/library';
 
 interface Props {
   elements: LibraryElement[];
+  /** What the link to each element says, by element ID, shown under its description. */
+  notes?: Map<string, string>;
 }
 
-const { elements } = Astro.props;
+const { elements, notes } = Astro.props;
 ---
 <div class="table-wrap">
   <table class="stack-table element-table">
@@ -16,7 +18,10 @@ const { elements } = Astro.props;
       {elements.map((e) => (
         <tr>
           <th scope="row"><a class={`element-link type-${e.type}`} href={e.url}>{e.title}</a></th>
-          <td class="muted">{e.description}</td>
+          <td class="muted">
+            {e.description}
+            {notes?.get(e.id) && <p class="element-table__note"><strong>Here:</strong> {notes.get(e.id)}</p>}
+          </td>
         </tr>
       ))}
     </tbody>
@@ -26,6 +31,7 @@ const { elements } = Astro.props;
 <style>
   /* Every button fills the column and fits two lines, so they're all one size. */
   .element-table .element-link { display: flex; width: 100%; min-height: 3.25rem; }
+  .element-table__note { margin: .45rem 0 0; color: var(--text); font-size: .875rem; }
   @media (min-width: 46rem) {
     .element-table th[scope='row'] { width: 34%; }
   }

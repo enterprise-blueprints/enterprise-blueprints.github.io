@@ -32,7 +32,9 @@ describe('missionBlueprint', () => {
     const all = blueprint.capabilities.flatMap((c) => c.requirements);
     expect(blueprint.requirements.length).toBeLessThan(all.length);
     expect(new Set(ids(blueprint.requirements)).size).toBe(blueprint.requirements.length);
-    expect(ids(blueprint.patterns)).toEqual(['eb:implementationPattern:oversight-intake-case-tracking']);
+    expect(ids(blueprint.patterns)).toEqual(expect.arrayContaining(['eb:implementationPattern:oversight-intake-case-tracking', 'eb:implementationPattern:shared-case-platform']));
+    // The FOIA mission's own patterns stay on its side.
+    expect(ids(blueprint.patterns)).not.toContain('eb:implementationPattern:foia-request-processing');
   });
 });
 

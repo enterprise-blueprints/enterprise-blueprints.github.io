@@ -3,14 +3,17 @@ import { describe, expect, it } from 'vitest';
 import { validatePackage, type BlueprintPackage, type Resolve } from '../src/lib/package';
 
 const read = (path: string): BlueprintPackage => JSON.parse(readFileSync(path, 'utf8'));
-const original = read('content/federal-oig/0.3.0/blueprint.json');
-const common = read('content/common/0.2.0/blueprint.json');
-const foia = read('content/federal-foia/0.1.0/blueprint.json');
+const original = read('content/federal-oig/0.4.0/blueprint.json');
+const common = read('content/common/0.3.0/blueprint.json');
+const foia = read('content/federal-foia/0.2.0/blueprint.json');
 // Published versions, which never change.
 const oig010 = read('content/federal-oig/0.1.0/blueprint.json');
 const oig020 = read('content/federal-oig/0.2.0/blueprint.json');
+const oig030 = read('content/federal-oig/0.3.0/blueprint.json');
 const common010 = read('content/common/0.1.0/blueprint.json');
-const all = [original, common, foia, oig010, oig020, common010];
+const common020 = read('content/common/0.2.0/blueprint.json');
+const foia010 = read('content/federal-foia/0.1.0/blueprint.json');
+const all = [original, common, foia, oig010, oig020, oig030, common010, common020, foia010];
 const resolve: Resolve = (id, version) => all.find((p) => p.packageId === id && p.version === version);
 const missions = [original, foia];
 
@@ -24,6 +27,7 @@ function broken(change: (pkg: BlueprintPackage) => void): BlueprintPackage {
 const mission = 'eb:mission:independent-government-oversight';
 const pattern = 'eb:implementationPattern:oversight-intake-case-tracking';
 const ofType = (pkg: BlueprintPackage, type: string) => pkg.elements.filter((e) => e.type === type);
+const patternOf = (pkg: BlueprintPackage) => pkg.elements.find((e) => e.id === pattern)!;
 
 describe('validatePackage', () => {
   it('accepts the mission packages, which build on the common one', () => {
@@ -34,24 +38,25 @@ describe('validatePackage', () => {
 
   it('accepts the published versions as they were', () => {
     expect(validatePackage(oig010)).toEqual([]);
-    expect(validatePackage(oig020, resolve)).toEqual([]);
+    for (const pkg of [oig020, oig030, foia010]) expect(validatePackage(pkg, resolve), pkg.version).toEqual([]);
     expect(validatePackage(common010)).toEqual([]);
+    expect(validatePackage(common020)).toEqual([]);
   });
 
-  it('has one mission, five capabilities, ten requirements, and one pattern in the OIG package', () => {
+  it('has one mission, five capabilities, ten requirements, and five patterns in the OIG package', () => {
     const counts = Object.groupBy(original.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.capability).toHaveLength(5);
-    expect(counts.implementationPattern).toHaveLength(1);
+    expect(counts.implementationPattern).toHaveLength(5);
     expect(counts.requirement).toHaveLength(10);
   });
 
-  it('has one mission, six outcomes, seven capabilities, and one pattern in the FOIA package', () => {
+  it('has one mission, six outcomes, seven capabilities, and five patterns in the FOIA package', () => {
     const counts = Object.groupBy(foia.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.outcome).toHaveLength(6);
     expect(counts.capability).toHaveLength(7);
-    expect(counts.implementationPattern).toHaveLength(1);
+    expect(counts.implementationPattern).toHaveLength(5);
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
@@ -71,6 +76,9 @@ describe('validatePackage', () => {
     ['a repeated relationship', (p) => p.relations.push({ ...p.relations[0], id: 'rel:copy' }), 'repeats'],
     ['an unknown schema version', (p) => ((p as { schemaVersion: string }).schemaVersion = '9.0.0'), 'schemaVersion should be one of 0.1.0, 0.2.0'],
     ['dependencies under schema 0.1.0', (p) => (p.schemaVersion = '0.1.0'), 'must NOT have additional properties'],
+    ['a pattern with an unknown approach', (p) => (patternOf(p).attributes!.approach = 'outsource'), 'unknown approach "outsource"'],
+    ['a pattern with an empty list', (p) => (patternOf(p).attributes!.watchFor = []), 'needs watchFor to be a list of statements'],
+    ['a pattern with a list that isn’t statements', (p) => (patternOf(p).attributes!.parts = 'a database'), 'needs parts to be a list of statements'],
   ])('rejects %s', (_, change, message) => {
     const errors = validatePackage(broken(change), resolve);
     expect(errors.join('\n')).toContain(message);
@@ -118,11 +126,20 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
     expect(types(second)).toEqual(new Set(['measure']));
   });
 
-  it('has an example pattern, not a "vendor-neutral" one', () => {
-    for (const p of ofType(pkg, 'implementationPattern')) {
-      expect(p.description).toMatch(/^An example architecture/);
-      expect(p.attributes).toBeUndefined();
+  it('describes each pattern as an example, with its approach, parts, strengths, fit, and what to watch for', () => {
+    const patterns = ofType(pkg, 'implementationPattern');
+    expect(patterns.length).toBeGreaterThanOrEqual(5);
+    for (const p of patterns) {
+      expect(p.description, p.id).toMatch(/^An example architecture/);
+      expect(Object.keys(p.attributes!).sort(), p.id).toEqual(['approach', 'fitsWhen', 'parts', 'strengths', 'watchFor']);
+      expect(p.sourceIds?.length, p.id).toBeGreaterThan(0);
     }
+  });
+
+  it('offers patterns for most of its capabilities', () => {
+    const covered = new Set(pkg.relations.filter((r) => r.predicate === 'candidate_pattern').map((r) => r.from));
+    const own = ofType(pkg, 'capability');
+    expect(own.filter((c) => covered.has(c.id)).length / own.length).toBeGreaterThanOrEqual(0.8);
   });
 });
 
@@ -132,6 +149,7 @@ describe('dependencies', () => {
   it('let relations and discovery answers point at the common package’s elements', () => {
     const shared = new Set(common.elements.map((e) => e.id));
     expect(original.relations.filter((r) => shared.has(r.from)).map((r) => r.to).sort()).toEqual([
+      'eb:implementationPattern:oversight-intake-case-tracking',
       'eb:outcome:concerns-raised-safely',
       'eb:outcome:concerns-raised-safely',
       'eb:outcome:concerns-raised-safely',
@@ -229,16 +247,29 @@ describe('versions', () => {
     expect(new Set(added.map((e) => e.type))).toEqual(new Set(['outcome', 'measure', 'requirement']));
   });
 
-  it('move OIG’s case tracking requirements into common 0.2.0 under the same IDs', () => {
-    const gone = oig020.elements.filter((e) => !original.elements.some((f) => f.id === e.id)).map((e) => e.id);
+  it('moved OIG’s case tracking requirements into common 0.2.0 under the same IDs', () => {
+    const gone = oig020.elements.filter((e) => !oig030.elements.some((f) => f.id === e.id)).map((e) => e.id);
     expect(gone).toEqual(['eb:requirement:multi-channel-intake', 'eb:requirement:acknowledge-receipt', 'eb:requirement:track-case-status']);
-    for (const id of gone) expect(common.elements.map((e) => e.id)).toContain(id);
+    for (const id of gone) expect(common020.elements.map((e) => e.id)).toContain(id);
     // OIG's capabilities still satisfy them, and its relations and questions are otherwise kept.
-    for (const r of oig020.relations) expect(original.relations).toContainEqual(r);
-    expect(original.sources).toEqual(oig020.sources);
+    for (const r of oig020.relations) expect(oig030.relations).toContainEqual(r);
+    expect(oig030.sources).toEqual(oig020.sources);
     // Common keeps everything it had.
-    for (const e of common010.elements) expect(common.elements).toContainEqual(e);
-    for (const r of common010.relations) expect(common.relations).toContainEqual(r);
+    for (const e of common010.elements) expect(common020.elements).toContainEqual(e);
+    for (const r of common010.relations) expect(common020.relations).toContainEqual(r);
+  });
+
+  it('add patterns in OIG 0.4.0, FOIA 0.2.0, and common 0.3.0, and keep everything else', () => {
+    for (const [before, after] of [[oig030, original], [foia010, foia], [common020, common]] as const) {
+      const isPattern = (e: { type: string }) => e.type === 'implementationPattern';
+      for (const e of before.elements.filter((e) => !isPattern(e))) expect(after.elements, after.packageId).toContainEqual(e);
+      const added = after.elements.filter((e) => !before.elements.some((b) => b.id === e.id));
+      expect(added.every(isPattern), after.packageId).toBe(true);
+      for (const r of before.relations) expect(after.relations, after.packageId).toContainEqual(r);
+      const newRelations = after.relations.filter((r) => !before.relations.some((b) => b.id === r.id));
+      expect(new Set(newRelations.map((r) => r.predicate)), after.packageId).toEqual(new Set(['candidate_pattern']));
+      expect(after.sources!.slice(0, before.sources!.length)).toEqual(before.sources);
+    }
   });
 
   it('gives every capability its reference requirements, and every requirement one capability of its own package', () => {

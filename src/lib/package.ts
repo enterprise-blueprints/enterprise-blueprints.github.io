@@ -7,7 +7,7 @@ import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json';
 import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json';
-import { elementTypes, predicates } from './vocabulary';
+import { elementTypes, patternApproaches, patternFields, predicates } from './vocabulary';
 
 export interface Source {
   id: string;
@@ -166,6 +166,7 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
     if (e.replacedBy && !elementsById.has(e.replacedBy)) {
       errors.push(`element ${e.id} is replaced by unknown element ${e.replacedBy}`);
     }
+    if (e.type === 'implementationPattern') errors.push(...patternProblems(e));
   }
 
   const edges = new Set<string>();
@@ -193,6 +194,26 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
   }
 
   errors.push(...assessmentProblems(pkg.assessments ?? [], reachable));
+  return errors;
+}
+
+/**
+ * A pattern's own fields, when it has them: a known approach, and lists of
+ * short statements. Other attributes, such as those in older packages, pass.
+ */
+function patternProblems(e: Element): string[] {
+  const errors: string[] = [];
+  const a = e.attributes ?? {};
+  if ('approach' in a && !(typeof a.approach === 'string' && patternApproaches[a.approach])) {
+    errors.push(`pattern ${e.id} has unknown approach ${JSON.stringify(a.approach)}`);
+  }
+  for (const field of Object.keys(patternFields)) {
+    if (!(field in a)) continue;
+    const list = a[field];
+    if (!Array.isArray(list) || !list.length || list.some((s) => typeof s !== 'string' || !s.trim())) {
+      errors.push(`pattern ${e.id} needs ${field} to be a list of statements`);
+    }
+  }
   return errors;
 }
 

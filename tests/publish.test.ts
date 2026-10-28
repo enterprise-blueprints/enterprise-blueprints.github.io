@@ -30,11 +30,14 @@ describe('catalog', () => {
     const versions = catalog().packages.map((p) => [p.packageId.split('.').at(-1), p.version, p.latest]);
     expect(versions).toEqual([
       ['common', '0.1.0', false],
-      ['common', '0.2.0', true],
-      ['federal-foia', '0.1.0', true],
+      ['common', '0.2.0', false],
+      ['common', '0.3.0', true],
+      ['federal-foia', '0.1.0', false],
+      ['federal-foia', '0.2.0', true],
       ['federal-oig', '0.1.0', false],
       ['federal-oig', '0.2.0', false],
-      ['federal-oig', '0.3.0', true],
+      ['federal-oig', '0.3.0', false],
+      ['federal-oig', '0.4.0', true],
     ]);
   });
 
@@ -44,6 +47,6 @@ describe('catalog', () => {
   });
 
   it('shows the latest version of each package on the pages', () => {
-    expect(packages.map((p) => `${p.packageId.split('.').at(-1)} ${p.version}`)).toEqual(['common 0.2.0', 'federal-foia 0.1.0', 'federal-oig 0.3.0']);
+    expect(packages.map((p) => `${p.packageId.split('.').at(-1)} ${p.version}`)).toEqual(['common 0.3.0', 'federal-foia 0.2.0', 'federal-oig 0.4.0']);
   });
 });
