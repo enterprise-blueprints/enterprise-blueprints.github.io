@@ -1,7 +1,8 @@
 # Enterprise Blueprints
 
 An independent, open reference library of public-sector missions, the capabilities they depend on, and
-vendor-neutral patterns that might realize them. The first mission package describes U.S. federal Offices
+vendor-neutral patterns that might realize them. A mission seeks outcomes, each with measures for telling
+how it's going, and capabilities contribute to those outcomes. The first mission package describes U.S. federal Offices
 of Inspector General in general terms. It builds on Common Capabilities, a package of the capabilities
 nearly every mission relies on, such as identity and access, data protection, records, and logging.
 

@@ -20,6 +20,20 @@ export const elementTypes: Record<string, ElementTypeInfo> = {
     section: 'missions',
     definition: 'An enduring public purpose or organizational responsibility.',
   },
+  outcome: {
+    label: 'Outcome',
+    plural: 'Outcomes',
+    navLabel: 'Outcomes',
+    section: 'outcomes',
+    definition: 'A result a mission seeks: the change in the world that shows the work is paying off.',
+  },
+  measure: {
+    label: 'Measure',
+    plural: 'Measures',
+    navLabel: 'Measures',
+    section: 'measures',
+    definition: 'A way to tell how an outcome is going, such as a figure an office already reports.',
+  },
   capability: {
     label: 'Capability',
     plural: 'Capabilities',
@@ -53,6 +67,26 @@ export interface PredicateInfo {
 }
 
 export const predicates: Record<string, PredicateInfo> = {
+  seeks: {
+    from: ['mission'],
+    to: ['outcome'],
+    outgoing: 'Outcomes it seeks',
+    incoming: 'Missions that seek it',
+  },
+  contributes_to: {
+    from: ['capability'],
+    to: ['outcome'],
+    outgoing: 'Outcomes it contributes to',
+    incoming: 'Capabilities that contribute to it',
+  },
+  measured_by: {
+    from: ['outcome'],
+    to: ['measure'],
+    outgoing: 'Measures',
+    incoming: 'Outcomes it measures',
+  },
+  // Package 0.1.0 links capabilities straight to the mission. Later versions
+  // go through the outcomes the mission seeks.
   supports_mission: {
     from: ['capability'],
     to: ['mission'],

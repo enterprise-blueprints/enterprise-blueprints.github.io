@@ -42,13 +42,13 @@ describe('validatePackage', () => {
     ['a duplicate element ID', (p) => p.elements.push(p.elements[1]), 'duplicate element ID'],
     ['a duplicate relation ID', (p) => p.relations.push({ ...p.relations[0], to: pattern, predicate: 'candidate_pattern' }), 'duplicate relation ID'],
     ['a duplicate source ID', (p) => p.sources!.push(p.sources![0]), 'duplicate source ID'],
-    ['an unknown element type', (p) => (p.elements[0] = { ...p.elements[0], id: 'eb:outcome:x', type: 'outcome' }), 'unknown type "outcome"'],
+    ['an unknown element type', (p) => (p.elements[0] = { ...p.elements[0], id: 'eb:widget:x', type: 'widget' }), 'unknown type "widget"'],
     ['an ID that names a different type', (p) => (p.elements[1].type = 'mission'), "doesn't match its type"],
     ['a citation of an unknown source', (p) => p.elements[0].sourceIds!.push('src:missing'), 'unknown source src:missing'],
     ['a replacement that doesn\'t exist', (p) => (p.elements[0].replacedBy = 'eb:mission:missing'), 'replaced by unknown element'],
     ['a dangling relation endpoint', (p) => (p.relations[0].to = 'eb:mission:missing'), 'ends at unknown element eb:mission:missing'],
     ['an unknown predicate', (p) => (p.relations[0].predicate = 'owns'), 'unknown predicate "owns"'],
-    ['a predicate between the wrong types', (p) => (p.relations[0].to = pattern), '"supports_mission" can\'t link capability'],
+    ['a predicate between the wrong types', (p) => (p.relations[0].to = pattern), '"seeks" can\'t link mission'],
     ['a repeated relationship', (p) => p.relations.push({ ...p.relations[0], id: 'rel:copy' }), 'repeats'],
     ['an unknown schema version', (p) => ((p as { schemaVersion: string }).schemaVersion = '9.0.0'), 'schemaVersion should be one of 0.1.0, 0.2.0'],
     ['dependencies under schema 0.1.0', (p) => (p.schemaVersion = '0.1.0'), 'must NOT have additional properties'],
@@ -68,9 +68,19 @@ describe('validatePackage', () => {
     expect(errors).toHaveLength(2);
   });
 
-  it('leaves the mission linked to all five capabilities', () => {
-    const supporting = original.relations.filter((r) => r.predicate === 'supports_mission' && r.to === mission);
-    expect(supporting).toHaveLength(5);
+  it('links every capability to the mission through an outcome it seeks', () => {
+    const outcomes = original.relations.filter((r) => r.predicate === 'seeks' && r.from === mission).map((r) => r.to);
+    expect(outcomes).toHaveLength(5);
+    for (const c of original.elements.filter((e) => e.type === 'capability')) {
+      expect(original.relations.some((r) => r.predicate === 'contributes_to' && r.from === c.id && outcomes.includes(r.to)), c.id).toBe(true);
+    }
+    expect(original.relations.some((r) => r.predicate === 'supports_mission')).toBe(false);
+  });
+
+  it('gives every outcome a measure, and every measure one outcome', () => {
+    const measuredBy = original.relations.filter((r) => r.predicate === 'measured_by');
+    for (const o of original.elements.filter((e) => e.type === 'outcome')) expect(measuredBy.some((r) => r.from === o.id), o.id).toBe(true);
+    for (const m of original.elements.filter((e) => e.type === 'measure')) expect(measuredBy.filter((r) => r.to === m.id), m.id).toHaveLength(1);
   });
 });
 
@@ -79,9 +89,11 @@ describe('dependencies', () => {
 
   it('let relations and discovery answers point at the common package’s elements', () => {
     const shared = new Set(common.elements.map((e) => e.id));
-    expect(original.relations.filter((r) => shared.has(r.from)).map((r) => r.to)).toEqual([
-      'eb:requirement:restrict-case-access',
+    expect(original.relations.filter((r) => shared.has(r.from)).map((r) => r.to).sort()).toEqual([
+      'eb:outcome:concerns-raised-safely',
+      'eb:outcome:concerns-raised-safely',
       'eb:requirement:protect-reporter-identity',
+      'eb:requirement:restrict-case-access',
     ]);
     const mapped = original.assessments!.flatMap((a) => a.questions.flatMap((q) => q.candidateMappings ?? []));
     expect(mapped.some((m) => m.elementId === iam)).toBe(true);
@@ -114,19 +126,27 @@ describe('dependencies', () => {
 });
 
 describe('discovery questions', () => {
-  const question = (pkg: BlueprintPackage, id: string) => pkg.assessments![0].questions.find((q) => q.id === id)!;
+  const intake = (pkg: BlueprintPackage) => pkg.assessments!.find((a) => a.id === 'assessment:intake-and-case-handling')!;
+  const question = (pkg: BlueprintPackage, id: string) => intake(pkg).questions.find((q) => q.id === id)!;
 
   it('come with the 0.2.0 package and point only at its elements and the common package’s', () => {
-    const [assessment] = original.assessments!;
-    expect(assessment.questions.length).toBeGreaterThanOrEqual(8);
+    expect(intake(original).questions.length).toBeGreaterThanOrEqual(8);
     const ids = new Set([...original.elements, ...common.elements].map((e) => e.id));
-    for (const q of assessment.questions) for (const m of q.candidateMappings ?? []) expect(ids.has(m.elementId)).toBe(true);
+    for (const a of original.assessments!) for (const q of a.questions) for (const m of q.candidateMappings ?? []) expect(ids.has(m.elementId)).toBe(true);
+  });
+
+  it('start with which outcomes matter and what the office measures', () => {
+    const [first] = original.assessments!;
+    expect(first.id).toBe('assessment:mission-results');
+    const types = (q: string) => new Set(first.questions.find((x) => x.id === q)!.candidateMappings!.map((m) => m.elementId.split(':')[1]));
+    expect(types('question:priority-results')).toEqual(new Set(['outcome']));
+    expect(types('question:tracked-measures')).toEqual(new Set(['measure']));
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
     ['a badly named assessment', (p) => (p.assessments![0].id = 'intake'), 'should look like assessment:'],
     ['a badly named question', (p) => (question(p, 'question:intake-triage').id = 'triage'), 'should look like question:'],
-    ['a repeated question ID', (p) => p.assessments![0].questions.push(question(p, 'question:intake-triage')), 'duplicate question ID'],
+    ['a repeated question ID', (p) => intake(p).questions.push(question(p, 'question:intake-triage')), 'duplicate question ID'],
     ['a choice with one option', (p) => (question(p, 'question:intake-triage').options = [{ value: 'a', label: 'A' }]), 'needs at least two options'],
     ['options on a text question', (p) => (question(p, 'question:hardest-part').options = [{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }]), "can't have options"],
     ['a repeated option', (p) => question(p, 'question:intake-triage').options!.push({ value: 'informal', label: 'Again' }), 'repeats option informal'],
@@ -141,15 +161,16 @@ describe('discovery questions', () => {
 });
 
 describe('versions', () => {
-  it('keep everything from 0.1.0 in 0.2.0, unchanged, with requirements and questions added', () => {
+  it('keep everything from 0.1.0 in 0.2.0, unchanged, with outcomes, requirements, and questions added', () => {
     const first: BlueprintPackage = JSON.parse(readFileSync('content/federal-oig/0.1.0/blueprint.json', 'utf8'));
     expect(first.assessments).toBeUndefined();
     for (const e of first.elements) expect(original.elements).toContainEqual(e);
-    for (const r of first.relations) expect(original.relations).toContainEqual(r);
+    // Capabilities reach the mission through its outcomes instead.
+    for (const r of first.relations.filter((r) => r.predicate !== 'supports_mission')) expect(original.relations).toContainEqual(r);
     expect(original.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
-    expect(original.sources).toEqual(first.sources);
+    expect(original.sources!.slice(0, first.sources!.length)).toEqual(first.sources);
     const added = original.elements.filter((e) => !first.elements.some((f) => f.id === e.id));
-    expect(new Set(added.map((e) => e.type))).toEqual(new Set(['requirement']));
+    expect(new Set(added.map((e) => e.type))).toEqual(new Set(['outcome', 'measure', 'requirement']));
   });
 
   it('gives every capability its reference requirements, and every requirement one capability of its own package', () => {

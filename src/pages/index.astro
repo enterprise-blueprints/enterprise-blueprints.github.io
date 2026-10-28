@@ -6,10 +6,15 @@ import { formatDate, plural } from '../lib/format';
 import { href } from '../lib/paths';
 
 const missions = elementsOfType('mission').map((m) => {
-  const capabilities = related(m, 'supports_mission', 'incoming');
-  const patterns = new Set(capabilities.flatMap((c) => related(c, 'candidate_pattern', 'outgoing')));
+  const outcomes = related(m, 'seeks', 'outgoing');
+  // Capabilities reach a mission through the outcomes it seeks, or directly in older packages.
+  const capabilities = new Set([
+    ...outcomes.flatMap((o) => related(o, 'contributes_to', 'incoming')),
+    ...related(m, 'supports_mission', 'incoming'),
+  ]);
+  const patterns = new Set([...capabilities].flatMap((c) => related(c, 'candidate_pattern', 'outgoing')));
   const reviewed = lastReviewed(sourcesOf(m));
-  return { ...m, capabilities, patterns, reviewed };
+  return { ...m, outcomes, capabilities, patterns, reviewed };
 });
 const first = missions[0];
 // Packages that missions build on, with what they offer.
@@ -41,7 +46,7 @@ const shared = packages
         <h2 id="missions-heading">Missions</h2>
         <p>
           Each mission describes a type of public organization. Start from a mission and follow it to the
-          capabilities it relies on.
+          outcomes it seeks, how to measure them, and the capabilities they rely on.
         </p>
       </div>
       <div class="mission-grid">
@@ -51,7 +56,8 @@ const shared = packages
             <h3 class="card__title"><a href={m.url}>{m.title}</a></h3>
             <p class="card__summary">{m.description}</p>
             <ul class="card__facts">
-              <li><strong>{m.capabilities.length}</strong> {m.capabilities.length === 1 ? 'capability' : 'capabilities'}</li>
+              {m.outcomes.length > 0 && <li><strong>{m.outcomes.length}</strong> {m.outcomes.length === 1 ? 'outcome' : 'outcomes'}</li>}
+              <li><strong>{m.capabilities.size}</strong> {m.capabilities.size === 1 ? 'capability' : 'capabilities'}</li>
               <li><strong>{m.patterns.size}</strong> candidate {m.patterns.size === 1 ? 'pattern' : 'patterns'}</li>
               {m.reviewed && <li>Sources reviewed {formatDate(m.reviewed)}</li>}
             </ul>

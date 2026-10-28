@@ -20,6 +20,8 @@
 
   /* Element type colors: text color, then a soft background. */
   --t-mission:     #1f5fbf;  --t-mission-bg:     #e8f0fc;
+  --t-outcome:     #8a5300;  --t-outcome-bg:     #fcf0da;
+  --t-measure:     #0e6585;  --t-measure-bg:     #e1f2f8;
   --t-capability:  #0b6e5a;  --t-capability-bg:  #e2f4ef;
   --t-pattern:     #3d4f6b;  --t-pattern-bg:     #e9edf3;
   --t-requirement: #6b3fb5;  --t-requirement-bg: #f1ebfb;
@@ -48,6 +50,8 @@
     --shadow: 0 1px 2px rgba(0, 0, 0, .3);
 
     --t-mission:     #7fb0ff;  --t-mission-bg:     #1b2a42;
+    --t-outcome:     #f3c26b;  --t-outcome-bg:     #33270f;
+    --t-measure:     #7cd0ee;  --t-measure-bg:     #10303c;
     --t-capability:  #6fd8bd;  --t-capability-bg:  #11302a;
     --t-pattern:     #b4c2d8;  --t-pattern-bg:     #222b38;
     --t-requirement: #c6a8f5;  --t-requirement-bg: #2a2140;
@@ -237,6 +241,8 @@ td.muted { color: var(--text-muted); }
 .status-deprecated { border-style: dashed; }
 
 .type-mission               { --tc: var(--t-mission);    --tc-bg: var(--t-mission-bg); }
+.type-outcome               { --tc: var(--t-outcome);    --tc-bg: var(--t-outcome-bg); }
+.type-measure               { --tc: var(--t-measure);    --tc-bg: var(--t-measure-bg); }
 .type-capability            { --tc: var(--t-capability); --tc-bg: var(--t-capability-bg); }
 .type-implementationPattern { --tc: var(--t-pattern);    --tc-bg: var(--t-pattern-bg); }
 .type-requirement           { --tc: var(--t-requirement); --tc-bg: var(--t-requirement-bg); }
