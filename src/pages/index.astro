@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import TypeBadge from '../components/TypeBadge.astro';
-import { elementsOfType, related, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
+import { dependents, elementsOfType, packages, related, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
 import { formatDate, plural } from '../lib/format';
 import { href } from '../lib/paths';
 
@@ -12,6 +12,10 @@ const missions = elementsOfType('mission').map((m) => {
   return { ...m, capabilities, patterns, reviewed };
 });
 const first = missions[0];
+// Packages that missions build on, with what they offer.
+const shared = packages
+  .map((pkg) => ({ pkg, users: dependents(pkg), capabilities: elementsOfType('capability').filter((c) => c.package === pkg) }))
+  .filter((s) => s.users.length > 0);
 ---
 <Base>
   <section class="hero">
@@ -56,6 +60,33 @@ const first = missions[0];
       </div>
     </div>
   </section>
+
+  {shared.length > 0 && (
+    <section class="section-band" aria-labelledby="shared-heading">
+      <div class="container">
+        <div class="section-intro">
+          <h2 id="shared-heading">Shared across missions</h2>
+          <p>
+            Some capabilities, such as identity and data protection, matter to every mission. They're described once,
+            and mission packages build on them instead of repeating them.
+          </p>
+        </div>
+        <div class="mission-grid">
+          {shared.map(({ pkg, users, capabilities }) => (
+            <article class="card">
+              <h3 class="card__title">{pkg.title}</h3>
+              <ul class="shared-list">
+                {capabilities.map((c) => (
+                  <li><a class={`element-link type-${c.type}`} href={c.url}>{c.title}</a></li>
+                ))}
+              </ul>
+              <p class="muted">Used by {users.map((u) => u.title).join('; ')}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="section-band section-band--muted" aria-labelledby="library-heading">
     <div class="container">

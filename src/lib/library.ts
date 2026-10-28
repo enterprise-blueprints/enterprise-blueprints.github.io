@@ -1,7 +1,8 @@
 // Loads every package version under content/<name>/<version>/, validates it,
 // and indexes the latest version of each package for the pages. Earlier
-// versions stay published exactly as they were. Any validation problem stops
-// the build.
+// versions stay published exactly as they were. A package can build on
+// another, such as a mission package on the common one, and point at its
+// elements. Any validation problem stops the build.
 
 import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
 import { elementTypes, predicates, type ElementTypeInfo } from './vocabulary';
@@ -45,15 +46,16 @@ export function compareVersions(a: string, b: string): number {
 function load(): PackageFile[] {
   const errors: string[] = [];
   const loaded: Omit<PackageFile, 'latest'>[] = [];
-  for (const [path, text] of Object.entries(files)) {
+  const parsed = Object.entries(files).map(([path, text]) => ({ path, text, data: JSON.parse(text) as BlueprintPackage }));
+  // Dependencies resolve against every package in content/, valid or not; their own problems are reported on their own.
+  const resolve = (packageId: string, version: string) => parsed.find((p) => p.data.packageId === packageId && p.data.version === version)?.data;
+  for (const { path, text, data } of parsed) {
     const [, , name, version] = path.split('/');
-    const data: unknown = JSON.parse(text);
-    const problems = validatePackage(data);
+    const problems = validatePackage(data, resolve);
     errors.push(...problems.map((p) => `${path}: ${p}`));
     if (problems.length) continue;
-    const pkg = data as BlueprintPackage;
-    if (pkg.version !== version) errors.push(`${path}: the folder says ${version} but the package says ${pkg.version}`);
-    loaded.push({ name, text, data: pkg });
+    if (data.version !== version) errors.push(`${path}: the folder says ${version} but the package says ${data.version}`);
+    loaded.push({ name, text, data });
   }
 
   // Every version of a package lives in one folder, under one package ID.
@@ -68,6 +70,15 @@ function load(): PackageFile[] {
   for (const [name, list] of versions) {
     if (new Set(list.map((f) => f.data.packageId)).size > 1) errors.push(`content/${name} holds more than one package ID`);
     list.sort((a, b) => compareVersions(a.data.version, b.data.version));
+  }
+
+  // The pages show the latest version of everything, so a latest version builds on latest versions.
+  for (const list of versions.values()) {
+    const pkg = list.at(-1)!.data;
+    for (const d of pkg.dependencies ?? []) {
+      const newest = [...versions.values()].find((l) => l[0].data.packageId === d.packageId)?.at(-1)?.data.version;
+      if (newest && newest !== d.version) errors.push(`${pkg.packageId} ${pkg.version} builds on ${d.packageId} ${d.version}, but the latest is ${newest}`);
+    }
   }
 
   // Element IDs are unique across the packages the pages show.
@@ -138,6 +149,21 @@ export function relationGroups(element: LibraryElement): RelationGroup[] {
     }
   }
   return groups;
+}
+
+/** The packages that build on this one, such as the mission packages that build on the common one. */
+export function dependents(pkg: BlueprintPackage): BlueprintPackage[] {
+  return packages.filter((p) => p.dependencies?.some((d) => d.packageId === pkg.packageId));
+}
+
+/** Other packages whose relations or discovery answers point at this element. */
+export function usedBy(element: LibraryElement): BlueprintPackage[] {
+  return packages.filter(
+    (p) =>
+      p !== element.package &&
+      (p.relations.some((r) => r.from === element.id || r.to === element.id) ||
+        (p.assessments ?? []).some((a) => a.questions.some((q) => q.candidateMappings?.some((m) => m.elementId === element.id)))),
+  );
 }
 
 export function sourcesOf(element: LibraryElement): Source[] {

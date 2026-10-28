@@ -27,6 +27,13 @@ export const elementTypes: Record<string, ElementTypeInfo> = {
     section: 'capabilities',
     definition: 'An ability an organization needs or has: what must be possible.',
   },
+  requirement: {
+    label: 'Requirement',
+    plural: 'Requirements',
+    navLabel: 'Requirements',
+    section: 'requirements',
+    definition: 'A condition or behavior that must be true: what a capability has to do or respect.',
+  },
   implementationPattern: {
     label: 'Implementation pattern',
     plural: 'Implementation patterns',
@@ -51,6 +58,12 @@ export const predicates: Record<string, PredicateInfo> = {
     to: ['mission'],
     outgoing: 'Missions it supports',
     incoming: 'Capabilities that support it',
+  },
+  satisfies: {
+    from: ['capability'],
+    to: ['requirement'],
+    outgoing: 'Reference requirements',
+    incoming: 'Capabilities that satisfy it',
   },
   candidate_pattern: {
     from: ['capability'],

@@ -1,9 +1,12 @@
-// The Enterprise Blueprints package format (schemaVersion 0.1.0) and its
-// validation: JSON Schema first, then the reference checks a schema can't do.
+// The Enterprise Blueprints package format and its validation: JSON Schema
+// first, then the reference checks a schema can't do. Schema 0.2.0 adds
+// dependencies, so a package can build on another one's elements; 0.1.0
+// packages stay valid as they were published.
 
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
-import schema from '../../schemas/blueprint-package.schema.json';
+import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json';
+import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json';
 import { elementTypes, predicates } from './vocabulary';
 
 export interface Source {
@@ -67,8 +70,14 @@ export interface Assessment {
   questions: Question[];
 }
 
+/** A package this one builds on, pinned to a version. */
+export interface Dependency {
+  packageId: string;
+  version: string;
+}
+
 export interface BlueprintPackage {
-  schemaVersion: '0.1.0';
+  schemaVersion: '0.1.0' | '0.2.0';
   packageId: string;
   version: string;
   title: string;
@@ -79,6 +88,7 @@ export interface BlueprintPackage {
   domain: string;
   jurisdictions?: string[];
   tags?: string[];
+  dependencies?: Dependency[];
   sources?: Source[];
   elements: Element[];
   relations: Relation[];
@@ -87,7 +97,14 @@ export interface BlueprintPackage {
 
 const ajv = new Ajv2020({ allErrors: true, strict: true });
 addFormats(ajv);
-const matchesSchema = ajv.compile<BlueprintPackage>(schema);
+const schemas = {
+  '0.1.0': ajv.compile<BlueprintPackage>(schema010),
+  '0.2.0': ajv.compile<BlueprintPackage>(schema020),
+};
+export const schemaVersions = Object.keys(schemas) as (keyof typeof schemas)[];
+
+/** Finds a package version this one depends on, if the library has it. */
+export type Resolve = (packageId: string, version: string) => BlueprintPackage | undefined;
 
 function duplicates(ids: string[]): string[] {
   const seen = new Set<string>();
@@ -96,8 +113,15 @@ function duplicates(ids: string[]): string[] {
   return [...repeated];
 }
 
-/** Returns every problem found; an empty list means the package is valid. */
-export function validatePackage(data: unknown): string[] {
+/**
+ * Returns every problem found; an empty list means the package is valid.
+ * Relations and discovery answers can point at elements of the packages it
+ * depends on, which `resolve` looks up.
+ */
+export function validatePackage(data: unknown, resolve: Resolve = () => undefined): string[] {
+  const version = (data as { schemaVersion?: unknown } | null)?.schemaVersion;
+  const matchesSchema = schemas[version as keyof typeof schemas];
+  if (!matchesSchema) return [`schema: schemaVersion should be one of ${schemaVersions.join(', ')}`];
   if (!matchesSchema(data)) {
     return (matchesSchema.errors ?? []).map(
       (e) => `schema: ${e.instancePath || '(root)'} ${e.message ?? 'is invalid'}`,
@@ -107,11 +131,29 @@ export function validatePackage(data: unknown): string[] {
   const errors: string[] = [];
   const sources = pkg.sources ?? [];
 
+  // Elements this package can point at: its own, then its dependencies'.
+  const reachable = new Map<string, Element>();
+  const dependencies = pkg.dependencies ?? [];
+  for (const id of duplicates(dependencies.map((d) => d.packageId))) errors.push(`depends on ${id} more than once`);
+  for (const d of dependencies) {
+    if (d.packageId === pkg.packageId) {
+      errors.push(`depends on itself`);
+      continue;
+    }
+    const dependency = resolve(d.packageId, d.version);
+    if (!dependency) errors.push(`depends on ${d.packageId} ${d.version}, which isn't in the library`);
+    for (const e of dependency?.elements ?? []) reachable.set(e.id, e);
+  }
+
   for (const id of duplicates(pkg.elements.map((e) => e.id))) errors.push(`duplicate element ID ${id}`);
   for (const id of duplicates(pkg.relations.map((r) => r.id))) errors.push(`duplicate relation ID ${id}`);
   for (const id of duplicates(sources.map((s) => s.id))) errors.push(`duplicate source ID ${id}`);
 
   const elementsById = new Map(pkg.elements.map((e) => [e.id, e]));
+  for (const e of pkg.elements) {
+    if (reachable.has(e.id)) errors.push(`element ${e.id} is already defined in a package this one depends on`);
+    reachable.set(e.id, e);
+  }
   const sourceIds = new Set(sources.map((s) => s.id));
 
   for (const e of pkg.elements) {
@@ -128,10 +170,14 @@ export function validatePackage(data: unknown): string[] {
 
   const edges = new Set<string>();
   for (const r of pkg.relations) {
-    const from = elementsById.get(r.from);
-    const to = elementsById.get(r.to);
+    const from = reachable.get(r.from);
+    const to = reachable.get(r.to);
     if (!from) errors.push(`relation ${r.id} starts at unknown element ${r.from}`);
     if (!to) errors.push(`relation ${r.id} ends at unknown element ${r.to}`);
+    // A package describes how its own elements connect, not how other packages' do.
+    if (from && to && !elementsById.has(r.from) && !elementsById.has(r.to)) {
+      errors.push(`relation ${r.id} only links elements from other packages`);
+    }
     const predicate = predicates[r.predicate];
     if (!predicate) {
       errors.push(`relation ${r.id} uses unknown predicate "${r.predicate}"`);
@@ -146,7 +192,7 @@ export function validatePackage(data: unknown): string[] {
     edges.add(edge);
   }
 
-  errors.push(...assessmentProblems(pkg.assessments ?? [], elementsById));
+  errors.push(...assessmentProblems(pkg.assessments ?? [], reachable));
   return errors;
 }
 

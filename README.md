@@ -1,8 +1,9 @@
 # Enterprise Blueprints
 
 An independent, open reference library of public-sector missions, the capabilities they depend on, and
-vendor-neutral patterns that might realize them. The first package describes U.S. federal Offices of
-Inspector General in general terms.
+vendor-neutral patterns that might realize them. The first mission package describes U.S. federal Offices
+of Inspector General in general terms. It builds on Common Capabilities, a package of the capabilities
+nearly every mission relies on, such as identity and access, data protection, records, and logging.
 
 ## Develop
 
@@ -30,12 +31,13 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
 - `content/<package>/<version>/blueprint.json` holds each package version: its sources, elements,
   relations, and discovery questions. The pages show the latest version of each package; every version
   stays published.
-- `schemas/blueprint-package.schema.json` is the package format (schemaVersion 0.1.0). Solution Studio
-  keeps an identical copy.
+- `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
+  `dependencies`. Every version stays, and Solution Studio keeps identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
-- `src/lib/package.ts` validates a package: the JSON Schema first, then unique IDs, known types and
-  predicates, and references that resolve. Any problem stops the build.
+- `src/lib/package.ts` validates a package: the JSON Schema for its `schemaVersion` first, then unique IDs,
+  known types and predicates, and references that resolve, including into the packages it builds on. Any
+  problem stops the build.
 - `src/lib/publish.ts` defines the published data files, listed below.
 - `src/pages/` has the home page, one index and one detail template for every element type, the
   discovery pages, and the sources, data, and about pages.
@@ -50,7 +52,7 @@ Every build publishes these files next to the pages:
 | `vocabulary.json` | The element types and relationships, with labels, definitions, and each type's page address. |
 | `packages/<name>/<version>/blueprint.json` | A package, byte for byte as stored in `content/`. |
 | `packages/<name>/<version>/blueprint.json.sha256` | The package digest, in `sha256sum -c` format. |
-| `schemas/blueprint-package-0.1.0.schema.json` | The package JSON Schema. |
+| `schemas/blueprint-package-<version>.schema.json` | Each version of the package JSON Schema. The catalog's `schema` names the current one and `schemas` lists them all. |
 
 `pnpm check:dist` confirms each published package matches its source file and its digest.
 `pnpm check:published` confirms every version the live site already publishes is still in the build,
@@ -70,8 +72,14 @@ digest keep working, and the deploy refuses a build that changes a live version.
 `question:<name>`. A choice or yes-or-no answer can point to an element through `candidateMappings`, with a
 short interpretation; text and number answers are recorded as said and point nowhere.
 
-To add a second package, create `content/<name>/<version>/blueprint.json` with its own `packageId`. Element
-IDs must be unique across all packages. The site picks it up automatically.
+To add a package, create `content/<name>/<version>/blueprint.json` with its own `packageId`. The site picks
+it up automatically. Element IDs are unique across all packages: each element is defined once.
+
+**Shared elements.** A package with `schemaVersion` 0.2.0 can list `dependencies`, each a `packageId` and
+`version`. Its relations and discovery answers can then point at those packages' elements by ID, so a mission
+package uses the common capabilities instead of repeating them. Every relation still has at least one end in
+the package itself. The latest version of a package must build on the latest version of each dependency, since
+the pages show only the latest versions. An element's page lists the other packages that use it.
 
 ## Deploy
 

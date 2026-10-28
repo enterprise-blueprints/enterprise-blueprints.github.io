@@ -26,15 +26,21 @@ describe('vocabulary', () => {
 });
 
 describe('catalog', () => {
-  it('lists every version and marks only the newest as latest', () => {
-    const versions = catalog().packages.map((p) => [p.version, p.latest]);
+  it('lists every version and marks only the newest of each package as latest', () => {
+    const versions = catalog().packages.map((p) => [p.packageId.split('.').at(-1), p.version, p.latest]);
     expect(versions).toEqual([
-      ['0.1.0', false],
-      ['0.2.0', true],
+      ['common', '0.1.0', true],
+      ['federal-oig', '0.1.0', false],
+      ['federal-oig', '0.2.0', true],
     ]);
   });
 
-  it('shows the latest version on the pages', () => {
-    expect(packages.map((p) => p.version)).toEqual(['0.2.0']);
+  it('publishes every schema version, the newest as the current one', () => {
+    expect(catalog().schemas).toEqual(['schemas/blueprint-package-0.1.0.schema.json', 'schemas/blueprint-package-0.2.0.schema.json']);
+    expect(catalog().schema).toBe('schemas/blueprint-package-0.2.0.schema.json');
+  });
+
+  it('shows the latest version of each package on the pages', () => {
+    expect(packages.map((p) => `${p.packageId.split('.').at(-1)} ${p.version}`)).toEqual(['common 0.1.0', 'federal-oig 0.2.0']);
   });
 });

@@ -1,8 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { validatePackage, type BlueprintPackage } from '../src/lib/package';
+import { validatePackage, type BlueprintPackage, type Resolve } from '../src/lib/package';
 
-const original: BlueprintPackage = JSON.parse(readFileSync('content/federal-oig/0.2.0/blueprint.json', 'utf8'));
+const read = (path: string): BlueprintPackage => JSON.parse(readFileSync(path, 'utf8'));
+const original = read('content/federal-oig/0.2.0/blueprint.json');
+const common = read('content/common/0.1.0/blueprint.json');
+const resolve: Resolve = (id, version) => (id === common.packageId && version === common.version ? common : undefined);
 
 /** A copy of the real package with one change applied. */
 function broken(change: (pkg: BlueprintPackage) => void): BlueprintPackage {
@@ -15,15 +18,21 @@ const mission = 'eb:mission:independent-government-oversight';
 const pattern = 'eb:implementationPattern:oversight-intake-case-tracking';
 
 describe('validatePackage', () => {
-  it('accepts the federal OIG package', () => {
-    expect(validatePackage(original)).toEqual([]);
+  it('accepts the federal OIG package, which builds on the common one', () => {
+    expect(validatePackage(original, resolve)).toEqual([]);
+    expect(validatePackage(common)).toEqual([]);
   });
 
-  it('has one mission, five capabilities, and one pattern', () => {
+  it('accepts the published 0.1.0 package as it was', () => {
+    expect(validatePackage(read('content/federal-oig/0.1.0/blueprint.json'))).toEqual([]);
+  });
+
+  it('has one mission, five capabilities, thirteen requirements, and one pattern', () => {
     const counts = Object.groupBy(original.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.capability).toHaveLength(5);
     expect(counts.implementationPattern).toHaveLength(1);
+    expect(counts.requirement).toHaveLength(13);
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
@@ -41,8 +50,10 @@ describe('validatePackage', () => {
     ['an unknown predicate', (p) => (p.relations[0].predicate = 'owns'), 'unknown predicate "owns"'],
     ['a predicate between the wrong types', (p) => (p.relations[0].to = pattern), '"supports_mission" can\'t link capability'],
     ['a repeated relationship', (p) => p.relations.push({ ...p.relations[0], id: 'rel:copy' }), 'repeats'],
+    ['an unknown schema version', (p) => ((p as { schemaVersion: string }).schemaVersion = '9.0.0'), 'schemaVersion should be one of 0.1.0, 0.2.0'],
+    ['dependencies under schema 0.1.0', (p) => (p.schemaVersion = '0.1.0'), 'must NOT have additional properties'],
   ])('rejects %s', (_, change, message) => {
-    const errors = validatePackage(broken(change));
+    const errors = validatePackage(broken(change), resolve);
     expect(errors.join('\n')).toContain(message);
   });
 
@@ -52,6 +63,7 @@ describe('validatePackage', () => {
         p.relations[0].to = 'eb:mission:missing';
         p.relations[1].from = 'eb:capability:missing';
       }),
+      resolve,
     );
     expect(errors).toHaveLength(2);
   });
@@ -62,13 +74,52 @@ describe('validatePackage', () => {
   });
 });
 
+describe('dependencies', () => {
+  const iam = 'eb:capability:identity-access-management';
+
+  it('let relations and discovery answers point at the common package’s elements', () => {
+    const shared = new Set(common.elements.map((e) => e.id));
+    expect(original.relations.filter((r) => shared.has(r.from)).map((r) => r.to)).toEqual([
+      'eb:requirement:restrict-case-access',
+      'eb:requirement:protect-reporter-identity',
+    ]);
+    const mapped = original.assessments!.flatMap((a) => a.questions.flatMap((q) => q.candidateMappings ?? []));
+    expect(mapped.some((m) => m.elementId === iam)).toBe(true);
+  });
+
+  it.each<[string, (pkg: BlueprintPackage) => void, string]>([
+    ['a dependency the library doesn’t have', (p) => (p.dependencies![0].version = '9.9.9'), "depends on org.enterprise-blueprints.common 9.9.9, which isn't in the library"],
+    ['the same dependency twice', (p) => p.dependencies!.push({ ...p.dependencies![0] }), 'depends on org.enterprise-blueprints.common more than once'],
+    ['depending on itself', (p) => p.dependencies!.push({ packageId: p.packageId, version: p.version }), 'depends on itself'],
+    ['defining an element a dependency already defines', (p) => p.elements.push({ ...common.elements[0] }), `element ${iam} is already defined`],
+    [
+      'a relation between two elements from other packages',
+      (p) => p.relations.push({ id: 'rel:borrowed', from: iam, predicate: 'satisfies', to: 'eb:requirement:review-access' }),
+      'only links elements from other packages',
+    ],
+    [
+      'a relation to a dependency’s element of the wrong type',
+      (p) => p.relations.push({ id: 'rel:wrong', from: iam, predicate: 'supports_mission', to: 'eb:requirement:link-evidence' }),
+      `"supports_mission" can't link capability`,
+    ],
+  ])('reject %s', (_, change, message) => {
+    expect(validatePackage(broken(change), resolve).join('\n')).toContain(message);
+  });
+
+  it('don’t resolve without the dependency', () => {
+    const errors = validatePackage(original);
+    expect(errors[0]).toContain("which isn't in the library");
+    expect(errors.join('\n')).toContain(`starts at unknown element ${iam}`);
+  });
+});
+
 describe('discovery questions', () => {
   const question = (pkg: BlueprintPackage, id: string) => pkg.assessments![0].questions.find((q) => q.id === id)!;
 
-  it('come with the 0.2.0 package and point only at its elements', () => {
+  it('come with the 0.2.0 package and point only at its elements and the common package’s', () => {
     const [assessment] = original.assessments!;
     expect(assessment.questions.length).toBeGreaterThanOrEqual(8);
-    const ids = new Set(original.elements.map((e) => e.id));
+    const ids = new Set([...original.elements, ...common.elements].map((e) => e.id));
     for (const q of assessment.questions) for (const m of q.candidateMappings ?? []) expect(ids.has(m.elementId)).toBe(true);
   });
 
@@ -85,18 +136,28 @@ describe('discovery questions', () => {
     ['a mapping to an unknown element', (p) => (question(p, 'question:audit-work').candidateMappings![0].elementId = 'eb:capability:missing'), 'maps to unknown element'],
     ['a repeated mapping', (p) => question(p, 'question:audit-work').candidateMappings!.push({ ...question(p, 'question:audit-work').candidateMappings![0] }), 'repeats mapping'],
   ])('rejects %s', (_, change, message) => {
-    expect(validatePackage(broken(change)).join('\n')).toContain(message);
+    expect(validatePackage(broken(change), resolve).join('\n')).toContain(message);
   });
 });
 
 describe('versions', () => {
-  it('keep 0.1.0 as it was, with 0.2.0 adding only the questions and its own details', () => {
+  it('keep everything from 0.1.0 in 0.2.0, unchanged, with requirements and questions added', () => {
     const first: BlueprintPackage = JSON.parse(readFileSync('content/federal-oig/0.1.0/blueprint.json', 'utf8'));
     expect(first.assessments).toBeUndefined();
-    const { version, publishedAt, description, assessments, ...rest } = original;
-    const { version: v1, publishedAt: p1, description: d1, ...restFirst } = first;
-    expect([version, v1]).toEqual(['0.2.0', '0.1.0']);
-    expect(assessments).toHaveLength(1);
-    expect(rest).toEqual(restFirst);
+    for (const e of first.elements) expect(original.elements).toContainEqual(e);
+    for (const r of first.relations) expect(original.relations).toContainEqual(r);
+    expect(original.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
+    expect(original.sources).toEqual(first.sources);
+    const added = original.elements.filter((e) => !first.elements.some((f) => f.id === e.id));
+    expect(new Set(added.map((e) => e.type))).toEqual(new Set(['requirement']));
+  });
+
+  it('gives every capability its reference requirements, and every requirement one capability of its own package', () => {
+    for (const pkg of [original, common]) {
+      const own = new Set(pkg.elements.map((e) => e.id));
+      const satisfies = pkg.relations.filter((r) => r.predicate === 'satisfies' && own.has(r.from));
+      for (const c of pkg.elements.filter((e) => e.type === 'capability')) expect(satisfies.some((r) => r.from === c.id)).toBe(true);
+      for (const q of pkg.elements.filter((e) => e.type === 'requirement')) expect(satisfies.filter((r) => r.to === q.id)).toHaveLength(1);
+    }
   });
 });

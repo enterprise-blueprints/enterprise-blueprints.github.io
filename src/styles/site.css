@@ -22,6 +22,7 @@
   --t-mission:     #1f5fbf;  --t-mission-bg:     #e8f0fc;
   --t-capability:  #0b6e5a;  --t-capability-bg:  #e2f4ef;
   --t-pattern:     #3d4f6b;  --t-pattern-bg:     #e9edf3;
+  --t-requirement: #6b3fb5;  --t-requirement-bg: #f1ebfb;
 
   --radius: 10px;
   --radius-sm: 6px;
@@ -49,6 +50,7 @@
     --t-mission:     #7fb0ff;  --t-mission-bg:     #1b2a42;
     --t-capability:  #6fd8bd;  --t-capability-bg:  #11302a;
     --t-pattern:     #b4c2d8;  --t-pattern-bg:     #222b38;
+    --t-requirement: #c6a8f5;  --t-requirement-bg: #2a2140;
   }
 }
 
@@ -237,6 +239,7 @@ td.muted { color: var(--text-muted); }
 .type-mission               { --tc: var(--t-mission);    --tc-bg: var(--t-mission-bg); }
 .type-capability            { --tc: var(--t-capability); --tc-bg: var(--t-capability-bg); }
 .type-implementationPattern { --tc: var(--t-pattern);    --tc-bg: var(--t-pattern-bg); }
+.type-requirement           { --tc: var(--t-requirement); --tc-bg: var(--t-requirement-bg); }
 
 /* A link to an element's page, as a button tinted with its type color. A long
    name wraps inside the button. */
@@ -312,10 +315,13 @@ td.muted { color: var(--text-muted); }
 
 .type-list { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
 .type-list li { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: .25rem 1.5rem; align-items: baseline; padding: .9rem 1.1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
-.type-list .element-link { justify-self: start; }
+.type-list .element-link { justify-self: start; gap: .35rem; }
 .type-list p { margin: 0; color: var(--text-muted); font-size: .9688rem; }
 .type-list__count { color: var(--text-muted); font-weight: 500; white-space: nowrap; }
 @media (max-width: 40rem) { .type-list li { grid-template-columns: 1fr; } }
+
+.shared-list { display: grid; gap: .4rem; margin: .75rem 0; padding: 0; list-style: none; }
+.shared-list .element-link { display: flex; width: 100%; }
 
 /* ---------- Record pages ---------- */
 

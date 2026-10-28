@@ -1,9 +1,9 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "0.2.0",
   "packageId": "org.enterprise-blueprints.federal-oig",
   "version": "0.2.0",
   "title": "Federal Office of Inspector General — Independent Oversight",
-  "description": "U.S. federal Office of Inspector General mission blueprint: one mission, five capabilities, one vendor-neutral implementation pattern, and a discovery question set for intake and case handling.",
+  "description": "U.S. federal Office of Inspector General mission blueprint: one mission, five capabilities with their reference requirements, one vendor-neutral implementation pattern, and a discovery question set for intake and case handling. It builds on Common Capabilities for identity, access, and data protection.",
   "publisher": {
     "name": "Enterprise Blueprints (independent reference project)",
     "url": "https://enterprise-blueprints.github.io"
@@ -21,6 +21,12 @@
     "audits",
     "investigations",
     "reference-architecture"
+  ],
+  "dependencies": [
+    {
+      "packageId": "org.enterprise-blueprints.common",
+      "version": "0.1.0"
+    }
   ],
   "sources": [
     {
@@ -153,6 +159,97 @@
       }
     },
     {
+      "id": "eb:requirement:multi-channel-intake",
+      "type": "requirement",
+      "title": "Receive matters through several channels",
+      "description": "Accept complaints, allegations, and disclosures through each channel the office offers, such as an online form, phone, email, mail, and referrals, and record each one in one place.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:acknowledge-receipt",
+      "type": "requirement",
+      "title": "Acknowledge receipt",
+      "description": "Let the person who reported know their matter was received, where that’s possible and appropriate.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:triage-and-route",
+      "type": "requirement",
+      "title": "Review and route each matter",
+      "description": "Review each matter for jurisdiction and priority, and route it to the right team or to another authority, recording the decision and the reason.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:protect-reporter-identity",
+      "type": "requirement",
+      "title": "Protect the identity of people who report",
+      "description": "Limit who can see the identity of a person who reports to the people who need it, consistent with applicable law.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:track-case-status",
+      "type": "requirement",
+      "title": "Show the status of every case in one place",
+      "description": "Keep each case’s status, assignment, and next steps current and visible to the people who manage the work.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:link-evidence",
+      "type": "requirement",
+      "title": "Keep evidence linked to its case",
+      "description": "Link evidence and records to the case they belong to, with a record of who handled them and when.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:restrict-case-access",
+      "type": "requirement",
+      "title": "Restrict access to case information",
+      "description": "Limit access to case information to the people assigned to the case or otherwise authorized, and keep a record of access.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:plan-oversight-work",
+      "type": "requirement",
+      "title": "Plan oversight work",
+      "description": "Keep a plan of audits, inspections, and evaluations, with each one’s scope, schedule, and status.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:document-findings",
+      "type": "requirement",
+      "title": "Document work and findings",
+      "description": "Keep the work papers and evidence behind each finding, so a reviewer can trace how it was reached.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:track-recommendations",
+      "type": "requirement",
+      "title": "Track each recommendation until it’s closed",
+      "description": "Record each recommendation with its owner, the response, target dates, and status, until it’s closed.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:report-open-recommendations",
+      "type": "requirement",
+      "title": "Report on open recommendations",
+      "description": "Produce a current list of open recommendations and their status whenever it’s needed.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:periodic-reporting",
+      "type": "requirement",
+      "title": "Compile periodic reports",
+      "description": "Gather the results of the period’s work for periodic reports to agency leadership and Congress.",
+      "status": "reference"
+    },
+    {
+      "id": "eb:requirement:publish-reports",
+      "type": "requirement",
+      "title": "Publish reports",
+      "description": "Publish reports and summaries to the public where appropriate, in accessible formats.",
+      "status": "reference"
+    },
+    {
       "id": "eb:implementationPattern:oversight-intake-case-tracking",
       "type": "implementationPattern",
       "title": "Oversight Intake & Case Tracking",
@@ -209,6 +306,96 @@
       "from": "eb:capability:investigation-management",
       "predicate": "candidate_pattern",
       "to": "eb:implementationPattern:oversight-intake-case-tracking"
+    },
+    {
+      "id": "rel:complaint-allegation-disclosure-intake-satisfies-multi-channel-intake",
+      "from": "eb:capability:complaint-allegation-disclosure-intake",
+      "predicate": "satisfies",
+      "to": "eb:requirement:multi-channel-intake"
+    },
+    {
+      "id": "rel:complaint-allegation-disclosure-intake-satisfies-acknowledge-receipt",
+      "from": "eb:capability:complaint-allegation-disclosure-intake",
+      "predicate": "satisfies",
+      "to": "eb:requirement:acknowledge-receipt"
+    },
+    {
+      "id": "rel:complaint-allegation-disclosure-intake-satisfies-triage-and-route",
+      "from": "eb:capability:complaint-allegation-disclosure-intake",
+      "predicate": "satisfies",
+      "to": "eb:requirement:triage-and-route"
+    },
+    {
+      "id": "rel:complaint-allegation-disclosure-intake-satisfies-protect-reporter-identity",
+      "from": "eb:capability:complaint-allegation-disclosure-intake",
+      "predicate": "satisfies",
+      "to": "eb:requirement:protect-reporter-identity"
+    },
+    {
+      "id": "rel:investigation-management-satisfies-track-case-status",
+      "from": "eb:capability:investigation-management",
+      "predicate": "satisfies",
+      "to": "eb:requirement:track-case-status"
+    },
+    {
+      "id": "rel:investigation-management-satisfies-link-evidence",
+      "from": "eb:capability:investigation-management",
+      "predicate": "satisfies",
+      "to": "eb:requirement:link-evidence"
+    },
+    {
+      "id": "rel:investigation-management-satisfies-restrict-case-access",
+      "from": "eb:capability:investigation-management",
+      "predicate": "satisfies",
+      "to": "eb:requirement:restrict-case-access"
+    },
+    {
+      "id": "rel:audit-inspection-evaluation-satisfies-plan-oversight-work",
+      "from": "eb:capability:audit-inspection-evaluation",
+      "predicate": "satisfies",
+      "to": "eb:requirement:plan-oversight-work"
+    },
+    {
+      "id": "rel:audit-inspection-evaluation-satisfies-document-findings",
+      "from": "eb:capability:audit-inspection-evaluation",
+      "predicate": "satisfies",
+      "to": "eb:requirement:document-findings"
+    },
+    {
+      "id": "rel:recommendations-corrective-action-monitoring-satisfies-track-recommendations",
+      "from": "eb:capability:recommendations-corrective-action-monitoring",
+      "predicate": "satisfies",
+      "to": "eb:requirement:track-recommendations"
+    },
+    {
+      "id": "rel:recommendations-corrective-action-monitoring-satisfies-report-open-recommendations",
+      "from": "eb:capability:recommendations-corrective-action-monitoring",
+      "predicate": "satisfies",
+      "to": "eb:requirement:report-open-recommendations"
+    },
+    {
+      "id": "rel:oversight-reporting-communication-satisfies-periodic-reporting",
+      "from": "eb:capability:oversight-reporting-communication",
+      "predicate": "satisfies",
+      "to": "eb:requirement:periodic-reporting"
+    },
+    {
+      "id": "rel:oversight-reporting-communication-satisfies-publish-reports",
+      "from": "eb:capability:oversight-reporting-communication",
+      "predicate": "satisfies",
+      "to": "eb:requirement:publish-reports"
+    },
+    {
+      "id": "rel:identity-access-management-satisfies-restrict-case-access",
+      "from": "eb:capability:identity-access-management",
+      "predicate": "satisfies",
+      "to": "eb:requirement:restrict-case-access"
+    },
+    {
+      "id": "rel:data-protection-privacy-satisfies-protect-reporter-identity",
+      "from": "eb:capability:data-protection-privacy",
+      "predicate": "satisfies",
+      "to": "eb:requirement:protect-reporter-identity"
     }
   ],
   "assessments": [
@@ -277,6 +464,36 @@
               "answerValue": "referrals",
               "elementId": "eb:capability:complaint-allegation-disclosure-intake",
               "interpretation": "Matters reach the office this way, so intake is part of the picture."
+            },
+            {
+              "answerValue": "online-form",
+              "elementId": "eb:requirement:multi-channel-intake",
+              "interpretation": "Every channel the office offers needs to feed the same intake record."
+            },
+            {
+              "answerValue": "hotline-phone",
+              "elementId": "eb:requirement:multi-channel-intake",
+              "interpretation": "Every channel the office offers needs to feed the same intake record."
+            },
+            {
+              "answerValue": "email",
+              "elementId": "eb:requirement:multi-channel-intake",
+              "interpretation": "Every channel the office offers needs to feed the same intake record."
+            },
+            {
+              "answerValue": "mail",
+              "elementId": "eb:requirement:multi-channel-intake",
+              "interpretation": "Every channel the office offers needs to feed the same intake record."
+            },
+            {
+              "answerValue": "in-person",
+              "elementId": "eb:requirement:multi-channel-intake",
+              "interpretation": "Every channel the office offers needs to feed the same intake record."
+            },
+            {
+              "answerValue": "referrals",
+              "elementId": "eb:requirement:multi-channel-intake",
+              "interpretation": "Every channel the office offers needs to feed the same intake record."
             }
           ]
         },
@@ -317,6 +534,16 @@
               "answerValue": "informal",
               "elementId": "eb:implementationPattern:oversight-intake-case-tracking",
               "interpretation": "A consistent intake and assignment flow is part of the case tracking pattern."
+            },
+            {
+              "answerValue": "staff-review",
+              "elementId": "eb:requirement:triage-and-route",
+              "interpretation": "Routing by hand works best with recorded decisions and reasons."
+            },
+            {
+              "answerValue": "informal",
+              "elementId": "eb:requirement:triage-and-route",
+              "interpretation": "Review and routing vary, so a consistent way to triage is worth defining."
             }
           ]
         },
@@ -372,6 +599,16 @@
               "answerValue": "several",
               "elementId": "eb:implementationPattern:oversight-intake-case-tracking",
               "interpretation": "Tracking in several places suggests the case tracking pattern is worth exploring."
+            },
+            {
+              "answerValue": "documents",
+              "elementId": "eb:requirement:track-case-status",
+              "interpretation": "Status kept in documents is hard to see in one place."
+            },
+            {
+              "answerValue": "several",
+              "elementId": "eb:requirement:track-case-status",
+              "interpretation": "Status kept in several places is hard to see in one place."
             }
           ]
         },
@@ -389,6 +626,11 @@
               "answerValue": "true",
               "elementId": "eb:implementationPattern:oversight-intake-case-tracking",
               "interpretation": "Evidence linkage and audit trails are part of the case tracking pattern."
+            },
+            {
+              "answerValue": "true",
+              "elementId": "eb:requirement:link-evidence",
+              "interpretation": "Evidence needs to stay linked to its case."
             }
           ]
         },
@@ -406,6 +648,26 @@
               "answerValue": "true",
               "elementId": "eb:implementationPattern:oversight-intake-case-tracking",
               "interpretation": "Appropriate access controls are part of the case tracking pattern."
+            },
+            {
+              "answerValue": "true",
+              "elementId": "eb:requirement:protect-reporter-identity",
+              "interpretation": "This is a requirement on intake."
+            },
+            {
+              "answerValue": "true",
+              "elementId": "eb:requirement:restrict-case-access",
+              "interpretation": "Case access needs to protect the identity of people who report."
+            },
+            {
+              "answerValue": "true",
+              "elementId": "eb:capability:identity-access-management",
+              "interpretation": "Keeping identities from staff who don’t need them depends on access by role and need."
+            },
+            {
+              "answerValue": "true",
+              "elementId": "eb:capability:data-protection-privacy",
+              "interpretation": "Reporters’ identities are sensitive personal information."
             }
           ]
         },
@@ -418,6 +680,11 @@
               "answerValue": "true",
               "elementId": "eb:capability:audit-inspection-evaluation",
               "interpretation": "The office does audit, inspection, or evaluation work."
+            },
+            {
+              "answerValue": "true",
+              "elementId": "eb:requirement:plan-oversight-work",
+              "interpretation": "Audit, inspection, and evaluation work needs a plan."
             }
           ]
         },
@@ -458,6 +725,16 @@
               "answerValue": "inconsistent",
               "elementId": "eb:capability:recommendations-corrective-action-monitoring",
               "interpretation": "Recommendations aren’t followed consistently, which suggests a gap in monitoring."
+            },
+            {
+              "answerValue": "documents",
+              "elementId": "eb:requirement:track-recommendations",
+              "interpretation": "Recommendations tracked in documents are hard to follow to closure."
+            },
+            {
+              "answerValue": "inconsistent",
+              "elementId": "eb:requirement:track-recommendations",
+              "interpretation": "Recommendations aren’t followed consistently, so tracking them to closure is a need."
             }
           ]
         },
@@ -503,6 +780,16 @@
               "answerValue": "public-updates",
               "elementId": "eb:capability:oversight-reporting-communication",
               "interpretation": "The office communicates with the public."
+            },
+            {
+              "answerValue": "semiannual",
+              "elementId": "eb:requirement:periodic-reporting",
+              "interpretation": "Reports to Congress draw on the period’s results."
+            },
+            {
+              "answerValue": "public-updates",
+              "elementId": "eb:requirement:publish-reports",
+              "interpretation": "The office publishes to the public."
             }
           ]
         },

@@ -1,20 +1,25 @@
 // The machine-readable files the site publishes: each package exactly as
-// stored, its SHA-256 digest, the package schema, the vocabulary, and a
-// catalog of packages.
+// stored, its SHA-256 digest, every version of the package schema, the
+// vocabulary, and a catalog of packages.
 // Paths are relative to the site root, and the catalog's hrefs are relative
 // to the catalog, so they work under any base path.
 
 import { createHash } from 'node:crypto';
-import schemaText from '../../schemas/blueprint-package.schema.json?raw';
+import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json?raw';
+import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json?raw';
 import { packageFiles, type PackageFile } from './library';
 import type { BlueprintPackage } from './package';
 import { href } from './paths';
 import { elementTypes, predicates, sourceKinds, statuses } from './vocabulary';
 
-export { schemaText };
-
-const schemaVersion: string = JSON.parse(schemaText).properties.schemaVersion.const;
-export const schemaPath = `schemas/blueprint-package-${schemaVersion}.schema.json`;
+/** Every schema version stays published, so packages that use an older one still validate. Newest last. */
+export const schemas = [schema010, schema020].map((text) => {
+  const version: string = JSON.parse(text).properties.schemaVersion.const;
+  return { version, text, path: `schemas/blueprint-package-${version}.schema.json` };
+});
+const current = schemas.at(-1)!;
+const schemaVersion = current.version;
+export const schemaPath = current.path;
 
 export interface PublishedPackage extends PackageFile {
   path: string;
@@ -38,6 +43,7 @@ export function catalog() {
     // always produces the same catalog.
     generatedAt: published.map((p) => p.data.publishedAt).sort().at(-1),
     schema: schemaPath,
+    schemas: schemas.map((s) => s.path),
     vocabulary: 'vocabulary.json',
     packages: published.map((p) => ({
       packageId: p.data.packageId,

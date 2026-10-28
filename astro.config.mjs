@@ -8,4 +8,10 @@ export default defineConfig({
   base: process.env.BASE_PATH || '/',
   // CI builds a second copy under a test base path into another folder.
   outDir: process.env.OUT_DIR || 'dist',
+  // Fail when the port is taken instead of quietly moving to the next one,
+  // so a second dev or preview server can't pile up unnoticed.
+  vite: {
+    server: { strictPort: true },
+    preview: { strictPort: true },
+  },
 });

@@ -68,10 +68,11 @@ for (const id of new Set(catalog.packages.map((p) => p.packageId))) {
   const latest = catalog.packages.filter((p) => p.packageId === id && p.latest);
   if (latest.length !== 1) errors.push(`catalog: ${id} has ${latest.length} versions marked latest`);
 }
-if (!existsSync(join(dist, catalog.schema))) {
-  errors.push(`catalog: schema ${catalog.schema} doesn't exist`);
-} else if (!readFileSync(join(dist, catalog.schema)).equals(readFileSync('schemas/blueprint-package.schema.json'))) {
-  errors.push(`${catalog.schema} differs from schemas/blueprint-package.schema.json`);
+if (!(catalog.schemas ?? []).includes(catalog.schema)) errors.push(`catalog: schema ${catalog.schema} isn't in its list of schemas`);
+for (const schema of catalog.schemas ?? []) {
+  const source = join('schemas', schema.split('/').at(-1));
+  if (!existsSync(join(dist, schema))) errors.push(`catalog: schema ${schema} doesn't exist`);
+  else if (!existsSync(source) || !readFileSync(join(dist, schema)).equals(readFileSync(source))) errors.push(`${schema} differs from ${source}`);
 }
 
 const vocabulary = catalog.vocabulary && existsSync(join(dist, catalog.vocabulary)) ? JSON.parse(readFileSync(join(dist, catalog.vocabulary), 'utf8')) : null;

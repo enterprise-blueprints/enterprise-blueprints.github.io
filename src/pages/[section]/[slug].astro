@@ -5,7 +5,7 @@ import TypeBadge from '../../components/TypeBadge.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import ElementTable from '../../components/ElementTable.astro';
 import SourceList from '../../components/SourceList.astro';
-import { elements, relationGroups, sourcesOf, lastReviewed, questionsAbout } from '../../lib/library';
+import { elements, relationGroups, sourcesOf, lastReviewed, questionsAbout, usedBy } from '../../lib/library';
 import { statuses } from '../../lib/vocabulary';
 import { attributeLabel, attributeValue, formatDate } from '../../lib/format';
 import { href } from '../../lib/paths';
@@ -25,6 +25,7 @@ const reviewed = lastReviewed(sources);
 const scope = element.jurisdictions ?? pkg.jurisdictions ?? [];
 const attributes = Object.entries(element.attributes ?? {});
 const questions = questionsAbout(element);
+const users = usedBy(element);
 ---
 <Base title={element.title} description={element.description}>
   <div class="container">
@@ -100,6 +101,7 @@ const questions = questionsAbout(element);
               <div><a href={downloadUrl(pkg)}>Download JSON</a></div>
             </dd>
           </div>
+          {users.length > 0 && <div><dt>Also used by</dt><dd>{users.map((p) => p.title).join('; ')}</dd></div>}
           {scope.length > 0 && <div><dt>Scope</dt><dd>{scope.join('; ')}</dd></div>}
           {reviewed && <div><dt>Sources reviewed</dt><dd>{formatDate(reviewed)}</dd></div>}
           {attributes.length > 0 && (

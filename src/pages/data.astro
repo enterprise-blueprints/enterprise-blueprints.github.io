@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { published, schemaPath, vocabulary } from '../lib/publish';
+import { published, schemaPath, schemas, vocabulary } from '../lib/publish';
 import { formatDate } from '../lib/format';
 import { href } from '../lib/paths';
 ---
@@ -30,6 +30,9 @@ import { href } from '../lib/paths';
             <tr>
               <th scope="row">
                 {p.data.title}
+                {p.data.dependencies?.map((d) => (
+                  <p class="digest">Builds on {published.find((q) => q.data.packageId === d.packageId && q.data.version === d.version)?.data.title ?? d.packageId} {d.version}</p>
+                ))}
                 <p class="digest">SHA-256 <code>{p.sha256}</code></p>
               </th>
               <td data-label="Version" class="nowrap">{p.data.version}{p.latest && <span class="latest">Latest</span>}</td>
@@ -62,7 +65,13 @@ import { href } from '../lib/paths';
       <h2>Schema</h2>
       <p>
         Packages follow the <a href={href(schemaPath)}>package JSON Schema</a>. A package version never
-        changes once it's published; changes go into a new version.
+        changes once it's published; changes go into a new version. The schema is versioned the same way, and
+        every version stays published: {schemas.map((s, i) => <>{i > 0 && ', '}<a href={href(s.path)}>{s.version}</a></>)}.
+      </p>
+      <p>
+        Since schema 0.2.0, a package can build on others through <code>dependencies</code>, each pinned to a version.
+        Its relations and discovery answers can then point at those packages' elements by ID, so shared capabilities
+        are described once.
       </p>
     </div>
   </div>
