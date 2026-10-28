@@ -1,0 +1,211 @@
+---
+// A mission's blueprint as a stack of bands: the outcomes it seeks, the
+// capabilities that contribute to them, then requirements, measures, and
+// patterns as counts that expand. Hovering or focusing anything lights up
+// what it connects to in the other bands.
+import { shortTitle, type MissionBlueprint } from '../lib/library';
+import { plural } from '../lib/format';
+
+interface Props {
+  blueprint: MissionBlueprint;
+}
+
+const { blueprint } = Astro.props;
+const { outcomes, capabilities, measures, requirements, patterns } = blueprint;
+const own = capabilities.filter((c) => !c.sharedFrom);
+const shared = capabilities.filter((c) => c.sharedFrom);
+const sharedFrom = [...new Set(shared.map((c) => c.sharedFrom!))];
+
+// Every connection both ways, so lighting one end lights the other.
+const links = new Map<string, Set<string>>();
+const link = (a: string, b: string) => {
+  for (const [x, y] of [[a, b], [b, a]]) links.set(x, (links.get(x) ?? new Set()).add(y));
+};
+for (const o of outcomes) {
+  for (const c of o.capabilities) link(o.outcome.id, c.id);
+  if (o.measures.length) link(o.outcome.id, `measures:${o.outcome.id}`);
+}
+for (const c of capabilities) {
+  if (c.requirements.length) link(c.capability.id, `requirements:${c.capability.id}`);
+  for (const p of c.patterns) link(c.capability.id, p.id);
+}
+const node = (id: string) => ({ 'data-node': id, 'data-links': [...(links.get(id) ?? [])].join(' ') });
+---
+<section class="bp-stack" aria-labelledby="stack-heading" data-stack>
+  <div class="bp-stack__intro">
+    <h2 id="stack-heading">The blueprint at a glance</h2>
+    <p class="section-note">Point at anything, or tab to it, to see what it connects to.</p>
+  </div>
+  <ol class="bp-bands">
+    <li class="bp-band type-outcome">
+      <div class="bp-band__label">
+        <span class="bp-band__name">Outcomes</span>
+        <span class="bp-band__count">{outcomes.length} · {plural(measures.length, 'measure', 'measures')}</span>
+      </div>
+      <div class="bp-band__body">
+        <ul class="bp-chips">
+          {outcomes.map(({ outcome, measures }) => (
+            <li>
+              <a class="element-link type-outcome bp-chip" href={outcome.url} {...node(outcome.id)}>
+                <span>{outcome.title}</span>
+                {measures.length > 0 && <span class="bp-chip__meta">{plural(measures.length, 'measure', 'measures')}</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+        {measures.length > 0 && (
+          <details class="bp-more">
+            <summary>{plural(measures.length, 'measure', 'measures')}, by outcome</summary>
+            <ul class="bp-groups">
+              {outcomes.filter((o) => o.measures.length).map(({ outcome, measures }) => (
+                <li class="bp-group" {...node(`measures:${outcome.id}`)}>
+                  <span class="bp-group__title">{outcome.title}</span>
+                  <ul class="element-links">
+                    {measures.map((m) => <li><a class="element-link type-measure" href={m.url}>{m.title}</a></li>)}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+      </div>
+    </li>
+
+    <li class="bp-band type-capability">
+      <div class="bp-band__label">
+        <span class="bp-band__name">Capabilities</span>
+        <span class="bp-band__count">{own.length}{shared.length > 0 && ` + ${shared.length} shared`}</span>
+      </div>
+      <div class="bp-band__body">
+        <ul class="bp-chips">
+          {own.map(({ capability, requirements }) => (
+            <li>
+              <a class="element-link type-capability bp-chip" href={capability.url} {...node(capability.id)}>
+                <span>{capability.title}</span>
+                {requirements.length > 0 && <span class="bp-chip__meta">{plural(requirements.length, 'requirement', 'requirements')}</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+        {shared.length > 0 && (
+          <>
+            <p class="bp-shared-label">Shared from {sharedFrom.map(shortTitle).join(' and ')}</p>
+            <ul class="bp-chips">
+              {shared.map(({ capability, requirements, sharedFrom }) => (
+                <li>
+                  <a class="element-link type-capability bp-chip bp-chip--shared" href={capability.url} title={`From ${shortTitle(sharedFrom!)}`} {...node(capability.id)}>
+                    <span>{capability.title}</span>
+                    {requirements.length > 0 && <span class="bp-chip__meta">{plural(requirements.length, 'requirement', 'requirements')}</span>}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+    </li>
+
+    {requirements.length > 0 && (
+      <li class="bp-band type-requirement">
+        <div class="bp-band__label">
+          <span class="bp-band__name">Requirements</span>
+          <span class="bp-band__count">{requirements.length}</span>
+        </div>
+        <div class="bp-band__body">
+          <details class="bp-more">
+            <summary>{plural(requirements.length, 'requirement', 'requirements')}, by capability</summary>
+            <ul class="bp-groups">
+              {capabilities.filter((c) => c.requirements.length).map(({ capability, requirements }) => (
+                <li class="bp-group" {...node(`requirements:${capability.id}`)}>
+                  <span class="bp-group__title">{capability.title}</span>
+                  <ul class="element-links">
+                    {requirements.map((r) => <li><a class="element-link type-requirement" href={r.url}>{r.title}</a></li>)}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </div>
+      </li>
+    )}
+
+    {patterns.length > 0 && (
+      <li class="bp-band type-implementationPattern">
+        <div class="bp-band__label">
+          <span class="bp-band__name">Patterns</span>
+          <span class="bp-band__count">{patterns.length}</span>
+        </div>
+        <div class="bp-band__body">
+          <details class="bp-more">
+            <summary>{plural(patterns.length, 'candidate pattern', 'candidate patterns')}</summary>
+            <ul class="bp-groups">
+              {patterns.map((p) => (
+                <li class="bp-group" {...node(p.id)}>
+                  <a class="element-link type-implementationPattern" href={p.url}>{p.title}</a>
+                  <span class="muted bp-group__for">
+                    For {capabilities.filter((c) => c.patterns.includes(p)).map((c) => c.capability.title).join('; ')}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </div>
+      </li>
+    )}
+  </ol>
+</section>
+
+<script>
+  // Light up what the pointed-at or focused item connects to, and dim the rest.
+  for (const stack of document.querySelectorAll<HTMLElement>('[data-stack]')) {
+    const nodes = [...stack.querySelectorAll<HTMLElement>('[data-node]')];
+    const trace = (from: HTMLElement | null) => {
+      const lit = from ? new Set([from.dataset.node, ...(from.dataset.links ?? '').split(' ')]) : null;
+      stack.classList.toggle('is-tracing', Boolean(lit));
+      for (const n of nodes) n.classList.toggle('is-lit', Boolean(lit?.has(n.dataset.node)));
+    };
+    const target = (e: Event) => (e.target as HTMLElement).closest<HTMLElement>('[data-node]');
+    stack.addEventListener('pointerover', (e) => trace(target(e)));
+    stack.addEventListener('pointerleave', () => trace(null));
+    stack.addEventListener('focusin', (e) => trace(target(e)));
+    stack.addEventListener('focusout', () => trace(null));
+  }
+</script>
+
+<style>
+  .bp-stack { margin-bottom: 2.5rem; }
+  .bp-stack__intro h2 { margin-bottom: .25rem; }
+  .bp-bands { list-style: none; margin: 1rem 0 0; padding: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .bp-band { display: grid; gap: .6rem; padding: 1rem; border-top: 1px solid var(--border); border-left: 4px solid var(--tc); background: var(--surface); }
+  .bp-band:first-child { border-top: 0; }
+  @media (min-width: 46rem) {
+    .bp-band { grid-template-columns: 10rem minmax(0, 1fr); gap: 1.25rem; padding: 1.1rem 1.25rem; }
+  }
+  .bp-band__label { display: flex; flex-direction: column; gap: .1rem; }
+  .bp-band__name { font-size: .8125rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--tc); }
+  .bp-band__count { font-size: .875rem; color: var(--text-muted); }
+  .bp-band__body { min-width: 0; }
+
+  .bp-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .bp-chip { flex-direction: column; align-items: flex-start; gap: .1rem; max-width: 17rem; transition: opacity .15s, box-shadow .15s; }
+  .bp-chip__meta { font-size: .75rem; font-weight: 500; opacity: .8; }
+  .bp-chip--shared { border-style: dashed; }
+  .bp-shared-label { margin: .75rem 0 .4rem; font-size: .8125rem; color: var(--text-muted); }
+
+  .bp-more summary { cursor: pointer; font-size: .9375rem; font-weight: 600; color: var(--tc); width: fit-content; }
+  .bp-more[open] summary { margin-bottom: .75rem; }
+  .bp-groups { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+  .bp-group { display: grid; gap: .35rem; padding: .5rem .6rem; margin: 0 -.6rem; border-radius: var(--radius-sm); transition: opacity .15s, background-color .15s; }
+  .bp-group__title { font-size: .8125rem; font-weight: 650; color: var(--text-muted); }
+  .bp-group__for { font-size: .875rem; }
+  .bp-group .element-links { list-style: none; margin: 0; padding: 0; }
+  .bp-group .element-link { font-size: .875rem; min-height: 2rem; }
+
+  /* While tracing, what's connected stays bright and the rest fades. */
+  .is-tracing .bp-chip:not(.is-lit), .is-tracing .bp-group:not(.is-lit) { opacity: .35; }
+  .is-tracing .bp-chip.is-lit { box-shadow: 0 0 0 2px var(--tc); }
+  .is-tracing .bp-group.is-lit { background: var(--surface-muted); }
+  @media (prefers-reduced-motion: reduce) {
+    .bp-chip, .bp-group { transition: none; }
+  }
+</style>

@@ -151,6 +151,59 @@ export function relationGroups(element: LibraryElement): RelationGroup[] {
   return groups;
 }
 
+export interface MissionBlueprint {
+  outcomes: { outcome: LibraryElement; measures: LibraryElement[]; capabilities: LibraryElement[] }[];
+  /** The mission's own capabilities first, then shared ones from packages it builds on. */
+  capabilities: {
+    capability: LibraryElement;
+    /** The package it comes from, when that isn't the mission's own. */
+    sharedFrom?: BlueprintPackage;
+    outcomes: LibraryElement[];
+    requirements: LibraryElement[];
+    patterns: LibraryElement[];
+  }[];
+  measures: LibraryElement[];
+  requirements: LibraryElement[];
+  patterns: LibraryElement[];
+}
+
+/**
+ * Everything under a mission, band by band: the outcomes it seeks and their
+ * measures, the capabilities that contribute to them (or, in older packages,
+ * support the mission directly), and those capabilities' requirements and
+ * candidate patterns.
+ */
+export function missionBlueprint(mission: LibraryElement): MissionBlueprint {
+  const unique = (list: LibraryElement[]) => [...new Set(list)];
+  const outcomes = related(mission, 'seeks', 'outgoing').map((outcome) => ({
+    outcome,
+    measures: related(outcome, 'measured_by', 'outgoing'),
+    capabilities: related(outcome, 'contributes_to', 'incoming'),
+  }));
+  const found = unique([...outcomes.flatMap((o) => o.capabilities), ...related(mission, 'supports_mission', 'incoming')]);
+  // In the order their packages define them, the mission's own first.
+  const order = (e: LibraryElement) => (e.package === mission.package ? 0 : 1) * 1e6 + elements.indexOf(e);
+  const capabilities = found
+    .sort((a, b) => order(a) - order(b))
+    .map((capability) => ({
+      capability,
+      ...(capability.package !== mission.package && { sharedFrom: capability.package }),
+      outcomes: outcomes.filter((o) => o.capabilities.includes(capability)).map((o) => o.outcome),
+      requirements: related(capability, 'satisfies', 'outgoing'),
+      patterns: related(capability, 'candidate_pattern', 'outgoing'),
+    }));
+  return {
+    outcomes,
+    capabilities,
+    measures: unique(outcomes.flatMap((o) => o.measures)),
+    requirements: unique(capabilities.flatMap((c) => c.requirements)),
+    patterns: unique(capabilities.flatMap((c) => c.patterns)),
+  };
+}
+
+/** "Common Capabilities" for "Common Capabilities — Shared Across Missions". */
+export const shortTitle = (pkg: BlueprintPackage) => pkg.title.split(' — ')[0];
+
 /** The packages that build on this one, such as the mission packages that build on the common one. */
 export function dependents(pkg: BlueprintPackage): BlueprintPackage[] {
   return packages.filter((p) => p.dependencies?.some((d) => d.packageId === pkg.packageId));
