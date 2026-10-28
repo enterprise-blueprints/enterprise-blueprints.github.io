@@ -349,6 +349,76 @@
           "Members of the public, such as requesters or people who report, need a different way to sign in, or none"
         ]
       }
+    },
+    {
+      "id": "eb:implementationPattern:records-aware-collaboration",
+      "type": "implementationPattern",
+      "title": "Collaboration Workspace with Records and Sensitivity Labels",
+      "description": "An example architecture: the agency’s office suite and collaboration workspace, for documents, chat, and meetings, with retention labels that keep work on approved records schedules and sensitivity labels that limit who can open, share, or copy sensitive information.",
+      "status": "reference",
+      "sourceIds": [
+        "src:records-44-usc-3101",
+        "src:nara-grs",
+        "src:nist-sp-800-53"
+      ],
+      "attributes": {
+        "approach": "platform",
+        "role": "worker-productivity",
+        "parts": [
+          "Shared documents, chat, and meetings for each team, signed in through the agency",
+          "Retention labels that apply an approved records schedule to files and messages",
+          "Sensitivity labels that limit opening, sharing, and copying, and protect files that leave the agency",
+          "Rules that warn or block when personal or sensitive information is shared outside the team",
+          "Search across files and messages for records requests and legal holds"
+        ],
+        "strengths": [
+          "Records and protection go wherever staff already work, instead of in a separate system",
+          "Messages and drafts that are records are kept on schedule, not left to each person",
+          "The same labels serve records requests, legal holds, and investigations"
+        ],
+        "fitsWhen": [
+          "Much of the office’s work happens in documents, email, and chat outside its business applications",
+          "Records schedules and sensitivity rules are hard to apply by hand"
+        ],
+        "watchFor": [
+          "Labels only help if they’re applied, so defaults and automatic labeling matter",
+          "Chat and meeting recordings can be records too, which surprises people",
+          "Work kept here and in a business application needs one answer to which copy is the record"
+        ]
+      }
+    },
+    {
+      "id": "eb:implementationPattern:letters-from-case-data",
+      "type": "implementationPattern",
+      "title": "Letters and Notices from Case Data",
+      "description": "An example architecture: letters, notices, and report sections drafted from approved templates filled in with a case’s data, reviewed and signed by staff, then saved back to the case file.",
+      "status": "reference",
+      "sourceIds": [
+        "src:records-44-usc-3101"
+      ],
+      "attributes": {
+        "approach": "platform",
+        "role": "worker-productivity",
+        "parts": [
+          "A library of approved templates, each with an owner",
+          "Fields filled in from the case, such as names, dates, and decisions",
+          "Review and signature by the responsible person before anything goes out",
+          "The sent version saved to the case file, with when and how it was sent"
+        ],
+        "strengths": [
+          "Required wording, such as appeal rights, is in every letter",
+          "Less retyping of what the case already knows",
+          "Every letter sent is on the record with its case"
+        ],
+        "fitsWhen": [
+          "Staff send many similar letters or notices",
+          "Letters are written from scratch or copied from old ones today"
+        ],
+        "watchFor": [
+          "Templates need an owner to keep them current when the law or policy changes",
+          "A filled-in letter still needs a person to read it before it goes out"
+        ]
+      }
     }
   ],
   "relations": [
@@ -459,6 +529,24 @@
       "from": "eb:capability:identity-access-management",
       "predicate": "candidate_pattern",
       "to": "eb:implementationPattern:agency-sign-on"
+    },
+    {
+      "id": "rel:records-management-candidate-pattern-records-aware-collaboration",
+      "from": "eb:capability:records-management",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:records-aware-collaboration"
+    },
+    {
+      "id": "rel:data-protection-privacy-candidate-pattern-records-aware-collaboration",
+      "from": "eb:capability:data-protection-privacy",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:records-aware-collaboration"
+    },
+    {
+      "id": "rel:case-management-candidate-pattern-letters-from-case-data",
+      "from": "eb:capability:case-management",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:letters-from-case-data"
     }
   ],
   "assessments": [

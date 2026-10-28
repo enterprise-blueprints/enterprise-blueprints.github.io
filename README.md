@@ -76,7 +76,8 @@ short interpretation; text and number answers are recorded as said and point now
 
 **Implementation patterns** are examples, and each one describes itself in `attributes` so patterns can be
 compared side by side and grouped: `approach` (`product`, `platform`, `combine`, or `build`), `role` (the part
-it plays: `public-facing`, `business-applications`, `processing`, `ai-insights`, or `infrastructure`), and `parts`,
+it plays: `public-facing`, `business-applications`, `worker-productivity`, `processing`, `ai-insights`, or
+`infrastructure`), and `parts`,
 `strengths`, `fitsWhen`, and `watchFor`, each a list of short statements. `src/lib/vocabulary.ts` defines them,
 and `vocabulary.json` publishes their labels. A `candidate_pattern` relation's `description` says what the
 pattern means for that capability, such as a mission's caveat on a shared pattern.

@@ -855,6 +855,13 @@
       "to": "eb:implementationPattern:oversight-reporting-from-source-data"
     },
     {
+      "id": "rel:oversight-reporting-communication-candidate-pattern-letters-from-case-data",
+      "from": "eb:capability:oversight-reporting-communication",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:letters-from-case-data",
+      "description": "Drafts of routine notices and report sections, with the office’s wording, from the case and audit data."
+    },
+    {
       "id": "rel:complaint-allegation-disclosure-intake-satisfies-multi-channel-intake",
       "from": "eb:capability:complaint-allegation-disclosure-intake",
       "predicate": "satisfies",

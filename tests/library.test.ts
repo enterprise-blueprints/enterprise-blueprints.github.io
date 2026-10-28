@@ -71,7 +71,7 @@ describe('example solutions', () => {
   const slug = (e: { id: string }) => e.id.split(':')[2];
 
   it('group their patterns by role, public facing first and infrastructure last', () => {
-    expect(shared.roles.map((g) => g.role)).toEqual(['public-facing', 'business-applications', 'processing', 'ai-insights', 'infrastructure']);
+    expect(shared.roles.map((g) => g.role)).toEqual(['public-facing', 'business-applications', 'worker-productivity', 'processing', 'ai-insights', 'infrastructure']);
     const systems = shared.roles.find((g) => g.role === 'business-applications')!.items.map((i) => slug(i.pattern));
     expect(systems).toEqual(expect.arrayContaining(['shared-case-platform', 'foia-tracking-with-review-tool']));
     for (const g of shared.roles) for (const i of g.items) expect(i.note, slug(i.pattern)).toBeTruthy();
@@ -81,8 +81,13 @@ describe('example solutions', () => {
     const [oig, foia] = shared.coverage;
     expect(slug(oig.mission)).toBe('independent-government-oversight');
     expect(oig.covered.map(slug)).toEqual(expect.arrayContaining(['complaint-allegation-disclosure-intake', 'investigation-management', 'case-management']));
-    expect(foia.uncovered.map(slug)).toContain('data-protection-privacy');
+    // The collaboration workspace covers records and data protection for both.
+    expect(foia.covered.map(slug)).toEqual(expect.arrayContaining(['records-management', 'data-protection-privacy']));
+    expect(foia.uncovered).toEqual([]);
     expect(oig.covered.length + oig.uncovered.length).toBe(missionBlueprint(oig.mission).capabilities.length);
+    // Purpose-built systems leave the FOIA product to write its own letters.
+    const built = solutionView(get('eb:solution:purpose-built-systems'));
+    expect(built.patterns.map(slug)).not.toContain('letters-from-case-data');
   });
 
   it('are listed on both missions', () => {
@@ -94,6 +99,6 @@ describe('example solutions', () => {
   it('group a mission’s patterns the same way', () => {
     const groups = byRole(missionBlueprint(get('eb:mission:public-access-to-agency-records')).patterns, (p) => p);
     // The FOIA program has no AI and insights pattern yet.
-    expect(groups.map((g) => g.label)).toEqual(['Public facing', 'Business applications', 'Processing service', 'Infrastructure']);
+    expect(groups.map((g) => g.label)).toEqual(['Public facing', 'Business applications', 'Worker productivity', 'Processing service', 'Infrastructure']);
   });
 });

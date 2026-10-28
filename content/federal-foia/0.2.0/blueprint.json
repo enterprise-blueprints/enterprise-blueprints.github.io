@@ -1069,6 +1069,13 @@
       "to": "eb:implementationPattern:foia-request-processing"
     },
     {
+      "id": "rel:response-release-candidate-pattern-letters-from-case-data",
+      "from": "eb:capability:response-release",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:letters-from-case-data",
+      "description": "Determination letters with the exemptions used and the requester’s appeal rights filled in."
+    },
+    {
       "id": "rel:foia-request-intake-satisfies-accept-portal-requests",
       "from": "eb:capability:foia-request-intake",
       "predicate": "satisfies",

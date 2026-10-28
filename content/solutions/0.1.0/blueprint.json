@@ -343,6 +343,41 @@
       "predicate": "includes",
       "to": "eb:implementationPattern:foia-library-publishing",
       "description": "Publishes releases from the review tool."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-records-aware-collaboration",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "Where staff in both offices draft and collaborate, with records and sensitivity labels applied."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-letters-from-case-data",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:letters-from-case-data",
+      "description": "Built on the shared platform, so letters come from the same case data."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-records-aware-collaboration",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "The agency’s workspace for drafting and collaboration, outside each office’s product."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-records-aware-collaboration",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "Where staff in both offices draft and collaborate, with records and sensitivity labels applied."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-letters-from-case-data",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:letters-from-case-data",
+      "description": "For the FOIA office’s letters, from the request data on the platform."
     }
   ]
 }

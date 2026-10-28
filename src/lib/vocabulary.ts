@@ -138,6 +138,10 @@ export const patternRoles: Record<string, { label: string; hint: string }> = {
     label: 'Business applications',
     hint: 'Where the office’s work is tracked and done. These are alternatives: a solution usually picks one for each kind of work.',
   },
+  'worker-productivity': {
+    label: 'Worker productivity',
+    hint: 'What staff use every day to write, collaborate, and find what they need, alongside the business applications.',
+  },
   processing: {
     label: 'Processing service',
     hint: 'Specialized processing on the records, such as search and review. Add as needed.',
