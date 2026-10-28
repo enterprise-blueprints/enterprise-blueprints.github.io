@@ -1,8 +1,11 @@
 ---
-// A mission's blueprint as a stack of bands: the outcomes it seeks, the
-// capabilities that contribute to them, then requirements, measures, and
-// patterns as counts that expand. Hovering or focusing anything lights up
-// what it connects to in the other bands.
+// A mission's blueprint as a stack of bands, one item per row: the outcomes
+// it seeks, the capabilities that contribute to them, their requirements, and
+// candidate patterns, each with its description. A long band, such as the
+// requirements, starts as a count that expands. Selecting an item lights up
+// what it connects to in the other bands and shows it under the item; each
+// row links to its page.
+import StackItem from './StackItem.astro';
 import { shortTitle, type MissionBlueprint } from '../lib/library';
 import { plural } from '../lib/format';
 
@@ -16,7 +19,7 @@ const own = capabilities.filter((c) => !c.sharedFrom);
 const shared = capabilities.filter((c) => c.sharedFrom);
 const sharedFrom = [...new Set(shared.map((c) => c.sharedFrom!))];
 
-// Every connection both ways, so lighting one end lights the other.
+// Every connection both ways, so selecting one end lights the other.
 const links = new Map<string, Set<string>>();
 const link = (a: string, b: string) => {
   for (const [x, y] of [[a, b], [b, a]]) links.set(x, (links.get(x) ?? new Set()).add(y));
@@ -26,36 +29,59 @@ for (const o of outcomes) {
   if (o.measures.length) link(o.outcome.id, `measures:${o.outcome.id}`);
 }
 for (const c of capabilities) {
-  if (c.requirements.length) link(c.capability.id, `requirements:${c.capability.id}`);
+  for (const r of c.requirements) link(c.capability.id, r.id);
   for (const p of c.patterns) link(c.capability.id, p.id);
 }
+// What each requirement and pattern belongs to.
+const satisfiedBy = (id: string) => capabilities.filter((c) => c.requirements.some((r) => r.id === id)).map((c) => c.capability);
+const candidateFor = (id: string) => capabilities.filter((c) => c.patterns.some((p) => p.id === id)).map((c) => c.capability);
+const mission = outcomes[0]?.outcome.package ?? capabilities[0]?.capability.package;
+// A band with more items than this starts as a count that expands.
+const LONG = 8;
 const node = (id: string) => ({ 'data-node': id, 'data-links': [...(links.get(id) ?? [])].join(' ') });
+
+const measureCount = (n: number) => plural(n, 'measure', 'measures');
+const requirementCount = (n: number) => plural(n, 'requirement', 'requirements');
+const capabilityCount = (n: number) => plural(n, 'capability', 'capabilities');
+const capabilityItem = (c: (typeof capabilities)[number]) => ({
+  element: c.capability,
+  shared: Boolean(c.sharedFrom),
+  meta: c.requirements.length ? requirementCount(c.requirements.length) : undefined,
+  below: [
+    { heading: 'Requirements', elements: c.requirements },
+    { heading: 'Candidate patterns', elements: c.patterns },
+  ],
+  ...node(c.capability.id),
+});
 ---
 <section class="bp-stack" aria-labelledby="stack-heading" data-stack>
   <div class="bp-stack__intro">
     <h2 id="stack-heading">The blueprint at a glance</h2>
-    <p class="section-note">Point at anything, or tab to it, to see what it connects to.</p>
+    <p class="section-note">
+      <span data-idle>Select an outcome or capability to see what it connects to.</span>
+      <span data-active hidden>Showing what <strong data-selected-name></strong> connects to. <button type="button" class="bp-clear" data-clear>Clear</button></span>
+    </p>
   </div>
   <ol class="bp-bands">
     <li class="bp-band type-outcome">
       <div class="bp-band__label">
         <span class="bp-band__name">Outcomes</span>
-        <span class="bp-band__count">{outcomes.length} · {plural(measures.length, 'measure', 'measures')}</span>
+        <span class="bp-band__count">{outcomes.length} · {measureCount(measures.length)}</span>
       </div>
       <div class="bp-band__body">
-        <ul class="bp-chips">
+        <ul class="bp-items">
           {outcomes.map(({ outcome, measures }) => (
-            <li>
-              <a class="element-link type-outcome bp-chip" href={outcome.url} {...node(outcome.id)}>
-                <span>{outcome.title}</span>
-                {measures.length > 0 && <span class="bp-chip__meta">{plural(measures.length, 'measure', 'measures')}</span>}
-              </a>
-            </li>
+            <StackItem
+              element={outcome}
+              meta={measures.length ? measureCount(measures.length) : undefined}
+              below={[{ heading: 'Measures', elements: measures }]}
+              {...node(outcome.id)}
+            />
           ))}
         </ul>
         {measures.length > 0 && (
           <details class="bp-more">
-            <summary>{plural(measures.length, 'measure', 'measures')}, by outcome</summary>
+            <summary>{measureCount(measures.length)}, by outcome</summary>
             <ul class="bp-groups">
               {outcomes.filter((o) => o.measures.length).map(({ outcome, measures }) => (
                 <li class="bp-group" {...node(`measures:${outcome.id}`)}>
@@ -77,123 +103,169 @@ const node = (id: string) => ({ 'data-node': id, 'data-links': [...(links.get(id
         <span class="bp-band__count">{own.length}{shared.length > 0 && ` + ${shared.length} shared`}</span>
       </div>
       <div class="bp-band__body">
-        <ul class="bp-chips">
-          {own.map(({ capability, requirements }) => (
-            <li>
-              <a class="element-link type-capability bp-chip" href={capability.url} {...node(capability.id)}>
-                <span>{capability.title}</span>
-                {requirements.length > 0 && <span class="bp-chip__meta">{plural(requirements.length, 'requirement', 'requirements')}</span>}
-              </a>
-            </li>
-          ))}
+        <ul class="bp-items">
+          {own.map((c) => <StackItem {...capabilityItem(c)} />)}
         </ul>
         {shared.length > 0 && (
           <>
             <p class="bp-shared-label">Shared from {sharedFrom.map(shortTitle).join(' and ')}</p>
-            <ul class="bp-chips">
-              {shared.map(({ capability, requirements, sharedFrom }) => (
-                <li>
-                  <a class="element-link type-capability bp-chip bp-chip--shared" href={capability.url} title={`From ${shortTitle(sharedFrom!)}`} {...node(capability.id)}>
-                    <span>{capability.title}</span>
-                    {requirements.length > 0 && <span class="bp-chip__meta">{plural(requirements.length, 'requirement', 'requirements')}</span>}
-                  </a>
-                </li>
-              ))}
+            <ul class="bp-items">
+              {shared.map((c) => <StackItem {...capabilityItem(c)} />)}
             </ul>
           </>
         )}
       </div>
     </li>
 
-    {requirements.length > 0 && (
-      <li class="bp-band type-requirement">
-        <div class="bp-band__label">
-          <span class="bp-band__name">Requirements</span>
-          <span class="bp-band__count">{requirements.length}</span>
-        </div>
-        <div class="bp-band__body">
-          <details class="bp-more">
-            <summary>{plural(requirements.length, 'requirement', 'requirements')}, by capability</summary>
-            <ul class="bp-groups">
-              {capabilities.filter((c) => c.requirements.length).map(({ capability, requirements }) => (
-                <li class="bp-group" {...node(`requirements:${capability.id}`)}>
-                  <span class="bp-group__title">{capability.title}</span>
-                  <ul class="element-links">
-                    {requirements.map((r) => <li><a class="element-link type-requirement" href={r.url}>{r.title}</a></li>)}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </details>
-        </div>
-      </li>
-    )}
-
-    {patterns.length > 0 && (
-      <li class="bp-band type-implementationPattern">
-        <div class="bp-band__label">
-          <span class="bp-band__name">Patterns</span>
-          <span class="bp-band__count">{patterns.length}</span>
-        </div>
-        <div class="bp-band__body">
-          <details class="bp-more">
-            <summary>{plural(patterns.length, 'candidate pattern', 'candidate patterns')}</summary>
-            <ul class="bp-groups">
-              {patterns.map((p) => (
-                <li class="bp-group" {...node(p.id)}>
-                  <a class="element-link type-implementationPattern" href={p.url}>{p.title}</a>
-                  <span class="muted bp-group__for">
-                    For {capabilities.filter((c) => c.patterns.includes(p)).map((c) => c.capability.title).join('; ')}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </details>
-        </div>
-      </li>
-    )}
+    {[
+      {
+        type: 'requirement',
+        name: 'Requirements',
+        items: requirements,
+        count: requirementCount,
+        heading: 'Capabilities that satisfy it',
+        owners: satisfiedBy,
+      },
+      {
+        type: 'implementationPattern',
+        name: 'Patterns',
+        items: patterns,
+        count: (n: number) => plural(n, 'candidate pattern', 'candidate patterns'),
+        heading: 'Candidate for',
+        owners: candidateFor,
+      },
+    ]
+      .filter((band) => band.items.length)
+      .map((band) => {
+        const rows = band.items.map((e) => {
+          const owners = band.owners(e.id);
+          return (
+            <StackItem
+              element={e}
+              shared={e.package !== mission}
+              meta={owners.length > 1 ? `For ${capabilityCount(owners.length)}` : undefined}
+              below={[{ heading: band.heading, elements: owners }]}
+              {...node(e.id)}
+            />
+          );
+        });
+        return (
+          <li class={`bp-band type-${band.type}`}>
+            <div class="bp-band__label">
+              <span class="bp-band__name">{band.name}</span>
+              <span class="bp-band__count">{band.items.length}</span>
+            </div>
+            <div class="bp-band__body">
+              {band.items.length > LONG ? (
+                <details class="bp-more" data-collapsible>
+                  <summary>
+                    {band.count(band.items.length)}
+                    <span class="bp-more__lit" data-lit-count hidden></span>
+                  </summary>
+                  <ul class="bp-items">{rows}</ul>
+                </details>
+              ) : (
+                <ul class="bp-items">{rows}</ul>
+              )}
+            </div>
+          </li>
+        );
+      })}
   </ol>
 </section>
 
 <script>
-  // Light up what the pointed-at or focused item connects to, and dim the rest.
+  // Selecting an item lights up what it connects to and dims the rest.
+  // Selecting it again, Escape, or Clear goes back to everything.
   for (const stack of document.querySelectorAll<HTMLElement>('[data-stack]')) {
     const nodes = [...stack.querySelectorAll<HTMLElement>('[data-node]')];
-    const trace = (from: HTMLElement | null) => {
-      const lit = from ? new Set([from.dataset.node, ...(from.dataset.links ?? '').split(' ')]) : null;
+    const idle = stack.querySelector<HTMLElement>('[data-idle]')!;
+    const active = stack.querySelector<HTMLElement>('[data-active]')!;
+    const name = stack.querySelector<HTMLElement>('[data-selected-name]')!;
+    let selected: HTMLElement | null = null;
+
+    const select = (item: HTMLElement | null) => {
+      selected = item;
+      const lit = item ? new Set([item.dataset.node, ...(item.dataset.links ?? '').split(' ')]) : null;
       stack.classList.toggle('is-tracing', Boolean(lit));
-      for (const n of nodes) n.classList.toggle('is-lit', Boolean(lit?.has(n.dataset.node)));
+      for (const n of nodes) {
+        n.classList.toggle('is-lit', Boolean(lit?.has(n.dataset.node)));
+        n.classList.toggle('is-selected', n === item);
+        n.querySelector('[data-select]')?.setAttribute('aria-pressed', String(n === item));
+      }
+      idle.hidden = Boolean(item);
+      active.hidden = !item;
+      name.textContent = item?.querySelector('[data-select] span')?.textContent ?? '';
+      // A collapsed band says how much of it the selection reaches.
+      for (const band of stack.querySelectorAll<HTMLElement>('[data-collapsible]')) {
+        const count = band.querySelector<HTMLElement>('[data-lit-count]')!;
+        const n = item ? band.querySelectorAll('.bp-item.is-lit').length : 0;
+        count.hidden = !n;
+        count.textContent = n ? ` · ${n} connected to the selection` : '';
+      }
     };
-    const target = (e: Event) => (e.target as HTMLElement).closest<HTMLElement>('[data-node]');
-    stack.addEventListener('pointerover', (e) => trace(target(e)));
-    stack.addEventListener('pointerleave', () => trace(null));
-    stack.addEventListener('focusin', (e) => trace(target(e)));
-    stack.addEventListener('focusout', () => trace(null));
+
+    stack.addEventListener('click', (e) => {
+      const el = e.target as HTMLElement;
+      if (el.closest('[data-clear]')) return select(null);
+      // Links go where they say; anywhere else on a row selects it.
+      if (el.closest('a, summary')) return;
+      const item = el.closest<HTMLElement>('.bp-item');
+      if (item) select(item === selected ? null : item);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && selected) select(null);
+    });
   }
 </script>
 
-<style>
+<style is:global>
   .bp-stack { margin-bottom: 2.5rem; }
   .bp-stack__intro h2 { margin-bottom: .25rem; }
+  .bp-stack__intro .section-note { margin: 0; min-height: 1.75rem; }
+  .bp-clear { margin-left: .35rem; padding: .1rem .55rem; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font: inherit; font-size: .875rem; cursor: pointer; }
+  .bp-clear:hover { border-color: var(--accent); color: var(--accent); }
+
   .bp-bands { list-style: none; margin: 1rem 0 0; padding: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
   .bp-band { display: grid; gap: .6rem; padding: 1rem; border-top: 1px solid var(--border); border-left: 4px solid var(--tc); background: var(--surface); }
   .bp-band:first-child { border-top: 0; }
   @media (min-width: 46rem) {
-    .bp-band { grid-template-columns: 10rem minmax(0, 1fr); gap: 1.25rem; padding: 1.1rem 1.25rem; }
+    .bp-band { grid-template-columns: 9rem minmax(0, 1fr); gap: 1.25rem; padding: 1.1rem 1.25rem; }
   }
   .bp-band__label { display: flex; flex-direction: column; gap: .1rem; }
   .bp-band__name { font-size: .8125rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--tc); }
   .bp-band__count { font-size: .875rem; color: var(--text-muted); }
   .bp-band__body { min-width: 0; }
 
-  .bp-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
-  .bp-chip { flex-direction: column; align-items: flex-start; gap: .1rem; max-width: 17rem; transition: opacity .15s, box-shadow .15s; }
+  /* One item per row: the chip that selects it, then its description and its page link. */
+  .bp-items { list-style: none; margin: 0; padding: 0; display: grid; }
+  .bp-item { display: grid; gap: .4rem; padding: .65rem .6rem; margin: 0 -.6rem; border-top: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: opacity .15s, background-color .15s; }
+  .bp-item:first-child { border-top: 0; }
+  .bp-item:hover { background: var(--surface-muted); }
+  @media (min-width: 46rem) {
+    .bp-item { grid-template-columns: 15rem minmax(0, 1fr); gap: 1rem; align-items: start; }
+  }
+  .bp-chip { flex-direction: column; align-items: flex-start; gap: .1rem; width: 100%; font: inherit; font-weight: 600; text-align: left; cursor: pointer; transition: box-shadow .15s; }
   .bp-chip__meta { font-size: .75rem; font-weight: 500; opacity: .8; }
   .bp-chip--shared { border-style: dashed; }
-  .bp-shared-label { margin: .75rem 0 .4rem; font-size: .8125rem; color: var(--text-muted); }
+  .bp-chip[aria-pressed='true'] { box-shadow: 0 0 0 2px var(--tc); }
+  .bp-item__text { min-width: 0; }
+  .bp-item__desc { margin: 0; font-size: .9375rem; color: var(--text-muted); }
+  .bp-item__open { display: inline-block; margin-top: .3rem; font-size: .875rem; font-weight: 600; }
+  .bp-shared-label { margin: .75rem 0 .2rem; font-size: .8125rem; color: var(--text-muted); }
 
+  /* What sits under the item, shown while it's selected. */
+  .bp-item__below { display: none; margin-top: .6rem; gap: .6rem; }
+  .bp-item.is-selected .bp-item__below { display: grid; }
+  .bp-item__below-heading { display: block; margin-bottom: .3rem; font-size: .75rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
+  .bp-item__below .element-links { list-style: none; margin: 0; padding: 0; }
+  .bp-item__below .element-link { font-size: .875rem; min-height: 2rem; }
+
+  .bp-more { margin-top: .6rem; }
   .bp-more summary { cursor: pointer; font-size: .9375rem; font-weight: 600; color: var(--tc); width: fit-content; }
+  .bp-more__lit { font-weight: 500; color: var(--text); }
   .bp-more[open] summary { margin-bottom: .75rem; }
+  .bp-band__body > .bp-more:first-child { margin-top: 0; }
   .bp-groups { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
   .bp-group { display: grid; gap: .35rem; padding: .5rem .6rem; margin: 0 -.6rem; border-radius: var(--radius-sm); transition: opacity .15s, background-color .15s; }
   .bp-group__title { font-size: .8125rem; font-weight: 650; color: var(--text-muted); }
@@ -201,11 +273,12 @@ const node = (id: string) => ({ 'data-node': id, 'data-links': [...(links.get(id
   .bp-group .element-links { list-style: none; margin: 0; padding: 0; }
   .bp-group .element-link { font-size: .875rem; min-height: 2rem; }
 
-  /* While tracing, what's connected stays bright and the rest fades. */
-  .is-tracing .bp-chip:not(.is-lit), .is-tracing .bp-group:not(.is-lit) { opacity: .35; }
-  .is-tracing .bp-chip.is-lit { box-shadow: 0 0 0 2px var(--tc); }
+  /* While something is selected, what's connected stays bright and the rest fades. */
+  .is-tracing .bp-item:not(.is-lit), .is-tracing .bp-group:not(.is-lit) { opacity: .35; }
+  .is-tracing .bp-item.is-lit:not(.is-selected) .bp-chip { box-shadow: 0 0 0 1px var(--tc); }
+  .bp-item.is-selected { background: var(--surface-muted); }
   .is-tracing .bp-group.is-lit { background: var(--surface-muted); }
   @media (prefers-reduced-motion: reduce) {
-    .bp-chip, .bp-group { transition: none; }
+    .bp-item, .bp-chip, .bp-group { transition: none; }
   }
 </style>

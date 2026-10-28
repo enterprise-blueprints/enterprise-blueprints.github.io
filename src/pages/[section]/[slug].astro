@@ -8,7 +8,7 @@ import SourceList from '../../components/SourceList.astro';
 import MissionStack from '../../components/MissionStack.astro';
 import OutcomeMatrix from '../../components/OutcomeMatrix.astro';
 import { elements, missionBlueprint, relationGroups, sourcesOf, lastReviewed, questionsAbout, usedBy } from '../../lib/library';
-import { statuses } from '../../lib/vocabulary';
+import { predicates, statuses } from '../../lib/vocabulary';
 import { attributeLabel, attributeValue, formatDate } from '../../lib/format';
 import { href } from '../../lib/paths';
 import { downloadUrl } from '../../lib/publish';
@@ -30,6 +30,10 @@ const questions = questionsAbout(element);
 const users = usedBy(element);
 // A mission shows everything under it, band by band, and which capabilities serve which outcomes.
 const blueprint = element.type === 'mission' ? missionBlueprint(element) : null;
+const stacked = Boolean(blueprint?.capabilities.length);
+// The stack already shows the mission's outcomes and capabilities.
+const covered = [predicates.seeks.outgoing, predicates.supports_mission.incoming];
+const shownGroups = stacked ? groups.filter((g) => !covered.includes(g.heading)) : groups;
 ---
 <Base title={element.title} description={element.description}>
   <div class="container">
@@ -50,10 +54,10 @@ const blueprint = element.type === 'mission' ? missionBlueprint(element) : null;
       <p class="lede">{element.description}</p>
     </header>
 
-    {blueprint && blueprint.capabilities.length > 0 && <MissionStack blueprint={blueprint} />}
-
     <div class="record-layout">
       <div class="record-main">
+        {stacked && <MissionStack blueprint={blueprint!} />}
+
         {blueprint && blueprint.outcomes.length > 0 && blueprint.capabilities.length > 0 && (
           <section class="section">
             <h2>How capabilities serve the outcomes</h2>
@@ -68,7 +72,7 @@ const blueprint = element.type === 'mission' ? missionBlueprint(element) : null;
           </div>
         )}
 
-        {groups.map((g) => (
+        {shownGroups.map((g) => (
           <section class="section">
             <h2>{g.heading}</h2>
             {g.notes.map((n) => <p class="section-note">{n}</p>)}
