@@ -10,7 +10,7 @@ import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json?raw';
 import { packageFiles, type PackageFile } from './library';
 import type { BlueprintPackage } from './package';
 import { href } from './paths';
-import { elementTypes, patternApproaches, patternFields, predicates, sourceKinds, statuses } from './vocabulary';
+import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, sourceKinds, statuses } from './vocabulary';
 
 /** Every schema version stays published, so packages that use an older one still validate. Newest last. */
 export const schemas = [schema010, schema020].map((text) => {
@@ -72,7 +72,7 @@ export function vocabulary() {
     ),
     predicates,
     // What an implementation pattern's attributes hold.
-    pattern: { approaches: patternApproaches, fields: patternFields },
+    pattern: { roles: patternRoles, approaches: patternApproaches, fields: patternFields },
     sourceKinds,
     statuses,
   };

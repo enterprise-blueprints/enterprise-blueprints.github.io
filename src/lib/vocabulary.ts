@@ -55,6 +55,13 @@ export const elementTypes: Record<string, ElementTypeInfo> = {
     section: 'patterns',
     definition: 'An example approach that might realize a capability.',
   },
+  solution: {
+    label: 'Solution',
+    plural: 'Solutions',
+    navLabel: 'Solutions',
+    section: 'solutions',
+    definition: 'An example of how several patterns could fit together to support an agency’s missions.',
+  },
 };
 
 export interface PredicateInfo {
@@ -105,10 +112,46 @@ export const predicates: Record<string, PredicateInfo> = {
     outgoing: 'Candidate implementation patterns',
     incoming: 'Capabilities it might help realize',
   },
+  includes: {
+    from: ['solution'],
+    to: ['implementationPattern'],
+    outgoing: 'Patterns it includes',
+    incoming: 'Solutions that include it',
+  },
+  supports: {
+    from: ['solution'],
+    to: ['mission'],
+    outgoing: 'Missions it supports',
+    incoming: 'Example solutions',
+  },
 };
 
 // An implementation pattern describes itself in `attributes`, with these
-// fields, so patterns can be compared side by side.
+// fields, so patterns can be compared side by side and grouped by the part
+// they play in a solution. A solution uses fitsWhen and watchFor too.
+export const patternRoles: Record<string, { label: string; hint: string }> = {
+  channel: {
+    label: 'Intake channel',
+    hint: 'How people and other systems reach the office. Add the ones it offers.',
+  },
+  'system-of-record': {
+    label: 'System of record',
+    hint: 'Where the work is tracked. These are alternatives: a solution usually picks one for each kind of work.',
+  },
+  processing: {
+    label: 'Processing service',
+    hint: 'Specialized processing on the records, such as search and review. Add as needed.',
+  },
+  'reporting-disclosure': {
+    label: 'Reporting & disclosure',
+    hint: 'How results reach leaders, Congress, and the public.',
+  },
+  foundation: {
+    label: 'Foundation service',
+    hint: 'Shared services every system relies on, such as sign-on.',
+  },
+};
+
 export const patternApproaches: Record<string, string> = {
   product: 'Configure a product',
   platform: 'Extend a platform the agency has',

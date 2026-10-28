@@ -75,10 +75,16 @@ digest keep working, and the deploy refuses a build that changes a live version.
 short interpretation; text and number answers are recorded as said and point nowhere.
 
 **Implementation patterns** are examples, and each one describes itself in `attributes` so patterns can be
-compared side by side: `approach` (`product`, `platform`, `combine`, or `build`), and `parts`, `strengths`,
-`fitsWhen`, and `watchFor`, each a list of short statements. `src/lib/vocabulary.ts` defines them, and
-`vocabulary.json` publishes their labels. A `candidate_pattern` relation's `description` says what the pattern
-means for that capability, such as a mission's caveat on a shared pattern.
+compared side by side and grouped: `approach` (`product`, `platform`, `combine`, or `build`), `role` (the part
+it plays: `channel`, `system-of-record`, `processing`, `reporting-disclosure`, or `foundation`), and `parts`,
+`strengths`, `fitsWhen`, and `watchFor`, each a list of short statements. `src/lib/vocabulary.ts` defines them,
+and `vocabulary.json` publishes their labels. A `candidate_pattern` relation's `description` says what the
+pattern means for that capability, such as a mission's caveat on a shared pattern.
+
+**Solutions** combine patterns across an agency. The `solutions` package builds on the mission packages and
+Common Capabilities. Each solution `includes` patterns, with a `description` saying why each one is there, and
+`supports` the missions it serves, with `fitsWhen` and `watchFor` in its attributes. The site works out what
+each solution covers for each mission from the patterns' capabilities.
 
 To add a package, create `content/<name>/<version>/blueprint.json` with its own `packageId`. The site picks
 it up automatically. Element IDs are unique across all packages: each element is defined once.

@@ -601,6 +601,7 @@
       ],
       "attributes": {
         "approach": "product",
+        "role": "system-of-record",
         "parts": [
           "Request intake from the national portal and the agency’s own form",
           "Request tracking with FOIA’s tracks, working-day deadlines, fee categories, and correspondence",
@@ -637,6 +638,7 @@
       ],
       "attributes": {
         "approach": "combine",
+        "role": "system-of-record",
         "parts": [
           "FOIA request tracking set up on the agency’s shared case platform",
           "A deadline calculator for working days, extensions, and pauses for clarification or fees",
@@ -672,6 +674,7 @@
       ],
       "attributes": {
         "approach": "platform",
+        "role": "processing",
         "parts": [
           "Searches across mailboxes, chats, and shared files by person, terms, and date range",
           "Deduplication and email threading before review",
@@ -708,6 +711,7 @@
       ],
       "attributes": {
         "approach": "build",
+        "role": "channel",
         "parts": [
           "A connection in the agency’s FOIA system that implements the portal’s agency API",
           "A mapping from the portal’s fields to the agency’s request record",
@@ -743,6 +747,7 @@
       ],
       "attributes": {
         "approach": "platform",
+        "role": "reporting-disclosure",
         "parts": [
           "A FOIA library section of the agency’s website, with search",
           "A publishing step from the review tool that carries each release’s details",
@@ -1044,6 +1049,24 @@
       "predicate": "candidate_pattern",
       "to": "eb:implementationPattern:shared-case-platform",
       "description": "Appeals tracked as their own case type, against the 20 working days the law allows."
+    },
+    {
+      "id": "rel:foia-reporting-candidate-pattern-foia-tracking-with-review-tool",
+      "from": "eb:capability:foia-reporting",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:foia-tracking-with-review-tool"
+    },
+    {
+      "id": "rel:appeals-requester-assistance-candidate-pattern-foia-request-processing",
+      "from": "eb:capability:appeals-requester-assistance",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:foia-request-processing"
+    },
+    {
+      "id": "rel:proactive-disclosure-candidate-pattern-foia-request-processing",
+      "from": "eb:capability:proactive-disclosure",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:foia-request-processing"
     },
     {
       "id": "rel:foia-request-intake-satisfies-accept-portal-requests",

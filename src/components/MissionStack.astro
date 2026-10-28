@@ -1,19 +1,22 @@
 ---
 // A mission's blueprint as a stack of bands, one item per row: the outcomes
 // it seeks, the capabilities that contribute to them, their requirements, and
-// candidate patterns, each with its description. Each band opens and closes,
-// and a long one, such as the requirements, starts closed. Selecting an item lights up
-// what it connects to in the other bands and shows it under the item; each
+// candidate patterns, grouped by the part they play, then the example
+// solutions that combine those patterns. Each band opens and closes, and a
+// long one, such as the requirements, starts closed. Selecting an item lights
+// up what it connects to in the other bands and shows it under the item; each
 // row links to its page.
 import StackItem from './StackItem.astro';
-import { patternDetails, shortTitle, type MissionBlueprint } from '../lib/library';
+import { byRole, patternDetails, shortTitle, type LibraryElement, type MissionBlueprint, type SolutionView } from '../lib/library';
 import { plural } from '../lib/format';
 
 interface Props {
   blueprint: MissionBlueprint;
+  /** The example solutions that support this mission. */
+  solutions?: SolutionView[];
 }
 
-const { blueprint } = Astro.props;
+const { blueprint, solutions = [] } = Astro.props;
 const { outcomes, capabilities, measures, requirements, patterns } = blueprint;
 const own = capabilities.filter((c) => !c.sharedFrom);
 const shared = capabilities.filter((c) => c.sharedFrom);
@@ -32,6 +35,14 @@ for (const c of capabilities) {
   for (const r of c.requirements) link(c.capability.id, r.id);
   for (const p of c.patterns) link(c.capability.id, p.id);
 }
+// A solution, for this mission: the patterns it includes, and the capabilities they cover.
+const solutionRows = solutions.map((s) => {
+  const coverage = s.coverage.find((c) => c.mission.package === (outcomes[0]?.outcome.package ?? capabilities[0]?.capability.package));
+  const included = patterns.filter((p) => s.patterns.includes(p));
+  for (const p of included) link(s.solution.id, p.id);
+  for (const c of coverage?.covered ?? []) link(s.solution.id, c.id);
+  return { ...s, included, covered: coverage?.covered ?? [], uncovered: coverage?.uncovered ?? [] };
+});
 // What each requirement and pattern belongs to.
 const satisfiedBy = (id: string) => capabilities.filter((c) => c.requirements.some((r) => r.id === id)).map((c) => c.capability);
 const candidateFor = (id: string) => capabilities.filter((c) => c.patterns.some((p) => p.id === id)).map((c) => c.capability);
@@ -130,6 +141,8 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
         items: requirements,
         heading: 'Capabilities that satisfy it',
         owners: satisfiedBy,
+        // Patterns are grouped by the part they play, such as intake channel or system of record.
+        grouped: false,
       },
       {
         type: 'implementationPattern',
@@ -137,11 +150,12 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
         items: patterns,
         heading: 'Candidate for',
         owners: candidateFor,
+        grouped: true,
       },
     ]
       .filter((band) => band.items.length)
       .map((band) => {
-        const rows = band.items.map((e) => {
+        const row = (e: LibraryElement) => {
           const owners = band.owners(e.id);
           // A pattern says how it goes about it, such as "Configure a product".
           const meta = [patternDetails(e).approach, owners.length > 1 && `For ${capabilityCount(owners.length)}`].filter(Boolean).join(' · ');
@@ -154,23 +168,61 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
               {...node(e.id)}
             />
           );
-        });
+        };
         return (
           <li class={`bp-band type-${band.type}`}>
             {/* A long band, such as the requirements, starts closed. */}
-            <details class="bp-band__details" open={band.items.length <= LONG} data-collapsible>
+            <details class="bp-band__details" open={band.items.length <= LONG || band.grouped} data-collapsible>
               <summary class="bp-band__label">
                 <h3 class="bp-band__name">{band.name}</h3>
                 <span class="bp-band__count">{band.items.length}</span>
                 <span class="bp-band__lit" data-lit-count hidden></span>
               </summary>
               <div class="bp-band__body">
-                <ul class="bp-items">{rows}</ul>
+                {band.grouped ? (
+                  byRole(band.items, (e) => e).map((g) => (
+                    <div class="bp-role">
+                      <h4 class="bp-role__name">{g.label}</h4>
+                      {g.hint && <p class="bp-role__hint">{g.hint}</p>}
+                      <ul class="bp-items">{g.items.map(row)}</ul>
+                    </div>
+                  ))
+                ) : (
+                  <ul class="bp-items">{band.items.map(row)}</ul>
+                )}
               </div>
             </details>
           </li>
         );
       })}
+
+    {solutionRows.length > 0 && (
+      <li class="bp-band type-solution">
+        <details class="bp-band__details" open data-collapsible>
+          <summary class="bp-band__label">
+            <h3 class="bp-band__name">Solutions</h3>
+            <span class="bp-band__count">{solutionRows.length} examples</span>
+            <span class="bp-band__lit" data-lit-count hidden></span>
+          </summary>
+          <div class="bp-band__body">
+            <p class="bp-role__hint">Ways the patterns could be combined across the agency. Select one to see what it covers for this mission.</p>
+            <ul class="bp-items">
+              {solutionRows.map((s) => (
+                <StackItem
+                  element={s.solution}
+                  meta={`${plural(s.included.length, 'pattern', 'patterns')} here · covers ${s.covered.length} of ${s.covered.length + s.uncovered.length} capabilities`}
+                  below={[
+                    { heading: 'Patterns it includes', elements: s.included },
+                    { heading: 'No pattern in it yet for', elements: s.uncovered },
+                  ]}
+                  {...node(s.solution.id)}
+                />
+              ))}
+            </ul>
+          </div>
+        </details>
+      </li>
+    )}
   </ol>
 </section>
 
@@ -257,6 +309,9 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
   .bp-item__desc { margin: 0; font-size: .9375rem; color: var(--text-muted); }
   .bp-item__open { display: inline-block; margin-top: .3rem; font-size: .875rem; font-weight: 600; }
   .bp-shared-label { margin: .75rem 0 .2rem; font-size: .8125rem; color: var(--text-muted); }
+  .bp-role + .bp-role { margin-top: 1.1rem; }
+  .bp-role__name { margin: .6rem 0 0; font-size: .9375rem; font-weight: 700; color: var(--text); }
+  .bp-role__hint { margin: .1rem 0 .3rem; font-size: .875rem; color: var(--text-muted); }
 
   /* What sits under the item, shown while it's selected. */
   .bp-item__below { display: none; margin-top: .6rem; gap: .6rem; }

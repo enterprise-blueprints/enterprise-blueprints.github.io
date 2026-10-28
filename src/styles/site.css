@@ -25,6 +25,7 @@
   --t-capability:  #0b6e5a;  --t-capability-bg:  #e2f4ef;
   --t-pattern:     #3d4f6b;  --t-pattern-bg:     #e9edf3;
   --t-requirement: #6b3fb5;  --t-requirement-bg: #f1ebfb;
+  --t-solution:    #a1306b;  --t-solution-bg:    #fbe9f2;
 
   --radius: 10px;
   --radius-sm: 6px;
@@ -55,6 +56,7 @@
     --t-capability:  #6fd8bd;  --t-capability-bg:  #11302a;
     --t-pattern:     #b4c2d8;  --t-pattern-bg:     #222b38;
     --t-requirement: #c6a8f5;  --t-requirement-bg: #2a2140;
+    --t-solution:    #f29cc8;  --t-solution-bg:    #3a1a2b;
   }
 }
 
@@ -247,6 +249,7 @@ td.muted { color: var(--text-muted); }
 .type-measure               { --tc: var(--t-measure);    --tc-bg: var(--t-measure-bg); }
 .type-capability            { --tc: var(--t-capability); --tc-bg: var(--t-capability-bg); }
 .type-implementationPattern { --tc: var(--t-pattern);    --tc-bg: var(--t-pattern-bg); }
+.type-solution              { --tc: var(--t-solution);   --tc-bg: var(--t-solution-bg); }
 .type-requirement           { --tc: var(--t-requirement); --tc-bg: var(--t-requirement-bg); }
 
 /* A link to an element's page, as a button tinted with its type color. A long

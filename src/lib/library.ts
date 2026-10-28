@@ -5,7 +5,7 @@
 // elements. Any validation problem stops the build.
 
 import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
-import { elementTypes, patternApproaches, patternFields, predicates, type ElementTypeInfo } from './vocabulary';
+import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, type ElementTypeInfo } from './vocabulary';
 import { href } from './paths';
 
 export interface LibraryElement extends Element {
@@ -227,16 +227,74 @@ export function relationNote(from: LibraryElement, predicate: string, to: Librar
 export interface PatternDetails {
   /** The approach's label, such as "Configure a product". */
   approach?: string;
+  /** The part it plays, such as "system-of-record". */
+  role?: string;
   fields: { key: string; label: string; items: string[] }[];
 }
 
-/** An implementation pattern's own fields, in vocabulary order. */
+/** An implementation pattern's or solution's own fields, in vocabulary order. */
 export function patternDetails(pattern: LibraryElement): PatternDetails {
   const a = pattern.attributes ?? {};
   return {
     approach: typeof a.approach === 'string' ? patternApproaches[a.approach] : undefined,
+    role: typeof a.role === 'string' && patternRoles[a.role] ? a.role : undefined,
     fields: Object.entries(patternFields).flatMap(([key, f]) => (Array.isArray(a[key]) ? [{ key, label: f.label, items: a[key] as string[] }] : [])),
   };
+}
+
+export interface RoleGroup<T> {
+  role: string | undefined;
+  label: string;
+  hint?: string;
+  items: T[];
+}
+
+/** Patterns grouped by the part they play, in vocabulary order, with any that have no role last. */
+export function byRole<T>(items: T[], patternOf: (item: T) => LibraryElement): RoleGroup<T>[] {
+  const roles: (string | undefined)[] = [...Object.keys(patternRoles), undefined];
+  return roles
+    .map((role) => ({
+      role,
+      label: role ? patternRoles[role].label : 'Other patterns',
+      hint: role ? patternRoles[role].hint : undefined,
+      items: items.filter((i) => patternDetails(patternOf(i)).role === role),
+    }))
+    .filter((g) => g.items.length);
+}
+
+export interface SolutionView {
+  solution: LibraryElement;
+  missions: LibraryElement[];
+  /** Its patterns by role, each with what the solution says about it. */
+  roles: RoleGroup<{ pattern: LibraryElement; note?: string }>[];
+  patterns: LibraryElement[];
+  /** For each mission it supports, which of the mission's capabilities its patterns cover. */
+  coverage: { mission: LibraryElement; covered: LibraryElement[]; uncovered: LibraryElement[] }[];
+}
+
+/** A solution: its patterns by role, the missions it supports, and what it covers for each. */
+export function solutionView(solution: LibraryElement): SolutionView {
+  const patterns = related(solution, 'includes', 'outgoing');
+  const missions = related(solution, 'supports', 'outgoing');
+  return {
+    solution,
+    missions,
+    patterns,
+    roles: byRole(
+      patterns.map((pattern) => ({ pattern, note: relationNote(solution, 'includes', pattern) })),
+      (i) => i.pattern,
+    ),
+    coverage: missions.map((mission) => {
+      const caps = missionBlueprint(mission).capabilities;
+      const covers = (c: (typeof caps)[number]) => c.patterns.some((p) => patterns.includes(p));
+      return { mission, covered: caps.filter(covers).map((c) => c.capability), uncovered: caps.filter((c) => !covers(c)).map((c) => c.capability) };
+    }),
+  };
+}
+
+/** The example solutions that support a mission. */
+export function solutionsFor(mission: LibraryElement): SolutionView[] {
+  return related(mission, 'supports', 'incoming').map(solutionView);
 }
 
 /** "Common Capabilities" for "Common Capabilities — Shared Across Missions". */

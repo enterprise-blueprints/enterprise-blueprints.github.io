@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { elements, missionBlueprint } from '../src/lib/library';
+import { byRole, elements, missionBlueprint, solutionsFor, solutionView } from '../src/lib/library';
 
 describe('missionBlueprint', () => {
   const mission = elements.find((e) => e.id === 'eb:mission:independent-government-oversight')!;
@@ -62,5 +62,37 @@ describe('the FOIA mission', () => {
     expect(requirementsOf(blueprint, 'eb:capability:identity-access-management')).toEqual(['access-by-role', 'strong-sign-in', 'review-access', 'protect-unredacted-records']);
     expect(requirementsOf(oig, 'eb:capability:identity-access-management')).toEqual(['access-by-role', 'strong-sign-in', 'review-access', 'restrict-case-access']);
     expect(oig.capabilities.find((c) => c.capability.id === 'eb:capability:case-management')!.outcomes.map((o) => o.package)).toEqual([oig.outcomes[0].outcome.package, oig.outcomes[0].outcome.package]);
+  });
+});
+
+describe('example solutions', () => {
+  const get = (id: string) => elements.find((e) => e.id === id)!;
+  const shared = solutionView(get('eb:solution:agency-shared-platform'));
+  const slug = (e: { id: string }) => e.id.split(':')[2];
+
+  it('group their patterns by role, channels first and foundations last', () => {
+    expect(shared.roles.map((g) => g.role)).toEqual(['channel', 'system-of-record', 'processing', 'reporting-disclosure', 'foundation']);
+    const systems = shared.roles.find((g) => g.role === 'system-of-record')!.items.map((i) => slug(i.pattern));
+    expect(systems).toEqual(expect.arrayContaining(['shared-case-platform', 'foia-tracking-with-review-tool']));
+    for (const g of shared.roles) for (const i of g.items) expect(i.note, slug(i.pattern)).toBeTruthy();
+  });
+
+  it('say what they cover for each mission, and what has no pattern yet', () => {
+    const [oig, foia] = shared.coverage;
+    expect(slug(oig.mission)).toBe('independent-government-oversight');
+    expect(oig.covered.map(slug)).toEqual(expect.arrayContaining(['complaint-allegation-disclosure-intake', 'investigation-management', 'case-management']));
+    expect(foia.uncovered.map(slug)).toContain('data-protection-privacy');
+    expect(oig.covered.length + oig.uncovered.length).toBe(missionBlueprint(oig.mission).capabilities.length);
+  });
+
+  it('are listed on both missions', () => {
+    for (const id of ['eb:mission:independent-government-oversight', 'eb:mission:public-access-to-agency-records']) {
+      expect(solutionsFor(get(id)).map((s) => slug(s.solution))).toEqual(['agency-shared-platform', 'purpose-built-systems', 'dedicated-oversight-shared-foia']);
+    }
+  });
+
+  it('group a mission’s patterns the same way', () => {
+    const groups = byRole(missionBlueprint(get('eb:mission:public-access-to-agency-records')).patterns, (p) => p);
+    expect(groups.map((g) => g.label)).toEqual(['Intake channel', 'System of record', 'Processing service', 'Reporting & disclosure', 'Foundation service']);
   });
 });

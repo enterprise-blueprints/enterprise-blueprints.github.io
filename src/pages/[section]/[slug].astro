@@ -8,8 +8,20 @@ import SourceList from '../../components/SourceList.astro';
 import MissionStack from '../../components/MissionStack.astro';
 import OutcomeMatrix from '../../components/OutcomeMatrix.astro';
 import PatternCompare from '../../components/PatternCompare.astro';
-import { elements, missionBlueprint, patternDetails, relationGroups, relationNote, sourcesOf, lastReviewed, questionsAbout, usedBy } from '../../lib/library';
-import { patternFields, predicates, statuses } from '../../lib/vocabulary';
+import {
+  elements,
+  lastReviewed,
+  missionBlueprint,
+  patternDetails,
+  questionsAbout,
+  relationGroups,
+  relationNote,
+  solutionsFor,
+  solutionView,
+  sourcesOf,
+  usedBy,
+} from '../../lib/library';
+import { patternFields, patternRoles, predicates, statuses } from '../../lib/vocabulary';
 import { attributeLabel, attributeValue, formatDate } from '../../lib/format';
 import { href } from '../../lib/paths';
 import { downloadUrl } from '../../lib/publish';
@@ -27,18 +39,26 @@ const sources = sourcesOf(element);
 const reviewed = lastReviewed(sources);
 const scope = element.jurisdictions ?? pkg.jurisdictions ?? [];
 const isPattern = element.type === 'implementationPattern';
-const pattern = isPattern ? patternDetails(element) : null;
-// A pattern's own fields have sections of their own.
-const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => !isPattern || !(key === 'approach' || key in patternFields));
+// A pattern and a solution describe themselves with fields of their own, which get sections.
+const pattern = isPattern || element.type === 'solution' ? patternDetails(element) : null;
+const ownFields = ['approach', 'role', ...Object.keys(patternFields)];
+const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => !pattern || !ownFields.includes(key));
 const questions = questionsAbout(element);
 const users = usedBy(element);
 // A mission shows everything under it, band by band, and which capabilities serve which outcomes.
 const blueprint = element.type === 'mission' ? missionBlueprint(element) : null;
+const solutions = element.type === 'mission' ? solutionsFor(element) : [];
 const stacked = Boolean(blueprint?.capabilities.length);
-// The stack already shows the mission's outcomes and capabilities, and a capability compares its patterns.
-const covered = [predicates.seeks.outgoing, predicates.supports_mission.incoming];
+// A solution shows its patterns by role and what it covers for each mission.
+const solution = element.type === 'solution' ? solutionView(element) : null;
+// The stack already shows the mission's outcomes, capabilities, and solutions, a capability compares its
+// patterns, and a solution lays out its own.
+const covered = [
+  ...(stacked ? [predicates.seeks.outgoing, predicates.supports_mission.incoming, predicates.supports.incoming] : []),
+  ...(solution ? [predicates.includes.outgoing, predicates.supports.outgoing] : []),
+];
 const patternGroup = groups.find((g) => g.heading === predicates.candidate_pattern.outgoing);
-const shownGroups = groups.filter((g) => g !== patternGroup && !(stacked && covered.includes(g.heading)));
+const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes(g.heading));
 ---
 <Base title={element.title} description={element.description}>
   <div class="container">
@@ -54,6 +74,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !(stacked && cove
       <div class="record-header__meta">
         <TypeBadge type={element.type} />
         <StatusBadge status={element.status} />
+        {pattern?.role && <span class="approach-badge">{patternRoles[pattern.role].label}</span>}
         {pattern?.approach && <span class="approach-badge">{pattern.approach}</span>}
       </div>
       <h1>{element.title}</h1>
@@ -62,7 +83,63 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !(stacked && cove
 
     <div class="record-layout">
       <div class="record-main">
-        {stacked && <MissionStack blueprint={blueprint!} />}
+        {stacked && <MissionStack blueprint={blueprint!} solutions={solutions} />}
+
+        {solution && pattern && (
+          <div class="pattern-fields pattern-fields--solution">
+            {pattern.fields.map((f) => (
+              <section class={`pattern-field pattern-field--${f.key}`}>
+                <h2>{f.label}</h2>
+                <ul>{f.items.map((s) => <li>{s}</li>)}</ul>
+              </section>
+            ))}
+          </div>
+        )}
+
+        {solution && (
+          <section class="section">
+            <h2>How it fits together</h2>
+            <p class="section-note">
+              The patterns it combines, by the part each one plays, for {solution.missions.map((m) => m.title).join(' and ')}.
+            </p>
+            {solution.roles.map((g) => (
+              <div class="solution-role">
+                <h3>{g.label}</h3>
+                {g.hint && <p class="section-note">{g.hint}</p>}
+                <ElementTable
+                  elements={g.items.map((i) => i.pattern)}
+                  notes={new Map(g.items.flatMap((i) => (i.note ? [[i.pattern.id, i.note] as const] : [])))}
+                />
+              </div>
+            ))}
+          </section>
+        )}
+
+        {solution && (
+          <section class="section">
+            <h2>What it covers</h2>
+            <p class="section-note">For each mission, the capabilities that one of its patterns might help realize, and the ones it has no pattern for yet.</p>
+            <div class="coverage">
+              {solution.coverage.map((c) => (
+                <article class="coverage__mission">
+                  <h3><a href={c.mission.url}>{c.mission.title}</a></h3>
+                  <p class="coverage__count">Covers <strong>{c.covered.length}</strong> of {c.covered.length + c.uncovered.length} capabilities</p>
+                  <ul class="element-links">
+                    {c.covered.map((cap) => <li><a class="element-link type-capability" href={cap.url}>{cap.title}</a></li>)}
+                  </ul>
+                  {c.uncovered.length > 0 && (
+                    <>
+                      <p class="coverage__gap">No pattern yet for</p>
+                      <ul class="element-links">
+                        {c.uncovered.map((cap) => <li><a class="element-link type-capability coverage__uncovered" href={cap.url}>{cap.title}</a></li>)}
+                      </ul>
+                    </>
+                  )}
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
 
         {blueprint && blueprint.outcomes.length > 0 && blueprint.capabilities.length > 0 && (
           <section class="section">
@@ -78,7 +155,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !(stacked && cove
           </div>
         )}
 
-        {pattern && pattern.fields.length > 0 && (
+        {pattern && !solution && pattern.fields.length > 0 && (
           <div class="pattern-fields">
             {pattern.fields.map((f) => (
               <section class={`pattern-field pattern-field--${f.key}`}>
@@ -184,6 +261,20 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !(stacked && cove
   @media (min-width: 46rem) { .pattern-fields { grid-template-columns: 1fr 1fr; } }
   .pattern-field { padding: 1rem 1.15rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
   .pattern-field--parts, .pattern-field--watchFor { grid-column: 1 / -1; }
+  /* A solution has only these two, side by side. */
+  .pattern-fields--solution .pattern-field--watchFor { grid-column: auto; }
   .pattern-field h2 { margin: 0 0 .5rem; font-size: 1rem; }
   .pattern-field ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; }
+  .solution-role { margin-top: 1.5rem; }
+  .solution-role h3 { margin-bottom: .2rem; }
+  .solution-role .section-note { margin: 0; }
+  .coverage { display: grid; gap: 1rem; }
+  @media (min-width: 46rem) { .coverage { grid-template-columns: 1fr 1fr; } }
+  .coverage__mission { padding: 1rem 1.15rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+  .coverage__mission h3 { font-size: 1rem; margin-bottom: .2rem; }
+  .coverage__count { margin: 0 0 .6rem; font-size: .9375rem; color: var(--text-muted); }
+  .coverage__mission .element-links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; }
+  .coverage__mission .element-link { font-size: .875rem; }
+  .coverage__gap { margin: .9rem 0 .35rem; font-size: .75rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
+  .coverage__uncovered { border-style: dashed; opacity: .8; }
 </style>

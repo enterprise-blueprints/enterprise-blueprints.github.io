@@ -13,7 +13,8 @@ const oig030 = read('content/federal-oig/0.3.0/blueprint.json');
 const common010 = read('content/common/0.1.0/blueprint.json');
 const common020 = read('content/common/0.2.0/blueprint.json');
 const foia010 = read('content/federal-foia/0.1.0/blueprint.json');
-const all = [original, common, foia, oig010, oig020, oig030, common010, common020, foia010];
+const solutions = read('content/solutions/0.1.0/blueprint.json');
+const all = [original, common, foia, solutions, oig010, oig020, oig030, common010, common020, foia010];
 const resolve: Resolve = (id, version) => all.find((p) => p.packageId === id && p.version === version);
 const missions = [original, foia];
 
@@ -79,6 +80,7 @@ describe('validatePackage', () => {
     ['a pattern with an unknown approach', (p) => (patternOf(p).attributes!.approach = 'outsource'), 'unknown approach "outsource"'],
     ['a pattern with an empty list', (p) => (patternOf(p).attributes!.watchFor = []), 'needs watchFor to be a list of statements'],
     ['a pattern with a list that isn’t statements', (p) => (patternOf(p).attributes!.parts = 'a database'), 'needs parts to be a list of statements'],
+    ['a pattern with an unknown role', (p) => (patternOf(p).attributes!.role = 'middleware'), 'unknown role "middleware"'],
   ])('rejects %s', (_, change, message) => {
     const errors = validatePackage(broken(change), resolve);
     expect(errors.join('\n')).toContain(message);
@@ -126,12 +128,12 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
     expect(types(second)).toEqual(new Set(['measure']));
   });
 
-  it('describes each pattern as an example, with its approach, parts, strengths, fit, and what to watch for', () => {
+  it('describes each pattern as an example, with its approach, role, parts, strengths, fit, and what to watch for', () => {
     const patterns = ofType(pkg, 'implementationPattern');
     expect(patterns.length).toBeGreaterThanOrEqual(5);
     for (const p of patterns) {
       expect(p.description, p.id).toMatch(/^An example architecture/);
-      expect(Object.keys(p.attributes!).sort(), p.id).toEqual(['approach', 'fitsWhen', 'parts', 'strengths', 'watchFor']);
+      expect(Object.keys(p.attributes!).sort(), p.id).toEqual(['approach', 'fitsWhen', 'parts', 'role', 'strengths', 'watchFor']);
       expect(p.sourceIds?.length, p.id).toBeGreaterThan(0);
     }
   });
@@ -140,6 +142,41 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
     const covered = new Set(pkg.relations.filter((r) => r.predicate === 'candidate_pattern').map((r) => r.from));
     const own = ofType(pkg, 'capability');
     expect(own.filter((c) => covered.has(c.id)).length / own.length).toBeGreaterThanOrEqual(0.8);
+  });
+});
+
+describe('example solutions', () => {
+  const patterns = [original, common, foia].flatMap((p) => ofType(p, 'implementationPattern'));
+  const roleOf = (id: string) => patterns.find((p) => p.id === id)!.attributes!.role;
+
+  it('build on both missions and the common package, and validate', () => {
+    expect(validatePackage(solutions, resolve)).toEqual([]);
+    expect(solutions.dependencies!.map((d) => `${d.packageId.split('.').at(-1)} ${d.version}`)).toEqual(['common 0.3.0', 'federal-oig 0.4.0', 'federal-foia 0.2.0']);
+  });
+
+  it('each support both missions, with sign-on and a system of record, and say why each pattern is there', () => {
+    for (const s of ofType(solutions, 'solution')) {
+      const rels = solutions.relations.filter((r) => r.from === s.id);
+      expect(rels.filter((r) => r.predicate === 'supports').map((r) => r.to).sort(), s.id).toEqual([
+        'eb:mission:independent-government-oversight',
+        'eb:mission:public-access-to-agency-records',
+      ]);
+      const included = rels.filter((r) => r.predicate === 'includes');
+      expect(included.map((r) => r.to), s.id).toContain('eb:implementationPattern:agency-sign-on');
+      expect(included.filter((r) => roleOf(r.to) === 'system-of-record').length, s.id).toBeGreaterThanOrEqual(2);
+      for (const r of included) expect(r.description, r.id).toBeTruthy();
+      expect(Object.keys(s.attributes!).sort(), s.id).toEqual(['fitsWhen', 'watchFor']);
+    }
+  });
+
+  it('give every pattern in the library a role', () => {
+    for (const p of patterns) expect(roleOf(p.id), p.id).toBeTruthy();
+  });
+
+  it('reject a solution that includes something other than a pattern', () => {
+    const pkg = structuredClone(solutions);
+    pkg.relations[0] = { ...pkg.relations[0], predicate: 'includes', to: 'eb:capability:case-management' };
+    expect(validatePackage(pkg, resolve).join('\n')).toContain(`"includes" can't link solution`);
   });
 });
 

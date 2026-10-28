@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import TypeBadge from '../components/TypeBadge.astro';
-import { dependents, elementsOfType, missionBlueprint, packages, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
+import { dependents, elementsOfType, missionBlueprint, packages, shortTitle, solutionView, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
 import { formatDate, plural } from '../lib/format';
 import { href } from '../lib/paths';
 
@@ -13,10 +13,15 @@ const missions = elementsOfType('mission')
     return { ...m, outcomes, capabilities, patterns, reviewed };
   });
 const first = missions[0];
-// Packages that missions build on, with what they offer.
+// Packages that missions build on, with what they offer. Mission packages, which solutions build on, aren't these.
+const hasMission = (pkg: (typeof packages)[number]) => pkg.elements.some((e) => e.type === 'mission');
 const shared = packages
-  .map((pkg) => ({ pkg, users: dependents(pkg), capabilities: elementsOfType('capability').filter((c) => c.package === pkg) }))
-  .filter((s) => s.users.length > 0);
+  .filter((pkg) => !hasMission(pkg))
+  .map((pkg) => ({ pkg, users: dependents(pkg).filter(hasMission), capabilities: elementsOfType('capability').filter((c) => c.package === pkg) }))
+  .filter((s) => s.users.length > 0 && s.capabilities.length > 0);
+const solutions = elementsOfType('solution').map(solutionView);
+// "Federal FOIA Program", from its package's title.
+const shortMission = (mission: (typeof solutions)[number]['missions'][number]) => shortTitle(mission.package);
 ---
 <Base>
   <section class="hero">
@@ -83,6 +88,35 @@ const shared = packages
                 ))}
               </ul>
               <p class="muted">Used by {users.map((u) => u.title).join('; ')}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {solutions.length > 0 && (
+    <section class="section-band" aria-labelledby="solutions-heading">
+      <div class="container">
+        <div class="section-intro">
+          <h2 id="solutions-heading">Example solutions</h2>
+          <p>
+            Ways an agency could combine patterns across its missions, from one shared platform to purpose-built
+            systems for each office, with what each one covers and what to watch for.
+          </p>
+        </div>
+        <div class="mission-grid">
+          {solutions.map((s) => (
+            <article class="card type-solution">
+              <div class="card__meta"><TypeBadge type="solution" /></div>
+              <h3 class="card__title"><a href={s.solution.url}>{s.solution.title}</a></h3>
+              <p class="card__summary">{s.solution.description}</p>
+              <ul class="card__facts">
+                <li><strong>{s.patterns.length}</strong> patterns</li>
+                {s.coverage.map((c) => (
+                  <li><strong>{c.covered.length}</strong> of {c.covered.length + c.uncovered.length} {shortMission(c.mission)} capabilities</li>
+                ))}
+              </ul>
             </article>
           ))}
         </div>

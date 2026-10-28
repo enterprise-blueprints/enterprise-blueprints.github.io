@@ -450,6 +450,7 @@
       ],
       "attributes": {
         "approach": "product",
+        "role": "system-of-record",
         "parts": [
           "Intake forms for the hotline and for staff, feeding one intake queue",
           "Triage with recorded decisions, and referrals to other authorities",
@@ -488,6 +489,7 @@
       ],
       "attributes": {
         "approach": "product",
+        "role": "channel",
         "parts": [
           "A public web form linked directly from the office’s home page, and a phone line",
           "A choice to report anonymously, or to ask that one’s identity be kept confidential",
@@ -524,6 +526,7 @@
       ],
       "attributes": {
         "approach": "product",
+        "role": "system-of-record",
         "parts": [
           "A plan of oversight work with each engagement’s scope, schedule, and status",
           "Electronic work papers with evidence attached, cross-referenced to the report",
@@ -559,6 +562,7 @@
       ],
       "attributes": {
         "approach": "platform",
+        "role": "system-of-record",
         "parts": [
           "One record per recommendation, with its report, owner, agreed action, target date, and status",
           "Agency access limited to their own recommendations, for submitting plans, updates, and evidence",
@@ -595,6 +599,7 @@
       ],
       "attributes": {
         "approach": "build",
+        "role": "reporting-disclosure",
         "parts": [
           "Feeds from the case, audit, and recommendation systems into one reporting store",
           "A definition of each statistic the semiannual report needs, kept with the data",
