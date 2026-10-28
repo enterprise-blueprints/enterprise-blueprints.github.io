@@ -53,7 +53,7 @@ export const elementTypes: Record<string, ElementTypeInfo> = {
     plural: 'Implementation patterns',
     navLabel: 'Patterns',
     section: 'patterns',
-    definition: 'A reusable, vendor-neutral approach that might realize a capability.',
+    definition: 'An example approach that might realize a capability.',
   },
 };
 

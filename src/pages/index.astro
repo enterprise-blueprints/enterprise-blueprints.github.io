@@ -1,21 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import TypeBadge from '../components/TypeBadge.astro';
-import { dependents, elementsOfType, packages, related, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
+import { dependents, elementsOfType, missionBlueprint, packages, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
 import { formatDate, plural } from '../lib/format';
 import { href } from '../lib/paths';
 
-const missions = elementsOfType('mission').map((m) => {
-  const outcomes = related(m, 'seeks', 'outgoing');
-  // Capabilities reach a mission through the outcomes it seeks, or directly in older packages.
-  const capabilities = new Set([
-    ...outcomes.flatMap((o) => related(o, 'contributes_to', 'incoming')),
-    ...related(m, 'supports_mission', 'incoming'),
-  ]);
-  const patterns = new Set([...capabilities].flatMap((c) => related(c, 'candidate_pattern', 'outgoing')));
-  const reviewed = lastReviewed(sourcesOf(m));
-  return { ...m, outcomes, capabilities, patterns, reviewed };
-});
+const missions = elementsOfType('mission')
+  .sort((a, b) => a.title.localeCompare(b.title))
+  .map((m) => {
+    const { outcomes, capabilities, patterns } = missionBlueprint(m);
+    const reviewed = lastReviewed(sourcesOf(m));
+    return { ...m, outcomes, capabilities, patterns, reviewed };
+  });
 const first = missions[0];
 // Packages that missions build on, with what they offer.
 const shared = packages
@@ -29,7 +25,7 @@ const shared = packages
       <h1 class="hero__title">Reference blueprints for public-sector missions</h1>
       <p class="hero__lede">
         Enterprise Blueprints describes what public organizations are responsible for, the capabilities that
-        work depends on, and vendor-neutral patterns that might realize them. Every page links to its sources.
+        work depends on, and example patterns that might realize them. Every page links to its sources.
       </p>
       <p class="hero__actions">
         {missions.length === 1
@@ -57,8 +53,8 @@ const shared = packages
             <p class="card__summary">{m.description}</p>
             <ul class="card__facts">
               {m.outcomes.length > 0 && <li><strong>{m.outcomes.length}</strong> {m.outcomes.length === 1 ? 'outcome' : 'outcomes'}</li>}
-              <li><strong>{m.capabilities.size}</strong> {m.capabilities.size === 1 ? 'capability' : 'capabilities'}</li>
-              <li><strong>{m.patterns.size}</strong> candidate {m.patterns.size === 1 ? 'pattern' : 'patterns'}</li>
+              <li><strong>{m.capabilities.length}</strong> {m.capabilities.length === 1 ? 'capability' : 'capabilities'}</li>
+              <li><strong>{m.patterns.length}</strong> candidate {m.patterns.length === 1 ? 'pattern' : 'patterns'}</li>
               {m.reviewed && <li>Sources reviewed {formatDate(m.reviewed)}</li>}
             </ul>
           </article>
@@ -73,7 +69,7 @@ const shared = packages
         <div class="section-intro">
           <h2 id="shared-heading">Shared across missions</h2>
           <p>
-            Some capabilities, such as identity and data protection, matter to every mission. They're described once,
+            Some capabilities, such as identity, data protection, and case management, matter to many missions. They're described once,
             and mission packages build on them instead of repeating them.
           </p>
         </div>

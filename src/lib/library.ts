@@ -112,7 +112,7 @@ export const elements: LibraryElement[] = packages.flatMap((pkg) =>
 );
 
 const byId = new Map(elements.map((e) => [e.id, e]));
-const relations: Relation[] = packages.flatMap((p) => p.relations);
+const relations: (Relation & { package: BlueprintPackage })[] = packages.flatMap((p) => p.relations.map((r) => ({ ...r, package: p })));
 
 export function elementsOfType(type: string): LibraryElement[] {
   return elements.filter((e) => e.type === type);
@@ -123,15 +123,31 @@ export function typesInUse(): [string, ElementTypeInfo][] {
   return Object.entries(elementTypes).filter(([type]) => elements.some((e) => e.type === type));
 }
 
-/** Elements linked to this one by a predicate, in either direction. */
-export function related(element: LibraryElement, predicate: string, direction: 'outgoing' | 'incoming'): LibraryElement[] {
-  return relationsOf(element, predicate, direction).map((r) => byId.get(direction === 'outgoing' ? r.to : r.from)!);
+/**
+ * Elements linked to this one by a predicate, in either direction. With
+ * `within`, only relations those packages define count, so a mission sees
+ * what a shared capability does for it and not for other missions.
+ */
+export function related(
+  element: LibraryElement,
+  predicate: string,
+  direction: 'outgoing' | 'incoming',
+  within?: BlueprintPackage[],
+): LibraryElement[] {
+  return relationsOf(element, predicate, direction)
+    .filter((r) => !within || within.includes(r.package))
+    .map((r) => byId.get(direction === 'outgoing' ? r.to : r.from)!);
 }
 
-function relationsOf(element: LibraryElement, predicate: string, direction: 'outgoing' | 'incoming'): Relation[] {
+function relationsOf(element: LibraryElement, predicate: string, direction: 'outgoing' | 'incoming') {
   return relations.filter(
     (r) => r.predicate === predicate && (direction === 'outgoing' ? r.from : r.to) === element.id,
   );
+}
+
+/** A package and the packages it builds on, as the pages show them. */
+function scopeOf(pkg: BlueprintPackage): BlueprintPackage[] {
+  return [pkg, ...packages.filter((p) => pkg.dependencies?.some((d) => d.packageId === p.packageId))];
 }
 
 /** An element's relationships, grouped by predicate and direction. */
@@ -171,16 +187,18 @@ export interface MissionBlueprint {
  * Everything under a mission, band by band: the outcomes it seeks and their
  * measures, the capabilities that contribute to them (or, in older packages,
  * support the mission directly), and those capabilities' requirements and
- * candidate patterns.
+ * candidate patterns. Only the mission's package and the packages it builds
+ * on count, so a shared capability brings what it does for this mission.
  */
 export function missionBlueprint(mission: LibraryElement): MissionBlueprint {
   const unique = (list: LibraryElement[]) => [...new Set(list)];
-  const outcomes = related(mission, 'seeks', 'outgoing').map((outcome) => ({
+  const scope = scopeOf(mission.package);
+  const outcomes = related(mission, 'seeks', 'outgoing', scope).map((outcome) => ({
     outcome,
-    measures: related(outcome, 'measured_by', 'outgoing'),
-    capabilities: related(outcome, 'contributes_to', 'incoming'),
+    measures: related(outcome, 'measured_by', 'outgoing', scope),
+    capabilities: related(outcome, 'contributes_to', 'incoming', scope),
   }));
-  const found = unique([...outcomes.flatMap((o) => o.capabilities), ...related(mission, 'supports_mission', 'incoming')]);
+  const found = unique([...outcomes.flatMap((o) => o.capabilities), ...related(mission, 'supports_mission', 'incoming', scope)]);
   // In the order their packages define them, the mission's own first.
   const order = (e: LibraryElement) => (e.package === mission.package ? 0 : 1) * 1e6 + elements.indexOf(e);
   const capabilities = found
@@ -189,8 +207,8 @@ export function missionBlueprint(mission: LibraryElement): MissionBlueprint {
       capability,
       ...(capability.package !== mission.package && { sharedFrom: capability.package }),
       outcomes: outcomes.filter((o) => o.capabilities.includes(capability)).map((o) => o.outcome),
-      requirements: related(capability, 'satisfies', 'outgoing'),
-      patterns: related(capability, 'candidate_pattern', 'outgoing'),
+      requirements: related(capability, 'satisfies', 'outgoing', scope),
+      patterns: related(capability, 'candidate_pattern', 'outgoing', scope),
     }));
   return {
     outcomes,

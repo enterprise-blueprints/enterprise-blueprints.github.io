@@ -1,10 +1,11 @@
 # Enterprise Blueprints
 
 An independent, open reference library of public-sector missions, the capabilities they depend on, and
-vendor-neutral patterns that might realize them. A mission seeks outcomes, each with measures for telling
-how it's going, and capabilities contribute to those outcomes. The first mission package describes U.S. federal Offices
-of Inspector General in general terms. It builds on Common Capabilities, a package of the capabilities
-nearly every mission relies on, such as identity and access, data protection, records, and logging.
+example patterns that might realize them. A mission seeks outcomes, each with measures for telling
+how it's going, and capabilities contribute to those outcomes. Two mission packages describe U.S. federal
+Offices of Inspector General and federal agencies' Freedom of Information Act programs in general terms.
+Both build on Common Capabilities, a package of the capabilities many missions rely on, such as identity and
+access, data protection, records, logging, and case management.
 
 ## Develop
 
@@ -61,12 +62,12 @@ byte for byte.
 
 ## Edit content
 
-Edit the latest version, such as `content/federal-oig/0.2.0/blueprint.json`, then run `pnpm verify`. If
+Edit the latest version, such as `content/federal-oig/0.3.0/blueprint.json`, then run `pnpm verify`. If
 the build fails, its message names each problem. A new element type or predicate needs an entry in
 `src/lib/vocabulary.ts` first.
 
 A published version never changes. Once a version is live, copy it to a new folder such as
-`content/federal-oig/0.3.0/`, raise `version` to match, and make the changes there. Tools that pinned the old
+`content/federal-oig/0.4.0/`, raise `version` to match, and make the changes there. Tools that pinned the old
 digest keep working, and the deploy refuses a build that changes a live version.
 
 **Discovery questions** live in a package's `assessments`. IDs look like `assessment:<name>` and

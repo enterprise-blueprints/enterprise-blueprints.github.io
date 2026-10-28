@@ -3,9 +3,16 @@ import { describe, expect, it } from 'vitest';
 import { validatePackage, type BlueprintPackage, type Resolve } from '../src/lib/package';
 
 const read = (path: string): BlueprintPackage => JSON.parse(readFileSync(path, 'utf8'));
-const original = read('content/federal-oig/0.2.0/blueprint.json');
-const common = read('content/common/0.1.0/blueprint.json');
-const resolve: Resolve = (id, version) => (id === common.packageId && version === common.version ? common : undefined);
+const original = read('content/federal-oig/0.3.0/blueprint.json');
+const common = read('content/common/0.2.0/blueprint.json');
+const foia = read('content/federal-foia/0.1.0/blueprint.json');
+// Published versions, which never change.
+const oig010 = read('content/federal-oig/0.1.0/blueprint.json');
+const oig020 = read('content/federal-oig/0.2.0/blueprint.json');
+const common010 = read('content/common/0.1.0/blueprint.json');
+const all = [original, common, foia, oig010, oig020, common010];
+const resolve: Resolve = (id, version) => all.find((p) => p.packageId === id && p.version === version);
+const missions = [original, foia];
 
 /** A copy of the real package with one change applied. */
 function broken(change: (pkg: BlueprintPackage) => void): BlueprintPackage {
@@ -16,23 +23,35 @@ function broken(change: (pkg: BlueprintPackage) => void): BlueprintPackage {
 
 const mission = 'eb:mission:independent-government-oversight';
 const pattern = 'eb:implementationPattern:oversight-intake-case-tracking';
+const ofType = (pkg: BlueprintPackage, type: string) => pkg.elements.filter((e) => e.type === type);
 
 describe('validatePackage', () => {
-  it('accepts the federal OIG package, which builds on the common one', () => {
+  it('accepts the mission packages, which build on the common one', () => {
     expect(validatePackage(original, resolve)).toEqual([]);
+    expect(validatePackage(foia, resolve)).toEqual([]);
     expect(validatePackage(common)).toEqual([]);
   });
 
-  it('accepts the published 0.1.0 package as it was', () => {
-    expect(validatePackage(read('content/federal-oig/0.1.0/blueprint.json'))).toEqual([]);
+  it('accepts the published versions as they were', () => {
+    expect(validatePackage(oig010)).toEqual([]);
+    expect(validatePackage(oig020, resolve)).toEqual([]);
+    expect(validatePackage(common010)).toEqual([]);
   });
 
-  it('has one mission, five capabilities, thirteen requirements, and one pattern', () => {
+  it('has one mission, five capabilities, ten requirements, and one pattern in the OIG package', () => {
     const counts = Object.groupBy(original.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.capability).toHaveLength(5);
     expect(counts.implementationPattern).toHaveLength(1);
-    expect(counts.requirement).toHaveLength(13);
+    expect(counts.requirement).toHaveLength(10);
+  });
+
+  it('has one mission, six outcomes, seven capabilities, and one pattern in the FOIA package', () => {
+    const counts = Object.groupBy(foia.elements, (e) => e.type);
+    expect(counts.mission).toHaveLength(1);
+    expect(counts.outcome).toHaveLength(6);
+    expect(counts.capability).toHaveLength(7);
+    expect(counts.implementationPattern).toHaveLength(1);
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
@@ -67,20 +86,43 @@ describe('validatePackage', () => {
     );
     expect(errors).toHaveLength(2);
   });
+});
+
+describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) => {
+  const [own] = ofType(pkg, 'mission');
+  const outcomes = pkg.relations.filter((r) => r.predicate === 'seeks' && r.from === own.id).map((r) => r.to);
 
   it('links every capability to the mission through an outcome it seeks', () => {
-    const outcomes = original.relations.filter((r) => r.predicate === 'seeks' && r.from === mission).map((r) => r.to);
-    expect(outcomes).toHaveLength(5);
-    for (const c of original.elements.filter((e) => e.type === 'capability')) {
-      expect(original.relations.some((r) => r.predicate === 'contributes_to' && r.from === c.id && outcomes.includes(r.to)), c.id).toBe(true);
+    expect(outcomes).toEqual(ofType(pkg, 'outcome').map((o) => o.id));
+    for (const c of ofType(pkg, 'capability')) {
+      expect(pkg.relations.some((r) => r.predicate === 'contributes_to' && r.from === c.id && outcomes.includes(r.to)), c.id).toBe(true);
     }
-    expect(original.relations.some((r) => r.predicate === 'supports_mission')).toBe(false);
+    expect(pkg.relations.some((r) => r.predicate === 'supports_mission')).toBe(false);
   });
 
   it('gives every outcome a measure, and every measure one outcome', () => {
-    const measuredBy = original.relations.filter((r) => r.predicate === 'measured_by');
-    for (const o of original.elements.filter((e) => e.type === 'outcome')) expect(measuredBy.some((r) => r.from === o.id), o.id).toBe(true);
-    for (const m of original.elements.filter((e) => e.type === 'measure')) expect(measuredBy.filter((r) => r.to === m.id), m.id).toHaveLength(1);
+    const measuredBy = pkg.relations.filter((r) => r.predicate === 'measured_by');
+    for (const o of ofType(pkg, 'outcome')) expect(measuredBy.some((r) => r.from === o.id), o.id).toBe(true);
+    for (const m of ofType(pkg, 'measure')) expect(measuredBy.filter((r) => r.to === m.id), m.id).toHaveLength(1);
+  });
+
+  it('points discovery answers only at its own elements and the common package’s', () => {
+    const ids = new Set([...pkg.elements, ...common.elements].map((e) => e.id));
+    for (const a of pkg.assessments!) for (const q of a.questions) for (const m of q.candidateMappings ?? []) expect(ids.has(m.elementId), m.elementId).toBe(true);
+  });
+
+  it('starts discovery with which outcomes matter and what the office measures', () => {
+    const [first, second] = pkg.assessments![0].questions;
+    const types = (q: typeof first) => new Set(q.candidateMappings!.map((m) => m.elementId.split(':')[1]));
+    expect(types(first)).toEqual(new Set(['outcome']));
+    expect(types(second)).toEqual(new Set(['measure']));
+  });
+
+  it('has an example pattern, not a "vendor-neutral" one', () => {
+    for (const p of ofType(pkg, 'implementationPattern')) {
+      expect(p.description).toMatch(/^An example architecture/);
+      expect(p.attributes).toBeUndefined();
+    }
   });
 });
 
@@ -92,11 +134,22 @@ describe('dependencies', () => {
     expect(original.relations.filter((r) => shared.has(r.from)).map((r) => r.to).sort()).toEqual([
       'eb:outcome:concerns-raised-safely',
       'eb:outcome:concerns-raised-safely',
+      'eb:outcome:concerns-raised-safely',
+      'eb:outcome:fraud-waste-abuse-prevented',
       'eb:requirement:protect-reporter-identity',
       'eb:requirement:restrict-case-access',
     ]);
     const mapped = original.assessments!.flatMap((a) => a.questions.flatMap((q) => q.candidateMappings ?? []));
     expect(mapped.some((m) => m.elementId === iam)).toBe(true);
+  });
+
+  it('let both missions share case management', () => {
+    const cm = 'eb:capability:case-management';
+    for (const pkg of missions) {
+      expect(pkg.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
+      expect(pkg.relations.some((r) => r.from === cm && r.predicate === 'contributes_to'), pkg.packageId).toBe(true);
+      expect(pkg.relations.some((r) => r.predicate === 'satisfies' && r.to === 'eb:requirement:multi-channel-intake'), pkg.packageId).toBe(true);
+    }
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
@@ -123,24 +176,28 @@ describe('dependencies', () => {
     expect(errors[0]).toContain("which isn't in the library");
     expect(errors.join('\n')).toContain(`starts at unknown element ${iam}`);
   });
+
+  it('can’t move back to the older common package, which lacks case management', () => {
+    const errors = validatePackage(broken((p) => (p.dependencies![0].version = '0.1.0')), resolve);
+    expect(errors.join('\n')).toContain('starts at unknown element eb:capability:case-management');
+  });
 });
 
 describe('discovery questions', () => {
   const intake = (pkg: BlueprintPackage) => pkg.assessments!.find((a) => a.id === 'assessment:intake-and-case-handling')!;
   const question = (pkg: BlueprintPackage, id: string) => intake(pkg).questions.find((q) => q.id === id)!;
 
-  it('come with the 0.2.0 package and point only at its elements and the common package’s', () => {
+  it('come with the OIG package', () => {
     expect(intake(original).questions.length).toBeGreaterThanOrEqual(8);
-    const ids = new Set([...original.elements, ...common.elements].map((e) => e.id));
-    for (const a of original.assessments!) for (const q of a.questions) for (const m of q.candidateMappings ?? []) expect(ids.has(m.elementId)).toBe(true);
+    expect(original.assessments![0].id).toBe('assessment:mission-results');
   });
 
-  it('start with which outcomes matter and what the office measures', () => {
-    const [first] = original.assessments!;
-    expect(first.id).toBe('assessment:mission-results');
-    const types = (q: string) => new Set(first.questions.find((x) => x.id === q)!.candidateMappings!.map((m) => m.elementId.split(':')[1]));
-    expect(types('question:priority-results')).toEqual(new Set(['outcome']));
-    expect(types('question:tracked-measures')).toEqual(new Set(['measure']));
+  it('have IDs no other package uses, so answers can’t be confused', () => {
+    const latest = [original, common, foia];
+    const assessments = latest.flatMap((p) => p.assessments ?? []);
+    expect(new Set(assessments.map((a) => a.id)).size).toBe(assessments.length);
+    const questions = assessments.flatMap((a) => a.questions.map((q) => q.id));
+    expect(new Set(questions).size).toBe(questions.length);
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
@@ -161,24 +218,35 @@ describe('discovery questions', () => {
 });
 
 describe('versions', () => {
-  it('keep everything from 0.1.0 in 0.2.0, unchanged, with outcomes, requirements, and questions added', () => {
-    const first: BlueprintPackage = JSON.parse(readFileSync('content/federal-oig/0.1.0/blueprint.json', 'utf8'));
-    expect(first.assessments).toBeUndefined();
-    for (const e of first.elements) expect(original.elements).toContainEqual(e);
+  it('kept everything from OIG 0.1.0 in 0.2.0, unchanged, with outcomes, requirements, and questions added', () => {
+    expect(oig010.assessments).toBeUndefined();
+    for (const e of oig010.elements) expect(oig020.elements).toContainEqual(e);
     // Capabilities reach the mission through its outcomes instead.
-    for (const r of first.relations.filter((r) => r.predicate !== 'supports_mission')) expect(original.relations).toContainEqual(r);
-    expect(original.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
-    expect(original.sources!.slice(0, first.sources!.length)).toEqual(first.sources);
-    const added = original.elements.filter((e) => !first.elements.some((f) => f.id === e.id));
+    for (const r of oig010.relations.filter((r) => r.predicate !== 'supports_mission')) expect(oig020.relations).toContainEqual(r);
+    expect(oig020.dependencies).toEqual([{ packageId: common010.packageId, version: common010.version }]);
+    expect(oig020.sources!.slice(0, oig010.sources!.length)).toEqual(oig010.sources);
+    const added = oig020.elements.filter((e) => !oig010.elements.some((f) => f.id === e.id));
     expect(new Set(added.map((e) => e.type))).toEqual(new Set(['outcome', 'measure', 'requirement']));
   });
 
+  it('move OIG’s case tracking requirements into common 0.2.0 under the same IDs', () => {
+    const gone = oig020.elements.filter((e) => !original.elements.some((f) => f.id === e.id)).map((e) => e.id);
+    expect(gone).toEqual(['eb:requirement:multi-channel-intake', 'eb:requirement:acknowledge-receipt', 'eb:requirement:track-case-status']);
+    for (const id of gone) expect(common.elements.map((e) => e.id)).toContain(id);
+    // OIG's capabilities still satisfy them, and its relations and questions are otherwise kept.
+    for (const r of oig020.relations) expect(original.relations).toContainEqual(r);
+    expect(original.sources).toEqual(oig020.sources);
+    // Common keeps everything it had.
+    for (const e of common010.elements) expect(common.elements).toContainEqual(e);
+    for (const r of common010.relations) expect(common.relations).toContainEqual(r);
+  });
+
   it('gives every capability its reference requirements, and every requirement one capability of its own package', () => {
-    for (const pkg of [original, common]) {
+    for (const pkg of [original, common, foia]) {
       const own = new Set(pkg.elements.map((e) => e.id));
       const satisfies = pkg.relations.filter((r) => r.predicate === 'satisfies' && own.has(r.from));
-      for (const c of pkg.elements.filter((e) => e.type === 'capability')) expect(satisfies.some((r) => r.from === c.id)).toBe(true);
-      for (const q of pkg.elements.filter((e) => e.type === 'requirement')) expect(satisfies.filter((r) => r.to === q.id)).toHaveLength(1);
+      for (const c of ofType(pkg, 'capability')) expect(satisfies.some((r) => r.from === c.id), c.id).toBe(true);
+      for (const q of ofType(pkg, 'requirement')) expect(satisfies.filter((r) => r.to === q.id), q.id).toHaveLength(1);
     }
   });
 });
