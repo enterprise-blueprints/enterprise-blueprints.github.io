@@ -287,7 +287,7 @@
       ],
       "attributes": {
         "approach": "platform",
-        "role": "system-of-record",
+        "role": "business-applications",
         "parts": [
           "A case record with status, assignment, due dates, and linked documents, set up for each case type",
           "Intake forms and an email channel that create cases",
@@ -325,7 +325,7 @@
       ],
       "attributes": {
         "approach": "platform",
-        "role": "foundation",
+        "role": "infrastructure",
         "parts": [
           "The agency’s identity provider, with single sign-on to each system",
           "Phishing-resistant authenticators for staff, such as PIV cards or FIDO2 security keys",

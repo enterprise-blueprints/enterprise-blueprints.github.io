@@ -227,7 +227,7 @@ export function relationNote(from: LibraryElement, predicate: string, to: Librar
 export interface PatternDetails {
   /** The approach's label, such as "Configure a product". */
   approach?: string;
-  /** The part it plays, such as "system-of-record". */
+  /** The part it plays, such as "business-applications". */
   role?: string;
   fields: { key: string; label: string; items: string[] }[];
 }

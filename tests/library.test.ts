@@ -70,9 +70,9 @@ describe('example solutions', () => {
   const shared = solutionView(get('eb:solution:agency-shared-platform'));
   const slug = (e: { id: string }) => e.id.split(':')[2];
 
-  it('group their patterns by role, channels first and foundations last', () => {
-    expect(shared.roles.map((g) => g.role)).toEqual(['channel', 'system-of-record', 'processing', 'reporting-disclosure', 'foundation']);
-    const systems = shared.roles.find((g) => g.role === 'system-of-record')!.items.map((i) => slug(i.pattern));
+  it('group their patterns by role, public facing first and infrastructure last', () => {
+    expect(shared.roles.map((g) => g.role)).toEqual(['public-facing', 'business-applications', 'processing', 'ai-insights', 'infrastructure']);
+    const systems = shared.roles.find((g) => g.role === 'business-applications')!.items.map((i) => slug(i.pattern));
     expect(systems).toEqual(expect.arrayContaining(['shared-case-platform', 'foia-tracking-with-review-tool']));
     for (const g of shared.roles) for (const i of g.items) expect(i.note, slug(i.pattern)).toBeTruthy();
   });
@@ -93,6 +93,7 @@ describe('example solutions', () => {
 
   it('group a mission’s patterns the same way', () => {
     const groups = byRole(missionBlueprint(get('eb:mission:public-access-to-agency-records')).patterns, (p) => p);
-    expect(groups.map((g) => g.label)).toEqual(['Intake channel', 'System of record', 'Processing service', 'Reporting & disclosure', 'Foundation service']);
+    // The FOIA program has no AI and insights pattern yet.
+    expect(groups.map((g) => g.label)).toEqual(['Public facing', 'Business applications', 'Processing service', 'Infrastructure']);
   });
 });

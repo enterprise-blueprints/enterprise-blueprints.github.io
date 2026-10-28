@@ -601,7 +601,7 @@
       ],
       "attributes": {
         "approach": "product",
-        "role": "system-of-record",
+        "role": "business-applications",
         "parts": [
           "Request intake from the national portal and the agency’s own form",
           "Request tracking with FOIA’s tracks, working-day deadlines, fee categories, and correspondence",
@@ -638,7 +638,7 @@
       ],
       "attributes": {
         "approach": "combine",
-        "role": "system-of-record",
+        "role": "business-applications",
         "parts": [
           "FOIA request tracking set up on the agency’s shared case platform",
           "A deadline calculator for working days, extensions, and pauses for clarification or fees",
@@ -711,7 +711,7 @@
       ],
       "attributes": {
         "approach": "build",
-        "role": "channel",
+        "role": "public-facing",
         "parts": [
           "A connection in the agency’s FOIA system that implements the portal’s agency API",
           "A mapping from the portal’s fields to the agency’s request record",
@@ -747,7 +747,7 @@
       ],
       "attributes": {
         "approach": "platform",
-        "role": "reporting-disclosure",
+        "role": "public-facing",
         "parts": [
           "A FOIA library section of the agency’s website, with search",
           "A publishing step from the review tool that carries each release’s details",

@@ -154,7 +154,7 @@ describe('example solutions', () => {
     expect(solutions.dependencies!.map((d) => `${d.packageId.split('.').at(-1)} ${d.version}`)).toEqual(['common 0.3.0', 'federal-oig 0.4.0', 'federal-foia 0.2.0']);
   });
 
-  it('each support both missions, with sign-on and a system of record, and say why each pattern is there', () => {
+  it('each support both missions, with sign-on and business applications, and say why each pattern is there', () => {
     for (const s of ofType(solutions, 'solution')) {
       const rels = solutions.relations.filter((r) => r.from === s.id);
       expect(rels.filter((r) => r.predicate === 'supports').map((r) => r.to).sort(), s.id).toEqual([
@@ -163,7 +163,7 @@ describe('example solutions', () => {
       ]);
       const included = rels.filter((r) => r.predicate === 'includes');
       expect(included.map((r) => r.to), s.id).toContain('eb:implementationPattern:agency-sign-on');
-      expect(included.filter((r) => roleOf(r.to) === 'system-of-record').length, s.id).toBeGreaterThanOrEqual(2);
+      expect(included.filter((r) => roleOf(r.to) === 'business-applications').length, s.id).toBeGreaterThanOrEqual(2);
       for (const r of included) expect(r.description, r.id).toBeTruthy();
       expect(Object.keys(s.attributes!).sort(), s.id).toEqual(['fitsWhen', 'watchFor']);
     }

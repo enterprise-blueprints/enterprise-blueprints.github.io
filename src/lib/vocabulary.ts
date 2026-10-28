@@ -130,24 +130,24 @@ export const predicates: Record<string, PredicateInfo> = {
 // fields, so patterns can be compared side by side and grouped by the part
 // they play in a solution. A solution uses fitsWhen and watchFor too.
 export const patternRoles: Record<string, { label: string; hint: string }> = {
-  channel: {
-    label: 'Intake channel',
-    hint: 'How people and other systems reach the office. Add the ones it offers.',
+  'public-facing': {
+    label: 'Public facing',
+    hint: 'What the public and other agencies use to reach the office or find what it publishes. Add the ones it offers.',
   },
-  'system-of-record': {
-    label: 'System of record',
-    hint: 'Where the work is tracked. These are alternatives: a solution usually picks one for each kind of work.',
+  'business-applications': {
+    label: 'Business applications',
+    hint: 'Where the office’s work is tracked and done. These are alternatives: a solution usually picks one for each kind of work.',
   },
   processing: {
     label: 'Processing service',
     hint: 'Specialized processing on the records, such as search and review. Add as needed.',
   },
-  'reporting-disclosure': {
-    label: 'Reporting & disclosure',
-    hint: 'How results reach leaders, Congress, and the public.',
+  'ai-insights': {
+    label: 'AI and insights',
+    hint: 'Reporting, analytics, and AI that turn the office’s records into insight for leaders, Congress, and the public.',
   },
-  foundation: {
-    label: 'Foundation service',
+  infrastructure: {
+    label: 'Infrastructure',
     hint: 'Shared services every system relies on, such as sign-on.',
   },
 };
