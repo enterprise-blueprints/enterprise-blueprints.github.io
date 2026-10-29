@@ -1,0 +1,75 @@
+# Capabilities, in the order the pages show them, each with the links it holds.
+
+- id: complaint-allegation-disclosure-intake
+  title: Complaint, Allegation & Disclosure Intake
+  description: Ability to receive, acknowledge, classify, and appropriately route allegations of wrongdoing, fraud, waste, abuse, and relevant disclosures through authorized channels.
+  sources: [ ig-act-404, oversight-hotline, cigie-faq ]
+  applicabilityNotes: Confidentiality and routing rules vary. Specific retaliation complaints or protected disclosures may need referral to another legally authorized entity.
+  attributes:
+    scope: US-federal-OIG
+  contributes_to: [ fraud-waste-abuse-prevented, concerns-raised-safely ]
+  satisfies:
+    - multi-channel-intake
+    - acknowledge-receipt
+    - triage-and-route
+    - protect-reporter-identity
+  candidate_pattern:
+    - to: oversight-intake-case-tracking
+      id: oig-candidate-pattern-1
+    - confidential-hotline-intake
+    - to: shared-case-platform
+      note: For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report.
+      sources: [ cigie-silver-book ]
+
+- id: audit-inspection-evaluation
+  title: Audit, Inspection & Evaluation
+  description: Ability to plan, conduct, supervise, or coordinate independent, objective examinations of programs, operations, performance, and controls.
+  sources: [ ig-act-404, oversight-mission, cigie-faq ]
+  applicabilityNotes: Methodologies, mandatory reviews, professional standards, and jurisdiction depend on the OIG and engagement.
+  attributes:
+    scope: US-federal-OIG
+  contributes_to: [ effective-programs, fraud-waste-abuse-prevented ]
+  satisfies: [ plan-oversight-work, document-findings ]
+  candidate_pattern: [ audit-management-system ]
+
+- id: investigation-management
+  title: Investigation Management
+  description: Ability to assess allegations within jurisdiction, plan authorized investigative work, manage evidence and case progress, and document investigative results or referrals.
+  sources: [ ig-act-404, oversight-mission, cigie-faq ]
+  applicabilityNotes: Law enforcement powers, case types, investigative jurisdiction, evidence handling, and disclosure restrictions vary by legal authority.
+  attributes:
+    scope: US-federal-OIG
+  contributes_to: [ fraud-waste-abuse-prevented ]
+  satisfies: [ track-case-status, link-evidence, restrict-case-access ]
+  candidate_pattern:
+    - to: oversight-intake-case-tracking
+      id: oig-candidate-pattern-2
+    - to: shared-case-platform
+      note: For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report.
+      sources: [ cigie-silver-book ]
+
+- id: recommendations-corrective-action-monitoring
+  title: Recommendations & Corrective Action Monitoring
+  description: Ability to issue findings or recommendations where authorized, track responses and progress, and monitor implementation of corrective measures.
+  sources: [ ig-act-404, oversight-mission ]
+  applicabilityNotes: OIGs generally recommend and monitor; they do not universally possess authority to implement or compel agency corrective actions.
+  attributes:
+    scope: US-federal-OIG
+  contributes_to: [ effective-programs, problems-corrected ]
+  satisfies: [ track-recommendations, report-open-recommendations ]
+  candidate_pattern: [ audit-management-system, shared-recommendation-tracker ]
+
+- id: oversight-reporting-communication
+  title: Oversight Reporting & Communication
+  description: Ability to communicate independent oversight findings, recommendations, material risks, and work results to the appropriate officials and public audiences consistent with law.
+  sources: [ ig-act-404, oversight-mission, cigie-faq ]
+  applicabilityNotes: Reporting cadence, content, recipients, and confidentiality depend on legal requirements and the sensitivity of the work. Whistleblower education and coordination may be separate supporting functions.
+  attributes:
+    scope: US-federal-OIG
+  contributes_to: [ leaders-congress-informed ]
+  satisfies: [ periodic-reporting, publish-reports ]
+  candidate_pattern:
+    - shared-recommendation-tracker
+    - oversight-reporting-from-source-data
+    - to: letters-from-case-data
+      note: Drafts of routine notices and report sections, with the office’s wording, from the case and audit data.

@@ -1,0 +1,73 @@
+# The references this package cites. Elements and links name them by id.
+
+- id: foia-statute
+  title: 5 U.S.C. § 552 — Public information; agency rules, opinions, orders, records, and proceedings (Freedom of Information Act)
+  url: https://www.govinfo.gov/link/uscode/5/552?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: What agencies must publish and post, the 20-working-day time limit and its extensions, expedited processing, appeals, the foreseeable harm standard, segregable release, tracking numbers, FOIA Public Liaisons, OGIS, the national request portal, and the contents of the annual FOIA report.
+
+- id: doj-foia-guide
+  title: U.S. Department of Justice — Guide to the Freedom of Information Act
+  url: https://www.justice.gov/oip/doj-guide-freedom-information-act-0
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: The Office of Information Policy’s treatise on the FOIA, with chapters on proactive disclosures, procedural requirements such as searches and response letters, fees and fee waivers, and each exemption.
+
+- id: oip-backlog-guidance
+  title: U.S. Department of Justice, Office of Information Policy — Guidance on Backlog Reduction Plans
+  url: https://www.justice.gov/oip/oip-guidance/guidance-backlog-reduction-plans
+  kind: official-reference
+  publicationDate: 2025-08-21
+  lastReviewedAt: 2026-10-28
+  note: Agencies should aim to keep their backlog below 10% of the requests they receive each year, and plan how to reduce it.
+
+- id: oip-annual-report-handbook
+  title: U.S. Department of Justice — Handbook for Agency Annual FOIA Reports (2024 update)
+  url: https://www.justice.gov/d9/2024-10/DOJ%20Handbook%20for%20Agency%20Annual%20FOIA%20Reports%20(2024%20update).pdf
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: How agencies count what the annual FOIA report includes. A backlogged request is one still pending at the end of the fiscal year beyond the time the law allows for a response.
+
+- id: oip-chief-foia-officer-guidelines
+  title: U.S. Department of Justice, Office of Information Policy — Guidelines for 2026 Chief FOIA Officer Reports
+  url: https://www.justice.gov/oip/guidelines-2026-chief-foia-officer-reports
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: What each agency’s Chief FOIA Officer reports each year, including proactive disclosures, use of technology, and managing backlogs and the oldest pending requests.
+
+- id: ogis
+  title: National Archives — Office of Government Information Services (OGIS)
+  url: https://www.archives.gov/ogis
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: "The FOIA ombudsman: resolves disputes between requesters and agencies through mediation, and reviews agencies’ FOIA policies, procedures, and compliance."
+
+- id: foia-gov
+  title: FOIA.gov — the government’s central website for FOIA
+  url: https://www.foia.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: Where the public can start a request with any agency, and where agencies’ annual and quarterly FOIA data is published.
+
+- id: ogis-search-technology
+  title: National Archives, Office of Government Information Services — Leveraging Technology to Improve FOIA Searches
+  url: https://www.archives.gov/ogis/foia-compliance-program/targeted-assessments/leveraging-tech-2019-jul-31
+  kind: official-reference
+  publicationDate: 2019-07-31
+  lastReviewedAt: 2026-10-28
+  note: How agencies use technology, including e-discovery tools, to search for records, and the backlogs that can build when searches depend on IT offices.
+
+- id: foia-gov-developer
+  title: FOIA.gov — Developer resources
+  url: https://www.foia.gov/developer/
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: The agency API for receiving requests submitted through the national FOIA portal.
+
+- id: section-508
+  title: Section508.gov — IT accessibility for federal agencies
+  url: https://www.section508.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: Federal agencies’ information and communication technology, including web content and documents, must be accessible to people with disabilities.

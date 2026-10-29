@@ -1,0 +1,20 @@
+# The package itself. Its version and date are set when it is built (pnpm content:build).
+
+schemaVersion: 0.2.0
+packageId: org.enterprise-blueprints.federal-foia
+title: Federal FOIA Program — Public Access to Agency Records
+description: "U.S. federal Freedom of Information Act program blueprint: one mission with the outcomes it seeks and ways to measure them, seven capabilities with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for FOIA results and for request processing. It builds on Common Capabilities for case management, records, identity and access, and data protection."
+publisher:
+  name: Enterprise Blueprints (independent reference project)
+  url: https://enterprise-blueprints.github.io
+license: MIT
+domain: public-sector
+jurisdictions:
+  - United States — federal agencies subject to the Freedom of Information Act
+tags:
+  - freedom-of-information
+  - foia
+  - transparency
+  - public-records
+  - reference-architecture
+dependencies: [ common ]

@@ -1,0 +1,16 @@
+# Links from elements of the packages this one builds on, such as a shared capability
+# that satisfies one of this package's requirements.
+
+- from: capability:case-management
+  contributes_to: [ requests-answered-on-time, backlog-kept-small ]
+  candidate_pattern: [ foia-request-processing ]
+
+- from: capability:records-management
+  contributes_to: [ requests-answered-on-time ]
+
+- from: capability:identity-access-management
+  contributes_to: [ records-released-as-allowed ]
+  satisfies: [ protect-unredacted-records ]
+
+- from: capability:data-protection-privacy
+  contributes_to: [ records-released-as-allowed ]

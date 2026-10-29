@@ -17,6 +17,12 @@ export function attributeValue(value: unknown): string {
   return typeof value === 'string' ? value : JSON.stringify(value);
 }
 
+/** Orders versions such as "0.10.0" after "0.9.0". */
+export function compareVersions(a: string, b: string): number {
+  const [x, y] = [a, b].map((v) => v.split('.').map(Number));
+  return x[0] - y[0] || x[1] - y[1] || x[2] - y[2];
+}
+
 export function plural(count: number, one: string, many: string): string {
   return `${count} ${count === 1 ? one : many}`;
 }

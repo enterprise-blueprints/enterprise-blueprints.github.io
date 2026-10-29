@@ -7,6 +7,7 @@
 import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
 import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, type ElementTypeInfo } from './vocabulary';
 import { href } from './paths';
+import { compareVersions } from './format';
 
 export interface LibraryElement extends Element {
   package: BlueprintPackage;
@@ -36,12 +37,6 @@ const files = import.meta.glob<string>('/content/*/*/blueprint.json', {
   import: 'default',
   eager: true,
 });
-
-/** Orders versions such as "0.10.0" after "0.9.0". */
-export function compareVersions(a: string, b: string): number {
-  const [x, y] = [a, b].map((v) => v.split('.').map(Number));
-  return x[0] - y[0] || x[1] - y[1] || x[2] - y[2];
-}
 
 function load(): PackageFile[] {
   const errors: string[] = [];

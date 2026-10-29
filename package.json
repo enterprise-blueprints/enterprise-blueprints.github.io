@@ -14,9 +14,11 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",
+    "content:build": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/content.ts build",
+    "content:check": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/content.ts check",
     "check:dist": "node scripts/check-dist.mjs dist",
     "check:published": "node scripts/check-published.mjs dist",
-    "verify": "pnpm check && pnpm test && pnpm build && pnpm check:dist"
+    "verify": "pnpm content:check && pnpm check && pnpm test && pnpm build && pnpm check:dist"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -32,6 +34,7 @@
     "@astrojs/check": "^0.9.12",
     "@types/node": "^22",
     "typescript": "^6",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "yaml": "2.9.1"
   }
 }

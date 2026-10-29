@@ -1,0 +1,44 @@
+# The references this package cites. Elements and links name them by id.
+
+- id: nist-sp-800-53
+  title: NIST SP 800-53 Rev. 5 — Security and Privacy Controls for Information Systems and Organizations
+  url: https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final
+  kind: official-reference
+  lastReviewedAt: 2026-10-27
+  note: Control catalog, including the access control, identification and authentication, audit and accountability, and system and communications protection families.
+
+- id: nist-sp-800-63-4
+  title: NIST SP 800-63-4 — Digital Identity Guidelines
+  url: https://csrc.nist.gov/pubs/sp/800/63/4/final
+  kind: official-reference
+  publicationDate: 2025-07-31
+  lastReviewedAt: 2026-10-27
+  note: Requirements for identity proofing, authenticators, and authentication for people who use government systems.
+
+- id: privacy-act
+  title: 5 U.S.C. § 552a — Records maintained on individuals (Privacy Act of 1974)
+  url: https://www.govinfo.gov/link/uscode/5/552a?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-27
+  note: Limits how agencies disclose records about individuals, with listed exceptions, and requires an accounting of many disclosures.
+
+- id: nist-privacy-framework
+  title: NIST Privacy Framework
+  url: https://www.nist.gov/privacy-framework
+  kind: official-reference
+  lastReviewedAt: 2026-10-27
+  note: A voluntary framework for identifying and managing privacy risk, including knowing what personal data is processed and where.
+
+- id: records-44-usc-3101
+  title: 44 U.S.C. § 3101 — Records management by agency heads; general duties
+  url: https://www.govinfo.gov/link/uscode/44/3101?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-27
+  note: Agencies must make and keep records that document their organization, functions, policies, decisions, procedures, and essential transactions.
+
+- id: nara-grs
+  title: National Archives — General Records Schedules
+  url: https://www.archives.gov/records-mgmt/grs
+  kind: official-reference
+  lastReviewedAt: 2026-10-27
+  note: Approved disposition authorities for records common to many federal agencies.

@@ -13,12 +13,14 @@ Requires Node 22.12 or newer and pnpm.
 
 ```bash
 pnpm install
-pnpm dev         # http://localhost:4321
-pnpm check       # type-check
-pnpm test        # validator tests
-pnpm build       # validate every package and build the static site into dist/
-pnpm check:dist  # check every internal link and the published data in dist/
-pnpm verify      # all of the above, in order
+pnpm dev            # http://localhost:4321
+pnpm content:build  # build content/ from source/, giving changed packages their next version
+pnpm content:check  # fail if content/ is behind source/
+pnpm check          # type-check
+pnpm test           # validator and source tests
+pnpm build          # validate every package and build the static site into dist/
+pnpm check:dist     # check every internal link and the published data in dist/
+pnpm verify         # content:check, check, test, build, and check:dist, in order
 ```
 
 To check a build under a project-site path, as CI does:
@@ -30,13 +32,16 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
 
 ## How it's organized
 
-- `content/<package>/<version>/blueprint.json` holds each package version: its sources, elements,
-  relations, and discovery questions. The pages show the latest version of each package; every version
-  stays published.
+- `source/<package>/` is what people edit: YAML files that describe one package. `pnpm content:build`
+  turns them into the published files below.
+- `content/<package>/<version>/blueprint.json` holds each package version as published: its sources,
+  elements, relations, and discovery questions. The pages show the latest version of each package; every
+  version stays published. These files are built, not edited by hand.
 - `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
   `dependencies`. Every version stays, and Solution Studio keeps identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
+- `src/lib/compile.ts` builds a package from its source and decides its version; `scripts/content.ts` runs it.
 - `src/lib/package.ts` validates a package: the JSON Schema for its `schemaVersion` first, then unique IDs,
   known types and predicates, and references that resolve, including into the packages it builds on. Any
   problem stops the build.
@@ -62,39 +67,70 @@ byte for byte.
 
 ## Edit content
 
-Edit the latest version, such as `content/federal-oig/0.3.0/blueprint.json`, then run `pnpm verify`. If
-the build fails, its message names each problem. A new element type or predicate needs an entry in
+Edit the files under `source/<package>/`, then run `pnpm content:build` and `pnpm verify`. If either fails,
+its message names each problem and the file it's in. A new element type or predicate needs an entry in
 `src/lib/vocabulary.ts` first.
 
-A published version never changes. Once a version is live, copy it to a new folder such as
-`content/federal-oig/0.4.0/`, raise `version` to match, and make the changes there. Tools that pinned the old
-digest keep working, and the deploy refuses a build that changes a live version.
+| File | What it holds |
+| --- | --- |
+| `package.yaml` | The package's ID, title, description, and other details, and `dependencies`: the folder names of the packages it builds on. |
+| `sources.yaml` | The references it cites, each with an `id` that elements and links use. |
+| `missions.yaml`, `outcomes.yaml`, `measures.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml`, `solutions.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
+| `links.yaml` | Links from the elements of packages this one builds on, such as a shared capability that satisfies one of its requirements. |
+| `discovery.yaml` | Discovery question sets. |
 
-**Discovery questions** live in a package's `assessments`. IDs look like `assessment:<name>` and
-`question:<name>`. A choice or yes-or-no answer can point to an element through `candidateMappings`, with a
-short interpretation; text and number answers are recorded as said and point nowhere.
+**Links** sit on the element that holds them, named for the predicate, with the keys of their targets:
 
-**Implementation patterns** are examples, and each one describes itself in `attributes` so patterns can be
+```yaml
+- id: investigation-management
+  title: Investigation Management
+  description: Ability to assess allegations within jurisdiction, …
+  contributes_to: [fraud-waste-abuse-prevented]
+  satisfies: [link-evidence, restrict-case-access]
+  candidate_pattern:
+    - oversight-intake-case-tracking
+    - to: shared-case-platform
+      note: For an OIG, the office needs to control who administers the platform …
+      sources: [cigie-silver-book]
+```
+
+A bare key names an element of the type the link reaches. Write `type:key`, such as `capability:case-management`,
+anywhere else an element is named. A link's `note` becomes the relation's `description`. Relation IDs are
+generated; an `id` on a link keeps an older one.
+
+**Versions are automatic.** A version is published once it's on `origin/main`, and it never changes after
+that. When a package's source no longer matches its latest published version, `pnpm content:build` writes the
+next minor version, and the next version of every package that builds on it, pinned to the new one. Until that
+version is pushed, building again rewrites it in place, and undoing the change removes it. Tools that pinned an
+old digest keep working, and the deploy refuses a build that changes a live version.
+
+**Discovery questions** live in `discovery.yaml`, as sets of questions. Options are written `value: label`. A
+choice or yes-or-no answer can point to elements through `points`, each group naming the answers (`when`), the
+elements (`to`), and why (`why`). Text and number answers are recorded as said and point nowhere. In the
+published package these become `assessments` and `candidateMappings`.
+
+**Implementation patterns** are examples, and each one describes itself in its `attributes` so patterns can be
 compared side by side and grouped: `approach` (`product`, `platform`, `combine`, or `build`), `role` (the part
 it plays: `public-facing`, `business-applications`, `worker-productivity`, `processing`, `ai-insights`, or
 `infrastructure`), and `parts`,
 `strengths`, `fitsWhen`, and `watchFor`, each a list of short statements. `src/lib/vocabulary.ts` defines them,
-and `vocabulary.json` publishes their labels. A `candidate_pattern` relation's `description` says what the
-pattern means for that capability, such as a mission's caveat on a shared pattern.
+and `vocabulary.json` publishes their labels. A `candidate_pattern` link's `note` says what the pattern means
+for that capability, such as a mission's caveat on a shared pattern.
 
 **Solutions** combine patterns across an agency. The `solutions` package builds on the mission packages and
-Common Capabilities. Each solution `includes` patterns, with a `description` saying why each one is there, and
+Common Capabilities. Each solution `includes` patterns, with a `note` saying why each one is there, and
 `supports` the missions it serves, with `fitsWhen` and `watchFor` in its attributes. The site works out what
 each solution covers for each mission from the patterns' capabilities.
 
-To add a package, create `content/<name>/<version>/blueprint.json` with its own `packageId`. The site picks
-it up automatically. Element IDs are unique across all packages: each element is defined once.
+To add a package, create `source/<name>/package.yaml` with its own `packageId`, add its files, and run
+`pnpm content:build`; it starts at 0.1.0. Element IDs are unique across all packages: each element is defined
+once.
 
-**Shared elements.** A package with `schemaVersion` 0.2.0 can list `dependencies`, each a `packageId` and
-`version`. Its relations and discovery answers can then point at those packages' elements by ID, so a mission
-package uses the common capabilities instead of repeating them. Every relation still has at least one end in
-the package itself. The latest version of a package must build on the latest version of each dependency, since
-the pages show only the latest versions. An element's page lists the other packages that use it.
+**Shared elements.** A package with `schemaVersion` 0.2.0 can list `dependencies`. Its links and discovery
+answers can then point at those packages' elements, so a mission package uses the common capabilities instead
+of repeating them. Every link still has at least one end in the package itself. The latest version of a package
+builds on the latest version of each dependency, since the pages show only the latest versions;
+`pnpm content:build` keeps the pins up to date. An element's page lists the other packages that use it.
 
 ## Deploy
 

@@ -1,0 +1,127 @@
+# Implementation patterns, in the order the pages show them, each with the links it holds.
+
+- id: oversight-intake-case-tracking
+  title: Oversight Intake & Case Tracking
+  description: "An example architecture: a case management product made for oversight and investigative work, configured for the office, that covers authorized intake, assignment, referral, status tracking, appropriate access controls, evidence linkage, audit trails, and records retention."
+  sources: [ oversight-hotline, cigie-faq, cigie-silver-book ]
+  attributes:
+    approach: product
+    role: business-applications
+    parts:
+      - Intake forms for the hotline and for staff, feeding one intake queue
+      - Triage with recorded decisions, and referrals to other authorities
+      - Case records with assignment, status, and investigative steps
+      - Evidence records with chain of custody
+      - Access limited by case assignment, with the identities of people who report restricted further
+      - Statistics for the semiannual report
+    strengths:
+      - Built around investigative work, such as evidence handling and referrals
+      - The office controls who administers it and who sees what
+      - Comes with reports shaped for oversight reporting
+    fitsWhen:
+      - The office runs investigations with evidence and referrals for prosecution
+      - Independence from the agency’s own systems matters
+      - There’s budget for licenses and an administrator in the office
+    watchFor:
+      - Early configuration choices, such as case types, are hard to change later
+      - Data from older systems needs moving and cleaning up
+      - A hosted product needs a security authorization before it can hold case information
+
+- id: confidential-hotline-intake
+  title: Confidential Online Hotline
+  description: "An example architecture: a public web form and phone line for reporting fraud, waste, and abuse that can take anonymous reports, keeps the identity of the person reporting apart from the allegation, and gives them a code to check back or add information."
+  sources: [ ig-act-420, ig-act-407, oversight-hotline ]
+  attributes:
+    approach: product
+    role: public-facing
+    parts:
+      - A public web form linked directly from the office’s home page, and a phone line
+      - A choice to report anonymously, or to ask that one’s identity be kept confidential
+      - Contact details stored apart from the allegation, visible only to the people who need them
+      - A report code the person can use to check back or add information without identifying themselves
+      - Delivery of each report into the intake queue
+    strengths:
+      - Makes reporting easy, through the direct link the law asks for
+      - Protects identities by design rather than by habit
+      - Lets the office follow up with people who report anonymously
+    fitsWhen:
+      - The office receives reports from the public or from employees
+      - The office’s current form sends reports to a shared inbox
+    watchFor:
+      - Anonymous reports are hard to act on without a way to follow up
+      - Spam and duplicate reports need screening before triage
+      - What people type must not be recorded anywhere outside the intake system, such as in web analytics
+
+- id: audit-management-system
+  title: Audit Management with Electronic Work Papers
+  description: "An example architecture: an audit management product that holds the plan of audits, inspections, and evaluations, the electronic work papers and evidence behind each finding, supervisors’ review sign-offs, and the recommendations each report makes."
+  sources: [ gao-yellow-book, cigie-blue-book, cigie-silver-book ]
+  attributes:
+    approach: product
+    role: business-applications
+    parts:
+      - A plan of oversight work with each engagement’s scope, schedule, and status
+      - Electronic work papers with evidence attached, cross-referenced to the report
+      - Supervisors’ review notes and sign-offs, kept with the work papers
+      - Findings and recommendations recorded once, then tracked to closure
+      - Records retention for closed engagements
+    strengths:
+      - Supports the documentation and supervision that professional standards require
+      - Peer reviewers can trace each finding to its evidence
+      - Recommendations start in the same place they’re tracked
+    fitsWhen:
+      - The office follows the Yellow Book or the Blue Book for its audits, inspections, and evaluations
+      - Work papers live in shared drives today
+    watchFor:
+      - Teams need time to adopt a new way of documenting their work
+      - Evidence with sensitive personal information needs the same protection it has elsewhere
+      - Older engagements usually stay where they are, so there are two places to look for a while
+
+- id: shared-recommendation-tracker
+  title: Shared Recommendation Tracker
+  description: "An example architecture: a recommendation tracker the office owns, where agency officials submit corrective action plans, updates, and evidence through their own access, and the office decides when each recommendation is closed."
+  sources: [ ig-act-405, gao-ig-act ]
+  attributes:
+    approach: platform
+    role: business-applications
+    parts:
+      - One record per recommendation, with its report, owner, agreed action, target date, and status
+      - Agency access limited to their own recommendations, for submitting plans, updates, and evidence
+      - The office’s review of each submission, with the decision to close recorded
+      - Reminders before target dates
+      - Lists of open recommendations for the semiannual report, the website, and the agency’s budget justification
+    strengths:
+      - Replaces email and spreadsheets traded back and forth with the agency
+      - The office keeps the decision to close, and the agency keeps responsibility for acting
+      - The same data serves the semiannual report and the agency’s GAO-IG Act report
+    fitsWhen:
+      - The office has many open recommendations across several parts of the agency
+      - Status is gathered by email before each semiannual report
+    watchFor:
+      - Agency users need accounts and guidance, which takes coordination
+      - Giving agency officials access must not expose anything else the office holds
+      - What it takes to close a recommendation needs agreeing with the agency up front
+
+- id: oversight-reporting-from-source-data
+  title: Oversight Reporting from Source Data
+  description: "An example architecture: a reporting store fed by the case, audit, and recommendation systems that produces the semiannual report’s statistics, with a publishing step that posts final reports to the office’s website and Oversight.gov within 3 days."
+  sources: [ ig-act-405, ig-act-420, oversight-mission ]
+  attributes:
+    approach: build
+    role: ai-insights
+    parts:
+      - Feeds from the case, audit, and recommendation systems into one reporting store
+      - A definition of each statistic the semiannual report needs, kept with the data
+      - Draft tables for each reporting period, for review
+      - A publishing step that posts final reports to the website and Oversight.gov, recording the date
+    strengths:
+      - Statistics are counted the same way every period
+      - Less gathering by hand before each deadline
+      - The date each report was posted is on record
+    fitsWhen:
+      - Each semiannual report takes weeks of gathering by hand
+      - Counts get questioned because they’re compiled differently each time
+    watchFor:
+      - It’s only as good as the data in the systems that feed it
+      - Each definition needs an owner for when the law or guidance changes
+      - Sensitive details must stay out of anything published

@@ -1,0 +1,157 @@
+# Discovery question sets. Each group under "points" names the answers that point to
+# one or more elements, and why.
+
+- id: shared-foundations
+  title: Shared foundations discovery
+  description: "A few questions about the foundations every mission relies on: sign-in and access, personal information, records, logging, and keeping track of the office’s work."
+  questions:
+    - id: sign-in
+      prompt: How do staff sign in to the office’s systems?
+      kind: single-choice
+      options:
+        - password: A password only
+        - second-factor: A password and a second step, such as a code or an app
+        - smart-card: A smart card or another phishing-resistant method
+        - varies: It varies by system
+      points:
+        - when: password
+          to: capability:identity-access-management
+          why: Sign-in is the front door to every system, so identity and access is part of the picture.
+        - when: password
+          to: requirement:strong-sign-in
+          why: A password alone falls short of strong sign-in.
+        - when: [ second-factor, varies ]
+          to: capability:identity-access-management
+          why: Sign-in is the front door to every system, so identity and access is part of the picture.
+        - when: varies
+          to: requirement:strong-sign-in
+          why: Some systems may fall short of strong sign-in.
+        - when: password
+          to: implementationPattern:agency-sign-on
+          why: Agency sign-on with phishing-resistant authentication is worth exploring.
+        - when: varies
+          to: implementationPattern:agency-sign-on
+          why: Bringing every system onto agency sign-on would make sign-in consistent.
+    - id: access-reviews
+      prompt: Does the office review who has access to its systems on a regular schedule?
+      kind: boolean
+      points:
+        - when: "true"
+          to: requirement:review-access
+          why: Access reviews happen; it’s worth knowing how and how often.
+        - when: "false"
+          to: capability:identity-access-management
+          why: Without reviews, access tends to outlast the need for it.
+        - when: "false"
+          to: requirement:review-access
+          why: Access isn’t reviewed on a schedule yet.
+    - id: personal-information
+      prompt: Does the office’s work involve personal information about members of the public or staff?
+      kind: boolean
+      points:
+        - when: "true"
+          to: capability:data-protection-privacy
+          why: Personal information needs protecting wherever it’s kept.
+        - when: "true"
+          to: requirement:know-where-personal-information-is
+          why: Knowing where it’s kept comes first.
+        - when: "true"
+          to: requirement:share-personal-information-as-allowed
+          why: Sharing it is limited by law.
+    - id: records-schedules
+      prompt: Are the office’s main records covered by approved records schedules?
+      kind: single-choice
+      options:
+        - yes: Yes, all of them
+        - some: Some of them
+        - no: No
+        - unsure: Not sure
+      points:
+        - when: some
+          to: capability:records-management
+          why: Records management is part of the picture.
+        - when: some
+          to: requirement:follow-records-schedules
+          why: Some records may be kept too long, or not long enough.
+        - when: no
+          to: capability:records-management
+          why: Records management is part of the picture.
+        - when: no
+          to: requirement:follow-records-schedules
+          why: Records aren’t on approved schedules yet.
+        - when: unsure
+          to: capability:records-management
+          why: Worth finding out who manages the office’s records.
+    - id: activity-logs
+      prompt: Do the office’s systems keep a record of who viewed or changed sensitive information?
+      kind: single-choice
+      options:
+        - all: Yes, all of them
+        - some: Some of them
+        - no: No
+        - unsure: Not sure
+      points:
+        - when: some
+          to: capability:security-logging-monitoring
+          why: Logging is part of the picture.
+        - when: some
+          to: requirement:log-system-activity
+          why: Some systems don’t record who did what.
+        - when: no
+          to: capability:security-logging-monitoring
+          why: Logging is part of the picture.
+        - when: no
+          to: requirement:log-system-activity
+          why: Systems don’t record who did what yet.
+        - when: unsure
+          to: capability:security-logging-monitoring
+          why: Worth finding out what the systems record.
+    - id: matter-tracking
+      prompt: Where does the office keep track of the requests, complaints, or cases it handles?
+      kind: single-choice
+      options:
+        - case-system: A case management system
+        - shared-system: A system shared with the wider agency
+        - documents: Spreadsheets, documents, or email
+        - several: Several of these, depending on the team
+      points:
+        - when: case-system
+          to: capability:case-management
+          why: The office tracks its work in a system already.
+        - when: shared-system
+          to: capability:case-management
+          why: The office tracks its work in a shared system, which may raise access questions.
+        - when: documents
+          to: capability:case-management
+          why: Work tracked in documents may be a gap in case management.
+        - when: documents
+          to: requirement:track-case-status
+          why: Status kept in documents is hard to see in one place.
+        - when: several
+          to: capability:case-management
+          why: Work tracked in several places may make status hard to see.
+        - when: several
+          to: requirement:track-case-status
+          why: Status kept in several places is hard to see in one place.
+    - id: legal-deadlines
+      prompt: Do any of the matters the office handles have deadlines set by law or regulation?
+      kind: boolean
+      points:
+        - when: "true"
+          to: requirement:track-deadlines
+          why: Deadlines set by law need tracking, with warnings before they pass.
+    - id: shared-platform
+      prompt: Does the agency run a low-code or CRM platform that offices can build on?
+      kind: single-choice
+      options:
+        - supported: Yes, with a team that supports offices on it
+        - limited: Yes, but support for new offices is limited
+        - no: No
+        - unsure: Not sure
+      points:
+        - when: supported
+          to: implementationPattern:shared-case-platform
+          why: Building case management on the shared platform is worth weighing.
+        - when: limited
+          to: implementationPattern:shared-case-platform
+          why: A shared platform is possible, but support for it may be the constraint.

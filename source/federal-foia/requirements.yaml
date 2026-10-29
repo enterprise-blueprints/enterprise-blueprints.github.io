@@ -1,0 +1,109 @@
+# Requirements, in the order the pages show them, each with the links it holds.
+
+- id: accept-portal-requests
+  title: Accept requests from the national portal
+  description: Take in requests submitted through FOIA.gov alongside the agency’s own channels, without retyping them.
+  sources: [ foia-statute, foia-gov ]
+
+- id: place-on-track
+  title: Place each request on a processing track
+  description: Decide whether a request is simple, complex, or expedited, and decide on expedited processing within 10 calendar days of the request.
+  sources: [ foia-statute, doj-foia-guide ]
+
+- id: clarify-requests
+  title: Work with requesters to clarify requests
+  description: Contact requesters to clarify or narrow what they’re asking for, record what was agreed, and offer a faster track when narrowing would allow one.
+  sources: [ foia-statute, doj-foia-guide ]
+
+- id: set-fee-category
+  title: Set fees and decide fee waivers
+  description: Place each requester in a fee category, estimate fees, decide fee waiver requests, and charge no search fees when the agency misses a deadline without an allowed exception.
+  sources: [ foia-statute, doj-foia-guide ]
+
+- id: search-all-record-locations
+  title: Search every place records are kept
+  description: Search the systems, email, shared drives, and paper files likely to hold the records asked for, by terms, dates, and the people who hold them.
+  sources: [ doj-foia-guide ]
+
+- id: document-search
+  title: Document each search
+  description: Record where the agency searched, the terms and dates used, and who searched, so the search can be shown to be adequate.
+  sources: [ doj-foia-guide ]
+
+- id: deduplicate-records
+  title: Set duplicates aside before review
+  description: Find exact and near duplicates, such as copies of the same email thread, so each record is reviewed once.
+
+- id: mark-redactions
+  title: Mark each redaction with its exemption
+  description: Show on the released record where information was withheld, how much, and under which exemption, unless showing it would reveal what the exemption protects.
+  sources: [ foia-statute ]
+
+- id: release-segregable-parts
+  title: Release every segregable part
+  description: Release the parts of a record that can reasonably be separated from what’s exempt, instead of withholding whole pages.
+  sources: [ foia-statute ]
+
+- id: record-withholding-reasons
+  title: Record why each withholding is needed
+  description: Record the exemption and the foreseeable harm behind each withholding, so the decision can be explained on appeal or in court.
+  sources: [ foia-statute, doj-foia-guide ]
+
+- id: consult-other-agencies
+  title: Consult and refer other agencies
+  description: Send records another agency has an interest in for consultation or referral, follow them until they come back, and tell the requester when part of a request was referred.
+  sources: [ foia-statute, doj-foia-guide ]
+
+- id: protect-unredacted-records
+  title: Protect records before redaction
+  description: Limit who can see records before they’re redacted to the people processing the request, and keep a record of access.
+
+- id: complete-determination-letters
+  title: Send complete determination letters
+  description: Tell the requester what was found, released, and withheld and why. For an adverse determination, include the right to appeal within at least 90 days and to seek help from the FOIA Public Liaison and OGIS.
+  sources: [ foia-statute, doj-foia-guide ]
+
+- id: deliver-in-requested-format
+  title: Deliver records in the format asked for
+  description: Provide records in the form or format the requester asks for when they can readily be reproduced that way, such as electronic files.
+  sources: [ foia-statute ]
+
+- id: release-in-parts
+  title: Release large requests in parts
+  description: Release records as they’re ready, in interim releases, when a request is large enough that waiting for all of it would delay everything.
+  sources: [ doj-foia-guide ]
+
+- id: decide-appeals-on-time
+  title: Decide appeals within 20 working days
+  description: Log each administrative appeal, review the original determination independently, and decide it within 20 working days.
+  sources: [ foia-statute ]
+
+- id: answer-status-questions
+  title: Answer questions about where a request stands
+  description: Let requesters find out the status of a request, including an estimated date of completion, by phone or online, and reach a FOIA Public Liaison with concerns.
+  sources: [ foia-statute ]
+
+- id: work-with-ogis
+  title: Work with OGIS on mediation
+  description: Respond when OGIS contacts the agency about a dispute, and keep track of mediation cases and their results.
+  sources: [ foia-statute, ogis ]
+
+- id: spot-frequently-requested-records
+  title: Spot records requested 3 or more times
+  description: Notice when the same records have been requested 3 or more times, and post them once they’re released.
+  sources: [ foia-statute ]
+
+- id: keep-online-foia-library
+  title: Keep an online FOIA library
+  description: Post the records the law requires in an online library people can search, in accessible formats.
+  sources: [ foia-statute, doj-foia-guide ]
+
+- id: compile-annual-foia-report
+  title: Compile the annual FOIA report on time
+  description: Gather the statistics the law requires for the fiscal year, such as requests received and processed, how they were resolved, exemptions used, processing times, backlog, and fees, and submit them by February 1.
+  sources: [ foia-statute, oip-annual-report-handbook ]
+
+- id: post-reports-and-data
+  title: Post the reports and their raw data
+  description: Make each report and the raw statistics behind it available online.
+  sources: [ foia-statute ]

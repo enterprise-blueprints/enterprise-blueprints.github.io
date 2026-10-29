@@ -1,0 +1,45 @@
+# Measures, in the order the pages show them, each with the links it holds.
+
+- id: funds-put-to-better-use
+  title: Funds recommended for better use
+  description: The dollar value of recommendations that funds be put to better use, and how much of it management agreed to. Semiannual reports to Congress include these figures.
+  sources: [ ig-act-405 ]
+
+- id: questioned-costs
+  title: Questioned and unsupported costs
+  description: Costs that audit, inspection, and evaluation reports question, including unsupported costs, and how much of them management disallowed. Semiannual reports to Congress include these figures.
+  sources: [ ig-act-405 ]
+
+- id: investigative-results
+  title: Investigative results
+  description: Investigative reports issued, people referred to the Department of Justice and to state and local prosecutors, and the indictments and criminal informations that followed. Semiannual reports to Congress include these counts and how they were counted.
+  sources: [ ig-act-405 ]
+
+- id: semiannual-reports-on-time
+  title: Semiannual reports on time
+  description: Whether each semiannual report reaches the agency head by April 30 and October 31, for the six months ending March 31 and September 30.
+  sources: [ ig-act-405 ]
+
+- id: reports-posted-within-3-days
+  title: Reports posted within 3 days
+  description: The share of final audit, inspection, and evaluation reports posted on the office’s website within 3 days of being submitted in final form.
+  sources: [ ig-act-420 ]
+
+- id: open-recommendations
+  title: Open recommendations
+  description: Significant recommendations from earlier reports whose corrective action isn’t complete yet, with how long they’ve been open and any potential cost savings. Semiannual reports to Congress list them.
+  sources: [ ig-act-405 ]
+
+- id: reports-awaiting-decision
+  title: Reports awaiting a management decision
+  description: Reports from earlier periods with no management decision yet, with the reasons and a target date for one. Semiannual reports to Congress list them.
+  sources: [ ig-act-405 ]
+
+- id: time-to-route
+  title: Time to review and route a matter
+  description: How long it takes from when a complaint, allegation, or disclosure arrives until it’s reviewed and routed. The office sets its own target.
+
+- id: retaliation-found
+  title: Whistleblower retaliation found
+  description: Cases of whistleblower retaliation the office establishes, with the consequences imposed. Semiannual reports to Congress include them.
+  sources: [ ig-act-405 ]

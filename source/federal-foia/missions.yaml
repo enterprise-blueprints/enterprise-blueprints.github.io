@@ -1,0 +1,22 @@
+# Missions, in the order the pages show them, each with the links it holds.
+
+- id: public-access-to-agency-records
+  title: Public Access to Agency Records
+  description: "Give the public access to agency records: post what the law requires without waiting to be asked, answer requests promptly, and release everything the law allows, withholding only what an exemption protects and release would foreseeably harm."
+  sources: [ foia-statute, doj-foia-guide ]
+  attributes:
+    sector: public-sector
+    scope: US-federal-FOIA
+  seeks:
+    - to: requests-answered-on-time
+      id: foia-public-access-to-agency-records-seeks-requests-answered-on-time
+    - to: backlog-kept-small
+      id: foia-public-access-to-agency-records-seeks-backlog-kept-small
+    - to: records-released-as-allowed
+      id: foia-public-access-to-agency-records-seeks-records-released-as-allowed
+    - to: frequently-requested-posted
+      id: foia-public-access-to-agency-records-seeks-frequently-requested-posted
+    - to: requesters-helped
+      id: foia-public-access-to-agency-records-seeks-requesters-helped
+    - to: foia-performance-public
+      id: foia-public-access-to-agency-records-seeks-foia-performance-public

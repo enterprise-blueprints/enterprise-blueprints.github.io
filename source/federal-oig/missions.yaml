@@ -1,0 +1,20 @@
+# Missions, in the order the pages show them, each with the links it holds.
+
+- id: independent-government-oversight
+  title: Independent Oversight of Government Programs and Operations
+  description: Provide independent and objective oversight to prevent and detect fraud, waste, and abuse; promote economy, efficiency, and effectiveness; and communicate findings and recommendations concerning federal programs and operations.
+  sources: [ ig-act-404, oversight-mission, cigie-faq ]
+  attributes:
+    sector: public-sector
+    scope: US-federal-OIG
+  seeks:
+    - to: effective-programs
+      id: oig-mission-seeks-effective-programs
+    - to: fraud-waste-abuse-prevented
+      id: oig-mission-seeks-fraud-waste-abuse-prevented
+    - to: leaders-congress-informed
+      id: oig-mission-seeks-leaders-congress-informed
+    - to: problems-corrected
+      id: oig-mission-seeks-problems-corrected
+    - to: concerns-raised-safely
+      id: oig-mission-seeks-concerns-raised-safely

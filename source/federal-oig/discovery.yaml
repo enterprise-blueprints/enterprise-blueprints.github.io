@@ -1,0 +1,280 @@
+# Discovery question sets. Each group under "points" names the answers that point to
+# one or more elements, and why.
+
+- id: mission-results
+  title: Mission results discovery
+  description: Questions for the start of an engagement about which results matter most and how the office tells how it’s doing. They ask about the office’s operations, never about individual matters or the people involved. Some answers point to outcomes and measures worth exploring.
+  questions:
+    - id: priority-results
+      prompt: Which of these results matter most for this effort?
+      kind: multiple-choice
+      options:
+        - effective-programs: Programs and operations run economically, efficiently, and effectively
+        - fraud-waste-abuse-prevented: Fraud, waste, and abuse are prevented and detected
+        - leaders-congress-informed: Agency leaders and Congress are fully and currently informed
+        - problems-corrected: Problems that are found get corrected
+        - concerns-raised-safely: People can raise concerns safely
+      points:
+        - when: effective-programs
+          to: outcome:effective-programs
+          why: This effort is meant to advance this result.
+        - when: fraud-waste-abuse-prevented
+          to: outcome:fraud-waste-abuse-prevented
+          why: This effort is meant to advance this result.
+        - when: leaders-congress-informed
+          to: outcome:leaders-congress-informed
+          why: This effort is meant to advance this result.
+        - when: problems-corrected
+          to: outcome:problems-corrected
+          why: This effort is meant to advance this result.
+        - when: concerns-raised-safely
+          to: outcome:concerns-raised-safely
+          why: This effort is meant to advance this result.
+    - id: tracked-measures
+      prompt: Which of these does the office track today?
+      kind: multiple-choice
+      options:
+        - semiannual-statistics: The statistics in the semiannual report to Congress
+        - recommendation-status: Open recommendations and how long they’ve been open
+        - report-posting: How soon reports are posted publicly
+        - intake-times: How long new matters take to review and route
+        - none: None of these regularly
+      points:
+        - when: semiannual-statistics
+          to: measure:questioned-costs
+          why: The office tracks this already, so there may be a value for today.
+        - when: semiannual-statistics
+          to: measure:funds-put-to-better-use
+          why: The office tracks this already, so there may be a value for today.
+        - when: semiannual-statistics
+          to: measure:investigative-results
+          why: The office tracks this already, so there may be a value for today.
+        - when: recommendation-status
+          to: measure:open-recommendations
+          why: The office tracks this already, so there may be a value for today.
+        - when: recommendation-status
+          to: measure:reports-awaiting-decision
+          why: The office tracks this already, so there may be a value for today.
+        - when: report-posting
+          to: measure:reports-posted-within-3-days
+          why: The office tracks this already, so there may be a value for today.
+        - when: intake-times
+          to: measure:time-to-route
+          why: The office tracks this already, so there may be a value for today.
+    - id: measure-sources
+      prompt: Where do those figures come from today, and who puts them together?
+      kind: text
+
+- id: intake-and-case-handling
+  title: Intake and case handling discovery
+  description: Questions for the first conversations about how an office receives matters, works them, and reports on them. They ask about the office’s operations, never about individual matters or the people involved. Some answers point to capabilities or patterns worth exploring.
+  questions:
+    - id: intake-channels
+      prompt: Through which channels does the office receive complaints, allegations, and disclosures?
+      kind: multiple-choice
+      options:
+        - online-form: An online form
+        - hotline-phone: A hotline phone number
+        - email: Email
+        - mail: Postal mail
+        - in-person: In person
+        - referrals: Referrals from the agency, other offices, or Congress
+      points:
+        - when: [ online-form, hotline-phone, email, mail, in-person, referrals ]
+          to: capability:complaint-allegation-disclosure-intake
+          why: Matters reach the office this way, so intake is part of the picture.
+        - when: [ online-form, hotline-phone, email, mail, in-person, referrals ]
+          to: requirement:multi-channel-intake
+          why: Every channel the office offers needs to feed the same intake record.
+        - when: online-form
+          to: implementationPattern:confidential-hotline-intake
+          why: An online form is the front door of a confidential hotline.
+        - when: hotline-phone
+          to: implementationPattern:confidential-hotline-intake
+          why: A phone line can feed the same confidential intake as the form.
+    - id: intake-triage
+      prompt: After a matter arrives, how is it reviewed and routed?
+      kind: single-choice
+      options:
+        - staff-review: Staff review each one and route it by hand
+        - rules-assisted: Staff review with the help of defined criteria or tooling
+        - informal: It varies; there’s no consistent process
+        - unsure: Not sure
+      points:
+        - when: staff-review
+          to: capability:complaint-allegation-disclosure-intake
+          why: Review and routing are manual, which may be worth improving within intake.
+        - when: informal
+          to: capability:complaint-allegation-disclosure-intake
+          why: Review and routing vary, which suggests a gap within intake.
+        - when: informal
+          to: implementationPattern:oversight-intake-case-tracking
+          why: A consistent intake and assignment flow is part of the case tracking pattern.
+        - when: staff-review
+          to: requirement:triage-and-route
+          why: Routing by hand works best with recorded decisions and reasons.
+        - when: informal
+          to: requirement:triage-and-route
+          why: Review and routing vary, so a consistent way to triage is worth defining.
+    - id: case-tracking
+      prompt: Where is the status of investigative work tracked today?
+      kind: single-choice
+      options:
+        - case-system: A dedicated case management system
+        - shared-system: A system shared with the wider agency
+        - documents: Spreadsheets, documents, or email
+        - several: Several of these, depending on the team
+      points:
+        - when: case-system
+          to: capability:investigation-management
+          why: Investigative work is tracked in a dedicated system.
+        - when: shared-system
+          to: capability:investigation-management
+          why: Investigative work is tracked in a shared system, which may raise access questions.
+        - when: documents
+          to: capability:investigation-management
+          why: Investigative work is tracked in documents, which may be a gap in investigation management.
+        - when: documents
+          to: implementationPattern:oversight-intake-case-tracking
+          why: Tracking in documents suggests the case tracking pattern is worth exploring.
+        - when: several
+          to: capability:investigation-management
+          why: Investigative work is tracked in several places, which may make status hard to see.
+        - when: several
+          to: implementationPattern:oversight-intake-case-tracking
+          why: Tracking in several places suggests the case tracking pattern is worth exploring.
+        - when: documents
+          to: requirement:track-case-status
+          why: Status kept in documents is hard to see in one place.
+        - when: several
+          to: requirement:track-case-status
+          why: Status kept in several places is hard to see in one place.
+        - when: documents
+          to: capability:case-management
+          why: Work tracked in documents may be a gap in case management.
+        - when: several
+          to: capability:case-management
+          why: Work tracked in several places may make status hard to see.
+        - when: shared-system
+          to: implementationPattern:shared-case-platform
+          why: A shared platform can work if the office controls administration and access.
+        - when: documents
+          to: implementationPattern:shared-case-platform
+          why: Building on the agency’s platform is another way out of documents.
+    - id: evidence-linkage
+      prompt: Do investigators need to keep evidence and records linked to the work they belong to?
+      kind: boolean
+      points:
+        - when: "true"
+          to: capability:investigation-management
+          why: Evidence management is part of investigation management.
+        - when: "true"
+          to: implementationPattern:oversight-intake-case-tracking
+          why: Evidence linkage and audit trails are part of the case tracking pattern.
+        - when: "true"
+          to: requirement:link-evidence
+          why: Evidence needs to stay linked to its case.
+    - id: identity-protection
+      prompt: Must the identity of people who report be kept from staff who don’t need to know it?
+      kind: boolean
+      points:
+        - when: "true"
+          to: capability:complaint-allegation-disclosure-intake
+          why: Protecting the identity of people who report shapes how intake works.
+        - when: "true"
+          to: implementationPattern:oversight-intake-case-tracking
+          why: Appropriate access controls are part of the case tracking pattern.
+        - when: "true"
+          to: requirement:protect-reporter-identity
+          why: This is a requirement on intake.
+        - when: "true"
+          to: requirement:restrict-case-access
+          why: Case access needs to protect the identity of people who report.
+        - when: "true"
+          to: capability:identity-access-management
+          why: Keeping identities from staff who don’t need them depends on access by role and need.
+        - when: "true"
+          to: capability:data-protection-privacy
+          why: Reporters’ identities are sensitive personal information.
+        - when: "true"
+          to: implementationPattern:confidential-hotline-intake
+          why: A confidential hotline keeps reporters’ identities apart by design.
+    - id: audit-work
+      prompt: Does the office plan and carry out audits, inspections, or evaluations?
+      kind: boolean
+      points:
+        - when: "true"
+          to: capability:audit-inspection-evaluation
+          why: The office does audit, inspection, or evaluation work.
+        - when: "true"
+          to: requirement:plan-oversight-work
+          why: Audit, inspection, and evaluation work needs a plan.
+        - when: "true"
+          to: implementationPattern:audit-management-system
+          why: Audit management with electronic work papers is worth exploring.
+    - id: recommendation-tracking
+      prompt: How does the office follow recommendations until they’re closed?
+      kind: single-choice
+      options:
+        - system: In a system built for it
+        - documents: In spreadsheets or documents
+        - inconsistent: Not consistently
+        - not-applicable: The office doesn’t issue recommendations
+      points:
+        - when: system
+          to: capability:recommendations-corrective-action-monitoring
+          why: Recommendations are tracked in a system.
+        - when: documents
+          to: capability:recommendations-corrective-action-monitoring
+          why: Recommendations are tracked in documents, which may make follow-up hard to see.
+        - when: inconsistent
+          to: capability:recommendations-corrective-action-monitoring
+          why: Recommendations aren’t followed consistently, which suggests a gap in monitoring.
+        - when: documents
+          to: requirement:track-recommendations
+          why: Recommendations tracked in documents are hard to follow to closure.
+        - when: inconsistent
+          to: requirement:track-recommendations
+          why: Recommendations aren’t followed consistently, so tracking them to closure is a need.
+        - when: documents
+          to: implementationPattern:shared-recommendation-tracker
+          why: A shared tracker replaces documents traded with the agency.
+        - when: inconsistent
+          to: implementationPattern:shared-recommendation-tracker
+          why: A shared tracker gives follow-up a single place.
+    - id: reporting
+      prompt: Which reports and communications does the office produce?
+      kind: multiple-choice
+      options:
+        - semiannual: Semiannual reports to Congress
+        - work-reports: Audit, inspection, and evaluation reports
+        - investigative-summaries: Summaries of investigative results
+        - public-updates: Public website updates
+      points:
+        - when: semiannual
+          to: capability:oversight-reporting-communication
+          why: The office reports to Congress.
+        - when: work-reports
+          to: capability:oversight-reporting-communication
+          why: The office publishes reports on its work.
+        - when: investigative-summaries
+          to: capability:oversight-reporting-communication
+          why: The office communicates investigative results.
+        - when: public-updates
+          to: capability:oversight-reporting-communication
+          why: The office communicates with the public.
+        - when: semiannual
+          to: requirement:periodic-reporting
+          why: Reports to Congress draw on the period’s results.
+        - when: public-updates
+          to: requirement:publish-reports
+          why: The office publishes to the public.
+        - when: semiannual
+          to: implementationPattern:oversight-reporting-from-source-data
+          why: Reporting from source data cuts the gathering before each semiannual report.
+    - id: monthly-volume
+      prompt: About how many new matters does the office receive in a typical month?
+      kind: number
+    - id: hardest-part
+      prompt: What’s the hardest part of taking a matter from intake to closure today?
+      kind: text

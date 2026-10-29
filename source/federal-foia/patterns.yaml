@@ -1,0 +1,125 @@
+# Implementation patterns, in the order the pages show them, each with the links it holds.
+
+- id: foia-request-processing
+  title: FOIA Request Processing
+  description: "An example architecture: a FOIA product that handles a request from start to finish. It takes requests from the national portal and the agency’s own form, tracks them on FOIA’s tracks and deadlines, collects records and sets duplicates aside, applies marked redactions, publishes releases to the FOIA library, and produces the annual report from the same data."
+  sources: [ foia-gov, doj-foia-guide ]
+  attributes:
+    approach: product
+    role: business-applications
+    parts:
+      - Request intake from the national portal and the agency’s own form
+      - Request tracking with FOIA’s tracks, working-day deadlines, fee categories, and correspondence
+      - A review workspace that collects records, sets duplicates aside, and applies redactions marked with their exemptions
+      - Release packages and determination letters from templates
+      - Publishing to the online FOIA library
+      - Annual and quarterly report figures from the request data
+    strengths:
+      - Knows FOIA’s rules, such as tracks, working-day deadlines, fee categories, and exemption codes
+      - The annual report’s figures come from the same records staff work in
+      - The requester’s whole history is in one place
+    fitsWhen:
+      - The office handles hundreds of requests a year or more
+      - Tracking and review happen in separate tools today, with retyping between them
+    watchFor:
+      - Built-in review may struggle with very large email collections
+      - Moving open requests from an old system mid-year can disturb the annual report’s counts
+      - A hosted product needs a security authorization before it can hold unredacted records
+
+- id: foia-tracking-with-review-tool
+  title: Request Tracking with a Separate Review Tool
+  description: "An example architecture: requests tracked on the agency’s shared case platform, set up for FOIA’s tracks and deadlines, with a separate document review tool for collecting, deduplicating, and redacting records, and a handoff between the two."
+  sources: [ doj-foia-guide, foia-statute ]
+  attributes:
+    approach: combine
+    role: business-applications
+    parts:
+      - FOIA request tracking set up on the agency’s shared case platform
+      - A deadline calculator for working days, extensions, and pauses for clarification or fees
+      - A document review and redaction tool that marks exemptions
+      - A link from each request to its set of records in review, and the release package back
+      - Annual report figures from the tracking data
+    strengths:
+      - Uses a platform the agency already has for the tracking
+      - Either tool can be replaced without replacing the other
+      - Suits offices that already own a review tool
+    fitsWhen:
+      - The agency’s shared case platform is well supported
+      - Request volume is moderate, and records are mostly documents rather than large email collections
+    watchFor:
+      - The handoff between the tools is where requests stall or records go missing
+      - Deadline rules, such as pausing the clock, must be built and kept up to date
+      - Two tools to authorize, secure, and train people on
+
+- id: ediscovery-search-review
+  title: Email Search with eDiscovery Tools
+  description: "An example architecture: the agency’s eDiscovery tools search mailboxes and other collections by people, terms, and dates, set aside duplicates and thread email conversations, and send what’s found to review, with each search recorded."
+  sources: [ ogis-search-technology, doj-foia-guide ]
+  attributes:
+    approach: platform
+    role: processing
+    parts:
+      - Searches across mailboxes, chats, and shared files by person, terms, and date range
+      - Deduplication and email threading before review
+      - A record of each search’s terms, sources, and results
+      - Export of the results to the review tool, or review in place
+      - Coordination with the IT staff who run the searches
+    strengths:
+      - Handles large email collections far better than typical FOIA software
+      - The search record helps show that the search was adequate
+      - Reviewers see each conversation once
+    fitsWhen:
+      - Many requests ask for email
+      - The agency already licenses eDiscovery tools for litigation or investigations
+    watchFor:
+      - Searches can wait in IT’s queue for a long time
+      - For a single known record, asking the person who keeps it is faster
+      - Threading and deduplication need checking, since copies still slip through
+
+- id: national-portal-api
+  title: Requests from the National Portal by API
+  description: "An example architecture: the agency’s FOIA system receives requests submitted on FOIA.gov through the portal’s agency API, so each one arrives as a request record with its fields filled in, instead of as an email to retype."
+  sources: [ foia-gov-developer, foia-statute, foia-gov ]
+  attributes:
+    approach: build
+    role: public-facing
+    parts:
+      - A connection in the agency’s FOIA system that implements the portal’s agency API
+      - A mapping from the portal’s fields to the agency’s request record
+      - An acknowledgment with the tracking number sent back to the requester
+      - Monitoring for requests that fail to arrive
+      - The agency’s FOIA.gov contact and component details kept current
+    strengths:
+      - No retyping, so fewer errors and faster logging
+      - Requests reach the right component directly
+      - One intake path for portal requests and the agency’s own form
+    fitsWhen:
+      - The agency has an automated FOIA case system
+      - Portal requests arrive by email today
+    watchFor:
+      - Changes to the portal’s API need following
+      - Each component’s routing must match how FOIA.gov lists it
+
+- id: foia-library-publishing
+  title: FOIA Library Publishing
+  description: "An example architecture: released records go from the review tool to the agency’s online FOIA library with a title, date, and request number, in accessible formats, and records requested 3 or more times are flagged for posting."
+  sources: [ foia-statute, doj-foia-guide, section-508 ]
+  attributes:
+    approach: platform
+    role: public-facing
+    parts:
+      - A FOIA library section of the agency’s website, with search
+      - A publishing step from the review tool that carries each release’s details
+      - A check that released files are accessible, such as text-searchable PDFs
+      - A list of records requested 3 or more times, from the tracking data
+      - A hold on records released to people about themselves, which aren’t for public posting
+    strengths:
+      - Posting becomes part of closing a request
+      - Repeat requests can be answered with a link
+    fitsWhen:
+      - Releases are posted by hand, if at all
+      - Several requesters ask for the same records
+    watchFor:
+      - Records released to people about themselves must never be posted
+      - Making older scanned records accessible takes effort
+      - Posted records still follow a records schedule

@@ -1,0 +1,102 @@
+# Implementation patterns, in the order the pages show them, each with the links it holds.
+
+- id: shared-case-platform
+  title: Case Management on a Shared Platform
+  description: "An example architecture: case management built on a low-code or CRM platform the agency already runs, with each office getting its own case types, forms, queues, and permissions on the shared foundation."
+  sources: [ nist-sp-800-53 ]
+  attributes:
+    approach: platform
+    role: business-applications
+    parts:
+      - A case record with status, assignment, due dates, and linked documents, set up for each case type
+      - Intake forms and an email channel that create cases
+      - Work queues and dashboards for each team
+      - Permissions by role that keep one office’s cases apart from another’s
+      - Reports and exports from the same case data
+      - Sign-in through the agency’s identity service, with activity logs sent to agency monitoring
+    strengths:
+      - Uses licenses, skills, and security approvals the agency already has
+      - Offices share one way of tracking work, so reporting across them is easier
+      - New fields and steps can often be added by configuration instead of code
+    fitsWhen:
+      - The agency already runs a platform like this, with people who configure it
+      - The office’s cases are fairly standard, without specialized tools such as redaction or evidence handling
+      - Several offices need similar tracking
+    watchFor:
+      - Platform administrators can often see every office’s data unless permissions and administration are set up to prevent it
+      - Specialized rules, such as deadlines counted in working days, may need custom work that’s costly to keep up
+      - Upgrades and licensing are decided for the whole agency, not for the office
+
+- id: agency-sign-on
+  title: Agency Sign-On with Phishing-Resistant Authentication
+  description: "An example architecture: every system signs staff in through the agency’s identity provider, with phishing-resistant authenticators such as PIV cards or FIDO2 security keys, and grants access through role groups that are reviewed on a schedule."
+  sources: [ nist-sp-800-63-4, nist-sp-800-53 ]
+  attributes:
+    approach: platform
+    role: infrastructure
+    parts:
+      - The agency’s identity provider, with single sign-on to each system
+      - Phishing-resistant authenticators for staff, such as PIV cards or FIDO2 security keys
+      - Role groups that grant access, each owned by the office that owns the system
+      - Steps for people who join, change roles, or leave, tied to personnel actions
+      - Access reviews on a schedule, signed off by system owners
+      - Sign-in and access events sent to security logging
+    strengths:
+      - One strong sign-in for every system instead of a password for each
+      - Removing a person’s access in one place removes it everywhere
+      - Access reviews work from the same groups that grant access
+    fitsWhen:
+      - The agency’s identity provider can connect to the office’s systems
+      - Staff already carry PIV cards or can be issued security keys
+    watchFor:
+      - Systems that can’t use single sign-on keep their own accounts, which need their own reviews
+      - Each role group needs an owner in the office, or access drifts
+      - Members of the public, such as requesters or people who report, need a different way to sign in, or none
+
+- id: records-aware-collaboration
+  title: Collaboration Workspace with Records and Sensitivity Labels
+  description: "An example architecture: the agency’s office suite and collaboration workspace, for documents, chat, and meetings, with retention labels that keep work on approved records schedules and sensitivity labels that limit who can open, share, or copy sensitive information."
+  sources: [ records-44-usc-3101, nara-grs, nist-sp-800-53 ]
+  attributes:
+    approach: platform
+    role: worker-productivity
+    parts:
+      - Shared documents, chat, and meetings for each team, signed in through the agency
+      - Retention labels that apply an approved records schedule to files and messages
+      - Sensitivity labels that limit opening, sharing, and copying, and protect files that leave the agency
+      - Rules that warn or block when personal or sensitive information is shared outside the team
+      - Search across files and messages for records requests and legal holds
+    strengths:
+      - Records and protection go wherever staff already work, instead of in a separate system
+      - Messages and drafts that are records are kept on schedule, not left to each person
+      - The same labels serve records requests, legal holds, and investigations
+    fitsWhen:
+      - Much of the office’s work happens in documents, email, and chat outside its business applications
+      - Records schedules and sensitivity rules are hard to apply by hand
+    watchFor:
+      - Labels only help if they’re applied, so defaults and automatic labeling matter
+      - Chat and meeting recordings can be records too, which surprises people
+      - Work kept here and in a business application needs one answer to which copy is the record
+
+- id: letters-from-case-data
+  title: Letters and Notices from Case Data
+  description: "An example architecture: letters, notices, and report sections drafted from approved templates filled in with a case’s data, reviewed and signed by staff, then saved back to the case file."
+  sources: [ records-44-usc-3101 ]
+  attributes:
+    approach: platform
+    role: worker-productivity
+    parts:
+      - A library of approved templates, each with an owner
+      - Fields filled in from the case, such as names, dates, and decisions
+      - Review and signature by the responsible person before anything goes out
+      - The sent version saved to the case file, with when and how it was sent
+    strengths:
+      - Required wording, such as appeal rights, is in every letter
+      - Less retyping of what the case already knows
+      - Every letter sent is on the record with its case
+    fitsWhen:
+      - Staff send many similar letters or notices
+      - Letters are written from scratch or copied from old ones today
+    watchFor:
+      - Templates need an owner to keep them current when the law or policy changes
+      - A filled-in letter still needs a person to read it before it goes out

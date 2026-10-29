@@ -1,0 +1,31 @@
+# Outcomes, in the order the pages show them, each with the links it holds.
+
+- id: effective-programs
+  title: Programs and operations run economically, efficiently, and effectively
+  description: Agency programs and operations make good use of public money and do what they’re meant to do, helped by the office’s audits, inspections, evaluations, and recommendations.
+  sources: [ ig-act-402 ]
+  measured_by: [ funds-put-to-better-use ]
+
+- id: fraud-waste-abuse-prevented
+  title: Fraud, waste, and abuse are prevented and detected
+  description: Wrongdoing in agency programs and operations is deterred, found, and acted on, through audits, investigations, and referrals for prosecution where warranted.
+  sources: [ ig-act-402, ig-act-405 ]
+  measured_by: [ questioned-costs, investigative-results ]
+
+- id: leaders-congress-informed
+  title: Agency leaders and Congress are fully and currently informed
+  description: The head of the agency and Congress learn about serious problems and deficiencies promptly, with what’s being done to correct them, and the public can read the office’s reports.
+  sources: [ ig-act-402, ig-act-405, ig-act-420 ]
+  measured_by: [ semiannual-reports-on-time, reports-posted-within-3-days ]
+
+- id: problems-corrected
+  title: Problems that are found get corrected
+  description: Recommendations get a management decision, and agreed corrective actions are carried out and tracked until they’re complete.
+  sources: [ ig-act-402, ig-act-405 ]
+  measured_by: [ open-recommendations, reports-awaiting-decision ]
+
+- id: concerns-raised-safely
+  title: People can raise concerns safely
+  description: Employees and the public can report possible wrongdoing through clear channels, with their identities kept confidential and protection from reprisal.
+  sources: [ ig-act-407, ig-act-420, oversight-hotline ]
+  measured_by: [ time-to-route, retaliation-found ]

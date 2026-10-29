@@ -1,0 +1,97 @@
+# Capabilities, in the order the pages show them, each with the links it holds.
+
+- id: foia-request-intake
+  title: Request Intake
+  description: Ability to receive FOIA requests through the national portal and the agency’s own channels, log and acknowledge each one, work with requesters to make requests clear, and decide each request’s processing track, fee category, and whether it qualifies for expedited processing.
+  sources: [ foia-statute, doj-foia-guide, foia-gov ]
+  applicabilityNotes: Each agency’s FOIA regulations set what makes a request proper, how its tracks and fee categories work, and who decides on expedited processing. Requests for records about the requester may also fall under the Privacy Act.
+  contributes_to: [ requests-answered-on-time, requesters-helped ]
+  satisfies:
+    - accept-portal-requests
+    - place-on-track
+    - clarify-requests
+    - set-fee-category
+    - multi-channel-intake
+    - acknowledge-receipt
+  candidate_pattern:
+    - foia-request-processing
+    - foia-tracking-with-review-tool
+    - national-portal-api
+    - to: shared-case-platform
+      note: Set up for FOIA’s tracks, working-day deadlines, and fee categories.
+
+- id: records-search-collection
+  title: Records Search & Collection
+  description: Ability to find the records a request covers wherever the agency keeps them, including email and other electronic systems, collect them for review, and document how the search was done.
+  sources: [ doj-foia-guide ]
+  applicabilityNotes: A search needs to be reasonably calculated to find the records asked for. What that takes depends on how and where the agency keeps its records.
+  contributes_to: [ requests-answered-on-time, records-released-as-allowed ]
+  satisfies: [ search-all-record-locations, document-search, deduplicate-records ]
+  candidate_pattern: [ foia-request-processing, ediscovery-search-review ]
+
+- id: records-review-redaction
+  title: Review, Redaction & Consultation
+  description: Ability to review the records found line by line, decide what can be released under the foreseeable harm standard, redact only what an exemption protects, and consult or refer other agencies with an interest in the records.
+  sources: [ foia-statute, doj-foia-guide ]
+  applicabilityNotes: Exemptions, exclusions, and consultation practices are technical. This describes the ability, not how to apply any exemption.
+  contributes_to: [ records-released-as-allowed, requests-answered-on-time ]
+  satisfies:
+    - mark-redactions
+    - release-segregable-parts
+    - record-withholding-reasons
+    - consult-other-agencies
+    - protect-unredacted-records
+  candidate_pattern:
+    - foia-request-processing
+    - foia-tracking-with-review-tool
+    - ediscovery-search-review
+
+- id: response-release
+  title: Response & Release
+  description: Ability to send each requester a determination that explains what was released and withheld and why, with their appeal rights and where to get help, and to deliver released records in the form asked for.
+  sources: [ foia-statute, doj-foia-guide ]
+  contributes_to: [ records-released-as-allowed, requests-answered-on-time ]
+  satisfies:
+    - complete-determination-letters
+    - deliver-in-requested-format
+    - release-in-parts
+  candidate_pattern:
+    - foia-request-processing
+    - foia-tracking-with-review-tool
+    - to: letters-from-case-data
+      note: Determination letters with the exemptions used and the requester’s appeal rights filled in.
+
+- id: appeals-requester-assistance
+  title: Appeals & Requester Assistance
+  description: Ability to help requesters through a FOIA Public Liaison, decide administrative appeals of adverse determinations, and work with OGIS when a requester seeks mediation.
+  sources: [ foia-statute, ogis ]
+  applicabilityNotes: Who decides appeals, and how the FOIA Public Liaison works with requesters, is set by each agency.
+  contributes_to: [ requesters-helped ]
+  satisfies:
+    - decide-appeals-on-time
+    - answer-status-questions
+    - work-with-ogis
+    - track-deadlines
+  candidate_pattern:
+    - to: shared-case-platform
+      note: Appeals tracked as their own case type, against the 20 working days the law allows.
+    - foia-request-processing
+
+- id: proactive-disclosure
+  title: Proactive Disclosure
+  description: Ability to publish the records the law requires agencies to make available without a request, such as final opinions, policy statements, staff manuals, and records released 3 or more times, in an online FOIA library people can search.
+  sources: [ foia-statute, doj-foia-guide, oip-chief-foia-officer-guidelines ]
+  contributes_to: [ frequently-requested-posted, backlog-kept-small ]
+  satisfies: [ spot-frequently-requested-records, keep-online-foia-library ]
+  candidate_pattern: [ foia-library-publishing, foia-request-processing ]
+
+- id: foia-reporting
+  title: FOIA Reporting
+  description: Ability to compile the annual FOIA report, quarterly reports, and the Chief FOIA Officer report from the agency’s request data, and post them and their raw data online.
+  sources:
+    - foia-statute
+    - oip-annual-report-handbook
+    - oip-chief-foia-officer-guidelines
+  contributes_to: [ foia-performance-public ]
+  satisfies: [ compile-annual-foia-report, post-reports-and-data, report-on-caseload ]
+  candidate_pattern: [ foia-request-processing, foia-tracking-with-review-tool ]

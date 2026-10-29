@@ -1,0 +1,264 @@
+# Discovery question sets. Each group under "points" names the answers that point to
+# one or more elements, and why.
+
+- id: foia-results
+  title: FOIA results discovery
+  description: Questions for the start of an engagement about which results matter most for the FOIA program and how the office tells how it’s doing. They ask about the program’s operations, never about individual requests or requesters. Some answers point to outcomes and measures worth exploring.
+  questions:
+    - id: foia-priority-results
+      prompt: Which of these results matter most for this effort?
+      kind: multiple-choice
+      options:
+        - requests-answered-on-time: Requests are answered within the time the law allows
+        - backlog-kept-small: Overdue requests don’t pile up
+        - records-released-as-allowed: Records are released unless the law calls for withholding
+        - frequently-requested-posted: Records people often ask for are posted without a request
+        - requesters-helped: Requesters can get help and resolve disputes
+        - foia-performance-public: The program’s performance is open to view
+      points:
+        - when: requests-answered-on-time
+          to: outcome:requests-answered-on-time
+          why: This effort is meant to advance this result.
+        - when: backlog-kept-small
+          to: outcome:backlog-kept-small
+          why: This effort is meant to advance this result.
+        - when: records-released-as-allowed
+          to: outcome:records-released-as-allowed
+          why: This effort is meant to advance this result.
+        - when: frequently-requested-posted
+          to: outcome:frequently-requested-posted
+          why: This effort is meant to advance this result.
+        - when: requesters-helped
+          to: outcome:requesters-helped
+          why: This effort is meant to advance this result.
+        - when: foia-performance-public
+          to: outcome:foia-performance-public
+          why: This effort is meant to advance this result.
+    - id: foia-tracked-measures
+      prompt: Which of these does the office track during the year, not just for the annual report?
+      kind: multiple-choice
+      options:
+        - processing-times: How long requests take to process
+        - backlog: How many requests are past their deadline
+        - dispositions: How requests are resolved and which exemptions are used
+        - appeals: How long appeals take
+        - none: None of these regularly
+      points:
+        - when: processing-times
+          to: measure:request-processing-time
+          why: The office tracks this already, so there may be a value for today.
+        - when: processing-times
+          to: measure:requests-within-20-days
+          why: The office tracks this already, so there may be a value for today.
+        - when: backlog
+          to: measure:backlogged-requests
+          why: The office tracks this already, so there may be a value for today.
+        - when: backlog
+          to: measure:oldest-pending-requests
+          why: The office tracks this already, so there may be a value for today.
+        - when: dispositions
+          to: measure:request-dispositions
+          why: The office tracks this already, so there may be a value for today.
+        - when: appeals
+          to: measure:appeal-processing-time
+          why: The office tracks this already, so there may be a value for today.
+    - id: foia-measure-sources
+      prompt: Where do those figures come from today, and who puts them together?
+      kind: text
+
+- id: request-processing
+  title: Request processing discovery
+  description: Questions for the first conversations about how an office receives FOIA requests, finds and reviews records, and responds. They ask about the office’s operations, never about individual requests or requesters. Some answers point to capabilities or patterns worth exploring.
+  questions:
+    - id: request-channels
+      prompt: Through which channels does the office receive FOIA requests?
+      kind: multiple-choice
+      options:
+        - portal: The national portal on FOIA.gov
+        - own-form: The agency’s own online form
+        - email: Email
+        - mail: Postal mail or fax
+      points:
+        - when: [ portal, own-form, email, mail ]
+          to: capability:foia-request-intake
+          why: Requests reach the office this way, so intake is part of the picture.
+        - when: [ portal, own-form, email, mail ]
+          to: requirement:multi-channel-intake
+          why: Every channel needs to feed the same request record.
+        - when: portal
+          to: requirement:accept-portal-requests
+          why: Portal requests should arrive without being retyped.
+        - when: portal
+          to: implementationPattern:national-portal-api
+          why: Receiving portal requests by API ends the retyping.
+    - id: request-tracking
+      prompt: Where is the status of each request tracked today?
+      kind: single-choice
+      options:
+        - foia-system: A system built for FOIA requests
+        - general-system: A general case or ticket system
+        - documents: Spreadsheets, documents, or email
+        - several: Several of these, depending on the team
+      points:
+        - when: foia-system
+          to: capability:case-management
+          why: Requests are tracked in a system already.
+        - when: general-system
+          to: capability:case-management
+          why: Requests are tracked in a general system, which may not know FOIA deadlines and tracks.
+        - when: general-system
+          to: requirement:track-deadlines
+          why: A general system may not count working days or extensions.
+        - when: documents
+          to: capability:case-management
+          why: Requests tracked in documents may be a gap in case management.
+        - when: documents
+          to: requirement:track-case-status
+          why: Status kept in documents is hard to see in one place.
+        - when: documents
+          to: implementationPattern:foia-request-processing
+          why: Tracking in documents suggests the request processing pattern is worth exploring.
+        - when: several
+          to: capability:case-management
+          why: Requests tracked in several places may make status hard to see.
+        - when: several
+          to: requirement:track-case-status
+          why: Status kept in several places is hard to see in one place.
+        - when: general-system
+          to: implementationPattern:foia-tracking-with-review-tool
+          why: A general system can track requests if FOIA’s deadlines are built in and review happens in a separate tool.
+    - id: records-search
+      prompt: How does the office find the records a request covers?
+      kind: single-choice
+      options:
+        - central-search: FOIA staff search across systems with search tools
+        - ask-offices: Program offices search their own records and send them in
+        - mixed: A mix of both
+        - unsure: Not sure
+      points:
+        - when: central-search
+          to: capability:records-search-collection
+          why: Searches run centrally; it’s worth knowing which systems they reach.
+        - when: ask-offices
+          to: capability:records-search-collection
+          why: Searches depend on program offices, which can slow them and make them uneven.
+        - when: ask-offices
+          to: requirement:document-search
+          why: Searches spread across offices are hard to document consistently.
+        - when: mixed
+          to: capability:records-search-collection
+          why: Searches run several ways, which may make them uneven.
+        - when: mixed
+          to: requirement:document-search
+          why: Searches run several ways are hard to document consistently.
+        - when: unsure
+          to: capability:records-search-collection
+          why: Worth finding out how searches are done.
+        - when: ask-offices
+          to: implementationPattern:ediscovery-search-review
+          why: Central email searches with eDiscovery tools may be faster and more even.
+        - when: mixed
+          to: implementationPattern:ediscovery-search-review
+          why: eDiscovery tools could make email searches more even.
+    - id: redaction-method
+      prompt: How are redactions applied today?
+      kind: single-choice
+      options:
+        - review-tool: In a review tool that marks each exemption
+        - pdf-editor: In a general PDF editor
+        - paper: On paper, then scanned
+        - mixed: It depends on the request
+      points:
+        - when: review-tool
+          to: capability:records-review-redaction
+          why: Review happens in a dedicated tool.
+        - when: pdf-editor
+          to: capability:records-review-redaction
+          why: Redacting in a general editor may slow review and miss markings.
+        - when: pdf-editor
+          to: requirement:mark-redactions
+          why: A general editor may not mark the exemption on each redaction.
+        - when: pdf-editor
+          to: implementationPattern:foia-request-processing
+          why: A review workspace with marked redactions is part of the request processing pattern.
+        - when: paper
+          to: capability:records-review-redaction
+          why: Paper review is slow and hard to repeat on appeal.
+        - when: paper
+          to: requirement:mark-redactions
+          why: Exemption markings on paper are easy to miss.
+        - when: paper
+          to: implementationPattern:foia-request-processing
+          why: A review workspace with marked redactions is part of the request processing pattern.
+        - when: mixed
+          to: capability:records-review-redaction
+          why: Review varies by request, which may make it uneven.
+    - id: consultations
+      prompt: Do requests often involve records another agency has an interest in?
+      kind: boolean
+      points:
+        - when: "true"
+          to: requirement:consult-other-agencies
+          why: Consultations and referrals need following until they come back.
+        - when: "true"
+          to: capability:records-review-redaction
+          why: Consultation is part of review.
+    - id: frequently-requested
+      prompt: Does the office post records once they’ve been requested 3 or more times?
+      kind: single-choice
+      options:
+        - yes: Yes, as a routine step
+        - sometimes: Sometimes
+        - no: No
+        - unsure: Not sure
+      points:
+        - when: sometimes
+          to: capability:proactive-disclosure
+          why: Posting isn’t routine yet.
+        - when: sometimes
+          to: requirement:spot-frequently-requested-records
+          why: Spotting repeat requests may depend on someone remembering.
+        - when: no
+          to: capability:proactive-disclosure
+          why: Records the law requires to be posted may not be.
+        - when: no
+          to: requirement:spot-frequently-requested-records
+          why: Repeat requests aren’t being spotted yet.
+        - when: unsure
+          to: capability:proactive-disclosure
+          why: Worth finding out who posts records and when.
+        - when: [ sometimes, no ]
+          to: implementationPattern:foia-library-publishing
+          why: Publishing from the review tool makes posting routine.
+    - id: annual-report-preparation
+      prompt: How is the annual FOIA report put together?
+      kind: single-choice
+      options:
+        - from-system: Mostly from the tracking system’s data
+        - by-hand: Mostly by hand, from several sources
+        - mixed: Partly each way
+      points:
+        - when: from-system
+          to: capability:foia-reporting
+          why: Reporting draws on the system already.
+        - when: by-hand
+          to: capability:foia-reporting
+          why: Compiling the report by hand takes time and invites errors.
+        - when: by-hand
+          to: requirement:report-on-caseload
+          why: Counts by status and age need to come straight from the request data.
+        - when: by-hand
+          to: implementationPattern:foia-request-processing
+          why: Reports drawn from the request data are part of the request processing pattern.
+        - when: mixed
+          to: capability:foia-reporting
+          why: Part of the report is compiled by hand.
+        - when: mixed
+          to: requirement:report-on-caseload
+          why: Some counts don’t come straight from the request data yet.
+    - id: yearly-requests
+      prompt: About how many FOIA requests does the office receive in a year?
+      kind: number
+    - id: slowest-step
+      prompt: Which step of handling a request takes the longest today, and why?
+      kind: text

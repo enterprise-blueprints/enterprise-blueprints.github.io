@@ -1,0 +1,15 @@
+# The package itself. Its version and date are set when it is built (pnpm content:build).
+
+schemaVersion: 0.2.0
+packageId: org.enterprise-blueprints.solutions
+title: Example Solutions — Patterns Combined Across an Agency
+description: "Example solutions that combine implementation patterns from the mission packages and Common Capabilities to support an agency with an Office of Inspector General and a FOIA program: one built on the agency’s shared platform, one with purpose-built systems for each office, and one in between."
+publisher:
+  name: Enterprise Blueprints (independent reference project)
+  url: https://enterprise-blueprints.github.io
+license: MIT
+domain: public-sector
+jurisdictions:
+  - United States — federal agencies
+tags: [ solutions, implementation-patterns, reference-architecture ]
+dependencies: [ common, federal-oig, federal-foia ]

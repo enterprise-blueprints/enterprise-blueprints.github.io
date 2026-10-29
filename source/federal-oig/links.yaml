@@ -1,0 +1,14 @@
+# Links from elements of the packages this one builds on, such as a shared capability
+# that satisfies one of this package's requirements.
+
+- from: capability:identity-access-management
+  contributes_to: [ concerns-raised-safely ]
+  satisfies: [ restrict-case-access ]
+
+- from: capability:data-protection-privacy
+  contributes_to: [ concerns-raised-safely ]
+  satisfies: [ protect-reporter-identity ]
+
+- from: capability:case-management
+  contributes_to: [ fraud-waste-abuse-prevented, concerns-raised-safely ]
+  candidate_pattern: [ oversight-intake-case-tracking ]

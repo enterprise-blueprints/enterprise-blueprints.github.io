@@ -1,0 +1,87 @@
+# The references this package cites. Elements and links name them by id.
+
+- id: ig-act-404
+  title: 5 U.S.C. § 404 — Duties and responsibilities of Inspectors General
+  url: https://www.govinfo.gov/link/uscode/5/404?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-26
+  note: Principal statutory duties of federal Inspectors General.
+
+- id: oversight-mission
+  title: Oversight.gov — Mission of Inspectors General
+  url: https://www.oversight.gov/about/inspectors-general/mission
+  kind: official-reference
+  lastReviewedAt: 2026-10-25
+  note: Describes independent oversight, prevention of fraud, waste and abuse, and reporting.
+
+- id: cigie-faq
+  title: Council of the Inspectors General on Integrity and Efficiency — Frequently Asked Questions
+  url: https://www.ignet.gov/node/54
+  kind: official-reference
+  lastReviewedAt: 2026-10-26
+  note: General description of OIG missions, independence, audits, investigations, and reporting.
+
+- id: oversight-hotline
+  title: Oversight.gov — Report Fraud, Waste, Abuse or Retaliation
+  url: https://www.oversight.gov/where-report-fraud-waste-abuse-or-retaliation
+  kind: official-reference
+  lastReviewedAt: 2026-10-26
+  note: Official routing information for reports of fraud, waste, abuse, or retaliation.
+
+- id: ig-act-402
+  title: 5 U.S.C. § 402 — Establishment and purpose of Offices of Inspector General
+  url: https://www.govinfo.gov/link/uscode/5/402?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: "The purposes of Offices of Inspector General: audits and investigations; economy, efficiency, and effectiveness; preventing and detecting fraud and abuse; and keeping the agency head and Congress fully and currently informed."
+
+- id: ig-act-405
+  title: 5 U.S.C. § 405 — Reports
+  url: https://www.govinfo.gov/link/uscode/5/405?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: What each semiannual report must include, such as questioned costs, funds put to better use, open recommendations, and investigative statistics, with its deadlines.
+
+- id: ig-act-407
+  title: 5 U.S.C. § 407 — Complaints by employees
+  url: https://www.govinfo.gov/link/uscode/5/407?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: Receiving employee complaints, keeping a complainant’s identity confidential, and protection from reprisal.
+
+- id: ig-act-420
+  title: 5 U.S.C. § 420 — Information on websites of Offices of Inspectors General
+  url: https://www.govinfo.gov/link/uscode/5/420?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: Posting audit, inspection, and evaluation reports within 3 days, and a direct link for reporting fraud, waste, and abuse.
+
+- id: cigie-silver-book
+  title: Council of the Inspectors General on Integrity and Efficiency — Quality Standards for Federal Offices of Inspector General (Silver Book)
+  url: https://www.ignet.gov/sites/default/files/files/Silver%20Book%20Revision%20-%208-20-12r.pdf
+  kind: official-reference
+  publicationDate: 2012-08-20
+  lastReviewedAt: 2026-10-28
+  note: The overall standards for OIGs, including independence in fact and in appearance, confidentiality, and following the professional standards for audits, investigations, inspections, and evaluations.
+
+- id: cigie-blue-book
+  title: Council of the Inspectors General on Integrity and Efficiency — Quality Standards for Inspection and Evaluation (Blue Book)
+  url: https://www.ignet.gov/sites/default/files/files/QualityStandardsforInspectionandEvaluation-2020.pdf
+  kind: official-reference
+  publicationDate: 2020-12-01
+  lastReviewedAt: 2026-10-28
+  note: Standards for planning, evidence, documentation, supervision, and reporting in inspections and evaluations.
+
+- id: gao-yellow-book
+  title: U.S. Government Accountability Office — Government Auditing Standards (Yellow Book)
+  url: https://www.gao.gov/yellowbook
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: The standards for audits of government entities, including audit documentation, supervision, and quality management. The 2024 revision applies to audits beginning on or after December 15, 2025.
+
+- id: gao-ig-act
+  title: Public Law 115-414 — Good Accounting Obligation in Government Act (GAO-IG Act)
+  url: https://www.govinfo.gov/app/details/PLAW-115publ414
+  kind: official-reference
+  lastReviewedAt: 2026-10-28
+  note: Agencies report, in their annual budget justifications, on public GAO and Inspector General recommendations that remain open.
