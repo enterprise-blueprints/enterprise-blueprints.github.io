@@ -1,5 +1,7 @@
 ---
+import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import hero from '../assets/hero.png';
 import TypeBadge from '../components/TypeBadge.astro';
 import { dependents, elementsOfType, missionBlueprint, packages, shortTitle, solutionView, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
 import { formatDate, plural } from '../lib/format';
@@ -24,8 +26,9 @@ const solutions = elementsOfType('solution').map(solutionView);
 const shortMission = (mission: (typeof solutions)[number]['missions'][number]) => shortTitle(mission.package);
 ---
 <Base>
-  <section class="hero">
-    <div class="container">
+  <section class="hero hero--art">
+    <Picture class="hero__art" src={hero} formats={['avif', 'webp']} fallbackFormat="jpg" widths={[800, 1280, 1672]} sizes="100vw" alt="" loading="eager" fetchpriority="high" />
+    <div class="container hero__content">
       <p class="kicker">An independent, open reference library</p>
       <h1 class="hero__title">Reference blueprints for public-sector missions</h1>
       <p class="hero__lede">

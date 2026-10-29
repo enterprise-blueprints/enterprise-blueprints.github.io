@@ -297,6 +297,28 @@ td.muted { color: var(--text-muted); }
 .hero__title { font-size: clamp(2.4rem, 1.6rem + 3.6vw, 4rem); line-height: 1.08; letter-spacing: -.03em; margin-bottom: 1.25rem; max-width: 52rem; }
 .hero__lede { font-size: clamp(1.125rem, 1rem + .4vw, 1.3125rem); color: var(--text-muted); max-width: 44rem; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+/* The home page's hero sits on the artwork, which is dark in both themes, with its empty side on the left. */
+.hero--art { position: relative; overflow: hidden; padding: 6rem 0 5.5rem; border-bottom: 0; background: #071530; color: #fff; }
+.hero--art::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgb(7 21 48 / .95) 0%, rgb(7 21 48 / .8) 42%, rgb(7 21 48 / 0) 75%); }
+.hero__art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% center; }
+.hero__content { position: relative; z-index: 2; }
+.hero--art .kicker { color: #9cc3ff; }
+.hero--art .hero__title { max-width: 34rem; font-size: clamp(2.2rem, 1.5rem + 3vw, 3.5rem); color: #fff; }
+.hero--art .hero__lede { max-width: 34rem; color: rgb(255 255 255 / .82); }
+.hero--art .button:not(.button--primary) { background: rgb(255 255 255 / .08); border-color: rgb(255 255 255 / .4); color: #fff; }
+.hero--art .button:not(.button--primary):hover { background: rgb(255 255 255 / .16); border-color: #fff; }
+.hero--art .button--primary, .hero--art .button--primary:hover { color: #fff; }
+.hero--art .button--primary { background: #2f6fd6; border-color: #2f6fd6; }
+.hero--art .button--primary:hover { background: #1f5fbf; border-color: #1f5fbf; }
+/* On wide screens the art starts a little right of center, clear of the text. */
+@media (min-width: 64rem) {
+  .hero__art { left: 18%; width: 82%; }
+}
+@media (max-width: 48rem) {
+  .hero--art { padding: 3.5rem 0 3rem; }
+  .hero--art::before { background: linear-gradient(180deg, rgb(7 21 48 / .92) 0%, rgb(7 21 48 / .8) 55%, rgb(7 21 48 / .55) 100%); }
+  .hero__art { object-position: 72% center; }
+}
 
 .section-band { padding: 3.5rem 0; }
 .section-band--muted { background: var(--surface-muted); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
