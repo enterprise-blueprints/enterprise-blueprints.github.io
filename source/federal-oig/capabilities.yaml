@@ -19,6 +19,9 @@
     - to: confidential-hotline-intake
       coverage: partial
       note: Takes reports from the public, including anonymous ones. Classifying and routing them happens in the case system it feeds.
+    - to: ai-assisted-intake-sorting
+      coverage: partial
+      note: Suggests a category and where to route each allegation, and intake staff decide. What the model sees must keep the identity of people who report confidential.
     - to: shared-case-platform
       note: For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report.
       sources: [ cigie-silver-book ]
@@ -32,7 +35,12 @@
     scope: US-federal-OIG
   contributes_to: [ effective-programs, fraud-waste-abuse-prevented ]
   satisfies: [ plan-oversight-work, document-findings ]
-  candidate_pattern: [ audit-management-system ]
+  candidate_pattern:
+    - audit-management-system
+    - audit-workpapers-collaboration
+    - to: oversight-data-analytics
+      coverage: partial
+      note: Helps choose and scope audits, inspections, and evaluations. Doing and documenting them happens elsewhere.
 
 - id: investigation-management
   title: Investigation Management
@@ -50,6 +58,9 @@
       coverage: partial
       note: For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report. Evidence handling, such as chain of custody, usually needs building.
       sources: [ cigie-silver-book ]
+    - to: oversight-data-analytics
+      coverage: partial
+      note: Finds leads. Each one is assessed and investigated in the case system.
 
 - id: recommendations-corrective-action-monitoring
   title: Recommendations & Corrective Action Monitoring

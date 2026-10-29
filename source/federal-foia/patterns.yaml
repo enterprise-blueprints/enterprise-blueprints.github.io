@@ -138,3 +138,60 @@
   works_with:
     - to: foia-tracking-with-review-tool
       note: Releases come from the review tool with their request details.
+
+- id: ai-review-suggestions
+  title: AI Suggestions in Records Review
+  description: "An example architecture: the review tool suggests passages that may fall under an exemption, groups near-duplicate records, and flags personal information, and the reviewer decides every redaction and records the exemption that applies."
+  sources: [ nist-ai-rmf, doj-foia-guide ]
+  attributes:
+    approach: product
+    role: ai-insights
+    parts:
+      - Suggested redactions for patterns such as Social Security numbers, phone numbers, and names
+      - Passages that may fall under an exemption, each with the reason it was suggested
+      - Groups of near-duplicate records and email threads, so one decision applies consistently
+      - The reviewer’s decision on every suggestion, with the exemption recorded
+      - Checks of how often suggestions are accepted, by kind
+    strengths:
+      - Reviewers spend less time finding routine personal information
+      - Similar records get the same treatment
+      - Large releases move faster without lowering the bar for what’s withheld
+    fitsWhen:
+      - The office reviews large volumes of email and documents
+      - Its review tool offers these features, or can add them
+    watchFor:
+      - Exemptions turn on judgment, including the foreseeable harm standard, so a person decides every withholding
+      - Relying on suggestions can lead to withholding more than the law allows
+      - Records under review hold sensitive information, so the model must run where the records are allowed to be
+  works_with:
+    - to: foia-tracking-with-review-tool
+      note: Runs inside the separate review tool.
+    - to: foia-request-processing
+      note: Runs in the product’s review workspace, where the product offers it.
+
+- id: foia-workload-dashboard
+  title: FOIA Workload Dashboard from Tracking Data
+  description: "An example architecture: a dashboard built on the request tracking data that shows the backlog, the oldest open requests, time to respond on each track, and work by team, refreshed daily, so leaders can act long before the annual report."
+  sources: [ oip-annual-report-handbook, oip-backlog-guidance ]
+  attributes:
+    approach: build
+    role: ai-insights
+    parts:
+      - A daily copy of the tracking data in a reporting store
+      - Measures defined the way the annual report counts them, such as backlogged requests
+      - Views of the backlog, the oldest requests, and response times by track and team
+      - Forecasts of incoming requests from past volumes, for planning staff
+      - Access for the Chief FOIA Officer, managers, and staff
+    strengths:
+      - Leaders see the backlog as it grows, not once a year
+      - Counts match the annual report, so there are no surprises when it’s due
+      - Changes to staffing and process can be checked against results
+    fitsWhen:
+      - The tracking system’s data can be copied out every day
+      - Leaders want to act on the goal of keeping the backlog under 10% during the year
+    watchFor:
+      - Definitions must match the handbook, or the dashboard and the report will disagree
+      - Request details can be sensitive, so dashboards should show counts rather than requesters
+  works_with:
+    - foia-request-processing
+    - foia-tracking-with-review-tool

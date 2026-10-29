@@ -140,3 +140,58 @@
       note: Audit, inspection, and evaluation results.
     - to: shared-recommendation-tracker
       note: Open and closed recommendations.
+
+- id: oversight-data-analytics
+  title: Data Analytics for Oversight Planning
+  description: "An example architecture: the office’s data team brings agency financial, payment, and program data into an analytics workspace, where rules and models point to risks, such as unusual payments or duplicate vendors, that help plan audits and open investigations."
+  sources: [ ig-act-404, nist-ai-rmf, gao-yellow-book ]
+  attributes:
+    approach: build
+    role: ai-insights
+    parts:
+      - Regular feeds of agency data the office has access to, such as payments, contracts, and grants
+      - Rules and models that flag risks, each with the reason it was flagged
+      - A review step where auditors or investigators decide what to look into
+      - A record of what was flagged, what was decided, and what came of it
+      - Controls that keep each use of the data within the office’s authority
+    strengths:
+      - Points audits and investigations at the highest risks
+      - Finds patterns across large data sets that sampling misses
+      - Results show which risk indicators are worth keeping
+    fitsWhen:
+      - The office has, or can get, regular access to agency data
+      - It has staff who can build and check analytics, or can hire them
+    watchFor:
+      - A flag isn’t a finding, so every lead needs review and evidence before anything is done
+      - Models can carry gaps or bias in the data, so their results need checking over time
+      - Data sharing agreements and privacy rules limit what can be combined
+  works_with:
+    - to: audit-management-system
+      note: Risks it finds feed the plan of oversight work.
+
+- id: audit-workpapers-collaboration
+  title: Audit Work Papers in the Collaboration Workspace
+  description: "An example architecture: each engagement gets a workspace in the agency’s collaboration suite, with folders and templates for work papers, cross-references to the report, and supervisors’ review recorded through document approvals."
+  sources: [ gao-yellow-book, cigie-blue-book ]
+  attributes:
+    approach: combine
+    role: business-applications
+    parts:
+      - A workspace for each engagement, made from a template with standard folders
+      - Work paper templates with fields for purpose, source, conclusion, and cross-references
+      - Supervisors’ review and sign-off through document approvals, with dates
+      - A shared list that tracks each engagement’s plan, status, and recommendations
+      - Retention labels for closed engagements, with access limited to the team
+    strengths:
+      - Uses tools the office already has and knows
+      - Costs little to start, and is easy to change
+    fitsWhen:
+      - The office is small, with a few engagements at a time
+      - It isn’t ready to buy and set up an audit product
+    watchFor:
+      - Cross-references and review sign-offs depend on discipline, which peer reviews will test
+      - Reporting across engagements, such as on open recommendations, takes manual work
+      - Collaboration tools make sharing easy, so access to engagement workspaces needs limiting
+  depends_on:
+    - to: records-aware-collaboration
+      note: The workspaces, approvals, and retention labels are the agency’s collaboration suite.

@@ -126,6 +126,15 @@
       "kind": "official-reference",
       "lastReviewedAt": "2026-10-28",
       "note": "Agencies report, in their annual budget justifications, on public GAO and Inspector General recommendations that remain open."
+    },
+    {
+      "id": "src:nist-ai-rmf",
+      "title": "NIST — Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "kind": "official-reference",
+      "publicationDate": "2023-01-26",
+      "lastReviewedAt": "2026-10-29",
+      "note": "A framework for voluntary use in managing the risks of AI systems, built around four functions, govern, map, measure, and manage, and the characteristics of trustworthy AI, such as being valid, accountable, and fair."
     }
   ],
   "elements": [
@@ -621,6 +630,78 @@
           "Sensitive details must stay out of anything published"
         ]
       }
+    },
+    {
+      "id": "eb:implementationPattern:oversight-data-analytics",
+      "type": "implementationPattern",
+      "title": "Data Analytics for Oversight Planning",
+      "description": "An example architecture: the office’s data team brings agency financial, payment, and program data into an analytics workspace, where rules and models point to risks, such as unusual payments or duplicate vendors, that help plan audits and open investigations.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ig-act-404",
+        "src:nist-ai-rmf",
+        "src:gao-yellow-book"
+      ],
+      "attributes": {
+        "approach": "build",
+        "role": "ai-insights",
+        "parts": [
+          "Regular feeds of agency data the office has access to, such as payments, contracts, and grants",
+          "Rules and models that flag risks, each with the reason it was flagged",
+          "A review step where auditors or investigators decide what to look into",
+          "A record of what was flagged, what was decided, and what came of it",
+          "Controls that keep each use of the data within the office’s authority"
+        ],
+        "strengths": [
+          "Points audits and investigations at the highest risks",
+          "Finds patterns across large data sets that sampling misses",
+          "Results show which risk indicators are worth keeping"
+        ],
+        "fitsWhen": [
+          "The office has, or can get, regular access to agency data",
+          "It has staff who can build and check analytics, or can hire them"
+        ],
+        "watchFor": [
+          "A flag isn’t a finding, so every lead needs review and evidence before anything is done",
+          "Models can carry gaps or bias in the data, so their results need checking over time",
+          "Data sharing agreements and privacy rules limit what can be combined"
+        ]
+      }
+    },
+    {
+      "id": "eb:implementationPattern:audit-workpapers-collaboration",
+      "type": "implementationPattern",
+      "title": "Audit Work Papers in the Collaboration Workspace",
+      "description": "An example architecture: each engagement gets a workspace in the agency’s collaboration suite, with folders and templates for work papers, cross-references to the report, and supervisors’ review recorded through document approvals.",
+      "status": "reference",
+      "sourceIds": [
+        "src:gao-yellow-book",
+        "src:cigie-blue-book"
+      ],
+      "attributes": {
+        "approach": "combine",
+        "role": "business-applications",
+        "parts": [
+          "A workspace for each engagement, made from a template with standard folders",
+          "Work paper templates with fields for purpose, source, conclusion, and cross-references",
+          "Supervisors’ review and sign-off through document approvals, with dates",
+          "A shared list that tracks each engagement’s plan, status, and recommendations",
+          "Retention labels for closed engagements, with access limited to the team"
+        ],
+        "strengths": [
+          "Uses tools the office already has and knows",
+          "Costs little to start, and is easy to change"
+        ],
+        "fitsWhen": [
+          "The office is small, with a few engagements at a time",
+          "It isn’t ready to buy and set up an audit product"
+        ],
+        "watchFor": [
+          "Cross-references and review sign-offs depend on discipline, which peer reviews will test",
+          "Reporting across engagements, such as on open recommendations, takes manual work",
+          "Collaboration tools make sharing easy, so access to engagement workspaces needs limiting"
+        ]
+      }
     }
   ],
   "relations": [
@@ -759,6 +840,14 @@
       "description": "Takes reports from the public, including anonymous ones. Classifying and routing them happens in the case system it feeds."
     },
     {
+      "id": "rel:complaint-allegation-disclosure-intake-candidate-pattern-ai-assisted-intake-sorting",
+      "from": "eb:capability:complaint-allegation-disclosure-intake",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:ai-assisted-intake-sorting",
+      "coverage": "partial",
+      "description": "Suggests a category and where to route each allegation, and intake staff decide. What the model sees must keep the identity of people who report confidential."
+    },
+    {
       "id": "rel:complaint-allegation-disclosure-intake-candidate-pattern-shared-case-platform",
       "from": "eb:capability:complaint-allegation-disclosure-intake",
       "predicate": "candidate_pattern",
@@ -797,6 +886,20 @@
       "from": "eb:capability:audit-inspection-evaluation",
       "predicate": "candidate_pattern",
       "to": "eb:implementationPattern:audit-management-system"
+    },
+    {
+      "id": "rel:audit-inspection-evaluation-candidate-pattern-audit-workpapers-collaboration",
+      "from": "eb:capability:audit-inspection-evaluation",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:audit-workpapers-collaboration"
+    },
+    {
+      "id": "rel:audit-inspection-evaluation-candidate-pattern-oversight-data-analytics",
+      "from": "eb:capability:audit-inspection-evaluation",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:oversight-data-analytics",
+      "coverage": "partial",
+      "description": "Helps choose and scope audits, inspections, and evaluations. Doing and documenting them happens elsewhere."
     },
     {
       "id": "rel:investigation-management-contributes-to-fraud-waste-abuse-prevented",
@@ -838,6 +941,14 @@
       "sourceIds": [
         "src:cigie-silver-book"
       ]
+    },
+    {
+      "id": "rel:investigation-management-candidate-pattern-oversight-data-analytics",
+      "from": "eb:capability:investigation-management",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:oversight-data-analytics",
+      "coverage": "partial",
+      "description": "Finds leads. Each one is assessed and investigated in the case system."
     },
     {
       "id": "rel:recommendations-corrective-action-monitoring-contributes-to-effective-programs",
@@ -956,6 +1067,20 @@
       "predicate": "works_with",
       "to": "eb:implementationPattern:shared-recommendation-tracker",
       "description": "Open and closed recommendations."
+    },
+    {
+      "id": "rel:oversight-data-analytics-works-with-audit-management-system",
+      "from": "eb:implementationPattern:oversight-data-analytics",
+      "predicate": "works_with",
+      "to": "eb:implementationPattern:audit-management-system",
+      "description": "Risks it finds feed the plan of oversight work."
+    },
+    {
+      "id": "rel:audit-workpapers-collaboration-depends-on-records-aware-collaboration",
+      "from": "eb:implementationPattern:audit-workpapers-collaboration",
+      "predicate": "depends_on",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "The workspaces, approvals, and retention labels are the agency’s collaboration suite."
     },
     {
       "id": "rel:identity-access-management-contributes-to-concerns-raised-safely",

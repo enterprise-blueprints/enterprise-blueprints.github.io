@@ -39,6 +39,11 @@
   sources: [ nist-sp-800-53 ]
   applicabilityNotes: Shared across missions. Logging is often run agency-wide; the office decides what in its own systems needs watching.
   satisfies: [ log-system-activity, review-logs ]
+  candidate_pattern:
+    - agency-security-monitoring
+    - to: built-in-audit-trails
+      coverage: partial
+      note: Records and reviews what happens in each system, but doesn’t follow activity across systems or alert as it happens.
 
 - id: case-management
   title: Case Management
@@ -56,3 +61,6 @@
     - to: letters-from-case-data
       coverage: partial
       note: Only the correspondence. The cases themselves are tracked elsewhere.
+    - to: ai-assisted-intake-sorting
+      coverage: partial
+      note: Helps sort what arrives. Each matter is tracked in the case system.

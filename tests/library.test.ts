@@ -105,8 +105,7 @@ describe('example solutions', () => {
 
   it('group a mission’s patterns the same way', () => {
     const groups = byRole(missionBlueprint(get('eb:mission:public-access-to-agency-records')).patterns, (p) => p);
-    // The FOIA program has no AI and insights pattern yet.
-    expect(groups.map((g) => g.label)).toEqual(['Public facing', 'Business applications', 'Worker productivity', 'Processing service', 'Infrastructure']);
+    expect(groups.map((g) => g.label)).toEqual(['Public facing', 'Business applications', 'Worker productivity', 'Processing service', 'AI and insights', 'Infrastructure']);
   });
 });
 
@@ -118,7 +117,7 @@ describe('pattern connections', () => {
     const audit = relationGroups(get('eb:implementationPattern:audit-management-system'));
     const together = audit.filter((g) => g.heading === 'Works well with');
     expect(together).toHaveLength(1);
-    expect(together[0].elements.map(slug)).toEqual(['shared-recommendation-tracker', 'oversight-reporting-from-source-data']);
+    expect(together[0].elements.map(slug)).toEqual(['shared-recommendation-tracker', 'oversight-reporting-from-source-data', 'oversight-data-analytics']);
     expect(together[0].links.get('eb:implementationPattern:oversight-reporting-from-source-data')?.note).toBe('Audit, inspection, and evaluation results.');
   });
 

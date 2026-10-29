@@ -71,3 +71,11 @@
   kind: official-reference
   lastReviewedAt: 2026-10-28
   note: Federal agencies’ information and communication technology, including web content and documents, must be accessible to people with disabilities.
+
+- id: nist-ai-rmf
+  title: NIST — Artificial Intelligence Risk Management Framework (AI RMF 1.0)
+  url: https://www.nist.gov/itl/ai-risk-management-framework
+  kind: official-reference
+  publicationDate: 2023-01-26
+  lastReviewedAt: 2026-10-29
+  note: A framework for voluntary use in managing the risks of AI systems, built around four functions, govern, map, measure, and manage, and the characteristics of trustworthy AI, such as being valid, accountable, and fair.

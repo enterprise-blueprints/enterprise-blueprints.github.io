@@ -47,20 +47,20 @@ describe('validatePackage', () => {
     for (const pkg of [common010, common020, common030]) expect(validatePackage(pkg), pkg.version).toEqual([]);
   });
 
-  it('has one mission, five capabilities, ten requirements, and five patterns in the OIG package', () => {
+  it('has one mission, five capabilities, ten requirements, and seven patterns in the OIG package', () => {
     const counts = Object.groupBy(original.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.capability).toHaveLength(5);
-    expect(counts.implementationPattern).toHaveLength(5);
+    expect(counts.implementationPattern).toHaveLength(7);
     expect(counts.requirement).toHaveLength(10);
   });
 
-  it('has one mission, six outcomes, seven capabilities, and five patterns in the FOIA package', () => {
+  it('has one mission, six outcomes, seven capabilities, and seven patterns in the FOIA package', () => {
     const counts = Object.groupBy(foia.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.outcome).toHaveLength(6);
     expect(counts.capability).toHaveLength(7);
-    expect(counts.implementationPattern).toHaveLength(5);
+    expect(counts.implementationPattern).toHaveLength(7);
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
@@ -327,7 +327,7 @@ describe('versions', () => {
     }
   });
 
-  it('mark partial coverage and connect patterns in schema 0.3.0, and keep everything else', () => {
+  it('mark partial coverage, connect patterns, and add patterns in schema 0.3.0, and keep everything else', () => {
     for (const [before, after] of [[oig040, original], [foia020, foia], [common030, common]] as const) {
       expect(after.schemaVersion).toBe('0.3.0');
       for (const e of before.elements) expect(after.elements, after.packageId).toContainEqual(e);
@@ -338,7 +338,10 @@ describe('versions', () => {
         else expect(now, r.id).toEqual(r);
       }
       const added = after.relations.filter((r) => !before.relations.some((b) => b.id === r.id));
-      expect(added.every((r) => r.predicate === 'depends_on' || r.predicate === 'works_with'), after.packageId).toBe(true);
+      expect(new Set(added.map((r) => r.predicate)), after.packageId).toEqual(new Set(['candidate_pattern', 'depends_on', 'works_with']));
+      // Everything new is a pattern.
+      const newElements = after.elements.filter((e) => !before.elements.some((b) => b.id === e.id));
+      expect(newElements.every((e) => e.type === 'implementationPattern'), after.packageId).toBe(true);
     }
   });
 

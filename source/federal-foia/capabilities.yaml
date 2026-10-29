@@ -22,6 +22,9 @@
     - to: shared-case-platform
       coverage: partial
       note: Set up for FOIA’s tracks, working-day deadlines, and fee categories. Requests from FOIA.gov need a connection to the portal too.
+    - to: ai-assisted-intake-sorting
+      coverage: partial
+      note: Suggests where a request should go and which processing track it may need. Staff decide, and log and acknowledge each request in the tracking system.
 
 - id: records-search-collection
   title: Records Search & Collection
@@ -54,6 +57,9 @@
     - to: ediscovery-search-review
       coverage: partial
       note: Sets duplicates aside and threads email before review. Redaction and consultation happen in the review tool.
+    - to: ai-review-suggestions
+      coverage: partial
+      note: Speeds up finding what may need redacting. Reviewers make every decision and handle consultations.
 
 - id: response-release
   title: Response & Release
@@ -108,4 +114,9 @@
     - oip-chief-foia-officer-guidelines
   contributes_to: [ foia-performance-public ]
   satisfies: [ compile-annual-foia-report, post-reports-and-data, report-on-caseload ]
-  candidate_pattern: [ foia-request-processing, foia-tracking-with-review-tool ]
+  candidate_pattern:
+    - foia-request-processing
+    - foia-tracking-with-review-tool
+    - to: foia-workload-dashboard
+      coverage: partial
+      note: Tracks the measures the reports use all year. The reports themselves are compiled and posted from the tracking system.
