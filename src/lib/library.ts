@@ -330,6 +330,58 @@ export function solutionsFor(mission: LibraryElement): SolutionView[] {
 /** "Common Capabilities" for "Common Capabilities — Shared Across Missions". */
 export const shortTitle = (pkg: BlueprintPackage) => pkg.title.split(' — ')[0];
 
+export interface IndexGroup {
+  /** The anchor for the group on its index page. */
+  id: string;
+  label: string;
+  hint?: string;
+  /** The mission the group's package describes. */
+  mission?: LibraryElement;
+  items: LibraryElement[];
+}
+
+/** The predicate that names each item's parent on an index page, such as the outcome a measure tells about. */
+const parentLinks: Record<string, string> = { measure: 'measured_by', requirement: 'satisfies' };
+/** The index pages grouped by package. Missions and solutions are few enough to list whole. */
+const groupedTypes = new Set(['outcome', 'measure', 'capability', 'requirement']);
+
+/**
+ * An index page's items, grouped: patterns by the part they play, everything
+ * else by package, missions first in title order and shared packages last.
+ * One group means no grouping.
+ */
+export function indexGroups(type: string): IndexGroup[] {
+  const items = elementsOfType(type);
+  // A role's hint is written for one office's patterns; its first sentence fits the whole library.
+  if (type === 'implementationPattern') return byRole(items, (p) => p).map((g) => ({ id: g.role ?? 'other', label: g.label, hint: g.hint?.split(/(?<=\.) /)[0], items: g.items }));
+  if (!groupedTypes.has(type)) return [{ id: 'all', label: '', items }];
+  const missionOf = (pkg: BlueprintPackage) => elements.find((e) => e.package === pkg && e.type === 'mission');
+  const groups = packages
+    .map((pkg) => ({ pkg, mission: missionOf(pkg), items: items.filter((e) => e.package === pkg) }))
+    .filter((g) => g.items.length)
+    .sort((a, b) => Number(!a.mission) - Number(!b.mission) || shortTitle(a.pkg).localeCompare(shortTitle(b.pkg)))
+    .map(({ pkg, mission, items }) => ({
+      id: pkg.packageId.split('.').at(-1)!,
+      label: mission ? shortTitle(pkg) : 'Shared across missions',
+      hint: mission ? undefined : `From ${shortTitle(pkg)}, which the mission packages build on.`,
+      mission,
+      items,
+    }));
+  return groups.length > 1 ? groups : [{ id: 'all', label: '', items }];
+}
+
+/** Each item's parent within its own package, such as a requirement's capability, for the index pages. */
+export function indexParents(type: string): Map<string, LibraryElement> | undefined {
+  const predicate = parentLinks[type];
+  if (!predicate) return undefined;
+  const parents = new Map<string, LibraryElement>();
+  for (const e of elementsOfType(type)) {
+    const parent = related(e, predicate, 'incoming', [e.package])[0];
+    if (parent) parents.set(e.id, parent);
+  }
+  return parents;
+}
+
 /** The packages that build on this one, such as the mission packages that build on the common one. */
 export function dependents(pkg: BlueprintPackage): BlueprintPackage[] {
   return packages.filter((p) => p.dependencies?.some((d) => d.packageId === pkg.packageId));

@@ -2,13 +2,17 @@
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
 import ElementTable from '../../components/ElementTable.astro';
-import { elementsOfType, typesInUse } from '../../lib/library';
+import { indexGroups, indexParents, typesInUse } from '../../lib/library';
+import { plural } from '../../lib/format';
 
 export const getStaticPaths = (() =>
   typesInUse().map(([type, info]) => ({ params: { section: info.section }, props: { type, info } }))) satisfies GetStaticPaths;
 
 const { type, info } = Astro.props;
-const items = elementsOfType(type);
+const groups = indexGroups(type);
+const parents = indexParents(type);
+const grouped = groups.length > 1;
+const count = (n: number) => plural(n, info.label.toLowerCase(), info.plural.toLowerCase());
 ---
 <Base title={info.plural} description={info.definition}>
   <div class="container">
@@ -16,6 +20,21 @@ const items = elementsOfType(type);
       <h1>{info.plural}</h1>
       <p class="lede">{info.definition}</p>
     </header>
-    <ElementTable elements={items} />
+    {grouped && (
+      <nav class="index-jump" aria-label={`${info.plural} by group`}>
+        {groups.map((g) => <a href={`#${g.id}`}>{g.label} <span class="index-jump__count">{g.items.length}</span></a>)}
+      </nav>
+    )}
+    {groups.map((g) => (
+      <section class="index-group" id={grouped ? g.id : undefined} aria-labelledby={grouped ? `${g.id}-heading` : undefined}>
+        {grouped && (
+          <header class="index-group__header">
+            <h2 id={`${g.id}-heading`}>{g.label}</h2>
+            <p class="muted">{count(g.items.length)}{g.mission && <> for <a href={g.mission.url}>{g.mission.title}</a></>}{g.hint && <>. {g.hint}</>}</p>
+          </header>
+        )}
+        <ElementTable elements={g.items} parents={parents} showPackage={type === 'implementationPattern'} />
+      </section>
+    ))}
   </div>
 </Base>

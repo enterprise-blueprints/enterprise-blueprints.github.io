@@ -1,5 +1,5 @@
 ---
-import type { LibraryElement } from '../lib/library';
+import { shortTitle, type LibraryElement } from '../lib/library';
 
 interface Props {
   elements: LibraryElement[];
@@ -7,9 +7,13 @@ interface Props {
   notes?: Map<string, string>;
   /** Candidate patterns, or their capabilities, where the pattern covers only part of the capability. */
   partial?: Set<string>;
+  /** The element each one belongs to, such as a requirement's capability, by element ID. */
+  parents?: Map<string, LibraryElement>;
+  /** Say which package each element comes from, for lists that mix packages. */
+  showPackage?: boolean;
 }
 
-const { elements, notes, partial } = Astro.props;
+const { elements, notes, partial, parents, showPackage } = Astro.props;
 ---
 <div class="table-wrap">
   <table class="stack-table element-table">
@@ -24,6 +28,8 @@ const { elements, notes, partial } = Astro.props;
             {e.description}
             {partial?.has(e.id) && <p class="element-table__note"><span class="partial-badge">Covers part of it</span></p>}
             {notes?.get(e.id) && <p class="element-table__note"><strong>Here:</strong> {notes.get(e.id)}</p>}
+            {parents?.get(e.id) && <p class="element-table__note">For <a href={parents.get(e.id)!.url}>{parents.get(e.id)!.title}</a></p>}
+            {showPackage && <p class="element-table__note element-table__from">From {shortTitle(e.package)}</p>}
           </td>
         </tr>
       ))}
@@ -35,6 +41,7 @@ const { elements, notes, partial } = Astro.props;
   /* Every button fills the column and fits two lines, so they're all one size. */
   .element-table .element-link { display: flex; width: 100%; min-height: 3.25rem; }
   .element-table__note { margin: .45rem 0 0; color: var(--text); font-size: .875rem; }
+  .element-table__from { color: var(--text-muted); }
   @media (min-width: 46rem) {
     .element-table th[scope='row'] { width: 34%; }
   }

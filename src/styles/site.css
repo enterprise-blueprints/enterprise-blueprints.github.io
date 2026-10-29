@@ -187,6 +187,17 @@ code {
 .page-header { padding: 3rem 0 1.5rem; }
 .page-header .lede { margin-bottom: 0; }
 
+/* Index pages: a row of links to each group, then a heading and table per group. */
+.index-jump { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
+.index-jump a { display: inline-flex; align-items: center; gap: .45rem; padding: .35rem .75rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); font-weight: 600; font-size: .9375rem; text-decoration: none; }
+.index-jump a:hover { border-color: var(--accent); color: var(--accent); }
+.index-jump__count { color: var(--text-muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+.index-group + .index-group { margin-top: 2.75rem; }
+.index-group { scroll-margin-top: 1rem; }
+.index-group__header { margin-bottom: 1rem; }
+.index-group__header h2 { margin-bottom: .25rem; }
+.index-group__header p { margin: 0; max-width: 54rem; }
+
 .breadcrumbs { padding-top: 1.5rem; font-size: .875rem; }
 .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: .25rem; margin: 0; padding: 0; list-style: none; color: var(--text-muted); }
 .breadcrumbs li + li::before { content: "/"; margin-right: .25rem; color: var(--border-strong); }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byRole, coversPartly, elements, missionBlueprint, relationGroups, solutionsFor, solutionView } from '../src/lib/library';
+import { byRole, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, solutionsFor, solutionView } from '../src/lib/library';
 
 describe('missionBlueprint', () => {
   const mission = elements.find((e) => e.id === 'eb:mission:independent-government-oversight')!;
@@ -189,5 +189,23 @@ describe('the acquisition mission', () => {
 
   it('offers the common SAM.gov checks among its patterns', () => {
     expect(blueprint.patterns.map(slug)).toContain('sam-gov-entity-checks');
+  });
+});
+
+describe('the index pages', () => {
+  it('group by mission, with the shared package last, and leave missions and solutions whole', () => {
+    const caps = indexGroups('capability');
+    expect(caps.map((g) => g.label)).toEqual(['Federal Acquisition', 'Federal FOIA Program', 'Federal Grants Management', 'Federal Office of Inspector General', 'Shared across missions']);
+    expect(caps.slice(0, -1).every((g) => g.mission)).toBe(true);
+    expect(caps.flatMap((g) => g.items)).toHaveLength(elementsOfType('capability').length);
+    for (const type of ['mission', 'solution']) expect(indexGroups(type), type).toHaveLength(1);
+  });
+
+  it('group patterns by role, and name each measure’s outcome and each requirement’s capability', () => {
+    expect(indexGroups('implementationPattern').map((g) => g.id)).toEqual(['public-facing', 'business-applications', 'worker-productivity', 'processing', 'ai-insights', 'infrastructure']);
+    for (const type of ['measure', 'requirement']) {
+      const parents = indexParents(type)!;
+      for (const e of elementsOfType(type)) expect(parents.get(e.id)?.package, e.id).toBe(e.package);
+    }
   });
 });
