@@ -14,10 +14,10 @@ describe('the source files', () => {
   it('compile to the latest version of every package, so content/ is up to date', () => {
     const steps = plan(readSources('source'), versionsOf, () => true, '2026-10-29');
     expect(steps.map((s) => [s.name, s.version, s.reason])).toEqual([
-      ['common', '0.3.0', 'unchanged'],
-      ['federal-foia', '0.2.0', 'unchanged'],
-      ['federal-oig', '0.4.0', 'unchanged'],
-      ['solutions', '0.1.0', 'unchanged'],
+      ['common', '0.4.0', 'unchanged'],
+      ['federal-foia', '0.3.0', 'unchanged'],
+      ['federal-oig', '0.5.0', 'unchanged'],
+      ['solutions', '0.2.0', 'unchanged'],
     ]);
   });
 
@@ -41,7 +41,7 @@ const mission = (capabilities = ''): PackageSource =>
     'outcomes.yaml': '- id: o1\n  title: O1\n  description: First.\n- id: o2\n  title: O2\n  description: Second.\n',
     'capabilities.yaml':
       capabilities ||
-      '- id: intake\n  title: Intake\n  description: Take things in.\n  contributes_to: [o1]\n  candidate_pattern:\n    - p\n    - to: shared-pattern\n      note: Here it needs care.\n      id: legacy-id\n',
+      '- id: intake\n  title: Intake\n  description: Take things in.\n  contributes_to: [o1]\n  candidate_pattern:\n    - p\n    - to: shared-pattern\n      note: Here it needs care.\n      coverage: partial\n      id: legacy-id\n',
     'patterns.yaml': '- id: p\n  title: P\n  description: An example architecture.\n  attributes: { approach: product, role: business-applications }\n',
     'links.yaml': '- from: capability:tracking\n  contributes_to: [o2]\n',
     'discovery.yaml':
@@ -65,7 +65,7 @@ describe('compilePackage', () => {
       { id: 'rel:m-seeks-o2', from: 'eb:mission:m', predicate: 'seeks', to: 'eb:outcome:o2' },
       { id: 'rel:intake-contributes-to-o1', from: 'eb:capability:intake', predicate: 'contributes_to', to: 'eb:outcome:o1' },
       { id: 'rel:intake-candidate-pattern-p', from: 'eb:capability:intake', predicate: 'candidate_pattern', to: 'eb:implementationPattern:p' },
-      { id: 'rel:legacy-id', from: 'eb:capability:intake', predicate: 'candidate_pattern', to: 'eb:implementationPattern:shared-pattern', description: 'Here it needs care.' },
+      { id: 'rel:legacy-id', from: 'eb:capability:intake', predicate: 'candidate_pattern', to: 'eb:implementationPattern:shared-pattern', coverage: 'partial', description: 'Here it needs care.' },
       // From links.yaml: a shared element's link into this package.
       { id: 'rel:tracking-contributes-to-o2', from: 'eb:capability:tracking', predicate: 'contributes_to', to: 'eb:outcome:o2' },
     ]);

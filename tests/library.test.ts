@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byRole, elements, missionBlueprint, solutionsFor, solutionView } from '../src/lib/library';
+import { byRole, coversPartly, elements, missionBlueprint, relationGroups, solutionsFor, solutionView } from '../src/lib/library';
 
 describe('missionBlueprint', () => {
   const mission = elements.find((e) => e.id === 'eb:mission:independent-government-oversight')!;
@@ -80,14 +80,21 @@ describe('example solutions', () => {
   it('say what they cover for each mission, and what has no pattern yet', () => {
     const [oig, foia] = shared.coverage;
     expect(slug(oig.mission)).toBe('independent-government-oversight');
-    expect(oig.covered.map(slug)).toEqual(expect.arrayContaining(['complaint-allegation-disclosure-intake', 'investigation-management', 'case-management']));
-    // The collaboration workspace covers records and data protection for both.
-    expect(foia.covered.map(slug)).toEqual(expect.arrayContaining(['records-management', 'data-protection-privacy']));
+    expect(oig.covered.map(slug)).toEqual(expect.arrayContaining(['complaint-allegation-disclosure-intake', 'case-management']));
+    // The shared platform covers investigations only partly: evidence handling needs building.
+    expect(oig.partly.map(slug)).toContain('investigation-management');
+    // The collaboration workspace covers only part of records and data protection.
+    expect(foia.partly.map(slug)).toEqual(expect.arrayContaining(['records-management', 'data-protection-privacy']));
+    expect(foia.covered.map(slug)).not.toContain('records-management');
     expect(foia.uncovered).toEqual([]);
-    expect(oig.covered.length + oig.uncovered.length).toBe(missionBlueprint(oig.mission).capabilities.length);
+    expect(oig.covered.length + oig.partly.length + oig.uncovered.length).toBe(missionBlueprint(oig.mission).capabilities.length);
     // Purpose-built systems leave the FOIA product to write its own letters.
     const built = solutionView(get('eb:solution:purpose-built-systems'));
     expect(built.patterns.map(slug)).not.toContain('letters-from-case-data');
+  });
+
+  it('include every pattern their patterns need', () => {
+    for (const s of solutionsFor(get('eb:mission:public-access-to-agency-records'))) expect(s.missing, slug(s.solution)).toEqual([]);
   });
 
   it('are listed on both missions', () => {
@@ -100,5 +107,29 @@ describe('example solutions', () => {
     const groups = byRole(missionBlueprint(get('eb:mission:public-access-to-agency-records')).patterns, (p) => p);
     // The FOIA program has no AI and insights pattern yet.
     expect(groups.map((g) => g.label)).toEqual(['Public facing', 'Business applications', 'Worker productivity', 'Processing service', 'Infrastructure']);
+  });
+});
+
+describe('pattern connections', () => {
+  const get = (id: string) => elements.find((e) => e.id === id)!;
+  const slug = (e: { id: string }) => e.id.split(':')[2];
+
+  it('read the same both ways for patterns that work well together', () => {
+    const audit = relationGroups(get('eb:implementationPattern:audit-management-system'));
+    const together = audit.filter((g) => g.heading === 'Works well with');
+    expect(together).toHaveLength(1);
+    expect(together[0].elements.map(slug)).toEqual(['shared-recommendation-tracker', 'oversight-reporting-from-source-data']);
+    expect(together[0].links.get('eb:implementationPattern:oversight-reporting-from-source-data')?.note).toBe('Audit, inspection, and evaluation results.');
+  });
+
+  it('say what a pattern needs, and what needs it', () => {
+    const groups = relationGroups(get('eb:implementationPattern:agency-sign-on'));
+    expect(groups.find((g) => g.heading === 'Needed by')!.elements.map(slug)).toEqual(['shared-case-platform', 'records-aware-collaboration']);
+  });
+
+  it('mark a candidate pattern that covers only part of a capability', () => {
+    const intake = get('eb:capability:foia-request-intake');
+    expect(coversPartly(intake, get('eb:implementationPattern:national-portal-api'))).toBe(true);
+    expect(coversPartly(intake, get('eb:implementationPattern:foia-request-processing'))).toBe(false);
   });
 });

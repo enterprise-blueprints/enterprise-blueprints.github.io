@@ -38,7 +38,8 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
   elements, relations, and discovery questions. The pages show the latest version of each package; every
   version stays published. These files are built, not edited by hand.
 - `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
-  `dependencies`. Every version stays, and Solution Studio keeps identical copies.
+  `dependencies`. 0.3.0 checks the attributes of patterns and solutions and adds `coverage` to candidate
+  patterns. Every version stays, and Solution Studio keeps identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
 - `src/lib/compile.ts` builds a package from its source and decides its version; `scripts/content.ts` runs it.
@@ -114,13 +115,28 @@ compared side by side and grouped: `approach` (`product`, `platform`, `combine`,
 it plays: `public-facing`, `business-applications`, `worker-productivity`, `processing`, `ai-insights`, or
 `infrastructure`), and `parts`,
 `strengths`, `fitsWhen`, and `watchFor`, each a list of short statements. `src/lib/vocabulary.ts` defines them,
-and `vocabulary.json` publishes their labels. A `candidate_pattern` link's `note` says what the pattern means
-for that capability, such as a mission's caveat on a shared pattern.
+and `vocabulary.json` publishes their labels; since schema 0.3.0 the schema checks them too. A
+`candidate_pattern` link's `note` says what the pattern means for that capability, such as a mission's caveat
+on a shared pattern. A pattern that covers only part of a capability says `coverage: partial`, with a note on
+which part:
+
+```yaml
+  candidate_pattern:
+    - foia-request-processing
+    - to: national-portal-api
+      coverage: partial
+      note: Requests from FOIA.gov only. The agency’s own form, email, and mail come in another way.
+```
+
+Patterns connect to each other too. `depends_on` (shown as **Needs**) is for a pattern that can't work
+without another, such as one built on the shared case platform. `works_with` (**Works well with**) is for a
+natural pairing, written once on either pattern.
 
 **Solutions** combine patterns across an agency. The `solutions` package builds on the mission packages and
 Common Capabilities. Each solution `includes` patterns, with a `note` saying why each one is there, and
 `supports` the missions it serves, with `fitsWhen` and `watchFor` in its attributes. The site works out what
-each solution covers for each mission from the patterns' capabilities.
+each solution covers for each mission from the patterns' capabilities, fully or only partly, and warns when
+a solution leaves out a pattern that one of its patterns needs.
 
 To add a package, create `source/<name>/package.yaml` with its own `packageId`, add its files, and run
 `pnpm content:build`; it starts at 0.1.0. Element IDs are unique across all packages: each element is defined

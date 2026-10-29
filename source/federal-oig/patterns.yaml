@@ -51,6 +51,11 @@
       - Anonymous reports are hard to act on without a way to follow up
       - Spam and duplicate reports need screening before triage
       - What people type must not be recorded anywhere outside the intake system, such as in web analytics
+  works_with:
+    - to: oversight-intake-case-tracking
+      note: Each report lands in the product’s intake queue.
+    - to: shared-case-platform
+      note: Each report lands in the office’s intake queue on the platform, kept apart from other offices.
 
 - id: audit-management-system
   title: Audit Management with Electronic Work Papers
@@ -101,6 +106,9 @@
       - Agency users need accounts and guidance, which takes coordination
       - Giving agency officials access must not expose anything else the office holds
       - What it takes to close a recommendation needs agreeing with the agency up front
+  works_with:
+    - to: audit-management-system
+      note: Recommendations start in the audit reports and are tracked to closure here.
 
 - id: oversight-reporting-from-source-data
   title: Oversight Reporting from Source Data
@@ -125,3 +133,10 @@
       - It’s only as good as the data in the systems that feed it
       - Each definition needs an owner for when the law or guidance changes
       - Sensitive details must stay out of anything published
+  works_with:
+    - to: oversight-intake-case-tracking
+      note: Case statistics for the semiannual report.
+    - to: audit-management-system
+      note: Audit, inspection, and evaluation results.
+    - to: shared-recommendation-tracker
+      note: Open and closed recommendations.

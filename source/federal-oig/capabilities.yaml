@@ -16,7 +16,9 @@
   candidate_pattern:
     - to: oversight-intake-case-tracking
       id: oig-candidate-pattern-1
-    - confidential-hotline-intake
+    - to: confidential-hotline-intake
+      coverage: partial
+      note: Takes reports from the public, including anonymous ones. Classifying and routing them happens in the case system it feeds.
     - to: shared-case-platform
       note: For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report.
       sources: [ cigie-silver-book ]
@@ -45,7 +47,8 @@
     - to: oversight-intake-case-tracking
       id: oig-candidate-pattern-2
     - to: shared-case-platform
-      note: For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report.
+      coverage: partial
+      note: For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report. Evidence handling, such as chain of custody, usually needs building.
       sources: [ cigie-silver-book ]
 
 - id: recommendations-corrective-action-monitoring
@@ -69,7 +72,10 @@
   contributes_to: [ leaders-congress-informed ]
   satisfies: [ periodic-reporting, publish-reports ]
   candidate_pattern:
-    - shared-recommendation-tracker
+    - to: shared-recommendation-tracker
+      coverage: partial
+      note: Lists of open recommendations for the semiannual report and the website. The rest of the report comes from elsewhere.
     - oversight-reporting-from-source-data
     - to: letters-from-case-data
+      coverage: partial
       note: Drafts of routine notices and report sections, with the office’s wording, from the case and audit data.

@@ -5,9 +5,11 @@ interface Props {
   elements: LibraryElement[];
   /** What the link to each element says, by element ID, shown under its description. */
   notes?: Map<string, string>;
+  /** Candidate patterns, or their capabilities, where the pattern covers only part of the capability. */
+  partial?: Set<string>;
 }
 
-const { elements, notes } = Astro.props;
+const { elements, notes, partial } = Astro.props;
 ---
 <div class="table-wrap">
   <table class="stack-table element-table">
@@ -20,6 +22,7 @@ const { elements, notes } = Astro.props;
           <th scope="row"><a class={`element-link type-${e.type}`} href={e.url}>{e.title}</a></th>
           <td class="muted">
             {e.description}
+            {partial?.has(e.id) && <p class="element-table__note"><span class="partial-badge">Covers part of it</span></p>}
             {notes?.get(e.id) && <p class="element-table__note"><strong>Here:</strong> {notes.get(e.id)}</p>}
           </td>
         </tr>

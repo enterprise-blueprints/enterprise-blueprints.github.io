@@ -17,7 +17,10 @@
     - encrypt-sensitive-information
     - know-where-personal-information-is
     - share-personal-information-as-allowed
-  candidate_pattern: [ records-aware-collaboration ]
+  candidate_pattern:
+    - to: records-aware-collaboration
+      coverage: partial
+      note: Labels and sharing rules protect what’s in the office suite. Information kept in the office’s other systems needs its own protection.
 
 - id: records-management
   title: Records Management
@@ -25,7 +28,10 @@
   sources: [ records-44-usc-3101, nara-grs ]
   applicabilityNotes: Shared across missions. Schedules for mission-specific records are approved for each agency; the General Records Schedules cover records common to many.
   satisfies: [ document-decisions, follow-records-schedules ]
-  candidate_pattern: [ records-aware-collaboration ]
+  candidate_pattern:
+    - to: records-aware-collaboration
+      coverage: partial
+      note: Retention labels keep documents and messages on schedule. Records in case and other business systems need their schedules applied there.
 
 - id: security-logging-monitoring
   title: Security Logging & Monitoring
@@ -45,4 +51,8 @@
     - track-deadlines
     - keep-case-file
     - report-on-caseload
-  candidate_pattern: [ shared-case-platform, letters-from-case-data ]
+  candidate_pattern:
+    - shared-case-platform
+    - to: letters-from-case-data
+      coverage: partial
+      note: Only the correspondence. The cases themselves are tracked elsewhere.

@@ -26,6 +26,9 @@
       - Platform administrators can often see every office’s data unless permissions and administration are set up to prevent it
       - Specialized rules, such as deadlines counted in working days, may need custom work that’s costly to keep up
       - Upgrades and licensing are decided for the whole agency, not for the office
+  depends_on:
+    - to: agency-sign-on
+      note: Staff sign in through the agency, and access follows its role groups.
 
 - id: agency-sign-on
   title: Agency Sign-On with Phishing-Resistant Authentication
@@ -77,6 +80,7 @@
       - Labels only help if they’re applied, so defaults and automatic labeling matter
       - Chat and meeting recordings can be records too, which surprises people
       - Work kept here and in a business application needs one answer to which copy is the record
+  depends_on: [ agency-sign-on ]
 
 - id: letters-from-case-data
   title: Letters and Notices from Case Data
@@ -100,3 +104,6 @@
     watchFor:
       - Templates need an owner to keep them current when the law or policy changes
       - A filled-in letter still needs a person to read it before it goes out
+  works_with:
+    - to: shared-case-platform
+      note: Fills templates from the case record and saves what’s sent back to it.

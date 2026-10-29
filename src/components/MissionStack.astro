@@ -40,8 +40,8 @@ const solutionRows = solutions.map((s) => {
   const coverage = s.coverage.find((c) => c.mission.package === (outcomes[0]?.outcome.package ?? capabilities[0]?.capability.package));
   const included = patterns.filter((p) => s.patterns.includes(p));
   for (const p of included) link(s.solution.id, p.id);
-  for (const c of coverage?.covered ?? []) link(s.solution.id, c.id);
-  return { ...s, included, covered: coverage?.covered ?? [], uncovered: coverage?.uncovered ?? [] };
+  for (const c of [...(coverage?.covered ?? []), ...(coverage?.partly ?? [])]) link(s.solution.id, c.id);
+  return { ...s, included, covered: [...(coverage?.covered ?? []), ...(coverage?.partly ?? [])], uncovered: coverage?.uncovered ?? [] };
 });
 // What each requirement and pattern belongs to.
 const satisfiedBy = (id: string) => capabilities.filter((c) => c.requirements.some((r) => r.id === id)).map((c) => c.capability);

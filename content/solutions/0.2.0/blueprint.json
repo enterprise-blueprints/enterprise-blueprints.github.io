@@ -1,0 +1,383 @@
+{
+  "schemaVersion": "0.3.0",
+  "packageId": "org.enterprise-blueprints.solutions",
+  "version": "0.2.0",
+  "title": "Example Solutions — Patterns Combined Across an Agency",
+  "description": "Example solutions that combine implementation patterns from the mission packages and Common Capabilities to support an agency with an Office of Inspector General and a FOIA program: one built on the agency’s shared platform, one with purpose-built systems for each office, and one in between.",
+  "publisher": {
+    "name": "Enterprise Blueprints (independent reference project)",
+    "url": "https://enterprise-blueprints.github.io"
+  },
+  "license": "MIT",
+  "publishedAt": "2026-10-29",
+  "domain": "public-sector",
+  "jurisdictions": [
+    "United States — federal agencies"
+  ],
+  "tags": [
+    "solutions",
+    "implementation-patterns",
+    "reference-architecture"
+  ],
+  "dependencies": [
+    {
+      "packageId": "org.enterprise-blueprints.common",
+      "version": "0.4.0"
+    },
+    {
+      "packageId": "org.enterprise-blueprints.federal-oig",
+      "version": "0.5.0"
+    },
+    {
+      "packageId": "org.enterprise-blueprints.federal-foia",
+      "version": "0.3.0"
+    }
+  ],
+  "elements": [
+    {
+      "id": "eb:solution:agency-shared-platform",
+      "type": "solution",
+      "title": "Agency Shared Platform",
+      "description": "An example solution: the OIG and the FOIA office both track their work on the agency’s shared case platform, each with its own case types and its own administration. The OIG adds a confidential hotline and audit management, the FOIA office adds a review tool, eDiscovery search, and the national portal, and everyone signs in the same way.",
+      "status": "reference",
+      "attributes": {
+        "fitsWhen": [
+          "The agency’s platform team can support several offices",
+          "Keeping licenses, skills, and security approvals in one place matters more than a close fit for each office",
+          "The offices’ work is fairly standard"
+        ],
+        "watchFor": [
+          "The OIG’s independence depends on keeping its administration and access apart from the agency’s",
+          "FOIA’s working-day deadlines and the OIG’s evidence handling need building on the platform",
+          "One platform’s upgrades and outages affect every office at once"
+        ]
+      }
+    },
+    {
+      "id": "eb:solution:purpose-built-systems",
+      "type": "solution",
+      "title": "Purpose-Built Systems for Each Office",
+      "description": "An example solution: the OIG and the FOIA office each run a product made for their work, and share only the agency’s sign-on. Each product brings its own intake, reporting, and publishing, so each office can change its own system on its own schedule.",
+      "status": "reference",
+      "attributes": {
+        "fitsWhen": [
+          "The offices’ work is specialized, such as investigations with evidence, or high volumes of FOIA requests",
+          "The OIG needs a system the agency doesn’t administer",
+          "There’s budget for more than one product, and administrators in each office"
+        ],
+        "watchFor": [
+          "More products to buy, secure, and keep up",
+          "Reporting across offices means pulling from several systems",
+          "Each product’s data needs its own records schedule and exports"
+        ]
+      }
+    },
+    {
+      "id": "eb:solution:dedicated-oversight-shared-foia",
+      "type": "solution",
+      "title": "Dedicated Oversight System, Shared Platform for FOIA",
+      "description": "An example solution: the OIG runs its own oversight case product, kept apart from the agency’s systems, while the FOIA office tracks requests on the agency’s shared platform with a separate review tool. Both sign in through the agency.",
+      "status": "reference",
+      "attributes": {
+        "fitsWhen": [
+          "The OIG’s independence calls for its own system, but the FOIA office is well served by the agency’s platform",
+          "The agency wants to limit the number of products without putting the OIG on a shared system"
+        ],
+        "watchFor": [
+          "Two ways of tracking work to support",
+          "The FOIA office depends on the platform team for changes, such as new deadline rules"
+        ]
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "rel:agency-shared-platform-includes-agency-sign-on",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:agency-sign-on",
+      "description": "Every system signs in through it."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-shared-case-platform",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:shared-case-platform",
+      "description": "The one platform both offices track their work on, with the OIG’s administration kept apart."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-confidential-hotline-intake",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:confidential-hotline-intake",
+      "description": "Feeds the OIG’s intake queue on the platform."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-shared-recommendation-tracker",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:shared-recommendation-tracker",
+      "description": "Built on the same platform, with agency officials given limited access."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-audit-management-system",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:audit-management-system",
+      "description": "A product of its own, since work papers need more than case tracking."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-oversight-reporting-from-source-data",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:oversight-reporting-from-source-data",
+      "description": "Draws on the platform and the audit product."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-foia-tracking-with-review-tool",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:foia-tracking-with-review-tool",
+      "description": "FOIA tracking on the platform, with a separate review tool."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-ediscovery-search-review",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:ediscovery-search-review",
+      "description": "For requests that ask for email."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-national-portal-api",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:national-portal-api",
+      "description": "Delivers portal requests into the platform."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-foia-library-publishing",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:foia-library-publishing",
+      "description": "Publishes releases from the review tool."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-records-aware-collaboration",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "Where staff in both offices draft and collaborate, with records and sensitivity labels applied."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-letters-from-case-data",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:letters-from-case-data",
+      "description": "Built on the shared platform, so letters come from the same case data."
+    },
+    {
+      "id": "rel:agency-shared-platform-supports-independent-government-oversight",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "supports",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:agency-shared-platform-supports-public-access-to-agency-records",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "supports",
+      "to": "eb:mission:public-access-to-agency-records"
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-agency-sign-on",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:agency-sign-on",
+      "description": "The one thing the offices share."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-oversight-intake-case-tracking",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:oversight-intake-case-tracking",
+      "description": "The OIG’s system for intake and investigations."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-confidential-hotline-intake",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:confidential-hotline-intake",
+      "description": "Often part of the oversight case product."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-audit-management-system",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:audit-management-system",
+      "description": "The OIG’s system for audits, inspections, and evaluations."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-shared-recommendation-tracker",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:shared-recommendation-tracker",
+      "description": "Can be a module of the audit product."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-oversight-reporting-from-source-data",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:oversight-reporting-from-source-data",
+      "description": "Draws on the case and audit products."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-foia-request-processing",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:foia-request-processing",
+      "description": "The FOIA office’s system, from request to release."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-national-portal-api",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:national-portal-api",
+      "description": "Delivers portal requests into the FOIA product."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-ediscovery-search-review",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:ediscovery-search-review",
+      "description": "For large email collections the FOIA product can’t handle well."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-foia-library-publishing",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:foia-library-publishing",
+      "description": "Often part of the FOIA product."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-records-aware-collaboration",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "The agency’s workspace for drafting and collaboration, outside each office’s product."
+    },
+    {
+      "id": "rel:purpose-built-systems-supports-independent-government-oversight",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "supports",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:purpose-built-systems-supports-public-access-to-agency-records",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "supports",
+      "to": "eb:mission:public-access-to-agency-records"
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-agency-sign-on",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:agency-sign-on",
+      "description": "Both offices sign in through it."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-oversight-intake-case-tracking",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:oversight-intake-case-tracking",
+      "description": "The OIG’s own system, administered by the OIG."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-confidential-hotline-intake",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:confidential-hotline-intake",
+      "description": "Feeds the OIG’s case product."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-audit-management-system",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:audit-management-system",
+      "description": "The OIG’s system for audits, inspections, and evaluations."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-shared-recommendation-tracker",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:shared-recommendation-tracker",
+      "description": "Owned by the OIG, with agency officials given limited access."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-oversight-reporting-from-source-data",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:oversight-reporting-from-source-data",
+      "description": "Draws on the OIG’s systems."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-shared-case-platform",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:shared-case-platform",
+      "description": "Where the FOIA office tracks requests."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-foia-tracking-with-review-tool",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:foia-tracking-with-review-tool",
+      "description": "FOIA tracking on the platform, with a separate review tool."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-national-portal-api",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:national-portal-api",
+      "description": "Delivers portal requests into the platform."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-ediscovery-search-review",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:ediscovery-search-review",
+      "description": "For requests that ask for email."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-foia-library-publishing",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:foia-library-publishing",
+      "description": "Publishes releases from the review tool."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-records-aware-collaboration",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "Where staff in both offices draft and collaborate, with records and sensitivity labels applied."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-letters-from-case-data",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:letters-from-case-data",
+      "description": "For the FOIA office’s letters, from the request data on the platform."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-supports-independent-government-oversight",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "supports",
+      "to": "eb:mission:independent-government-oversight"
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-supports-public-access-to-agency-records",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "supports",
+      "to": "eb:mission:public-access-to-agency-records"
+    }
+  ]
+}

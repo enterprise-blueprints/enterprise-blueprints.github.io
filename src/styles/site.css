@@ -360,6 +360,9 @@ td.muted { color: var(--text-muted); }
 .notice { padding: 1rem 1.25rem; margin-bottom: 1.75rem; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius-sm); background: var(--accent-soft); }
 .notice p:last-child { margin: 0; }
 
+/* A candidate pattern that covers only part of a capability. */
+.partial-badge { display: inline-block; font-size: .75rem; font-weight: 600; color: var(--text); padding: .05rem .5rem; border-radius: 999px; border: 1px dashed var(--warning-border); background: var(--warning-bg); }
+
 .section { margin-top: 2.5rem; }
 .section:first-child { margin-top: 0; }
 .section > h2 { padding-bottom: .5rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }

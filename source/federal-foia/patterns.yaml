@@ -50,6 +50,9 @@
       - The handoff between the tools is where requests stall or records go missing
       - Deadline rules, such as pausing the clock, must be built and kept up to date
       - Two tools to authorize, secure, and train people on
+  depends_on:
+    - to: shared-case-platform
+      note: The tracking half is the shared platform, set up for FOIA.
 
 - id: ediscovery-search-review
   title: Email Search with eDiscovery Tools
@@ -75,6 +78,11 @@
       - Searches can wait in IT’s queue for a long time
       - For a single known record, asking the person who keeps it is faster
       - Threading and deduplication need checking, since copies still slip through
+  works_with:
+    - to: foia-tracking-with-review-tool
+      note: Sends what it finds to the review tool.
+    - to: foia-request-processing
+      note: Sends what it finds to the product’s review workspace.
 
 - id: national-portal-api
   title: Requests from the National Portal by API
@@ -99,6 +107,10 @@
     watchFor:
       - Changes to the portal’s API need following
       - Each component’s routing must match how FOIA.gov lists it
+  works_with:
+    - foia-request-processing
+    - to: foia-tracking-with-review-tool
+      note: The connection is built on the shared platform’s side.
 
 - id: foia-library-publishing
   title: FOIA Library Publishing
@@ -123,3 +135,6 @@
       - Records released to people about themselves must never be posted
       - Making older scanned records accessible takes effort
       - Posted records still follow a records schedule
+  works_with:
+    - to: foia-tracking-with-review-tool
+      note: Releases come from the review tool with their request details.

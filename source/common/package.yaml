@@ -1,6 +1,6 @@
 # The package itself. Its version and date are set when it is built (pnpm content:build).
 
-schemaVersion: 0.2.0
+schemaVersion: 0.3.0
 packageId: org.enterprise-blueprints.common
 title: Common Capabilities — Shared Across Missions
 description: "Capabilities nearly every public organization relies on, whatever its mission: identity and access, data protection and privacy, records, security logging, and case management, with their reference requirements, example patterns for case management and sign-on, and a short discovery question set. Mission packages build on this one."

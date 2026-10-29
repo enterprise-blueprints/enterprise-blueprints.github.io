@@ -21,6 +21,8 @@ export interface RelationGroup {
   /** Distinct notes on the relations in this group. */
   notes: string[];
   elements: LibraryElement[];
+  /** What each link says, by the element at its other end: its note, and whether it covers only part of a capability. */
+  links: Map<string, { note?: string; partial: boolean }>;
 }
 
 /** A package version as stored: its folder under content/, its exact text, and its data. */
@@ -145,21 +147,40 @@ function scopeOf(pkg: BlueprintPackage): BlueprintPackage[] {
   return [pkg, ...packages.filter((p) => pkg.dependencies?.some((d) => d.packageId === p.packageId))];
 }
 
-/** An element's relationships, grouped by predicate and direction. */
+/**
+ * An element's relationships, grouped by predicate and direction. A
+ * relationship that reads the same both ways, such as "works well with", is
+ * one group.
+ */
 export function relationGroups(element: LibraryElement): RelationGroup[] {
   const groups: RelationGroup[] = [];
   for (const [name, info] of Object.entries(predicates)) {
     for (const direction of ['outgoing', 'incoming'] as const) {
       const rels = relationsOf(element, name, direction);
       if (!rels.length) continue;
+      const others = related(element, name, direction);
+      const links = new Map(rels.map((r, i) => [others[i].id, { ...(r.description && { note: r.description }), partial: r.coverage === 'partial' }]));
+      const same = groups.find((g) => g.heading === info[direction]);
+      if (same) {
+        same.elements.push(...others.filter((e) => !same.links.has(e.id)));
+        for (const [id, l] of links) if (!same.links.has(id)) same.links.set(id, l);
+        same.notes = [...new Set([...same.notes, ...rels.flatMap((r) => (r.description ? [r.description] : []))])];
+        continue;
+      }
       groups.push({
         heading: info[direction],
         notes: [...new Set(rels.flatMap((r) => (r.description ? [r.description] : [])))],
-        elements: related(element, name, direction),
+        elements: others,
+        links,
       });
     }
   }
   return groups;
+}
+
+/** Whether a candidate pattern covers only part of a capability. */
+export function coversPartly(capability: LibraryElement, pattern: LibraryElement): boolean {
+  return relations.some((r) => r.from === capability.id && r.predicate === 'candidate_pattern' && r.to === pattern.id && r.coverage === 'partial');
 }
 
 export interface MissionBlueprint {
@@ -263,8 +284,13 @@ export interface SolutionView {
   /** Its patterns by role, each with what the solution says about it. */
   roles: RoleGroup<{ pattern: LibraryElement; note?: string }>[];
   patterns: LibraryElement[];
-  /** For each mission it supports, which of the mission's capabilities its patterns cover. */
-  coverage: { mission: LibraryElement; covered: LibraryElement[]; uncovered: LibraryElement[] }[];
+  /**
+   * For each mission it supports, which of the mission's capabilities its
+   * patterns cover: fully, only partly, or not at all.
+   */
+  coverage: { mission: LibraryElement; covered: LibraryElement[]; partly: LibraryElement[]; uncovered: LibraryElement[] }[];
+  /** Patterns its patterns need that it doesn't include. */
+  missing: { pattern: LibraryElement; neededBy: LibraryElement[] }[];
 }
 
 /** A solution: its patterns by role, the missions it supports, and what it covers for each. */
@@ -281,9 +307,18 @@ export function solutionView(solution: LibraryElement): SolutionView {
     ),
     coverage: missions.map((mission) => {
       const caps = missionBlueprint(mission).capabilities;
-      const covers = (c: (typeof caps)[number]) => c.patterns.some((p) => patterns.includes(p));
-      return { mission, covered: caps.filter(covers).map((c) => c.capability), uncovered: caps.filter((c) => !covers(c)).map((c) => c.capability) };
+      const used = (c: (typeof caps)[number]) => c.patterns.filter((p) => patterns.includes(p));
+      const full = (c: (typeof caps)[number]) => used(c).some((p) => !coversPartly(c.capability, p));
+      return {
+        mission,
+        covered: caps.filter(full).map((c) => c.capability),
+        partly: caps.filter((c) => !full(c) && used(c).length).map((c) => c.capability),
+        uncovered: caps.filter((c) => !used(c).length).map((c) => c.capability),
+      };
     }),
+    missing: [...new Set(patterns.flatMap((p) => related(p, 'depends_on', 'outgoing')))]
+      .filter((p) => !patterns.includes(p))
+      .map((pattern) => ({ pattern, neededBy: patterns.filter((p) => related(p, 'depends_on', 'outgoing').includes(pattern)) })),
   };
 }
 

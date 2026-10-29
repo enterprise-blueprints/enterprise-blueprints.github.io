@@ -3,18 +3,22 @@ import { describe, expect, it } from 'vitest';
 import { validatePackage, type BlueprintPackage, type Resolve } from '../src/lib/package';
 
 const read = (path: string): BlueprintPackage => JSON.parse(readFileSync(path, 'utf8'));
-const original = read('content/federal-oig/0.4.0/blueprint.json');
-const common = read('content/common/0.3.0/blueprint.json');
-const foia = read('content/federal-foia/0.2.0/blueprint.json');
+const original = read('content/federal-oig/0.5.0/blueprint.json');
+const common = read('content/common/0.4.0/blueprint.json');
+const foia = read('content/federal-foia/0.3.0/blueprint.json');
+const solutions = read('content/solutions/0.2.0/blueprint.json');
 // Published versions, which never change.
+const oig040 = read('content/federal-oig/0.4.0/blueprint.json');
+const common030 = read('content/common/0.3.0/blueprint.json');
+const foia020 = read('content/federal-foia/0.2.0/blueprint.json');
+const solutions010 = read('content/solutions/0.1.0/blueprint.json');
 const oig010 = read('content/federal-oig/0.1.0/blueprint.json');
 const oig020 = read('content/federal-oig/0.2.0/blueprint.json');
 const oig030 = read('content/federal-oig/0.3.0/blueprint.json');
 const common010 = read('content/common/0.1.0/blueprint.json');
 const common020 = read('content/common/0.2.0/blueprint.json');
 const foia010 = read('content/federal-foia/0.1.0/blueprint.json');
-const solutions = read('content/solutions/0.1.0/blueprint.json');
-const all = [original, common, foia, solutions, oig010, oig020, oig030, common010, common020, foia010];
+const all = [original, common, foia, solutions, oig010, oig020, oig030, oig040, common010, common020, common030, foia010, foia020, solutions010];
 const resolve: Resolve = (id, version) => all.find((p) => p.packageId === id && p.version === version);
 const missions = [original, foia];
 
@@ -39,9 +43,8 @@ describe('validatePackage', () => {
 
   it('accepts the published versions as they were', () => {
     expect(validatePackage(oig010)).toEqual([]);
-    for (const pkg of [oig020, oig030, foia010]) expect(validatePackage(pkg, resolve), pkg.version).toEqual([]);
-    expect(validatePackage(common010)).toEqual([]);
-    expect(validatePackage(common020)).toEqual([]);
+    for (const pkg of [oig020, oig030, oig040, foia010, foia020, solutions010]) expect(validatePackage(pkg, resolve), `${pkg.packageId} ${pkg.version}`).toEqual([]);
+    for (const pkg of [common010, common020, common030]) expect(validatePackage(pkg), pkg.version).toEqual([]);
   });
 
   it('has one mission, five capabilities, ten requirements, and five patterns in the OIG package', () => {
@@ -75,15 +78,30 @@ describe('validatePackage', () => {
     ['an unknown predicate', (p) => (p.relations[0].predicate = 'owns'), 'unknown predicate "owns"'],
     ['a predicate between the wrong types', (p) => (p.relations[0].to = pattern), '"seeks" can\'t link mission'],
     ['a repeated relationship', (p) => p.relations.push({ ...p.relations[0], id: 'rel:copy' }), 'repeats'],
-    ['an unknown schema version', (p) => ((p as { schemaVersion: string }).schemaVersion = '9.0.0'), 'schemaVersion should be one of 0.1.0, 0.2.0'],
+    ['an unknown schema version', (p) => ((p as { schemaVersion: string }).schemaVersion = '9.0.0'), 'schemaVersion should be one of 0.1.0, 0.2.0, 0.3.0'],
     ['dependencies under schema 0.1.0', (p) => (p.schemaVersion = '0.1.0'), 'must NOT have additional properties'],
-    ['a pattern with an unknown approach', (p) => (patternOf(p).attributes!.approach = 'outsource'), 'unknown approach "outsource"'],
-    ['a pattern with an empty list', (p) => (patternOf(p).attributes!.watchFor = []), 'needs watchFor to be a list of statements'],
-    ['a pattern with a list that isn’t statements', (p) => (patternOf(p).attributes!.parts = 'a database'), 'needs parts to be a list of statements'],
-    ['a pattern with an unknown role', (p) => (patternOf(p).attributes!.role = 'middleware'), 'unknown role "middleware"'],
+    ['a pattern with an unknown approach', (p) => (patternOf(p).attributes!.approach = 'outsource'), '/attributes/approach must be equal to one of the allowed values'],
+    ['a pattern with an empty list', (p) => (patternOf(p).attributes!.watchFor = []), '/attributes/watchFor must NOT have fewer than 1 items'],
+    ['a pattern with a list that isn’t statements', (p) => (patternOf(p).attributes!.parts = 'a database'), '/attributes/parts must be array'],
+    ['a pattern with an unknown role', (p) => (patternOf(p).attributes!.role = 'middleware'), '/attributes/role must be equal to one of the allowed values'],
+    ['a pattern without a role, under schema 0.3.0', (p) => delete patternOf(p).attributes!.role, "must have required property 'role'"],
+    ['a pattern with a field of its own, under schema 0.3.0', (p) => (patternOf(p).attributes!.vendor = 'Acme'), 'must NOT have additional properties'],
+    ['coverage on a link that isn’t a candidate pattern', (p) => (p.relations[0].coverage = 'partial'), 'only a candidate pattern has coverage'],
+    ['coverage that isn’t full or partial', (p) => ((p.relations[0] as { coverage?: string }).coverage = 'most'), 'must be equal to one of the allowed values'],
+    ['a pattern that works with itself', (p) => p.relations.push({ id: 'rel:self', from: pattern, predicate: 'works_with', to: pattern }), `links ${pattern} to itself`],
   ])('rejects %s', (_, change, message) => {
     const errors = validatePackage(broken(change), resolve);
     expect(errors.join('\n')).toContain(message);
+  });
+
+  it.each<[string, (a: Record<string, unknown>) => void, string]>([
+    ['an unknown approach', (a) => (a.approach = 'outsource'), 'unknown approach "outsource"'],
+    ['an unknown role', (a) => (a.role = 'middleware'), 'unknown role "middleware"'],
+    ['a list that isn’t statements', (a) => (a.parts = 'a database'), 'needs parts to be a list of statements'],
+  ])('checks a pattern’s fields in a 0.2.0 package too: %s', (_, change, message) => {
+    const pkg = structuredClone(oig040);
+    change(pkg.elements.find((e) => e.id === pattern)!.attributes!);
+    expect(validatePackage(pkg, resolve).join('\n')).toContain(message);
   });
 
   it('reports every problem, not just the first', () => {
@@ -151,7 +169,7 @@ describe('example solutions', () => {
 
   it('build on both missions and the common package, and validate', () => {
     expect(validatePackage(solutions, resolve)).toEqual([]);
-    expect(solutions.dependencies!.map((d) => `${d.packageId.split('.').at(-1)} ${d.version}`)).toEqual(['common 0.3.0', 'federal-oig 0.4.0', 'federal-foia 0.2.0']);
+    expect(solutions.dependencies!.map((d) => `${d.packageId.split('.').at(-1)} ${d.version}`)).toEqual(['common 0.4.0', 'federal-oig 0.5.0', 'federal-foia 0.3.0']);
   });
 
   it('each support both missions, with sign-on and business applications, and say why each pattern is there', () => {
@@ -297,7 +315,7 @@ describe('versions', () => {
   });
 
   it('add patterns in OIG 0.4.0, FOIA 0.2.0, and common 0.3.0, and keep everything else', () => {
-    for (const [before, after] of [[oig030, original], [foia010, foia], [common020, common]] as const) {
+    for (const [before, after] of [[oig030, oig040], [foia010, foia020], [common020, common030]] as const) {
       const isPattern = (e: { type: string }) => e.type === 'implementationPattern';
       for (const e of before.elements.filter((e) => !isPattern(e))) expect(after.elements, after.packageId).toContainEqual(e);
       const added = after.elements.filter((e) => !before.elements.some((b) => b.id === e.id));
@@ -306,6 +324,21 @@ describe('versions', () => {
       const newRelations = after.relations.filter((r) => !before.relations.some((b) => b.id === r.id));
       expect(new Set(newRelations.map((r) => r.predicate)), after.packageId).toEqual(new Set(['candidate_pattern']));
       expect(after.sources!.slice(0, before.sources!.length)).toEqual(before.sources);
+    }
+  });
+
+  it('mark partial coverage and connect patterns in schema 0.3.0, and keep everything else', () => {
+    for (const [before, after] of [[oig040, original], [foia020, foia], [common030, common]] as const) {
+      expect(after.schemaVersion).toBe('0.3.0');
+      for (const e of before.elements) expect(after.elements, after.packageId).toContainEqual(e);
+      for (const r of before.relations) {
+        const now = after.relations.find((x) => x.id === r.id);
+        // A candidate pattern can say it covers only part of a capability, and why.
+        if (r.predicate === 'candidate_pattern') expect({ ...now, coverage: undefined, description: r.description }, r.id).toEqual({ ...r, coverage: undefined });
+        else expect(now, r.id).toEqual(r);
+      }
+      const added = after.relations.filter((r) => !before.relations.some((b) => b.id === r.id));
+      expect(added.every((r) => r.predicate === 'depends_on' || r.predicate === 'works_with'), after.packageId).toBe(true);
     }
   });
 

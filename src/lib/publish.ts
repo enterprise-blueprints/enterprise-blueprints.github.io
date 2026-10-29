@@ -7,13 +7,14 @@
 import { createHash } from 'node:crypto';
 import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json?raw';
 import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json?raw';
+import schema030 from '../../schemas/blueprint-package-0.3.0.schema.json?raw';
 import { packageFiles, type PackageFile } from './library';
 import type { BlueprintPackage } from './package';
 import { href } from './paths';
 import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, sourceKinds, statuses } from './vocabulary';
 
 /** Every schema version stays published, so packages that use an older one still validate. Newest last. */
-export const schemas = [schema010, schema020].map((text) => {
+export const schemas = [schema010, schema020, schema030].map((text) => {
   const version: string = JSON.parse(text).properties.schemaVersion.const;
   return { version, text, path: `schemas/blueprint-package-${version}.schema.json` };
 });

@@ -16,9 +16,12 @@
   candidate_pattern:
     - foia-request-processing
     - foia-tracking-with-review-tool
-    - national-portal-api
+    - to: national-portal-api
+      coverage: partial
+      note: Requests from FOIA.gov only. The agency’s own form, email, and mail come in another way.
     - to: shared-case-platform
-      note: Set up for FOIA’s tracks, working-day deadlines, and fee categories.
+      coverage: partial
+      note: Set up for FOIA’s tracks, working-day deadlines, and fee categories. Requests from FOIA.gov need a connection to the portal too.
 
 - id: records-search-collection
   title: Records Search & Collection
@@ -27,7 +30,11 @@
   applicabilityNotes: A search needs to be reasonably calculated to find the records asked for. What that takes depends on how and where the agency keeps its records.
   contributes_to: [ requests-answered-on-time, records-released-as-allowed ]
   satisfies: [ search-all-record-locations, document-search, deduplicate-records ]
-  candidate_pattern: [ foia-request-processing, ediscovery-search-review ]
+  candidate_pattern:
+    - to: foia-request-processing
+      coverage: partial
+      note: Collects what program offices send and sets duplicates aside. Searching mailboxes and other large collections usually takes other tools.
+    - ediscovery-search-review
 
 - id: records-review-redaction
   title: Review, Redaction & Consultation
@@ -44,7 +51,9 @@
   candidate_pattern:
     - foia-request-processing
     - foia-tracking-with-review-tool
-    - ediscovery-search-review
+    - to: ediscovery-search-review
+      coverage: partial
+      note: Sets duplicates aside and threads email before review. Redaction and consultation happen in the review tool.
 
 - id: response-release
   title: Response & Release
@@ -59,7 +68,8 @@
     - foia-request-processing
     - foia-tracking-with-review-tool
     - to: letters-from-case-data
-      note: Determination letters with the exemptions used and the requester’s appeal rights filled in.
+      coverage: partial
+      note: Determination letters with the exemptions used and the requester’s appeal rights filled in. Released records are delivered another way.
 
 - id: appeals-requester-assistance
   title: Appeals & Requester Assistance
@@ -83,7 +93,11 @@
   sources: [ foia-statute, doj-foia-guide, oip-chief-foia-officer-guidelines ]
   contributes_to: [ frequently-requested-posted, backlog-kept-small ]
   satisfies: [ spot-frequently-requested-records, keep-online-foia-library ]
-  candidate_pattern: [ foia-library-publishing, foia-request-processing ]
+  candidate_pattern:
+    - foia-library-publishing
+    - to: foia-request-processing
+      coverage: partial
+      note: Publishes releases and flags records requested 3 or more times. Final opinions, policy statements, and staff manuals are posted another way.
 
 - id: foia-reporting
   title: FOIA Reporting

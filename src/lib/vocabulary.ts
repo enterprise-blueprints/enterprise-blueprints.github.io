@@ -124,6 +124,20 @@ export const predicates: Record<string, PredicateInfo> = {
     outgoing: 'Missions it supports',
     incoming: 'Example solutions',
   },
+  // How patterns fit together, since schema 0.3.0: one can't work without
+  // the other, or the two are often used together.
+  depends_on: {
+    from: ['implementationPattern'],
+    to: ['implementationPattern'],
+    outgoing: 'Needs',
+    incoming: 'Needed by',
+  },
+  works_with: {
+    from: ['implementationPattern'],
+    to: ['implementationPattern'],
+    outgoing: 'Works well with',
+    incoming: 'Works well with',
+  },
 };
 
 // An implementation pattern describes itself in `attributes`, with these

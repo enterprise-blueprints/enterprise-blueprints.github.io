@@ -1,12 +1,15 @@
 // The Enterprise Blueprints package format and its validation: JSON Schema
 // first, then the reference checks a schema can't do. Schema 0.2.0 adds
-// dependencies, so a package can build on another one's elements; 0.1.0
-// packages stay valid as they were published.
+// dependencies, so a package can build on another one's elements. Schema
+// 0.3.0 gives patterns and solutions typed attributes, and lets a candidate
+// pattern say it only partly covers a capability. Packages stay valid under
+// the schema they were published with.
 
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json';
 import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json';
+import schema030 from '../../schemas/blueprint-package-0.3.0.schema.json';
 import { elementTypes, patternApproaches, patternFields, patternRoles, predicates } from './vocabulary';
 
 export interface Source {
@@ -38,6 +41,8 @@ export interface Relation {
   from: string;
   predicate: string;
   to: string;
+  /** For candidate_pattern, since schema 0.3.0: "partial" when the pattern covers only part of the capability. */
+  coverage?: 'full' | 'partial';
   description?: string;
   sourceIds?: string[];
 }
@@ -77,7 +82,7 @@ export interface Dependency {
 }
 
 export interface BlueprintPackage {
-  schemaVersion: '0.1.0' | '0.2.0';
+  schemaVersion: '0.1.0' | '0.2.0' | '0.3.0';
   packageId: string;
   version: string;
   title: string;
@@ -100,6 +105,7 @@ addFormats(ajv);
 const schemas = {
   '0.1.0': ajv.compile<BlueprintPackage>(schema010),
   '0.2.0': ajv.compile<BlueprintPackage>(schema020),
+  '0.3.0': ajv.compile<BlueprintPackage>(schema030),
 };
 export const schemaVersions = Object.keys(schemas) as (keyof typeof schemas)[];
 
@@ -188,6 +194,8 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
     for (const s of r.sourceIds ?? []) {
       if (!sourceIds.has(s)) errors.push(`relation ${r.id} cites unknown source ${s}`);
     }
+    if (r.coverage && r.predicate !== 'candidate_pattern') errors.push(`relation ${r.id}: only a candidate pattern has coverage`);
+    if (r.from === r.to) errors.push(`relation ${r.id} links ${r.from} to itself`);
     const edge = `${r.from} ${r.predicate} ${r.to}`;
     if (edges.has(edge)) errors.push(`relation ${r.id} repeats ${edge}`);
     edges.add(edge);
