@@ -1254,6 +1254,14 @@
       "description": "Where the product produces the agency’s award submission. Checking it and following up on subaward reporting often happen outside it."
     },
     {
+      "id": "rel:award-transparency-reporting-candidate-pattern-grants-shared-service",
+      "from": "eb:capability:award-transparency-reporting",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:grants-shared-service",
+      "coverage": "partial",
+      "description": "The provider usually submits the award data. The agency still checks it and follows up on subaward reporting."
+    },
+    {
       "id": "rel:grants-management-product-works-with-grants-gov-system-to-system",
       "from": "eb:implementationPattern:grants-management-product",
       "predicate": "works_with",
@@ -1324,6 +1332,20 @@
       "predicate": "candidate_pattern",
       "to": "eb:implementationPattern:grants-on-shared-platform",
       "description": "Each award tracked as a case on the platform, from application to closeout."
+    },
+    {
+      "id": "rel:case-management-candidate-pattern-grants-management-product",
+      "from": "eb:capability:case-management",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:grants-management-product",
+      "description": "Each award tracked in the product, from application to closeout."
+    },
+    {
+      "id": "rel:case-management-candidate-pattern-grants-shared-service",
+      "from": "eb:capability:case-management",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:grants-shared-service",
+      "description": "Each award tracked in the shared service’s system, from application to closeout."
     },
     {
       "id": "rel:records-management-contributes-to-audit-findings-resolved",

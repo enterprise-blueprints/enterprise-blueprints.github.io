@@ -112,3 +112,6 @@
     - to: grants-management-product
       coverage: partial
       note: Where the product produces the agency’s award submission. Checking it and following up on subaward reporting often happen outside it.
+    - to: grants-shared-service
+      coverage: partial
+      note: The provider usually submits the award data. The agency still checks it and follows up on subaward reporting.

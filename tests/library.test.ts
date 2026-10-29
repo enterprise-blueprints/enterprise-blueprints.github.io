@@ -97,8 +97,14 @@ describe('example solutions', () => {
     for (const s of solutionsFor(get('eb:mission:public-access-to-agency-records'))) expect(s.missing, slug(s.solution)).toEqual([]);
   });
 
-  it('are listed on both missions', () => {
-    for (const id of ['eb:mission:independent-government-oversight', 'eb:mission:public-access-to-agency-records']) {
+  it('leave no capability of any mission without a pattern', () => {
+    for (const s of solutionsFor(get('eb:mission:awarding-overseeing-federal-grants'))) {
+      for (const c of s.coverage) expect(c.uncovered.map(slug), `${slug(s.solution)} for ${slug(c.mission)}`).toEqual([]);
+    }
+  });
+
+  it('are listed on all three missions', () => {
+    for (const id of ['eb:mission:independent-government-oversight', 'eb:mission:public-access-to-agency-records', 'eb:mission:awarding-overseeing-federal-grants']) {
       expect(solutionsFor(get(id)).map((s) => slug(s.solution))).toEqual(['agency-shared-platform', 'purpose-built-systems', 'dedicated-oversight-shared-foia']);
     }
   });

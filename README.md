@@ -6,7 +6,7 @@ how it's going, and capabilities contribute to those outcomes. Three mission pac
 Offices of Inspector General, federal agencies' Freedom of Information Act programs, and federal grants
 management in general terms. Each builds on Common Capabilities, a package of the capabilities many
 missions rely on, such as identity and access, data protection, records, logging, and case management.
-Example Solutions combines patterns across the OIG and FOIA missions.
+Example Solutions combines patterns across all three missions.
 
 ## Develop
 

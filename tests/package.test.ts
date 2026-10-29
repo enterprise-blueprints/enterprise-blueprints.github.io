@@ -182,24 +182,25 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
 });
 
 describe('example solutions', () => {
-  const patterns = [original, common, foia].flatMap((p) => ofType(p, 'implementationPattern'));
+  const patterns = [original, common, foia, grants].flatMap((p) => ofType(p, 'implementationPattern'));
   const roleOf = (id: string) => patterns.find((p) => p.id === id)!.attributes!.role;
 
-  it('build on both missions and the common package, and validate', () => {
+  it('build on the three missions and the common package, and validate', () => {
     expect(validatePackage(solutions, resolve)).toEqual([]);
-    expect(solutions.dependencies!.map((d) => `${d.packageId.split('.').at(-1)} ${d.version}`)).toEqual(['common 0.4.0', 'federal-oig 0.5.0', 'federal-foia 0.3.0']);
+    expect(solutions.dependencies!.map((d) => `${d.packageId.split('.').at(-1)} ${d.version}`)).toEqual(['common 0.4.0', 'federal-oig 0.5.0', 'federal-foia 0.3.0', 'federal-grants 0.1.0']);
   });
 
-  it('each support both missions, with sign-on and business applications, and say why each pattern is there', () => {
+  it('each support all three missions, with sign-on and business applications, and say why each pattern is there', () => {
     for (const s of ofType(solutions, 'solution')) {
       const rels = solutions.relations.filter((r) => r.from === s.id);
       expect(rels.filter((r) => r.predicate === 'supports').map((r) => r.to).sort(), s.id).toEqual([
+        'eb:mission:awarding-overseeing-federal-grants',
         'eb:mission:independent-government-oversight',
         'eb:mission:public-access-to-agency-records',
       ]);
       const included = rels.filter((r) => r.predicate === 'includes');
       expect(included.map((r) => r.to), s.id).toContain('eb:implementationPattern:agency-sign-on');
-      expect(included.filter((r) => roleOf(r.to) === 'business-applications').length, s.id).toBeGreaterThanOrEqual(2);
+      expect(included.filter((r) => roleOf(r.to) === 'business-applications').length, s.id).toBeGreaterThanOrEqual(3);
       for (const r of included) expect(r.description, r.id).toBeTruthy();
       expect(Object.keys(s.attributes!).sort(), s.id).toEqual(['fitsWhen', 'watchFor']);
     }
