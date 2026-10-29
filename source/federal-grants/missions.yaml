@@ -1,0 +1,17 @@
+# Missions, in the order the pages show them, each with the links it holds.
+
+- id: awarding-overseeing-federal-grants
+  title: Awarding and Overseeing Federal Grants
+  description: "Award federal grants and cooperative agreements through fair, open competition to recipients able to manage them, pay them as their work needs funds, oversee how the money is used and what it achieves, resolve audit findings, close each award on time, and make the spending public."
+  sources: [ uniform-guidance ]
+  attributes:
+    sector: public-sector
+    scope: US-federal-grants
+  seeks:
+    - open-fair-competition
+    - awards-to-capable-recipients
+    - funds-used-as-allowed
+    - program-results-achieved
+    - audit-findings-resolved
+    - awards-closed-on-time
+    - spending-public

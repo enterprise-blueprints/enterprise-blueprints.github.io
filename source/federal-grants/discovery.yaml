@@ -1,0 +1,137 @@
+# Discovery question sets. Each group under "points" names the answers that point to
+# one or more elements, and why.
+
+- id: grants-results
+  title: Grants results discovery
+  description: Questions for the start of an engagement about which results matter most for the agency’s grant programs and how the office tells how it’s doing. They ask about the programs’ operations, never about individual awards, applicants, or recipients. Some answers point to outcomes and measures worth exploring.
+  questions:
+    - id: grants-priority-results
+      prompt: Which of these results matter most for this effort?
+      kind: multiple-choice
+      options:
+        - open-fair-competition: Funding is open to everyone eligible and fairly reviewed
+        - awards-to-capable-recipients: Awards go to eligible recipients able to manage them
+        - funds-used-as-allowed: Funds are paid as needed and used as the award allows
+        - program-results-achieved: Awards achieve what they were made for
+        - audit-findings-resolved: Audit findings are resolved promptly
+        - awards-closed-on-time: Awards are closed out on time
+        - spending-public: The spending is open to view
+      points:
+        - when: open-fair-competition
+          to: outcome:open-fair-competition
+          why: This effort is meant to advance this result.
+        - when: awards-to-capable-recipients
+          to: outcome:awards-to-capable-recipients
+          why: This effort is meant to advance this result.
+        - when: funds-used-as-allowed
+          to: outcome:funds-used-as-allowed
+          why: This effort is meant to advance this result.
+        - when: program-results-achieved
+          to: outcome:program-results-achieved
+          why: This effort is meant to advance this result.
+        - when: audit-findings-resolved
+          to: outcome:audit-findings-resolved
+          why: This effort is meant to advance this result.
+        - when: awards-closed-on-time
+          to: outcome:awards-closed-on-time
+          why: This effort is meant to advance this result.
+        - when: spending-public
+          to: outcome:spending-public
+          why: This effort is meant to advance this result.
+    - id: grants-tracked-measures
+      prompt: Which of these does the office track during the year?
+      kind: multiple-choice
+      options:
+        - reports-on-time: How many performance reports arrive on time
+        - management-decisions: How long audit findings wait for a management decision
+        - closeout: How many awards are closed within a year
+        - improper-payments: Improper payments found and recovered
+        - none: None of these regularly
+      points:
+        - when: reports-on-time
+          to: measure:performance-reports-on-time
+          why: The office tracks this already, so there may be a value for today.
+        - when: management-decisions
+          to: measure:management-decisions-on-time
+          why: The office tracks this already, so there may be a value for today.
+        - when: closeout
+          to: measure:awards-closed-within-a-year
+          why: The office tracks this already, so there may be a value for today.
+        - when: improper-payments
+          to: [ measure:improper-payment-rate, measure:improper-payments-recovered ]
+          why: The office tracks this already, so there may be a value for today.
+    - id: grants-expired-awards-known
+      prompt: Does the office know how many awards have ended but aren’t closed out?
+      kind: boolean
+      points:
+        - when: true
+          to: measure:expired-awards-open
+          why: The office knows this number, so there may be a value for today.
+        - when: false
+          to: [ measure:expired-awards-open, capability:award-closeout ]
+          why: Not knowing how many expired awards remain open often means closeout is falling behind.
+
+- id: grants-operations
+  title: Grants operations discovery
+  description: Questions about how the office runs its grant programs today, from announcements to closeout. They ask about the office’s tools and steps, never about individual awards, applicants, or recipients. Answers point to capabilities and example patterns worth exploring.
+  questions:
+    - id: grants-award-tracking
+      prompt: Where does the office track its awards today?
+      kind: single-choice
+      options:
+        - grants-product: A grants management product the agency runs
+        - shared-service: A grants system another agency runs as a shared service
+        - agency-platform: The agency’s shared case or low-code platform
+        - spreadsheets: Spreadsheets, email, and shared drives
+        - custom-system: A custom system built for the agency
+      points:
+        - when: [ spreadsheets, custom-system ]
+          to: [ implementationPattern:grants-management-product, implementationPattern:grants-shared-service, implementationPattern:grants-on-shared-platform ]
+          why: These are example ways to bring each award onto one record, from announcement to closeout.
+    - id: grants-application-intake
+      prompt: How do applications from Grants.gov reach the office’s system?
+      kind: single-choice
+      options:
+        - system-to-system: Automatically, through a system-to-system connection
+        - downloaded: Staff download them and enter or upload them by hand
+        - email: Applications come by email instead
+      points:
+        - when: [ downloaded, email ]
+          to: [ capability:funding-opportunities-applications, implementationPattern:grants-gov-system-to-system ]
+          why: Handling applications by hand takes time and risks missing some before the deadline.
+    - id: grants-risk-review
+      prompt: How does the office review an applicant’s risk before an award?
+      kind: single-choice
+      options:
+        - in-system: A standard review recorded in the grants system
+        - checklist: A checklist or spreadsheet kept with the award file
+        - varies: It varies by program or by person
+      points:
+        - when: [ checklist, varies ]
+          to: [ capability:risk-review-award, implementationPattern:grant-risk-analytics ]
+          why: A review that varies, or lives outside the system, is hard to show and hard to build on in monitoring.
+    - id: grants-payment-method
+      prompt: How are recipients paid?
+      kind: single-choice
+      options:
+        - asap: Through Treasury’s ASAP.gov
+        - other-federal: Through another federal payment system
+        - agency-process: Through the agency’s own payment process
+      points:
+        - when: agency-process
+          to: [ capability:payments-to-recipients, implementationPattern:payments-through-asap ]
+          why: A federal payment system can take on recipient banking details and drawdown controls.
+    - id: grants-audit-findings-tracked
+      prompt: Does the office track each single audit finding about its awards until it has a management decision and is corrected?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:audit-resolution-remedies, measure:management-decisions-on-time ]
+          why: Findings not tracked to a decision are where the six-month deadline slips.
+    - id: grants-usaspending-by-hand
+      prompt: Is the award data for USAspending.gov put together by hand?
+      kind: boolean
+      points:
+        - when: true
+          to: [ capability:award-transparency-reporting, implementationPattern:award-data-to-usaspending ]
+          why: Reporting by hand is slow and error-prone, and errors show up in public.

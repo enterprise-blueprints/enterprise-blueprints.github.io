@@ -1,0 +1,86 @@
+# The references this package cites. Elements and links name them by id.
+
+- id: uniform-guidance
+  title: 2 CFR Part 200 — Uniform Administrative Requirements, Cost Principles, and Audit Requirements for Federal Awards
+  url: https://www.ecfr.gov/current/title-2/subtitle-A/chapter-II/part-200
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: "The Uniform Guidance. Among much else: notices of funding opportunity posted on Grants.gov and generally open at least 60 days (§ 200.204), merit review (§ 200.205), review of applicants’ risk (§ 200.206), payment (§ 200.305), performance reporting no more often than quarterly and no less than annually (§ 200.329), remedies for noncompliance (§ 200.339), closeout (§ 200.344), the single audit for entities spending $1,000,000 or more a year (§ 200.501), and management decisions within six months (§ 200.521)."
+
+- id: award-reporting-2-cfr-170
+  title: 2 CFR Part 170 — Reporting Subaward and Executive Compensation Information
+  url: https://www.ecfr.gov/current/title-2/subtitle-A/chapter-I/part-170
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: The award term that has recipients report first-tier subawards of $30,000 or more no later than the end of the month after the subaward is made, under the Federal Funding Accountability and Transparency Act.
+
+- id: sam-registration-2-cfr-25
+  title: 2 CFR Part 25 — Unique Entity Identifier and System for Award Management
+  url: https://www.ecfr.gov/current/title-2/subtitle-A/chapter-I/part-25
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Applicants register in SAM.gov and have a Unique Entity Identifier before they apply, with limited exceptions, and keep their registration current while they hold an award.
+
+- id: payment-integrity-31-usc-3352
+  title: 31 U.S.C. § 3352 — Estimates of improper payments and reports on actions to reduce improper payments
+  url: https://www.govinfo.gov/link/uscode/31/3352?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Part of the Payment Integrity Information Act. Agencies review their programs at least once every 3 fiscal years for risk of significant improper payments, estimate them for programs at risk, and report the causes, corrective actions, and recoveries.
+
+- id: grants-gov
+  title: Grants.gov
+  url: https://www.grants.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Where agencies post funding opportunities and where most applicants find them and apply.
+
+- id: sam-gov
+  title: SAM.gov — System for Award Management
+  url: https://sam.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Entity registrations, exclusions, and responsibility and qualification records agencies check before an award. Since March 2025, recipients also report subawards here, after FSRS.gov was retired.
+
+- id: do-not-pay
+  title: U.S. Department of the Treasury, Bureau of the Fiscal Service — Do Not Pay
+  url: https://fiscal.treasury.gov/dnp/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: A free service that helps agencies check a recipient’s identity and eligibility before making an award or a payment.
+
+- id: asap-gov
+  title: U.S. Department of the Treasury, Bureau of the Fiscal Service — ASAP.gov
+  url: https://fiscal.treasury.gov/asap/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: The electronic system many agencies use to pay recipients, who draw down federal funds by requesting payments against the accounts agencies fund.
+
+- id: usaspending
+  title: USAspending.gov
+  url: https://www.usaspending.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: The official public source of federal spending data, including the financial assistance awards agencies report.
+
+- id: federal-audit-clearinghouse
+  title: Federal Audit Clearinghouse
+  url: https://www.fac.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Run by GSA, the place where single audits of federal award recipients are submitted, and where agencies and the public review them.
+
+- id: payment-accuracy
+  title: PaymentAccuracy.gov
+  url: https://www.paymentaccuracy.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Agencies’ reported improper payment rates, amounts, causes, and recoveries, by program.
+
+- id: gone-act
+  title: Public Law 114-117 — Grants Oversight and New Efficiency Act (GONE Act)
+  url: https://www.govinfo.gov/content/pkg/PLAW-114publ117/html/PLAW-114publ117.htm
+  kind: background
+  publicationDate: 2016-01-28
+  lastReviewedAt: 2026-10-29
+  note: Had agencies report grant awards that had expired for 2 years or more without being closed out, and why, and then report which they closed. It shows how expired awards can pile up.

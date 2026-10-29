@@ -2,10 +2,11 @@
 
 An independent, open reference library of public-sector missions, the capabilities they depend on, and
 example patterns that might realize them. A mission seeks outcomes, each with measures for telling
-how it's going, and capabilities contribute to those outcomes. Two mission packages describe U.S. federal
-Offices of Inspector General and federal agencies' Freedom of Information Act programs in general terms.
-Both build on Common Capabilities, a package of the capabilities many missions rely on, such as identity and
-access, data protection, records, logging, and case management.
+how it's going, and capabilities contribute to those outcomes. Three mission packages describe U.S. federal
+Offices of Inspector General, federal agencies' Freedom of Information Act programs, and federal grants
+management in general terms. Each builds on Common Capabilities, a package of the capabilities many
+missions rely on, such as identity and access, data protection, records, logging, and case management.
+Example Solutions combines patterns across the OIG and FOIA missions.
 
 ## Develop
 

@@ -7,6 +7,7 @@ const original = read('content/federal-oig/0.5.0/blueprint.json');
 const common = read('content/common/0.4.0/blueprint.json');
 const foia = read('content/federal-foia/0.3.0/blueprint.json');
 const solutions = read('content/solutions/0.2.0/blueprint.json');
+const grants = read('content/federal-grants/0.1.0/blueprint.json');
 // Published versions, which never change.
 const oig040 = read('content/federal-oig/0.4.0/blueprint.json');
 const common030 = read('content/common/0.3.0/blueprint.json');
@@ -18,7 +19,7 @@ const oig030 = read('content/federal-oig/0.3.0/blueprint.json');
 const common010 = read('content/common/0.1.0/blueprint.json');
 const common020 = read('content/common/0.2.0/blueprint.json');
 const foia010 = read('content/federal-foia/0.1.0/blueprint.json');
-const all = [original, common, foia, solutions, oig010, oig020, oig030, oig040, common010, common020, common030, foia010, foia020, solutions010];
+const all = [original, common, foia, solutions, grants, oig010, oig020, oig030, oig040, common010, common020, common030, foia010, foia020, solutions010];
 const resolve: Resolve = (id, version) => all.find((p) => p.packageId === id && p.version === version);
 const missions = [original, foia];
 
@@ -38,6 +39,7 @@ describe('validatePackage', () => {
   it('accepts the mission packages, which build on the common one', () => {
     expect(validatePackage(original, resolve)).toEqual([]);
     expect(validatePackage(foia, resolve)).toEqual([]);
+    expect(validatePackage(grants, resolve)).toEqual([]);
     expect(validatePackage(common)).toEqual([]);
   });
 
@@ -102,6 +104,22 @@ describe('validatePackage', () => {
     const pkg = structuredClone(oig040);
     change(pkg.elements.find((e) => e.id === pattern)!.attributes!);
     expect(validatePackage(pkg, resolve).join('\n')).toContain(message);
+  });
+
+  it('has one mission, seven outcomes, eight capabilities, sixteen requirements, and seven patterns in the grants package', () => {
+    const counts = Object.groupBy(grants.elements, (e) => e.type);
+    expect(counts.mission).toHaveLength(1);
+    expect(counts.outcome).toHaveLength(7);
+    expect(counts.capability).toHaveLength(8);
+    expect(counts.requirement).toHaveLength(16);
+    expect(counts.implementationPattern).toHaveLength(7);
+    expect(grants.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
+    // Every outcome has a measure, and every capability contributes to an outcome and has a candidate pattern.
+    for (const o of ofType(grants, 'outcome')) expect(grants.relations.some((r) => r.from === o.id && r.predicate === 'measured_by'), o.id).toBe(true);
+    for (const c of ofType(grants, 'capability')) {
+      expect(grants.relations.some((r) => r.from === c.id && r.predicate === 'contributes_to'), c.id).toBe(true);
+      expect(grants.relations.some((r) => r.from === c.id && r.predicate === 'candidate_pattern'), c.id).toBe(true);
+    }
   });
 
   it('reports every problem, not just the first', () => {
@@ -346,7 +364,7 @@ describe('versions', () => {
   });
 
   it('gives every capability its reference requirements, and every requirement one capability of its own package', () => {
-    for (const pkg of [original, common, foia]) {
+    for (const pkg of [original, common, foia, grants]) {
       const own = new Set(pkg.elements.map((e) => e.id));
       const satisfies = pkg.relations.filter((r) => r.predicate === 'satisfies' && own.has(r.from));
       for (const c of ofType(pkg, 'capability')) expect(satisfies.some((r) => r.from === c.id), c.id).toBe(true);

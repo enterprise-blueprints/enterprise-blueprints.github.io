@@ -1,0 +1,46 @@
+# Measures, in the order the pages show them, each with the links it holds.
+
+- id: opportunities-open-60-days
+  title: Funding opportunities open at least 60 days
+  description: The share of the year’s funding opportunities that stayed open for applications at least 60 calendar days, the period the Uniform Guidance generally expects.
+  sources: [ uniform-guidance, grants-gov ]
+
+- id: awards-with-risk-review
+  title: Awards with a documented risk review
+  description: The share of new awards whose file shows the eligibility, integrity, and risk checks done before the award, and any conditions they led to.
+  sources: [ uniform-guidance, sam-gov ]
+
+- id: improper-payment-rate
+  title: Improper payment rate
+  description: For programs at risk of significant improper payments, the estimated share of payments that were improper or couldn’t be verified. Agencies report it each year, and PaymentAccuracy.gov publishes it.
+  sources: [ payment-integrity-31-usc-3352, payment-accuracy ]
+
+- id: improper-payments-recovered
+  title: Improper payments recovered
+  description: The amount of identified overpayments recovered, compared with the amount identified for recovery.
+  sources: [ payment-integrity-31-usc-3352, payment-accuracy ]
+
+- id: performance-reports-on-time
+  title: Performance reports received on time
+  description: The share of required performance reports received by their due date, which is 30 days after a quarterly or semiannual period, or 90 days after an annual one.
+  sources: [ uniform-guidance ]
+
+- id: management-decisions-on-time
+  title: Management decisions within six months
+  description: The share of audit findings about the agency’s awards that got a management decision within six months of the Federal Audit Clearinghouse accepting the audit report.
+  sources: [ uniform-guidance, federal-audit-clearinghouse ]
+
+- id: awards-closed-within-a-year
+  title: Awards closed within a year
+  description: The share of awards whose period of performance ended that were closed out within one year.
+  sources: [ uniform-guidance ]
+
+- id: expired-awards-open
+  title: Expired awards not yet closed
+  description: The number of awards whose period of performance ended 2 years ago or more that are still open, and their undisbursed balances.
+  sources: [ gone-act ]
+
+- id: awards-published
+  title: Awards published on USAspending.gov
+  description: The share of the agency’s financial assistance awards that appear on USAspending.gov with complete, accurate data, and how soon after the award they appear.
+  sources: [ usaspending ]

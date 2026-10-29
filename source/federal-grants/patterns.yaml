@@ -1,0 +1,189 @@
+# Implementation patterns, in the order the pages show them, each with the links it holds.
+
+- id: grants-management-product
+  title: Grants Management Product
+  description: "An example architecture: a grants management product, configured for the agency’s programs, that carries each award from the funding announcement through applications, review, risk checks, award, payments, monitoring, and closeout, with a portal where recipients apply and report."
+  sources: [ uniform-guidance ]
+  attributes:
+    approach: product
+    role: business-applications
+    parts:
+      - Funding announcements prepared in the product and posted to Grants.gov
+      - Applications received from Grants.gov, with eligibility and completeness checks
+      - Reviewer assignments, conflict disclosures, and scoring against each notice’s criteria
+      - Risk reviews and award documents with standard terms and any specific conditions
+      - A recipient portal for reports, change requests, and closeout
+      - Monitoring plans, site visit records, and audit findings for each award
+      - The award data the agency reports to USAspending.gov
+    strengths:
+      - One record for each award, from announcement to closeout
+      - Built around the Uniform Guidance, so much of the process comes ready
+      - Recipients have one place to apply, report, and ask for changes
+    fitsWhen:
+      - The agency runs several grant programs with similar steps
+      - Its current tools are spreadsheets, email, or an aging custom system
+    watchFor:
+      - Programs with unusual rules, such as formula awards, may not fit the product’s standard steps
+      - Moving open awards from an old system mid-stream needs careful planning
+      - Connections to the agency’s financial system and payment system often take the most work
+  works_with:
+    - to: grants-gov-system-to-system
+      note: Applications arrive from Grants.gov through the product’s connection.
+    - to: payments-through-asap
+      note: Awards and their amounts feed the payment system’s accounts.
+    - to: grant-risk-analytics
+      note: Risk scores show in the product’s review and monitoring screens.
+
+- id: grants-shared-service
+  title: A Federal Grants Shared Service
+  description: "An example architecture: the agency uses a grants management system another federal agency runs as a shared service, configured for its programs, instead of running its own."
+  sources: [ uniform-guidance ]
+  attributes:
+    approach: product
+    role: business-applications
+    parts:
+      - The provider’s grants system, with the agency’s programs, forms, and workflows set up in it
+      - An agreement that sets the service, its costs, and who does what
+      - The provider’s connections to Grants.gov, payment systems, and USAspending.gov
+      - The agency’s own staff for programs, awards, and monitoring
+    strengths:
+      - The provider keeps the system current with federal rules and systems
+      - The agency doesn’t buy, host, or secure a system of its own
+      - Recipients may already know the system from other agencies’ awards
+    fitsWhen:
+      - The agency’s grant programs are small or few
+      - A shared service already serves programs like the agency’s
+    watchFor:
+      - Changes for the agency’s programs wait on the provider’s priorities
+      - Getting the agency’s data out, for reporting or a later move, needs agreeing up front
+      - Costs can grow with the number of awards and users
+
+- id: grants-on-shared-platform
+  title: Grants on the Agency’s Shared Platform
+  description: "An example architecture: grants management built on the agency’s shared case platform, with each application and award as a record that moves through review, award, monitoring, and closeout, and a portal for recipients."
+  sources: [ uniform-guidance ]
+  attributes:
+    approach: platform
+    role: business-applications
+    parts:
+      - Application and award records, with their status, dates, amounts, and documents
+      - Steps and approvals for review, risk checks, award, and closeout
+      - A recipient portal for reports and change requests
+      - A connection to Grants.gov for announcements and applications
+      - Reports on each program’s awards, monitoring, and closeout
+    strengths:
+      - Uses licenses, skills, and security approvals the agency already has
+      - Grants work can share a platform with the agency’s other case work
+      - Each program can change its steps by configuration
+    fitsWhen:
+      - The agency already runs a platform like this, with people who configure it
+      - Its programs are fairly simple, with few awards each
+    watchFor:
+      - Merit review, reporting forms, and the recipient portal often take more building than expected
+      - Federal reporting, such as to USAspending.gov, has to be built and kept up
+      - Rules change with the Uniform Guidance, and someone has to update the platform each time
+  depends_on:
+    - to: shared-case-platform
+      note: The award records and steps are the shared platform, set up for grants.
+
+- id: grants-gov-system-to-system
+  title: Applications from Grants.gov by System-to-System Connection
+  description: "An example architecture: the agency’s grants system connects to Grants.gov’s system-to-system service, so funding opportunities are posted and applications arrive as records with their forms and attachments, instead of being downloaded by hand."
+  sources: [ grants-gov, uniform-guidance ]
+  attributes:
+    approach: build
+    role: public-facing
+    parts:
+      - A connection in the agency’s grants system to Grants.gov’s system-to-system service
+      - Posting of funding opportunities from the grants system
+      - Retrieval of each application, with its forms and attachments, into an application record
+      - Status sent back to Grants.gov, so applicants can see where their application is
+      - Monitoring for applications that fail to arrive
+    strengths:
+      - No downloading and retyping of applications
+      - Applicants use the site most of them already know
+    fitsWhen:
+      - The agency runs its own grants system, product or built
+      - It gets many applications for each opportunity
+    watchFor:
+      - Changes to Grants.gov’s forms and service need following
+      - Applications that fail to arrive must be noticed before the deadline passes
+  works_with:
+    - grants-on-shared-platform
+
+- id: payments-through-asap
+  title: Payments through Treasury’s ASAP.gov
+  description: "An example architecture: the agency enrolls each recipient in ASAP.gov, funds an account for each award from its financial system, and recipients draw down funds as they need them, within the controls the agency sets."
+  sources: [ asap-gov, uniform-guidance ]
+  attributes:
+    approach: platform
+    role: processing
+    parts:
+      - Recipient enrollment in ASAP.gov, with their banking details kept by Treasury
+      - An account for each award, funded from the agency’s financial system as the award is obligated
+      - Controls the agency sets, such as review of requests over a set amount
+      - Drawdown data sent back to the agency’s financial and grants systems
+      - Suspension of an account when the award’s terms call for it
+    strengths:
+      - Treasury runs the payment system and holds recipients’ banking details
+      - Recipients draw funds as they need them, which keeps the time before they spend short
+      - Many recipients already use it for other agencies’ awards
+    fitsWhen:
+      - The agency pays recipients by advance or drawdown
+      - Its financial system can send obligations to ASAP.gov
+    watchFor:
+      - Drawdown data has to be reconciled with the agency’s financial and grants records
+      - Controls on requests need setting for each award, or large drawdowns go through unchecked
+  works_with:
+    - to: grant-risk-analytics
+      note: Drawdown patterns feed the risk analytics.
+
+- id: grant-risk-analytics
+  title: Grant Risk Analytics
+  description: "An example architecture: an analytics workspace that brings together SAM.gov and Do Not Pay results, single audit findings, past performance, and drawdown patterns for each applicant and recipient, and suggests where risk reviews and monitoring should look first, with the reasons."
+  sources: [ uniform-guidance, sam-gov, do-not-pay, federal-audit-clearinghouse ]
+  attributes:
+    approach: build
+    role: ai-insights
+    parts:
+      - Regular feeds from SAM.gov, Do Not Pay, the Federal Audit Clearinghouse, and the agency’s grants and payment systems
+      - A risk profile for each applicant and recipient, with the facts behind it
+      - Flags for patterns worth a closer look, such as late reports or large drawdowns near an award’s end
+      - Suggested monitoring priorities for the year, which program staff accept or change
+      - A record of what was flagged, what staff decided, and what came of it
+    strengths:
+      - Risk reviews start from the facts already known about an applicant
+      - Monitoring goes where the risk is, instead of being spread evenly
+      - Results show which risk signals are worth keeping
+    fitsWhen:
+      - The agency makes many awards, too many to monitor each one closely
+      - Its grants and payment data can be brought together regularly
+    watchFor:
+      - A flag isn’t a finding, so staff decide each award, condition, and monitoring step
+      - Risk scores can be unfair to new or small applicants with little history, so how they’re used needs care
+      - Combining data sets may need agreements, and privacy rules apply to information about individuals
+
+- id: award-data-to-usaspending
+  title: Award Data to USAspending.gov from the Grants System
+  description: "An example architecture: the grants system produces the agency’s financial assistance award data on a schedule, checks it against the agency’s financial records, and submits it for publication on USAspending.gov, with errors sent back to the staff who can fix them."
+  sources: [ usaspending, award-reporting-2-cfr-170 ]
+  attributes:
+    approach: build
+    role: processing
+    parts:
+      - An extract of new awards and changes from the grants system, on a schedule
+      - Checks against the agency’s financial records before each submission
+      - Submission for publication on USAspending.gov, with the results recorded
+      - A list of errors and missing data, sent to the staff who own each award
+      - A list of awards whose recipients haven’t reported subawards
+    strengths:
+      - Award data is reported on time without a manual scramble
+      - Errors are found and fixed at the source
+    fitsWhen:
+      - The agency’s grants system holds the award data, but reporting is manual today
+    watchFor:
+      - The data standard changes from time to time, and the extract has to follow
+      - Fixes made in the submission instead of the grants system come back next time
+  works_with:
+    - grants-management-product
+    - grants-on-shared-platform

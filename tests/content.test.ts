@@ -16,6 +16,7 @@ describe('the source files', () => {
     expect(steps.map((s) => [s.name, s.version, s.reason])).toEqual([
       ['common', '0.4.0', 'unchanged'],
       ['federal-foia', '0.3.0', 'unchanged'],
+      ['federal-grants', '0.1.0', 'unchanged'],
       ['federal-oig', '0.5.0', 'unchanged'],
       ['solutions', '0.2.0', 'unchanged'],
     ]);

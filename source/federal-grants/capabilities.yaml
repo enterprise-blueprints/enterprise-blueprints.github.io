@@ -1,0 +1,114 @@
+# Capabilities, in the order the pages show them, each with the links it holds.
+
+- id: funding-opportunities-applications
+  title: Funding Opportunities & Applications
+  description: Ability to announce each funding opportunity on Grants.gov with its goals, eligibility, criteria, and deadlines, receive applications through Grants.gov and any other allowed channel, and check each one for eligibility and completeness.
+  sources: [ uniform-guidance, grants-gov, sam-registration-2-cfr-25 ]
+  applicabilityNotes: Some programs are formula or mandatory awards with no competition; the program’s statute and regulations set who can apply and how.
+  contributes_to: [ open-fair-competition ]
+  satisfies: [ post-opportunities, check-applications ]
+  candidate_pattern:
+    - grants-management-product
+    - grants-shared-service
+    - grants-on-shared-platform
+    - to: grants-gov-system-to-system
+      coverage: partial
+      note: Brings applications in from Grants.gov. Announcements and eligibility checks happen in the grants system.
+
+- id: merit-review-selection
+  title: Merit Review & Selection
+  description: Ability to review discretionary applications on their merits against the written criteria the notice described, with reviewers free of conflicts of interest, and to record how each award decision was made.
+  sources: [ uniform-guidance ]
+  applicabilityNotes: Merit review applies to discretionary awards unless a statute says otherwise. Agencies set their own written standards for it.
+  contributes_to: [ open-fair-competition, program-results-achieved ]
+  satisfies: [ review-against-criteria, manage-reviewer-conflicts ]
+  candidate_pattern:
+    - grants-management-product
+    - grants-shared-service
+    - to: grants-on-shared-platform
+      coverage: partial
+      note: Assignments and scores can be tracked on the platform. Reviewer portals and conflict checks usually need building.
+
+- id: risk-review-award
+  title: Risk Review & Award
+  description: Ability to check each applicant’s eligibility, integrity, and risk before an award, using SAM.gov, Do Not Pay, and its financial stability, management systems, past performance, and audit findings, and to issue the award with its terms and any specific conditions.
+  sources: [ uniform-guidance, sam-gov, do-not-pay ]
+  applicabilityNotes: Checks of responsibility and qualification records in SAM.gov are required when the federal share is expected to exceed the simplified acquisition threshold. An agency can still award to an applicant that falls short if conditions can address the risk.
+  contributes_to: [ awards-to-capable-recipients, funds-used-as-allowed ]
+  satisfies: [ check-eligibility-integrity, document-risk-review ]
+  candidate_pattern:
+    - grants-management-product
+    - grants-shared-service
+    - grants-on-shared-platform
+    - to: grant-risk-analytics
+      coverage: partial
+      note: Brings the risk information together and suggests where to look. Staff decide each award and its conditions.
+
+- id: payments-to-recipients
+  title: Payments to Recipients
+  description: Ability to pay recipients in a way that keeps the time between payment and their spending short, by advance or by reimbursement, to review payment requests, and to hold or stop payments when the award’s terms call for it.
+  sources: [ uniform-guidance, asap-gov, do-not-pay ]
+  applicabilityNotes: States are paid under their own Treasury agreements. Many agencies pay through ASAP.gov or another federal payment system.
+  contributes_to: [ funds-used-as-allowed ]
+  satisfies: [ pay-as-needed, review-payment-requests ]
+  candidate_pattern:
+    - payments-through-asap
+    - to: grant-risk-analytics
+      coverage: partial
+      note: Flags unusual drawdowns, such as large requests near the end of an award, for a closer look.
+
+- id: award-monitoring
+  title: Monitoring & Performance Reporting
+  description: Ability to collect recipients’ financial and performance reports on schedule, review them against the award’s goals and budget, monitor each award as its risk calls for, including site visits, and approve changes to awards.
+  sources: [ uniform-guidance ]
+  applicabilityNotes: Reports can be required no more often than quarterly and no less often than annually, unless specific conditions apply.
+  contributes_to: [ program-results-achieved, funds-used-as-allowed ]
+  satisfies: [ collect-reports-on-schedule, monitor-by-risk ]
+  candidate_pattern:
+    - grants-management-product
+    - grants-shared-service
+    - to: grants-on-shared-platform
+      coverage: partial
+      note: Report due dates and reviews can be tracked on the platform. Report forms and the recipient portal usually need building.
+    - to: grant-risk-analytics
+      coverage: partial
+      note: Suggests which awards to monitor more closely. The monitoring itself happens in the grants system.
+
+- id: audit-resolution-remedies
+  title: Audit Resolution & Remedies
+  description: Ability to find the single audit findings about the agency’s awards, decide what each one requires within six months, follow up until the recipient corrects it, and take remedies for noncompliance when needed, such as conditions, withheld payments, or termination.
+  sources: [ uniform-guidance, federal-audit-clearinghouse ]
+  applicabilityNotes: A single audit is required of recipients that spend $1,000,000 or more a year in federal awards. Remedies must follow the steps the Uniform Guidance and the award’s terms set out.
+  contributes_to: [ audit-findings-resolved, funds-used-as-allowed ]
+  satisfies: [ decide-audit-findings, track-corrective-action ]
+  candidate_pattern:
+    - to: grants-management-product
+      coverage: partial
+      note: Where the product tracks audit findings. Many offices track them separately.
+    - to: shared-case-platform
+      note: Each finding tracked as its own case, from management decision to closure.
+
+- id: award-closeout
+  title: Closeout
+  description: Ability to collect each recipient’s final reports within 120 days after the period of performance ends, reconcile payments and costs, return or deobligate unspent funds, and close the award within a year.
+  sources: [ uniform-guidance, gone-act ]
+  applicabilityNotes: The agency can extend the time for final reports when the recipient asks and the reason supports it. Closing an award doesn’t end the right to disallow costs or collect amounts due.
+  contributes_to: [ awards-closed-on-time ]
+  satisfies: [ collect-final-reports, close-within-a-year ]
+  candidate_pattern:
+    - grants-management-product
+    - grants-shared-service
+    - grants-on-shared-platform
+
+- id: award-transparency-reporting
+  title: Award & Subaward Reporting
+  description: Ability to report each financial assistance award for publication on USAspending.gov, keep the data accurate and complete, and see that recipients report their first-tier subawards in SAM.gov.
+  sources: [ usaspending, award-reporting-2-cfr-170, sam-gov ]
+  applicabilityNotes: Some information is withheld from publication, such as details that would identify individual recipients.
+  contributes_to: [ spending-public ]
+  satisfies: [ report-awards, check-subaward-reporting ]
+  candidate_pattern:
+    - award-data-to-usaspending
+    - to: grants-management-product
+      coverage: partial
+      note: Where the product produces the agency’s award submission. Checking it and following up on subaward reporting often happen outside it.

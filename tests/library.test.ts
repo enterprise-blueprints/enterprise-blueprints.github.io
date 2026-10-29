@@ -132,3 +132,31 @@ describe('pattern connections', () => {
     expect(coversPartly(intake, get('eb:implementationPattern:foia-request-processing'))).toBe(false);
   });
 });
+
+describe('the grants mission', () => {
+  const get = (id: string) => elements.find((e) => e.id === id)!;
+  const slug = (e: { id: string }) => e.id.split(':')[2];
+  const blueprint = missionBlueprint(get('eb:mission:awarding-overseeing-federal-grants'));
+
+  it('seeks seven outcomes, each with its measures and the capabilities that contribute to it', () => {
+    expect(blueprint.outcomes.map((o) => slug(o.outcome))).toEqual([
+      'open-fair-competition',
+      'awards-to-capable-recipients',
+      'funds-used-as-allowed',
+      'program-results-achieved',
+      'audit-findings-resolved',
+      'awards-closed-on-time',
+      'spending-public',
+    ]);
+    for (const o of blueprint.outcomes) {
+      expect(o.measures.length, slug(o.outcome)).toBeGreaterThan(0);
+      expect(o.capabilities.length, slug(o.outcome)).toBeGreaterThan(0);
+    }
+  });
+
+  it('uses its own capabilities first, then the shared ones it connects to', () => {
+    const caps = blueprint.capabilities.map((c) => [slug(c.capability), Boolean(c.sharedFrom)]);
+    expect(caps.slice(0, 8).every(([, shared]) => !shared)).toBe(true);
+    expect(caps.slice(8).map(([s]) => s)).toEqual(expect.arrayContaining(['case-management', 'records-management', 'identity-access-management', 'data-protection-privacy', 'security-logging-monitoring']));
+  });
+});

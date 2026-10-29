@@ -1,0 +1,20 @@
+# Links from elements of the packages this one builds on, such as a shared capability
+# that contributes to one of this package's outcomes.
+
+- from: capability:case-management
+  contributes_to: [ awards-closed-on-time, audit-findings-resolved ]
+  candidate_pattern:
+    - to: grants-on-shared-platform
+      note: Each award tracked as a case on the platform, from application to closeout.
+
+- from: capability:records-management
+  contributes_to: [ audit-findings-resolved, awards-closed-on-time ]
+
+- from: capability:identity-access-management
+  contributes_to: [ funds-used-as-allowed ]
+
+- from: capability:data-protection-privacy
+  contributes_to: [ spending-public ]
+
+- from: capability:security-logging-monitoring
+  contributes_to: [ funds-used-as-allowed ]
