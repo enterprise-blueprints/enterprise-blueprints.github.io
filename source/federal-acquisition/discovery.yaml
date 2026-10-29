@@ -1,0 +1,145 @@
+# Discovery question sets. Each group under "points" names the answers that point to
+# one or more elements, and why.
+
+- id: acquisition-results
+  title: Acquisition results discovery
+  description: Questions for the start of an engagement about which results matter most for the agency’s acquisitions and how the office tells how it’s doing. They ask about the office’s operations, never about individual acquisitions, offerors, or contractors. Some answers point to outcomes and measures worth exploring.
+  questions:
+    - id: acquisition-priority-results
+      prompt: Which of these results matter most for this effort?
+      kind: multiple-choice
+      options:
+        - needs-met-on-time: The agency gets what it needs when it needs it
+        - full-open-competition: Contracts are competed openly and fairly
+        - responsible-contractors: Contracts go to responsible contractors
+        - small-business-participation: Small businesses get a fair share of the work
+        - contracts-perform-as-agreed: Contractors deliver what the contract calls for
+        - invoices-paid-on-time: Contractors are paid correctly and on time
+        - award-decisions-hold-up: Award decisions stand up to challenge
+        - contract-data-public: The contract spending is open to view
+        - contracts-closed-on-time: Contracts are closed out on time
+      points:
+        - when: needs-met-on-time
+          to: outcome:needs-met-on-time
+          why: This effort is meant to advance this result.
+        - when: full-open-competition
+          to: outcome:full-open-competition
+          why: This effort is meant to advance this result.
+        - when: responsible-contractors
+          to: outcome:responsible-contractors
+          why: This effort is meant to advance this result.
+        - when: small-business-participation
+          to: outcome:small-business-participation
+          why: This effort is meant to advance this result.
+        - when: contracts-perform-as-agreed
+          to: outcome:contracts-perform-as-agreed
+          why: This effort is meant to advance this result.
+        - when: invoices-paid-on-time
+          to: outcome:invoices-paid-on-time
+          why: This effort is meant to advance this result.
+        - when: award-decisions-hold-up
+          to: outcome:award-decisions-hold-up
+          why: This effort is meant to advance this result.
+        - when: contract-data-public
+          to: outcome:contract-data-public
+          why: This effort is meant to advance this result.
+        - when: contracts-closed-on-time
+          to: outcome:contracts-closed-on-time
+          why: This effort is meant to advance this result.
+    - id: acquisition-tracked-measures
+      prompt: Which of these does the office track during the year?
+      kind: multiple-choice
+      options:
+        - lead-time: How long acquisitions take from solicitation to award
+        - competition: How much is competed, and how often only one offer comes in
+        - evaluations: How many performance evaluations are done on time
+        - prompt-payment: Late payments and the interest paid on them
+        - closeout: How many completed contracts are past their closeout standard
+        - none: None of these regularly
+      points:
+        - when: lead-time
+          to: measure:procurement-lead-time
+          why: The office tracks this already, so there may be a value for today.
+        - when: competition
+          to: [ measure:competed-obligations-share, measure:single-offer-awards ]
+          why: The office tracks this already, so there may be a value for today.
+        - when: evaluations
+          to: measure:performance-evaluations-on-time
+          why: The office tracks this already, so there may be a value for today.
+        - when: prompt-payment
+          to: [ measure:proper-invoices-paid-on-time, measure:interest-penalties-paid ]
+          why: The office tracks this already, so there may be a value for today.
+        - when: closeout
+          to: measure:contracts-overdue-for-closeout
+          why: The office tracks this already, so there may be a value for today.
+    - id: acquisition-lead-time-start
+      prompt: Does the office know how long requests wait before a solicitation is issued?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:acquisition-planning-market-research, measure:procurement-lead-time ]
+          why: The official lead time starts at the solicitation, so time spent before it, often the longest part, can go unseen.
+
+- id: acquisition-operations
+  title: Acquisition operations discovery
+  description: Questions about how the office runs its acquisitions today, from request to closeout. They ask about the office’s tools and steps, never about individual acquisitions, offerors, or contractors. Answers point to capabilities and example patterns worth exploring.
+  questions:
+    - id: acquisition-contract-writing
+      prompt: How does the office write and track its contracts today?
+      kind: single-choice
+      options:
+        - cws-product: A contract writing product the agency runs
+        - agency-platform: The agency’s shared case or low-code platform
+        - other-agency: Another federal agency awards contracts for us
+        - documents: Document templates, email, and shared drives
+        - custom-system: A custom system built for the agency
+      points:
+        - when: [ documents, custom-system ]
+          to: [ implementationPattern:contract-writing-system, implementationPattern:acquisition-on-shared-platform, implementationPattern:assisted-acquisition-service ]
+          why: These are example ways to bring each contract onto one record, from request to closeout.
+    - id: acquisition-offers-received
+      prompt: How do offers reach the office?
+      kind: single-choice
+      options:
+        - portal: Through a portal that time-stamps and locks them
+        - email: By email
+        - mixed: It varies by solicitation
+      points:
+        - when: [ email, mixed ]
+          to: [ capability:solicitation-publicizing, implementationPattern:vendor-proposal-portal ]
+          why: Offers in email are hard to protect, and hard to prove on time when one is late.
+    - id: acquisition-sam-checks
+      prompt: How does the office check SAM.gov before an award?
+      kind: single-choice
+      options:
+        - automatic: The contract system checks it and saves the result
+        - by-hand: Staff look it up and save a screenshot or printout
+        - varies: It varies by person
+      points:
+        - when: [ by-hand, varies ]
+          to: [ capability:responsibility-determination, implementationPattern:sam-gov-entity-checks ]
+          why: Checks by hand are easy to miss, and leave nothing to notice a new exclusion after award.
+    - id: acquisition-invoices
+      prompt: How do invoices arrive?
+      kind: single-choice
+      options:
+        - electronic: Through an electronic invoicing system, such as IPP
+        - email-paper: By email or paper
+      points:
+        - when: email-paper
+          to: [ capability:invoicing-payment, implementationPattern:invoices-through-ipp ]
+          why: Without a record of when each invoice arrived, it’s hard to pay on time or know which payments owe interest.
+    - id: acquisition-cpars-registration
+      prompt: Are contracts registered in CPARS automatically from contract data?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:past-performance-evaluation, implementationPattern:cpars-from-contract-data ]
+          why: Contracts registered by hand are the ones whose evaluations are most often missed.
+    - id: acquisition-protests-tracked
+      prompt: Are protests tracked with their deadlines in a system the office and counsel both use?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:protest-handling, implementationPattern:shared-case-platform ]
+          why: Protest deadlines are short, and missing one can lose the protest.

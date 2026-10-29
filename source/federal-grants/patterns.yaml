@@ -162,6 +162,9 @@
       - A flag isn’t a finding, so staff decide each award, condition, and monitoring step
       - Risk scores can be unfair to new or small applicants with little history, so how they’re used needs care
       - Combining data sets may need agreements, and privacy rules apply to information about individuals
+  works_with:
+    - to: sam-gov-entity-checks
+      note: The same SAM.gov checks feed each applicant’s and recipient’s risk profile.
 
 - id: award-data-to-usaspending
   title: Award Data to USAspending.gov from the Grants System

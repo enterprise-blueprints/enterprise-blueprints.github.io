@@ -185,3 +185,28 @@
   works_with:
     - to: shared-case-platform
       note: Suggestions appear in the platform’s intake queue.
+
+- id: sam-gov-entity-checks
+  title: Entity Checks through SAM.gov’s APIs
+  description: "An example architecture: the agency’s award systems check each applicant’s or offeror’s SAM.gov registration, exclusions, and responsibility and qualification records through SAM.gov’s APIs, before an award and on a schedule while it’s open, and show the results, with their dates, where staff make the decision."
+  sources: [ sam-gov ]
+  attributes:
+    approach: build
+    role: processing
+    parts:
+      - Calls to SAM.gov’s entity and exclusions services by Unique Entity Identifier
+      - A check before each award, with the results and their date saved to the award file
+      - Rechecks on a schedule for open awards, such as for expiring registrations or new exclusions
+      - Alerts to the responsible staff when a result changes
+      - A record of each check, for audits and file reviews
+    strengths:
+      - Checks happen every time, with proof in the file
+      - Changes after an award, such as a new exclusion, are noticed
+      - Grants and contract systems can share the same checks
+    fitsWhen:
+      - Staff check SAM.gov by hand and save screenshots today
+      - The agency’s award systems can call outside services
+    watchFor:
+      - A check only shows the records, and the award decision, such as a responsibility determination, is still a person’s
+      - SAM.gov’s services and keys change, and someone has to keep the connection working
+      - Some records need a federal user’s access, so how the system signs in to SAM.gov needs approval

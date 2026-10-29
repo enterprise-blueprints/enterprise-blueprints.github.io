@@ -399,11 +399,14 @@ export function questionsAbout(element: LibraryElement): { question: LibraryQues
       const byMeaning = new Map<string, string[]>();
       for (const m of mappings) byMeaning.set(m.interpretation, [...(byMeaning.get(m.interpretation) ?? []), m.answerValue]);
       const every = (values: string[]) => (q.options?.length ?? 2) === values.length;
+      // Each label is a whole answer, so several are quoted: “A” or “B”.
+      const either = (values: string[]) =>
+        values.length === 1 ? label(values[0]) : new Intl.ListFormat('en', { type: 'disjunction' }).format(values.map((v) => `“${label(v)}”`));
       return [
         {
           question: { ...q, assessment: a, package: a.package, url: `${a.url}#${q.id.split(':')[1]}` },
           answers: [...byMeaning].map(([interpretation, values]) => ({
-            label: every(values) && values.length > 1 ? 'Any answer' : values.map(label).join(', '),
+            label: every(values) && values.length > 1 ? 'Any answer' : either(values),
             interpretation,
           })),
         },

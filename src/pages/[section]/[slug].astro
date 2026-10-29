@@ -100,7 +100,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           <section class="section">
             <h2>How it fits together</h2>
             <p class="section-note">
-              The patterns it combines, by the part each one plays, for {solution.missions.map((m) => m.title).join(' and ')}.
+              The patterns it combines, by the part each one plays, for {new Intl.ListFormat('en').format(solution.missions.map((m) => m.title))}.
             </p>
             {solution.roles.map((g) => (
               <div class="solution-role">

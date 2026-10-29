@@ -32,18 +32,24 @@ describe('catalog', () => {
       ['common', '0.1.0', false],
       ['common', '0.2.0', false],
       ['common', '0.3.0', false],
-      ['common', '0.4.0', true],
+      ['common', '0.4.0', false],
+      ['common', '0.5.0', true],
+      ['federal-acquisition', '0.1.0', true],
       ['federal-foia', '0.1.0', false],
       ['federal-foia', '0.2.0', false],
-      ['federal-foia', '0.3.0', true],
-      ['federal-grants', '0.1.0', true],
+      ['federal-foia', '0.3.0', false],
+      ['federal-foia', '0.4.0', true],
+      ['federal-grants', '0.1.0', false],
+      ['federal-grants', '0.2.0', true],
       ['federal-oig', '0.1.0', false],
       ['federal-oig', '0.2.0', false],
       ['federal-oig', '0.3.0', false],
       ['federal-oig', '0.4.0', false],
-      ['federal-oig', '0.5.0', true],
+      ['federal-oig', '0.5.0', false],
+      ['federal-oig', '0.6.0', true],
       ['solutions', '0.1.0', false],
-      ['solutions', '0.2.0', true],
+      ['solutions', '0.2.0', false],
+      ['solutions', '0.3.0', true],
     ]);
   });
 
@@ -57,6 +63,6 @@ describe('catalog', () => {
   });
 
   it('shows the latest version of each package on the pages', () => {
-    expect(packages.map((p) => `${p.packageId.split('.').at(-1)} ${p.version}`)).toEqual(['common 0.4.0', 'federal-foia 0.3.0', 'federal-grants 0.1.0', 'federal-oig 0.5.0', 'solutions 0.2.0']);
+    expect(packages.map((p) => `${p.packageId.split('.').at(-1)} ${p.version}`)).toEqual(['common 0.5.0', 'federal-acquisition 0.1.0', 'federal-foia 0.4.0', 'federal-grants 0.2.0', 'federal-oig 0.6.0', 'solutions 0.3.0']);
   });
 });

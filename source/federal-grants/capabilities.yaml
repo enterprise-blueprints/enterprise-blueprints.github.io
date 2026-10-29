@@ -43,6 +43,9 @@
     - to: grant-risk-analytics
       coverage: partial
       note: Brings the risk information together and suggests where to look. Staff decide each award and its conditions.
+    - to: sam-gov-entity-checks
+      coverage: partial
+      note: Checks registration, exclusions, and integrity records automatically. Do Not Pay and the rest of the risk review happen elsewhere.
 
 - id: payments-to-recipients
   title: Payments to Recipients

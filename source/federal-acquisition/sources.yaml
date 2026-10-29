@@ -1,0 +1,122 @@
+# The references this package cites. Elements and links name them by id.
+
+- id: far
+  title: Federal Acquisition Regulation (FAR), 48 CFR Chapter 1
+  url: https://www.acquisition.gov/far
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: "The rules executive agencies follow when they buy. Among much else: acquisition planning (Part 7), market research (Part 10), publicizing (Part 5), responsibility (Subpart 9.1), past performance evaluations at least annually and at completion (Subpart 42.15), contract reporting within three business days after award (§ 4.604), contract files (Subpart 4.8), and closeout within 6, 20, or 36 months of physical completion, by contract type (§ 4.804-1). Being rewritten in the Revolutionary FAR Overhaul, so the part numbers and details may change."
+
+- id: far-overhaul
+  title: Acquisition.gov — Revolutionary FAR Overhaul
+  url: https://www.acquisition.gov/far-overhaul
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: "The rewrite of the FAR under Executive Order 14275 of April 15, 2025, Restoring Common Sense to Federal Procurement, which aims to return it to what the statutes require, in plain language. Agencies adopted model deviation text part by part during 2025, and the formal proposed rules began in June 2026. Until the final rules, what applies in an agency is the FAR as modified by the deviations that agency has adopted."
+
+- id: competition-41-usc-3301
+  title: 41 U.S.C. § 3301 — Full and open competition
+  url: https://www.law.cornell.edu/uscode/text/41/3301
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Part of the Competition in Contracting Act. Executive agencies obtain full and open competition through competitive procedures, except as the statute allows.
+
+- id: competition-exceptions-41-usc-3304
+  title: 41 U.S.C. § 3304 — Use of noncompetitive procedures
+  url: https://www.law.cornell.edu/uscode/text/41/3304
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: The circumstances in which an agency may use other than competitive procedures, such as only one responsible source or unusual and compelling urgency, and the written justification and approvals each needs.
+
+- id: procurement-integrity-41-usc-2102
+  title: 41 U.S.C. § 2102 — Prohibitions on disclosing and obtaining procurement information
+  url: https://www.law.cornell.edu/uscode/text/41/2102
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Part of the Procurement Integrity Act. Bars disclosing contractor bid or proposal information or source selection information before the award it relates to, except as the law allows.
+
+- id: integrity-records-41-usc-2313
+  title: 41 U.S.C. § 2313 — Database for federal agency contract and grant officers and suspension and debarment officials
+  url: https://www.law.cornell.edu/uscode/text/41/2313
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: The database of contractor and recipient integrity and performance information, now kept in SAM.gov as responsibility and qualification records. Before a contract or grant over the simplified acquisition threshold, the official reviews it and documents how its information was considered.
+
+- id: small-business-goals-15-usc-644
+  title: 15 U.S.C. § 644 — Awards or contracts (small business goals)
+  url: https://www.law.cornell.edu/uscode/text/15/644
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: "Subsection (g) sets the government-wide goal for small businesses at not less than 23 percent of the total value of prime contract awards each fiscal year, with goals for service-disabled veteran-owned, HUBZone, disadvantaged, and women-owned small businesses. Each agency agrees its own goals with the Small Business Administration."
+
+- id: prompt-payment-31-usc-3903
+  title: 31 U.S.C. § 3903 — Regulations (Prompt Payment)
+  url: https://www.law.cornell.edu/uscode/text/31/3903
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Part of the Prompt Payment Act. Payment is due on the date the contract sets, or otherwise 30 days after the agency receives a proper invoice, and an invoice that isn’t proper is returned within 7 days with the reasons. Late payments carry interest penalties.
+
+- id: protest-stay-31-usc-3553
+  title: 31 U.S.C. § 3553 — Review of protests; effect on contracts pending decision
+  url: https://www.law.cornell.edu/uscode/text/31/3553
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: When GAO tells an agency about a protest filed in time, the agency holds off on the award, or suspends performance, until GAO decides, unless the head of the procuring activity finds in writing that urgent and compelling circumstances, or the government’s best interests, won’t allow waiting.
+
+- id: protest-decisions-31-usc-3554
+  title: 31 U.S.C. § 3554 — Decisions on protests
+  url: https://www.law.cornell.edu/uscode/text/31/3554
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: GAO issues a final decision on a protest within 100 days after it is filed, or within 65 days under its express option, and may recommend corrective action.
+
+- id: gao-bid-protest-rules
+  title: 4 CFR Part 21 — Bid Protest Regulations (Government Accountability Office)
+  url: https://www.law.cornell.edu/cfr/text/4/part-21
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: How protests are filed with GAO and when, and what the agency must do, including filing its report on the protest within 30 days after GAO tells it about the protest.
+
+- id: sam-gov
+  title: SAM.gov — System for Award Management
+  url: https://sam.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: "Where agencies publicize contract opportunities, and where contractors register and agencies check exclusions and responsibility and qualification records. It also holds contract award data, which used to be FPDS.gov until FPDS’s public site closed in February 2026, and subcontract reports, which moved from eSRS the same month."
+
+- id: usaspending
+  title: USAspending.gov
+  url: https://www.usaspending.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: The official public source of federal spending data, including the contract awards agencies report.
+
+- id: cpars
+  title: Contractor Performance Assessment Reporting System (CPARS)
+  url: https://www.cpars.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Where agencies record their evaluations of contractors’ performance, and where source selection officials find past evaluations. Its guidance asks for evaluations within 120 days after the end of each period of performance. GSA plans to move it into SAM.gov.
+
+- id: invoice-processing-platform
+  title: U.S. Department of the Treasury, Bureau of the Fiscal Service — Invoice Processing Platform (IPP)
+  url: https://www.ipp.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: A free, web-based service where vendors send invoices to the agencies that use it, and track their invoices and payments. OMB Memorandum M-15-19 had agencies move to electronic invoicing by the end of fiscal year 2018, through a shared service provider or a solution such as IPP.
+
+- id: palt-memo
+  title: Office of Management and Budget, Office of Federal Procurement Policy — Reducing Procurement Administrative Lead Time Using Modern Business Practices (January 14, 2021)
+  url: https://bidenwhitehouse.archives.gov/wp-content/uploads/2021/01/OFPPPALTMemorandum-01-14-2021.pdf
+  kind: background
+  publicationDate: 2021-01-14
+  lastReviewedAt: 2026-10-29
+  note: Defines procurement administrative lead time (PALT) government-wide as the time from the date an initial solicitation is issued to the date of award, as section 878 of the National Defense Authorization Act for Fiscal Year 2019 suggested, and describes practices that can shorten it.
+
+- id: nist-ai-rmf
+  title: NIST — Artificial Intelligence Risk Management Framework (AI RMF 1.0)
+  url: https://www.nist.gov/itl/ai-risk-management-framework
+  kind: official-reference
+  publicationDate: 2023-01-26
+  lastReviewedAt: 2026-10-29
+  note: A framework for voluntary use in managing the risks of AI systems, built around four functions, govern, map, measure, and manage, and the characteristics of trustworthy AI, such as being valid, accountable, and fair.

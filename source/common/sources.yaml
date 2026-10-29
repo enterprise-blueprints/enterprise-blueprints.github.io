@@ -50,3 +50,10 @@
   publicationDate: 2023-01-26
   lastReviewedAt: 2026-10-29
   note: A framework for voluntary use in managing the risks of AI systems, built around four functions, govern, map, measure, and manage, and the characteristics of trustworthy AI, such as being valid, accountable, and fair.
+
+- id: sam-gov
+  title: SAM.gov — System for Award Management
+  url: https://sam.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-10-29
+  note: Where businesses and other entities register to receive federal awards, and where agencies check registrations, exclusions, and responsibility and qualification records before awarding contracts and grants.
