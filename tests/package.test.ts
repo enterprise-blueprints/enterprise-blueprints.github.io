@@ -221,22 +221,23 @@ describe('example solutions', () => {
   const patterns = [original, common, foia, grants, acquisition].flatMap((p) => ofType(p, 'implementationPattern'));
   const roleOf = (id: string) => patterns.find((p) => p.id === id)!.attributes!.role;
 
-  it('build on the three missions and the common package, and validate', () => {
+  it('build on the four missions and the common package, and validate', () => {
     expect(validatePackage(solutions, resolve)).toEqual([]);
-    expect(solutions.dependencies).toEqual([common, original, foia, grants].map((p) => ({ packageId: p.packageId, version: p.version })));
+    expect(solutions.dependencies).toEqual([common, original, foia, grants, acquisition].map((p) => ({ packageId: p.packageId, version: p.version })));
   });
 
-  it('each support all three missions, with sign-on and business applications, and say why each pattern is there', () => {
+  it('each support all four missions, with sign-on and business applications, and say why each pattern is there', () => {
     for (const s of ofType(solutions, 'solution')) {
       const rels = solutions.relations.filter((r) => r.from === s.id);
       expect(rels.filter((r) => r.predicate === 'supports').map((r) => r.to).sort(), s.id).toEqual([
+        'eb:mission:acquiring-goods-and-services',
         'eb:mission:awarding-overseeing-federal-grants',
         'eb:mission:independent-government-oversight',
         'eb:mission:public-access-to-agency-records',
       ]);
       const included = rels.filter((r) => r.predicate === 'includes');
       expect(included.map((r) => r.to), s.id).toContain('eb:implementationPattern:agency-sign-on');
-      expect(included.filter((r) => roleOf(r.to) === 'business-applications').length, s.id).toBeGreaterThanOrEqual(3);
+      expect(included.filter((r) => roleOf(r.to) === 'business-applications').length, s.id).toBeGreaterThanOrEqual(4);
       for (const r of included) expect(r.description, r.id).toBeTruthy();
       expect(Object.keys(s.attributes!).sort(), s.id).toEqual(['fitsWhen', 'watchFor']);
     }

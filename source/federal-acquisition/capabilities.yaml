@@ -93,6 +93,9 @@
     - to: acquisition-on-shared-platform
       coverage: partial
       note: Where protests are tracked with the acquisitions they challenge. Counsel’s own work is often tracked in a separate legal matter system.
+    - to: contract-writing-system
+      coverage: partial
+      note: Records the protest against the acquisition, holds the award or the work, and supplies the contract file for the agency’s report. Counsel tracks the protest’s deadlines and filings elsewhere.
     - to: assisted-acquisition-service
       coverage: partial
       note: The provider’s counsel answers protests of its awards, but needs the agency’s experts and records.

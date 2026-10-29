@@ -99,12 +99,13 @@ describe('example solutions', () => {
 
   it('leave no capability of any mission without a pattern', () => {
     for (const s of solutionsFor(get('eb:mission:awarding-overseeing-federal-grants'))) {
+      expect(s.coverage.map((c) => slug(c.mission)), slug(s.solution)).toHaveLength(4);
       for (const c of s.coverage) expect(c.uncovered.map(slug), `${slug(s.solution)} for ${slug(c.mission)}`).toEqual([]);
     }
   });
 
-  it('are listed on all three missions', () => {
-    for (const id of ['eb:mission:independent-government-oversight', 'eb:mission:public-access-to-agency-records', 'eb:mission:awarding-overseeing-federal-grants']) {
+  it('are listed on all four missions', () => {
+    for (const id of ['eb:mission:independent-government-oversight', 'eb:mission:public-access-to-agency-records', 'eb:mission:awarding-overseeing-federal-grants', 'eb:mission:acquiring-goods-and-services']) {
       expect(solutionsFor(get(id)).map((s) => slug(s.solution))).toEqual(['agency-shared-platform', 'purpose-built-systems', 'dedicated-oversight-shared-foia']);
     }
   });
@@ -164,5 +165,29 @@ describe('the grants mission', () => {
     const caps = blueprint.capabilities.map((c) => [slug(c.capability), Boolean(c.sharedFrom)]);
     expect(caps.slice(0, 8).every(([, shared]) => !shared)).toBe(true);
     expect(caps.slice(8).map(([s]) => s)).toEqual(expect.arrayContaining(['case-management', 'records-management', 'identity-access-management', 'data-protection-privacy', 'security-logging-monitoring']));
+  });
+});
+
+describe('the acquisition mission', () => {
+  const get = (id: string) => elements.find((e) => e.id === id)!;
+  const slug = (e: { id: string }) => e.id.split(':')[2];
+  const blueprint = missionBlueprint(get('eb:mission:acquiring-goods-and-services'));
+
+  it('seeks nine outcomes, each with its measures and the capabilities that contribute to it', () => {
+    expect(blueprint.outcomes).toHaveLength(9);
+    for (const o of blueprint.outcomes) {
+      expect(o.measures.length, slug(o.outcome)).toBeGreaterThan(0);
+      expect(o.capabilities.length, slug(o.outcome)).toBeGreaterThan(0);
+    }
+  });
+
+  it('uses its own ten capabilities first, then the shared ones it connects to', () => {
+    const caps = blueprint.capabilities.map((c) => [slug(c.capability), Boolean(c.sharedFrom)]);
+    expect(caps.slice(0, 10).every(([, shared]) => !shared)).toBe(true);
+    expect(caps.slice(10).map(([s]) => s)).toEqual(expect.arrayContaining(['case-management', 'records-management', 'data-protection-privacy']));
+  });
+
+  it('offers the common SAM.gov checks among its patterns', () => {
+    expect(blueprint.patterns.map(slug)).toContain('sam-gov-entity-checks');
   });
 });

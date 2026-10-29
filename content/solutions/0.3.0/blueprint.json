@@ -3,7 +3,7 @@
   "packageId": "org.enterprise-blueprints.solutions",
   "version": "0.3.0",
   "title": "Example Solutions — Patterns Combined Across an Agency",
-  "description": "Example solutions that combine implementation patterns from the mission packages and Common Capabilities to support an agency with an Office of Inspector General, a FOIA program, and grant programs: one built on the agency’s shared platform, one with purpose-built systems for each office, and one in between.",
+  "description": "Example solutions that combine implementation patterns from the mission packages and Common Capabilities to support an agency with an Office of Inspector General, a FOIA program, grant programs, and a contracting office: one built on the agency’s shared platform, one with purpose-built systems for each office, and one in between.",
   "publisher": {
     "name": "Enterprise Blueprints (independent reference project)",
     "url": "https://enterprise-blueprints.github.io"
@@ -35,6 +35,10 @@
     {
       "packageId": "org.enterprise-blueprints.federal-grants",
       "version": "0.2.0"
+    },
+    {
+      "packageId": "org.enterprise-blueprints.federal-acquisition",
+      "version": "0.1.0"
     }
   ],
   "elements": [
@@ -42,7 +46,7 @@
       "id": "eb:solution:agency-shared-platform",
       "type": "solution",
       "title": "Agency Shared Platform",
-      "description": "An example solution: the OIG, the FOIA office, and the grants office all track their work on the agency’s shared case platform, each with its own case types and its own administration. The OIG adds a confidential hotline and audit management, the FOIA office adds a review tool, eDiscovery search, and the national portal, the grants office connects the platform to Grants.gov, ASAP.gov, and USAspending.gov, and everyone signs in the same way.",
+      "description": "An example solution: the OIG, the FOIA office, the grants office, and the contracting office all track their work on the agency’s shared case platform, each with its own case types and its own administration. The OIG adds a confidential hotline and audit management, the FOIA office adds a review tool, eDiscovery search, and the national portal, the grants office connects the platform to Grants.gov, ASAP.gov, and USAspending.gov, the contracting office adds a proposal portal and connections to SAM.gov, IPP, and CPARS, and everyone signs in the same way.",
       "status": "reference",
       "attributes": {
         "fitsWhen": [
@@ -52,7 +56,7 @@
         ],
         "watchFor": [
           "The OIG’s independence depends on keeping its administration and access apart from the agency’s",
-          "FOIA’s working-day deadlines, the OIG’s evidence handling, and grants’ merit review and recipient portal need building on the platform",
+          "FOIA’s working-day deadlines, the OIG’s evidence handling, grants’ merit review and recipient portal, and contracting’s clauses and SAM.gov reporting need building on the platform",
           "One platform’s upgrades and outages affect every office at once"
         ]
       }
@@ -61,11 +65,11 @@
       "id": "eb:solution:purpose-built-systems",
       "type": "solution",
       "title": "Purpose-Built Systems for Each Office",
-      "description": "An example solution: the OIG, the FOIA office, and the grants office each run a product made for their work, and share only the agency’s sign-on. Each product brings its own intake, reporting, and publishing, so each office can change its own system on its own schedule.",
+      "description": "An example solution: the OIG, the FOIA office, the grants office, and the contracting office each run a product made for their work, and share only the agency’s sign-on. Each product brings its own intake, reporting, and publishing, so each office can change its own system on its own schedule.",
       "status": "reference",
       "attributes": {
         "fitsWhen": [
-          "The offices’ work is specialized, such as investigations with evidence, high volumes of FOIA requests, or many grant programs",
+          "The offices’ work is specialized, such as investigations with evidence, high volumes of FOIA requests, many grant programs, or a large contracting workload",
           "The OIG needs a system the agency doesn’t administer",
           "There’s budget for more than one product, and administrators in each office"
         ],
@@ -79,18 +83,20 @@
     {
       "id": "eb:solution:dedicated-oversight-shared-foia",
       "type": "solution",
-      "title": "Dedicated Oversight System, Shared Services for FOIA and Grants",
-      "description": "An example solution: the OIG runs its own oversight case product, kept apart from the agency’s systems, while the FOIA office tracks requests on the agency’s shared platform with a separate review tool, and the grants office uses a grants system another federal agency runs as a shared service. Everyone signs in through the agency.",
+      "title": "Dedicated Oversight System, Shared Services for the Other Offices",
+      "description": "An example solution: the OIG runs its own oversight case product, kept apart from the agency’s systems, while the other offices share what others run. The FOIA office tracks requests on the agency’s shared platform with a separate review tool, the grants office uses a grants system another federal agency runs as a shared service, and another agency’s contracting office awards and administers the agency’s contracts. Everyone signs in through the agency.",
       "status": "reference",
       "attributes": {
         "fitsWhen": [
           "The OIG’s independence calls for its own system, but the FOIA office is well served by the agency’s platform",
           "The agency’s grant programs are few or small enough for a shared service",
+          "The agency makes too few acquisitions to keep its own contracting staff and systems for every kind",
           "The agency wants to limit the number of products without putting the OIG on a shared system"
         ],
         "watchFor": [
-          "Three ways of tracking work to support, one of them run by another agency",
-          "The FOIA office depends on the platform team for changes, such as new deadline rules, and the grants office on the shared service’s priorities"
+          "Four ways of tracking work, two of them run by other agencies",
+          "The FOIA office depends on the platform team for changes, such as new deadline rules, and the grants and contracting offices on their providers’ priorities",
+          "Providers’ fees add to the cost of each award"
         ]
       }
     }
@@ -108,7 +114,7 @@
       "from": "eb:solution:agency-shared-platform",
       "predicate": "includes",
       "to": "eb:implementationPattern:shared-case-platform",
-      "description": "The one platform both offices track their work on, with the OIG’s administration kept apart."
+      "description": "The one platform every office tracks its work on, with the OIG’s administration kept apart."
     },
     {
       "id": "rel:agency-shared-platform-includes-confidential-hotline-intake",
@@ -171,7 +177,7 @@
       "from": "eb:solution:agency-shared-platform",
       "predicate": "includes",
       "to": "eb:implementationPattern:records-aware-collaboration",
-      "description": "Where staff in both offices draft and collaborate, with records and sensitivity labels applied."
+      "description": "Where staff in every office draft and collaborate, with records and sensitivity labels applied."
     },
     {
       "id": "rel:agency-shared-platform-includes-letters-from-case-data",
@@ -216,6 +222,55 @@
       "description": "Every office’s systems send their logs to the agency, with the OIG’s searchable only by staff it agrees to."
     },
     {
+      "id": "rel:agency-shared-platform-includes-acquisition-on-shared-platform",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:acquisition-on-shared-platform",
+      "description": "The contracting office’s requests and contracts, as their own case types on the platform."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-vendor-proposal-portal",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:vendor-proposal-portal",
+      "description": "Built on the platform’s portal, so offers land with the solicitation they answer."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-contract-data-to-sam",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:contract-data-to-sam",
+      "description": "Built from the platform’s contract records, since the platform doesn’t report to SAM.gov on its own."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-invoices-through-ipp",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:invoices-through-ipp",
+      "description": "Vendors invoice through Treasury, and acceptance is routed to the program office on the platform."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-cpars-from-contract-data",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:cpars-from-contract-data",
+      "description": "Contracts registered in CPARS from the platform’s records."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-sam-gov-entity-checks",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:sam-gov-entity-checks",
+      "description": "Built once on the platform, for grants applicants and offerors alike."
+    },
+    {
+      "id": "rel:agency-shared-platform-includes-acquisition-ai-drafting",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:acquisition-ai-drafting",
+      "description": "Drafts that program offices and contracting staff start from, using the agency’s templates."
+    },
+    {
       "id": "rel:agency-shared-platform-supports-independent-government-oversight",
       "from": "eb:solution:agency-shared-platform",
       "predicate": "supports",
@@ -232,6 +287,12 @@
       "from": "eb:solution:agency-shared-platform",
       "predicate": "supports",
       "to": "eb:mission:awarding-overseeing-federal-grants"
+    },
+    {
+      "id": "rel:agency-shared-platform-supports-acquiring-goods-and-services",
+      "from": "eb:solution:agency-shared-platform",
+      "predicate": "supports",
+      "to": "eb:mission:acquiring-goods-and-services"
     },
     {
       "id": "rel:purpose-built-systems-includes-agency-sign-on",
@@ -346,6 +407,55 @@
       "description": "Each office reviews its own product’s audit trail, so no office’s activity leaves its system."
     },
     {
+      "id": "rel:purpose-built-systems-includes-contract-writing-system",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:contract-writing-system",
+      "description": "The contracting office’s system, from request to closeout."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-vendor-proposal-portal",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:vendor-proposal-portal",
+      "description": "Often part of the contract writing product."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-contract-data-to-sam",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:contract-data-to-sam",
+      "description": "The contract writing product’s connection to SAM.gov."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-invoices-through-ipp",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:invoices-through-ipp",
+      "description": "Fed from the contract writing product’s awards."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-cpars-from-contract-data",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:cpars-from-contract-data",
+      "description": "Contracts registered in CPARS from the contract writing product."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-sam-gov-entity-checks",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:sam-gov-entity-checks",
+      "description": "Used by both the grants product and the contract writing product, so the checks are the same."
+    },
+    {
+      "id": "rel:purpose-built-systems-includes-contract-spend-analytics",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:contract-spend-analytics",
+      "description": "Brings the contract writing product’s data together with spending and invoices."
+    },
+    {
       "id": "rel:purpose-built-systems-supports-independent-government-oversight",
       "from": "eb:solution:purpose-built-systems",
       "predicate": "supports",
@@ -364,11 +474,17 @@
       "to": "eb:mission:awarding-overseeing-federal-grants"
     },
     {
+      "id": "rel:purpose-built-systems-supports-acquiring-goods-and-services",
+      "from": "eb:solution:purpose-built-systems",
+      "predicate": "supports",
+      "to": "eb:mission:acquiring-goods-and-services"
+    },
+    {
       "id": "rel:dedicated-oversight-shared-foia-includes-agency-sign-on",
       "from": "eb:solution:dedicated-oversight-shared-foia",
       "predicate": "includes",
       "to": "eb:implementationPattern:agency-sign-on",
-      "description": "Both offices sign in through it."
+      "description": "Every office signs in through it."
     },
     {
       "id": "rel:dedicated-oversight-shared-foia-includes-oversight-intake-case-tracking",
@@ -445,7 +561,7 @@
       "from": "eb:solution:dedicated-oversight-shared-foia",
       "predicate": "includes",
       "to": "eb:implementationPattern:records-aware-collaboration",
-      "description": "Where staff in both offices draft and collaborate, with records and sensitivity labels applied."
+      "description": "Where staff in every office draft and collaborate, with records and sensitivity labels applied."
     },
     {
       "id": "rel:dedicated-oversight-shared-foia-includes-letters-from-case-data",
@@ -476,6 +592,20 @@
       "description": "The FOIA platform and the OIG’s product send their logs to the agency, with the OIG’s searchable only by staff it agrees to."
     },
     {
+      "id": "rel:dedicated-oversight-shared-foia-includes-assisted-acquisition-service",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:assisted-acquisition-service",
+      "description": "Another agency’s contracting office awards and administers the agency’s contracts, under an interagency agreement."
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-includes-invoices-through-ipp",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:invoices-through-ipp",
+      "description": "Vendors invoice through Treasury, and the agency’s program offices accept the work."
+    },
+    {
       "id": "rel:dedicated-oversight-shared-foia-supports-independent-government-oversight",
       "from": "eb:solution:dedicated-oversight-shared-foia",
       "predicate": "supports",
@@ -492,6 +622,12 @@
       "from": "eb:solution:dedicated-oversight-shared-foia",
       "predicate": "supports",
       "to": "eb:mission:awarding-overseeing-federal-grants"
+    },
+    {
+      "id": "rel:dedicated-oversight-shared-foia-supports-acquiring-goods-and-services",
+      "from": "eb:solution:dedicated-oversight-shared-foia",
+      "predicate": "supports",
+      "to": "eb:mission:acquiring-goods-and-services"
     }
   ]
 }

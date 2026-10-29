@@ -1473,6 +1473,14 @@
       "description": "Where protests are tracked with the acquisitions they challenge. Counsel’s own work is often tracked in a separate legal matter system."
     },
     {
+      "id": "rel:protest-handling-candidate-pattern-contract-writing-system",
+      "from": "eb:capability:protest-handling",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:contract-writing-system",
+      "coverage": "partial",
+      "description": "Records the protest against the acquisition, holds the award or the work, and supplies the contract file for the agency’s report. Counsel tracks the protest’s deadlines and filings elsewhere."
+    },
+    {
       "id": "rel:protest-handling-candidate-pattern-assisted-acquisition-service",
       "from": "eb:capability:protest-handling",
       "predicate": "candidate_pattern",
