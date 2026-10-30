@@ -116,7 +116,7 @@ code {
 }
 .skip-link:focus { top: 1rem; color: #fff; }
 
-.container { width: 100%; max-width: 80rem; margin: 0 auto; padding: 0 1.25rem; }
+.container { width: 100%; max-width: 90rem; margin: 0 auto; padding: 0 1.25rem; }
 .container--narrow { max-width: 58rem; }
 
 .muted { color: var(--text-muted); }
@@ -186,7 +186,7 @@ code {
 
 .page-header { padding: 3rem 0 1.5rem; }
 .page-header .lede { margin-bottom: 0; }
-.record-tagline { margin: -.5rem 0 .75rem; font-size: clamp(1.125rem, 1rem + .4vw, 1.3125rem); font-weight: 600; color: var(--accent); }
+.record-tagline { margin: -.35rem 0 .6rem; font-size: clamp(1.0625rem, 1rem + .25vw, 1.1875rem); font-weight: 600; color: var(--accent); }
 .scope-badge { display: inline-flex; align-items: center; padding: .15rem .55rem; border: 1px solid var(--border-strong); border-radius: 999px; font-size: .75rem; font-weight: 650; letter-spacing: .02em; color: var(--text-muted); }
 .principles { margin: 0; padding-left: 1.4rem; display: grid; gap: .4rem; max-width: 54rem; }
 .ways { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
@@ -381,10 +381,11 @@ td.muted { color: var(--text-muted); }
 
 /* ---------- Record pages ---------- */
 
-.record-header { padding: 1.5rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
-.record-header__meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .9rem; }
-.record-header h1 { margin-bottom: .5rem; }
-.record-header .lede { margin-bottom: 0; }
+.record-header { padding: 1rem 0 1.25rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+.record-header__meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .6rem; }
+/* A record's title and description are compact, and the description uses the page's width. */
+.record-header h1 { margin-bottom: .35rem; font-size: clamp(1.75rem, 1.45rem + 1.1vw, 2.25rem); }
+.record-header .lede { margin-bottom: 0; font-size: 1.0625rem; max-width: 72rem; }
 
 .record-layout { display: grid; gap: 2.5rem; }
 @media (min-width: 62rem) {
