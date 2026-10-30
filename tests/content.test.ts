@@ -132,6 +132,9 @@ describe('plan', () => {
     ]);
     expect(steps[1].write!.dependencies).toEqual([{ packageId: 'eb.shared', version: '0.2.0' }]);
     expect(steps[0].write!.publishedAt).toBe('2026-10-29');
+    // When the mission changes instead, the package it builds on, which builds on nothing, has none of its own.
+    const missionChanged = mission('- id: intake\n  title: Intake\n  description: Take things in, from anywhere.\n');
+    expect(plan([shared(), missionChanged], files, published(['shared@0.1.0', 'mission@0.1.0']), '2026-10-29')[0].reason).toBe('no changes of its own');
   });
 
   it('stays on the published release when nothing changed', () => {

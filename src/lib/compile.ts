@@ -406,7 +406,7 @@ export function plan(
       const last = newest(Object.keys(have(src.name)).filter((v) => isPublished(src.name, v)));
       const before = last && have(src.name)[last];
       // Each release builds on its own packages, so the versions it builds on don't count as a change.
-      const own = before && sameContent({ ...before, dependencies: pkg.dependencies }, pkg);
+      const own = before && sameContent({ ...before, ...(pkg.dependencies && { dependencies: pkg.dependencies }) }, pkg);
       const reason = !before ? 'new package' : own ? 'no changes of its own' : describeChange(before, pkg);
       return { name: src.name, version, write: pkg, remove, reason };
     }),
