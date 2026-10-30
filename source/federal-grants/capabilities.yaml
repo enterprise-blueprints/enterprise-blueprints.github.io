@@ -2,6 +2,7 @@
 
 - id: funding-opportunities-applications
   title: Funding Opportunities & Applications
+  stage: reach-take-in
   description: Ability to announce each funding opportunity on Grants.gov with its goals, eligibility, criteria, and deadlines, receive applications through Grants.gov and any other allowed channel, and check each one for eligibility and completeness.
   sources: [ uniform-guidance, grants-gov, sam-registration-2-cfr-25 ]
   applicabilityNotes: Some programs are formula or mandatory awards with no competition; the program’s statute and regulations set who can apply and how.
@@ -15,6 +16,7 @@
 
 - id: merit-review-selection
   title: Merit Review & Selection
+  stage: assess-decide
   description: Ability to review discretionary applications on their merits against the written criteria the notice described, with reviewers free of conflicts of interest, and to record how each award decision was made.
   sources: [ uniform-guidance ]
   applicabilityNotes: Merit review applies to discretionary awards unless a statute says otherwise. Agencies set their own written standards for it.
@@ -25,6 +27,7 @@
 
 - id: risk-review-award
   title: Risk Review & Award
+  stage: assess-decide
   description: Ability to check each applicant’s eligibility, integrity, and risk before an award, using SAM.gov, Do Not Pay, and its financial stability, management systems, past performance, and audit findings, and to issue the award with its terms and any specific conditions.
   sources: [ uniform-guidance, sam-gov, do-not-pay ]
   applicabilityNotes: Checks of responsibility and qualification records in SAM.gov are required when the federal share is expected to exceed the simplified acquisition threshold. An agency can still award to an applicant that falls short if conditions can address the risk.
@@ -41,6 +44,7 @@
 
 - id: payments-to-recipients
   title: Payments to Recipients
+  stage: deliver-operate
   description: Ability to pay recipients in a way that keeps the time between payment and their spending short, by advance or by reimbursement, to review payment requests, and to hold or stop payments when the award’s terms call for it.
   sources: [ uniform-guidance, asap-gov, do-not-pay ]
   applicabilityNotes: States are paid under their own Treasury agreements. Many agencies pay through ASAP.gov or another federal payment system.
@@ -54,6 +58,7 @@
 
 - id: award-monitoring
   title: Monitoring & Performance Reporting
+  stage: monitor-correct
   description: Ability to collect recipients’ financial and performance reports on schedule, review them against the award’s goals and budget, monitor each award as its risk calls for, including site visits, and approve changes to awards.
   sources: [ uniform-guidance ]
   applicabilityNotes: Reports can be required no more often than quarterly and no less often than annually, unless specific conditions apply.
@@ -67,6 +72,7 @@
 
 - id: audit-resolution-remedies
   title: Audit Resolution & Remedies
+  stage: monitor-correct
   description: Ability to find the single audit findings about the agency’s awards, decide what each one requires within six months, follow up until the recipient corrects it, and take remedies for noncompliance when needed, such as conditions, withheld payments, or termination.
   sources: [ uniform-guidance, federal-audit-clearinghouse ]
   applicabilityNotes: A single audit is required of recipients that spend $1,000,000 or more a year in federal awards. Remedies must follow the steps the Uniform Guidance and the award’s terms set out.
@@ -81,6 +87,7 @@
 
 - id: award-closeout
   title: Closeout
+  stage: report-close
   description: Ability to collect each recipient’s final reports within 120 days after the period of performance ends, reconcile payments and costs, return or deobligate unspent funds, and close the award within a year.
   sources: [ uniform-guidance, gone-act ]
   applicabilityNotes: The agency can extend the time for final reports when the recipient asks and the reason supports it. Closing an award doesn’t end the right to disallow costs or collect amounts due.
@@ -91,6 +98,7 @@
 
 - id: award-transparency-reporting
   title: Award & Subaward Reporting
+  stage: report-close
   description: Ability to report each financial assistance award for publication on USAspending.gov, keep the data accurate and complete, and see that recipients report their first-tier subawards in SAM.gov.
   sources: [ usaspending, award-reporting-2-cfr-170, sam-gov ]
   applicabilityNotes: Some information is withheld from publication, such as details that would identify individual recipients.

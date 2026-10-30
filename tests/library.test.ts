@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { byLayer, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, tagline } from '../src/lib/library';
+import { byLayer, coversPartly, elements, elementsOfType, groupOf, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, tagline } from '../src/lib/library';
+import { groupings } from '../src/lib/vocabulary';
 
 describe('missionBlueprint', () => {
   const mission = elements.find((e) => e.id === 'eb:mission:independent-government-oversight')!;
@@ -184,11 +185,19 @@ describe('the index pages', () => {
     }
   });
 
-  it('group by mission, with the shared package last, and leave missions whole', () => {
+  it('group outcomes, capabilities, and requirements across missions, each item in its one group, and leave missions whole', () => {
+    for (const [type, grouping] of Object.entries(groupings)) {
+      const groups = indexGroups(type);
+      // Every item in the library names a group, so nothing is left over.
+      expect(groups.map((g) => g.id), type).toEqual(Object.keys(grouping.groups).filter((id) => groups.some((g) => g.id === id)));
+      expect(groups.flatMap((g) => g.items).map((e) => e.id).sort(), type).toEqual(elementsOfType(type).map((e) => e.id).sort());
+      for (const g of groups) for (const e of g.items) expect(groupOf(e)?.url, e.id).toMatch(new RegExp(`/${e.typeInfo.section}/#${g.id}$`));
+    }
+    // A group lists each mission's items together, missions in title order and the shared package last.
     const caps = indexGroups('capability');
-    expect(caps.map((g) => g.label)).toEqual(['Acquisition', 'FOIA Program', 'Grants Management', 'Office of Inspector General', 'Shared across missions']);
-    expect(caps.slice(0, -1).every((g) => g.mission)).toBe(true);
-    expect(caps.flatMap((g) => g.items)).toHaveLength(elementsOfType('capability').length);
+    expect(caps.map((g) => g.label)).toEqual(['Plan and prepare', 'Reach and take in', 'Assess and decide', 'Deliver and operate', 'Monitor and correct', 'Report and close', 'Across the work']);
+    expect(caps.find((g) => g.id === 'reach-take-in')!.items.map((e) => e.slug)).toEqual(['solicitation-publicizing', 'foia-request-intake', 'funding-opportunities-applications', 'complaint-allegation-disclosure-intake']);
+    expect(caps.at(-1)!.items.every((e) => e.package.packageId.endsWith('.common'))).toBe(true);
     expect(indexGroups('mission')).toHaveLength(1);
   });
 

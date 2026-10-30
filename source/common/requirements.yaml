@@ -2,74 +2,90 @@
 
 - id: access-by-role
   title: Grant access by role and need
+  kind: privacy-security
   description: Give each person access to the information and systems their role needs, and no more, and change or remove it when their role changes or they leave.
   sources: [ nist-sp-800-53 ]
 
 - id: strong-sign-in
   title: Require strong sign-in
+  kind: privacy-security
   description: Confirm who people are when they sign in, with more than a password for staff and for anything sensitive.
   sources: [ nist-sp-800-63-4, nist-sp-800-53 ]
 
 - id: review-access
   title: Review access regularly
+  kind: privacy-security
   description: Check who has access to what on a regular schedule, and remove access that’s no longer needed.
   sources: [ nist-sp-800-53 ]
 
 - id: encrypt-sensitive-information
   title: Encrypt sensitive information
+  kind: privacy-security
   description: Protect sensitive information with encryption while it’s stored and while it moves between systems.
   sources: [ nist-sp-800-53 ]
 
 - id: know-where-personal-information-is
   title: Know where personal information is kept
+  kind: privacy-security
   description: Keep track of which systems hold personal information, what kinds, and why it was collected.
   sources: [ nist-privacy-framework, privacy-act ]
 
 - id: share-personal-information-as-allowed
   title: Share personal information only as allowed
+  kind: privacy-security
   description: Disclose records about people only with their consent or under an exception the law allows, and keep an account of disclosures where the law requires one.
   sources: [ privacy-act ]
 
 - id: document-decisions
   title: Keep records of decisions and actions
+  kind: decisions-on-record
   description: Make and keep records that show how the office is organized and what it decided and did.
   sources: [ records-44-usc-3101 ]
 
 - id: follow-records-schedules
   title: Keep and dispose of records on approved schedules
+  kind: decisions-on-record
   description: Keep each kind of record for as long as its approved schedule says, then dispose of it or transfer it as the schedule directs.
   sources: [ nara-grs, records-44-usc-3101 ]
 
 - id: log-system-activity
   title: Record who did what in systems
+  kind: privacy-security
   description: Keep a record of sign-ins, access to sensitive information, and changes, with enough detail to tell who did what and when.
   sources: [ nist-sp-800-53 ]
 
 - id: review-logs
   title: Review logs and act on them
+  kind: privacy-security
   description: Look at logged events regularly, by hand or automatically, and follow up on anything unusual.
   sources: [ nist-sp-800-53 ]
 
 - id: multi-channel-intake
   title: Receive matters through several channels
+  kind: service-access
   description: Accept matters, such as requests, complaints, and referrals, through each channel the office offers, like an online form, email, mail, and phone, and record each one in one place.
 
 - id: acknowledge-receipt
   title: Acknowledge receipt
+  kind: service-access
   description: Let the person who sent a matter in know it was received, with a number they can use to ask about it, where that’s possible and appropriate.
 
 - id: track-case-status
   title: Show the status of every case in one place
+  kind: timeliness
   description: Keep each case’s status, assignment, and next steps current and visible to the people who manage the work.
 
 - id: track-deadlines
   title: Track deadlines
+  kind: timeliness
   description: Know when each case is due, including deadlines set by law, and warn the people who have it before a deadline passes.
 
 - id: keep-case-file
   title: Keep a case’s documents with it
+  kind: decisions-on-record
   description: Keep the documents, correspondence, and notes that belong to a case linked to it, so anyone who picks the case up sees its whole history.
 
 - id: report-on-caseload
   title: Report on the caseload
+  kind: transparency-reporting
   description: Count cases by type, status, and age whenever they’re needed, for managers and for required reports.

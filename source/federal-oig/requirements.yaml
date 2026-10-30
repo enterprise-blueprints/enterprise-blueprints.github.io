@@ -2,45 +2,56 @@
 
 - id: triage-and-route
   title: Review and route each matter
+  kind: decisions-on-record
   description: Review each matter for jurisdiction and priority, and route it to the right team or to another authority, recording the decision and the reason.
 
 - id: protect-reporter-identity
   title: Protect the identity of people who report
+  kind: privacy-security
   description: Limit who can see the identity of a person who reports to the people who need it, consistent with applicable law.
 
 - id: link-evidence
   title: Keep evidence linked to its case
+  kind: decisions-on-record
   description: Link evidence and records to the case they belong to, with a record of who handled them and when.
 
 - id: restrict-case-access
   title: Restrict access to case information
+  kind: privacy-security
   description: Limit access to case information to the people assigned to the case or otherwise authorized, and keep a record of access.
 
 - id: plan-oversight-work
   title: Plan oversight work
+  kind: timeliness
   description: Keep a plan of audits, inspections, and evaluations, with each one’s scope, schedule, and status.
 
 - id: document-findings
   title: Document work and findings
+  kind: decisions-on-record
   description: Keep the work papers and evidence behind each finding, so a reviewer can trace how it was reached.
 
 - id: quality-assurance-peer-review
   title: Keep a quality program, with external peer reviews
+  kind: checks-controls
   description: Check the quality of audits, inspections, and evaluations against the standards they follow, and for audits under the Yellow Book, have an external peer review at least once every 3 years.
   sources: [ gao-yellow-book, cigie-silver-book ]
 
 - id: track-recommendations
   title: Track each recommendation until it’s closed
+  kind: checks-controls
   description: Record each recommendation with its owner, the response, target dates, and status, until it’s closed.
 
 - id: report-open-recommendations
   title: Report on open recommendations
+  kind: transparency-reporting
   description: Produce a current list of open recommendations and their status whenever it’s needed.
 
 - id: periodic-reporting
   title: Compile periodic reports
+  kind: transparency-reporting
   description: Gather the results of the period’s work for periodic reports to agency leadership and Congress.
 
 - id: publish-reports
   title: Publish reports
+  kind: transparency-reporting
   description: Publish reports and summaries to the public where appropriate, in accessible formats.

@@ -2,80 +2,96 @@
 
 - id: post-opportunities
   title: Post each funding opportunity on Grants.gov
+  kind: transparency-reporting
   description: Post each notice of funding opportunity on Grants.gov with its goals, eligibility, review criteria, and deadlines, and keep it open at least 60 days unless a shorter period is justified.
   sources: [ uniform-guidance, grants-gov ]
 
 - id: check-applications
   title: Check each application for eligibility and completeness
+  kind: checks-controls
   description: Confirm each applicant is eligible, is registered in SAM.gov, and has included its Unique Entity Identifier, and that the application has what the notice asks for.
   sources: [ uniform-guidance, sam-registration-2-cfr-25 ]
 
 - id: review-against-criteria
   title: Review applications against the published criteria
+  kind: fairness-due-process
   description: Score each discretionary application against the criteria the notice described, following the agency’s written merit review standards, and keep the scores and comments.
   sources: [ uniform-guidance ]
 
 - id: manage-reviewer-conflicts
   title: Keep reviewers free of conflicts of interest
+  kind: checks-controls
   description: Have each reviewer disclose conflicts before seeing applications, and keep anyone with a conflict away from those applications.
   sources: [ uniform-guidance ]
 
 - id: check-eligibility-integrity
   title: Check eligibility and integrity records before an award
+  kind: checks-controls
   description: Check SAM.gov registration, exclusions, and, where required, responsibility and qualification records, and check Do Not Pay, before making an award.
   sources: [ uniform-guidance, sam-gov, do-not-pay ]
 
 - id: document-risk-review
   title: Document each applicant’s risk, and any conditions it calls for
+  kind: decisions-on-record
   description: Record the review of the applicant’s financial stability, management systems, past performance, and audit findings, and any specific conditions added to the award because of them.
   sources: [ uniform-guidance ]
 
 - id: pay-as-needed
   title: Pay recipients as their work needs funds
+  kind: timeliness
   description: Keep advances to the recipient’s immediate cash needs, and pay reimbursement requests within 30 days unless the request looks improper.
   sources: [ uniform-guidance, asap-gov ]
 
 - id: review-payment-requests
   title: Review payment requests, and hold them when the terms call for it
+  kind: checks-controls
   description: Look at payment requests against the award’s budget and status, and hold or stop payments under the award’s terms, such as when required reports are overdue.
   sources: [ uniform-guidance ]
 
 - id: collect-reports-on-schedule
   title: Collect financial and performance reports on schedule
+  kind: timeliness
   description: Set each award’s reporting schedule, collect its financial and performance reports by their due dates, and follow up on late ones.
   sources: [ uniform-guidance ]
 
 - id: monitor-by-risk
   title: Monitor each award as its risk calls for
+  kind: checks-controls
   description: Plan monitoring, such as desk reviews and site visits, by each award’s risk, review reports against the award’s goals and budget, and record what was found and done.
   sources: [ uniform-guidance ]
 
 - id: decide-audit-findings
   title: Issue a management decision on each audit finding within six months
+  kind: timeliness
   description: Find the single audit findings about the agency’s awards in the Federal Audit Clearinghouse, and decide within six months of the audit report’s acceptance what each one requires.
   sources: [ uniform-guidance, federal-audit-clearinghouse ]
 
 - id: track-corrective-action
   title: Follow up on corrective action, and take remedies when needed
+  kind: checks-controls
   description: Track each recipient’s corrective action until it’s done, and when noncompliance isn’t corrected, take a remedy the Uniform Guidance allows, with notice to the recipient.
   sources: [ uniform-guidance ]
 
 - id: collect-final-reports
   title: Collect final reports within 120 days
+  kind: timeliness
   description: Remind recipients as the period of performance ends, collect their final financial and performance reports within 120 days, and decide requests for more time.
   sources: [ uniform-guidance ]
 
 - id: close-within-a-year
   title: Close each award within a year after it ends
+  kind: timeliness
   description: Reconcile payments and costs, settle any amounts due, deobligate what’s left, and complete closeout within one year after the period of performance ends.
   sources: [ uniform-guidance, gone-act ]
 
 - id: report-awards
   title: Report each award for publication on USAspending.gov
+  kind: transparency-reporting
   description: Report each financial assistance award, and each change to it, for publication on USAspending.gov, and correct errors when they’re found.
   sources: [ usaspending ]
 
 - id: check-subaward-reporting
   title: See that recipients report their subawards
+  kind: transparency-reporting
   description: Include the subaward reporting term in each award, and follow up when recipients don’t report first-tier subawards of $30,000 or more in SAM.gov by the end of the month after they’re made.
   sources: [ award-reporting-2-cfr-170, sam-gov ]

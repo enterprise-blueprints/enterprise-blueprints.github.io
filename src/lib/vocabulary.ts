@@ -191,6 +191,68 @@ export const earlierLayers: Record<string, { label: string; hint: string }> = {
   },
 };
 
+// Since schema 0.5.0, outcomes, capabilities, and requirements each name one
+// group in `attributes`, from these lists, so the index pages can group them
+// across missions. The groups are broad enough for missions to come: a new
+// mission's items fit the groups there are, and a new group is added here.
+// Each list is in the order the pages show it, and each hint says what belongs.
+export interface Grouping {
+  /** The attribute that names the group. */
+  field: string;
+  /** What a group is called, as in "Stage of the work". */
+  label: string;
+  groups: Record<string, { label: string; hint: string }>;
+}
+
+export const outcomeThemes: Grouping = {
+  field: 'theme',
+  label: 'What the public gets',
+  groups: {
+    timely: { label: 'Timely', hint: 'Things happen when they should, and backlogs don’t pile up.' },
+    'fair-accessible': { label: 'Fair and accessible', hint: 'Open to everyone eligible, and judged on the stated rules.' },
+    'easy-to-use': { label: 'Easy to use', hint: 'People can find, use, and get help with the service.' },
+    integrity: { label: 'Integrity', hint: 'Money and authority go to the right hands, and fraud is prevented.' },
+    results: { label: 'Results', hint: 'The mission achieves its purpose, economically.' },
+    accountable: { label: 'Accountable', hint: 'Decisions hold up, problems get fixed, and concerns can be raised safely.' },
+    transparent: { label: 'Transparent', hint: 'The work and the spending are open to view.' },
+  },
+};
+
+export const capabilityStages: Grouping = {
+  field: 'stage',
+  label: 'Stage of the work',
+  groups: {
+    'plan-prepare': { label: 'Plan and prepare', hint: 'Setting direction, programs, rules, and readiness.' },
+    'reach-take-in': { label: 'Reach and take in', hint: 'Telling people what’s offered, and taking in requests, applications, reports, and data.' },
+    'assess-decide': { label: 'Assess and decide', hint: 'Reviewing, evaluating, investigating, and determining.' },
+    'deliver-operate': { label: 'Deliver and operate', hint: 'Providing the service, paying, and running the operation.' },
+    'monitor-correct': { label: 'Monitor and correct', hint: 'Watching how things go, enforcing, and resolving disputes and appeals.' },
+    'report-close': { label: 'Report and close', hint: 'Closing out, publishing, reporting, and learning.' },
+    'across-the-work': { label: 'Across the work', hint: 'Shared foundations any mission uses.' },
+  },
+};
+
+export const requirementKinds: Grouping = {
+  field: 'kind',
+  label: 'Kind of obligation',
+  groups: {
+    timeliness: { label: 'Timeliness', hint: 'Deadlines, time standards, and schedules.' },
+    'checks-controls': { label: 'Checks and controls', hint: 'Eligibility and identity checks, conflicts of interest, approvals, and payment holds.' },
+    'decisions-on-record': { label: 'Decisions on the record', hint: 'Documenting what was decided and why, and keeping it.' },
+    'privacy-security': { label: 'Privacy and security', hint: 'Protecting information, people’s identities, and access to them.' },
+    'transparency-reporting': { label: 'Transparency and reporting', hint: 'Publishing, posting, and reporting to oversight bodies.' },
+    'service-access': { label: 'Service and access', hint: 'Notices, help, status, plain language, and access for people with disabilities or limited English.' },
+    'fairness-due-process': { label: 'Fairness and due process', hint: 'Stated criteria, equal treatment, and rights to appeal, challenge, or be heard.' },
+  },
+};
+
+/** The grouping each type uses, by element type. */
+export const groupings: Record<string, Grouping> = {
+  outcome: outcomeThemes,
+  capability: capabilityStages,
+  requirement: requirementKinds,
+};
+
 export const patternApproaches: Record<string, string> = {
   product: 'Configure a product',
   platform: 'Extend a platform the agency has',

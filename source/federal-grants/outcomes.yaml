@@ -2,6 +2,7 @@
 
 - id: open-fair-competition
   title: Funding is open to everyone eligible and fairly reviewed
+  theme: fair-accessible
   description: Funding opportunities are posted on Grants.gov with enough time to apply, generally at least 60 days, and applications are reviewed on their merits against criteria the notice describes.
   sources: [ uniform-guidance, grants-gov ]
   measures:
@@ -12,6 +13,7 @@
 
 - id: awards-to-capable-recipients
   title: Awards go to eligible recipients able to manage them
+  theme: integrity
   description: Before each award, the agency checks the applicant’s eligibility and integrity records and the risk it poses, and sets conditions where the risk calls for them.
   sources: [ uniform-guidance, sam-gov, do-not-pay ]
   measures:
@@ -22,6 +24,7 @@
 
 - id: funds-used-as-allowed
   title: Funds are paid as needed and used as the award allows
+  theme: integrity
   description: Recipients get funds when their work needs them, and payments that shouldn’t have been made are prevented, or found and recovered.
   sources: [ uniform-guidance, payment-integrity-31-usc-3352, payment-accuracy ]
   measures:
@@ -36,6 +39,7 @@
 
 - id: program-results-achieved
   title: Awards achieve what they were made for
+  theme: results
   description: Recipients report their progress on schedule, the agency reviews it against the award’s goals, and problems are caught while there’s time to fix them.
   sources: [ uniform-guidance ]
   measures:
@@ -46,6 +50,7 @@
 
 - id: audit-findings-resolved
   title: Audit findings are resolved promptly
+  theme: accountable
   description: The agency decides what each audit finding about its awards requires within six months, and follows up until the recipient has corrected it.
   sources: [ uniform-guidance, federal-audit-clearinghouse ]
   measures:
@@ -56,6 +61,7 @@
 
 - id: awards-closed-on-time
   title: Awards are closed out on time
+  theme: timely
   description: Recipients send their final reports within 120 days after the period of performance ends, and the agency closes each award within a year, returning unspent funds.
   sources: [ uniform-guidance, gone-act ]
   measures:
@@ -70,6 +76,7 @@
 
 - id: spending-public
   title: The spending is open to view
+  theme: transparent
   description: Each award, and recipients’ first-tier subawards, are reported for publication on USAspending.gov, so the public can see who receives federal funds and for what.
   sources: [ usaspending, award-reporting-2-cfr-170 ]
   measures:

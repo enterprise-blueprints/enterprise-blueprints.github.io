@@ -73,6 +73,11 @@ describe('compilePackage', () => {
     ]);
   });
 
+  it('puts a capability’s stage in its attributes, beside the ones written there', () => {
+    const c = compilePackage(mission('- id: c\n  title: C\n  description: D.\n  stage: assess-decide\n  attributes: { scope: here }\n'), pins, '0.1.0', 'd').elements.find((e) => e.type === 'capability');
+    expect(c!.attributes).toEqual({ scope: 'here', stage: 'assess-decide' });
+  });
+
   it('expands each group of discovery answers into one mapping per answer and element', () => {
     const [channels, tracked] = pkg.assessments![0].questions;
     expect(channels.options).toEqual([{ value: 'web', label: 'The web' }, { value: 'phone', label: 'Phone' }]);
@@ -93,6 +98,8 @@ describe('compilePackage', () => {
       'should name a type and a key',
     ],
     ['a package it builds on that has no source', () => compilePackage(mission(), {}, '0.1.0', 'd'), 'builds on "shared", which isn\'t a package'],
+    ['a stage that isn’t in the vocabulary', () => compilePackage(mission('- id: c\n  title: C\n  description: D.\n  stage: someday\n'), pins, '0.1.0', 'd'), 'unknown stage "someday", which should be one of plan-prepare'],
+    ['a group on the wrong type', () => compilePackage(mission('- id: c\n  title: C\n  description: D.\n  kind: timeliness\n'), pins, '0.1.0', 'd'), 'only a requirement has a kind'],
   ])('reports %s', (_, run, message) => {
     expect(run).toThrow(SourceError);
     expect(run).toThrow(message);

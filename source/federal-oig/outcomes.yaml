@@ -2,6 +2,7 @@
 
 - id: effective-programs
   title: Programs and operations run economically, efficiently, and effectively
+  theme: results
   description: Agency programs and operations make good use of public money and do what they’re meant to do, helped by the office’s audits, inspections, evaluations, and recommendations.
   sources: [ ig-act-402 ]
   measures:
@@ -12,6 +13,7 @@
 
 - id: fraud-waste-abuse-prevented
   title: Fraud, waste, and abuse are prevented and detected
+  theme: integrity
   description: Wrongdoing in agency programs and operations is deterred, found, and acted on, through audits, investigations, and referrals for prosecution where warranted.
   sources: [ ig-act-402, ig-act-405 ]
   measures:
@@ -26,6 +28,7 @@
 
 - id: leaders-congress-informed
   title: Agency leaders and Congress are fully and currently informed
+  theme: transparent
   description: The head of the agency and Congress learn about serious problems and deficiencies promptly, with what’s being done to correct them, and the public can read the office’s reports.
   sources: [ ig-act-402, ig-act-405, ig-act-420 ]
   measures:
@@ -40,6 +43,7 @@
 
 - id: problems-corrected
   title: Problems that are found get corrected
+  theme: accountable
   description: Recommendations get a management decision, and agreed corrective actions are carried out and tracked until they’re complete.
   sources: [ ig-act-402, ig-act-405 ]
   measures:
@@ -54,6 +58,7 @@
 
 - id: concerns-raised-safely
   title: People can raise concerns safely
+  theme: accountable
   description: Employees and the public can report possible wrongdoing through clear channels, with their identities kept confidential and protection from reprisal.
   sources: [ ig-act-407, ig-act-420, oversight-hotline ]
   measures:

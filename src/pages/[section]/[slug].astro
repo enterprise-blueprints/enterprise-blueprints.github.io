@@ -10,6 +10,7 @@ import OutcomeMatrix from '../../components/OutcomeMatrix.astro';
 import PatternCompare from '../../components/PatternCompare.astro';
 import {
   elements,
+  groupOf,
   lastReviewed,
   measuresOf,
   missionBlueprint,
@@ -22,7 +23,7 @@ import {
   tagline,
   usedBy,
 } from '../../lib/library';
-import { patternFields, patternLayers, predicates, statuses } from '../../lib/vocabulary';
+import { groupings, patternFields, patternLayers, predicates, statuses } from '../../lib/vocabulary';
 import { attributeLabel, attributeValue, formatDate } from '../../lib/format';
 import { href } from '../../lib/paths';
 import { downloadUrl } from '../../lib/publish';
@@ -43,8 +44,11 @@ const isPattern = element.type === 'implementationPattern';
 // A pattern describes itself with fields of its own, which get sections.
 const pattern = isPattern ? patternDetails(element) : null;
 const ownFields = ['approach', 'layer', 'role', 'ways', ...Object.keys(patternFields)];
-// A mission's tagline and principles, and an outcome's measures, have places of their own.
-const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => (!pattern || !ownFields.includes(key)) && !['tagline', 'principles', 'measures'].includes(key));
+// A mission's tagline and principles, an outcome's measures, and the group an item names have places of their own.
+const placed = ['tagline', 'principles', 'measures', ...Object.values(groupings).map((g) => g.field)];
+const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => (!pattern || !ownFields.includes(key)) && !placed.includes(key));
+// An outcome's theme, a capability's stage, or a requirement's kind, linking to its group on the index page.
+const group = groupOf(element);
 const line = tagline(element);
 const questions = questionsAbout(element);
 const users = usedBy(element);
@@ -77,6 +81,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
         {element.type === 'mission' && scopeLabel(element.package) && <span class="scope-badge">{scopeLabel(element.package)}</span>}
         {pattern?.layer && <span class="approach-badge">{patternLayers[pattern.layer].label}</span>}
         {pattern?.sourcing && <span class="approach-badge">{pattern.sourcing}</span>}
+        {group && <a class="approach-badge" href={group.url} title={group.hint}>{group.label}</a>}
       </div>
       <h1>{element.title}</h1>
       {line && <p class="record-tagline">{line}</p>}
@@ -254,6 +259,8 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
   .discovery-list > li > a { font-weight: 600; }
   .discovery-list ul { margin: .3rem 0 0; padding-left: 1.1rem; display: grid; gap: .2rem; font-size: .95rem; }
   .approach-badge { font-size: .8125rem; font-weight: 600; padding: .15rem .55rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-muted); }
+  a.approach-badge { color: var(--text); text-decoration: none; }
+  a.approach-badge:hover { border-color: var(--accent); color: var(--accent); }
   .pattern-fields { display: grid; gap: 1rem; margin-bottom: 2rem; }
   @media (min-width: 46rem) { .pattern-fields { grid-template-columns: 1fr 1fr; } }
   .pattern-field { padding: 1rem 1.15rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }

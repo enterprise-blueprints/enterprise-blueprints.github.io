@@ -14,7 +14,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
 import { compareVersions } from './format.ts';
-import { elementTypes, predicates } from './vocabulary.ts';
+import { elementTypes, groupings, predicates } from './vocabulary.ts';
 import type { Assessment, BlueprintPackage, Element, Question, Relation, Source } from './package.ts';
 
 type Raw = Record<string, unknown>;
@@ -35,7 +35,7 @@ export interface PackageSource {
 /** "capabilities" → "capability", for element files named after their type's section. */
 const typeOfSection = Object.fromEntries(Object.entries(elementTypes).map(([type, info]) => [info.section, type]));
 const PACKAGE_KEYS = ['schemaVersion', 'packageId', 'title', 'description', 'publisher', 'license', 'domain', 'jurisdictions', 'tags', 'dependencies'];
-const ELEMENT_KEYS = ['id', 'title', 'description', 'status', 'replacedBy', 'sources', 'tags', 'jurisdictions', 'applicabilityNotes', 'attributes', 'measures'];
+const ELEMENT_KEYS = ['id', 'title', 'description', 'status', 'replacedBy', 'sources', 'tags', 'jurisdictions', 'applicabilityNotes', 'attributes', 'measures', ...Object.values(groupings).map((g) => g.field)];
 const MEASURE_KEYS = ['id', 'title', 'description', 'sources'];
 const LINK_KEYS = ['to', 'note', 'sources', 'id', 'coverage', 'way'];
 
@@ -174,6 +174,13 @@ export function compilePackage(src: PackageSource, deps: Record<string, Resolved
           ...(m.sources ? { sourceIds: strings(m.sources).map((s) => `src:${s}`) } : {}),
         })),
       };
+    }
+    // An outcome's theme, a capability's stage, or a requirement's kind is written on it and published in its attributes.
+    for (const [groupType, g] of Object.entries(groupings)) {
+      if (raw[g.field] === undefined) continue;
+      if (type !== groupType) problems.push(`${where}: only a ${groupType} has a ${g.field}`);
+      else if (!g.groups[raw[g.field] as string]) problems.push(`${where}: unknown ${g.field} "${raw[g.field]}", which should be one of ${Object.keys(g.groups).join(', ')}`);
+      e.attributes = { ...e.attributes, [g.field]: raw[g.field] };
     }
     return e;
   });

@@ -1,6 +1,6 @@
 # The package itself. Its version and date are set when it is built (pnpm content:build).
 
-schemaVersion: 0.4.0
+schemaVersion: 0.5.0
 packageId: org.enterprise-blueprints.federal-foia
 title: FOIA Program — Public Access to Agency Records
 description: "U.S. federal Freedom of Information Act program blueprint: one mission with the outcomes it seeks and ways to measure them, seven capabilities with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for FOIA results and for request processing. It builds on Common Capabilities for case management, records, identity and access, and data protection."

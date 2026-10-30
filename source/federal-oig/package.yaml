@@ -1,6 +1,6 @@
 # The package itself. Its version and date are set when it is built (pnpm content:build).
 
-schemaVersion: 0.4.0
+schemaVersion: 0.5.0
 packageId: org.enterprise-blueprints.federal-oig
 title: Office of Inspector General — Independent Oversight
 description: "U.S. federal Office of Inspector General mission blueprint: one mission with the outcomes it seeks and ways to measure them, five capabilities with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for mission results and for intake and case handling. It builds on Common Capabilities for identity, access, data protection, and case management."

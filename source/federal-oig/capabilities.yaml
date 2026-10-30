@@ -2,6 +2,7 @@
 
 - id: complaint-allegation-disclosure-intake
   title: Complaint, Allegation & Disclosure Intake
+  stage: reach-take-in
   description: Ability to receive, acknowledge, classify, and appropriately route allegations of wrongdoing, fraud, waste, abuse, and relevant disclosures through authorized channels.
   sources: [ ig-act-404, oversight-hotline, cigie-faq ]
   applicabilityNotes: Confidentiality and routing rules vary. Specific retaliation complaints or protected disclosures may need referral to another legally authorized entity.
@@ -25,6 +26,7 @@
 
 - id: audit-inspection-evaluation
   title: Audit, Inspection & Evaluation
+  stage: assess-decide
   description: Ability to plan, conduct, supervise, or coordinate independent, objective examinations of programs, operations, performance, and controls.
   sources: [ ig-act-404, oversight-mission, cigie-faq ]
   applicabilityNotes: Methodologies, mandatory reviews, professional standards, and jurisdiction depend on the OIG and engagement.
@@ -40,6 +42,7 @@
 
 - id: investigation-management
   title: Investigation Management
+  stage: assess-decide
   description: Ability to assess allegations within jurisdiction, plan authorized investigative work, manage evidence and case progress, and document investigative results or referrals.
   sources: [ ig-act-404, oversight-mission, cigie-faq ]
   applicabilityNotes: Law enforcement powers, case types, investigative jurisdiction, evidence handling, and disclosure restrictions vary by legal authority.
@@ -59,6 +62,7 @@
 
 - id: recommendations-corrective-action-monitoring
   title: Recommendations & Corrective Action Monitoring
+  stage: monitor-correct
   description: Ability to issue findings or recommendations where authorized, track responses and progress, and monitor implementation of corrective measures.
   sources: [ ig-act-404, oversight-mission ]
   applicabilityNotes: OIGs generally recommend and monitor; they do not universally possess authority to implement or compel agency corrective actions.
@@ -70,6 +74,7 @@
 
 - id: oversight-reporting-communication
   title: Oversight Reporting & Communication
+  stage: report-close
   description: Ability to communicate independent oversight findings, recommendations, material risks, and work results to the appropriate officials and public audiences consistent with law.
   sources: [ ig-act-404, oversight-mission, cigie-faq ]
   applicabilityNotes: Reporting cadence, content, recipients, and confidentiality depend on legal requirements and the sensitivity of the work. Whistleblower education and coordination may be separate supporting functions.

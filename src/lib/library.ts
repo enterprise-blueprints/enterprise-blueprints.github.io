@@ -7,7 +7,7 @@
 // build.
 
 import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
-import { elementTypes, patternApproaches, patternFields, patternLayers, predicates, type ElementTypeInfo } from './vocabulary';
+import { elementTypes, groupings, patternApproaches, patternFields, patternLayers, predicates, type ElementTypeInfo } from './vocabulary';
 import { href } from './paths';
 import { compareVersions } from './format';
 
@@ -369,39 +369,45 @@ export interface IndexGroup {
   id: string;
   label: string;
   hint?: string;
-  /** The mission the group's package describes. */
-  mission?: LibraryElement;
   items: LibraryElement[];
 }
 
 /** The predicate that names each item's parent on an index page, such as the capability a requirement belongs to. */
 const parentLinks: Record<string, string> = { requirement: 'satisfies' };
-/** The index pages grouped by package. Missions and solutions are few enough to list whole. */
-const groupedTypes = new Set(['outcome', 'capability', 'requirement']);
+
+/** The group an outcome, capability, or requirement names, since schema 0.5.0, with the address of its place on the index page. */
+export function groupOf(e: LibraryElement): { id: string; label: string; hint: string; url: string } | undefined {
+  const grouping = groupings[e.type];
+  const id = e.attributes?.[grouping?.field ?? ''];
+  const group = typeof id === 'string' ? grouping.groups[id] : undefined;
+  return group && { id: id as string, ...group, url: href(`${e.typeInfo.section}/#${id}`) };
+}
+
+/** Missions first in title order, then the packages they build on, so a group lists each mission's items together. */
+const packageOrder = (pkg: BlueprintPackage) => [!elements.some((e) => e.package === pkg && e.type === 'mission'), shortTitle(pkg)] as const;
+const byPackage = (a: LibraryElement, b: LibraryElement) => {
+  const [x, y] = [packageOrder(a.package), packageOrder(b.package)];
+  return Number(x[0]) - Number(y[0]) || x[1].localeCompare(y[1]);
+};
 
 /**
- * An index page's items, grouped: patterns by the part they play, everything
- * else by package, missions first in title order and shared packages last.
- * One group means no grouping.
+ * An index page's items, grouped: patterns by layer, and outcomes,
+ * capabilities, and requirements by the group each names, in the order the
+ * vocabulary lists them, so a group gathers items from every mission. Items
+ * that name no group come last. Missions and solutions are few enough to list
+ * whole. One group means no grouping.
  */
 export function indexGroups(type: string): IndexGroup[] {
   const items = elementsOfType(type).filter((e) => e.status !== 'deprecated');
-  // A role's hint is written for one office's patterns; its first sentence fits the whole library.
+  // A layer's hint is written for one office's patterns; its first sentence fits the whole library.
   if (type === 'implementationPattern') return byLayer(items, (p) => p).map((g) => ({ id: g.layer ?? 'other', label: g.label, hint: g.hint?.split(/(?<=\.) /)[0], items: g.items }));
-  if (!groupedTypes.has(type)) return [{ id: 'all', label: '', items }];
-  const missionOf = (pkg: BlueprintPackage) => elements.find((e) => e.package === pkg && e.type === 'mission');
-  const groups = packages
-    .map((pkg) => ({ pkg, mission: missionOf(pkg), items: items.filter((e) => e.package === pkg) }))
-    .filter((g) => g.items.length)
-    .sort((a, b) => Number(!a.mission) - Number(!b.mission) || shortTitle(a.pkg).localeCompare(shortTitle(b.pkg)))
-    .map(({ pkg, mission, items }) => ({
-      id: pkg.packageId.split('.').at(-1)!,
-      label: mission ? shortTitle(pkg) : 'Shared across missions',
-      hint: mission ? undefined : `From ${shortTitle(pkg)}, which the mission packages build on.`,
-      mission,
-      items,
-    }));
-  return groups.length > 1 ? groups : [{ id: 'all', label: '', items }];
+  const grouping = groupings[type];
+  if (!grouping) return [{ id: 'all', label: '', items }];
+  const sorted = [...items].sort(byPackage);
+  const groups: IndexGroup[] = Object.entries(grouping.groups).map(([id, g]) => ({ id, label: g.label, hint: g.hint, items: sorted.filter((e) => groupOf(e)?.id === id) }));
+  groups.push({ id: 'other', label: 'Not grouped yet', items: sorted.filter((e) => !groupOf(e)) });
+  const shown = groups.filter((g) => g.items.length);
+  return shown.length > 1 ? shown : [{ id: 'all', label: '', items }];
 }
 
 /** Each item's parent within its own package, such as a requirement's capability, for the index pages. */

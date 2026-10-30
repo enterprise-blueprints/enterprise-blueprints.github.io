@@ -42,8 +42,9 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
 - `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
   `dependencies`. 0.3.0 checks the attributes of patterns and solutions and adds `coverage` to candidate
   patterns. 0.4.0 gives every pattern its `ways` to source it, every outcome its `measures`, and every mission
-  its `principles`, and leaves solutions to the tools that use the library. Every version stays, and Solution
-  Studio keeps identical copies.
+  its `principles`, and leaves solutions to the tools that use the library. 0.5.0 lets outcomes, capabilities,
+  and requirements name a group that holds across missions. Every version stays, and Solution Studio keeps
+  identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
 - `src/lib/compile.ts` builds a package from its source and decides its version; `scripts/content.ts` runs it.
@@ -82,6 +83,7 @@ its message names each problem and the file it's in. A new element type or predi
 | `sources.yaml` | The references it cites, each with an `id` that elements and links use. |
 | `missions.yaml`, `outcomes.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
 | `measures` on an outcome | The outcome's measures, each with an `id`, `title`, `description`, and optionally `sources`. They're published in the outcome's `attributes`; before schema 0.4.0, measures were elements of their own, linked by `measured_by`. A measure's `id` is unique in its package, and a discovery answer points at one as `measure:<id>`, published as `eb:measure:<id>`, the ID measures always had. |
+| `theme`, `stage`, `kind` | The group an outcome, capability, or requirement belongs to, across missions, published in its `attributes` since schema 0.5.0. An outcome's `theme` is what the public gets from it, a capability's `stage` is the part of the work it belongs to, and a requirement's `kind` is the kind of obligation it is. The lists are in `src/lib/vocabulary.ts`, each group with a hint saying what belongs, and the index pages group by them. A new mission's items fit the groups there are; add a group only when none fits. |
 | `links.yaml` | Links from the elements of packages this one builds on, such as a shared capability that satisfies one of its requirements. |
 | `discovery.yaml` | Discovery question sets. |
 

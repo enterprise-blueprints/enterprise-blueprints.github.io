@@ -2,6 +2,7 @@
 
 - id: foia-request-intake
   title: Request Intake
+  stage: reach-take-in
   description: Ability to receive FOIA requests through the national portal and the agency’s own channels, log and acknowledge each one, work with requesters to make requests clear, and decide each request’s processing track, fee category, and whether it qualifies for expedited processing.
   sources: [ foia-statute, doj-foia-guide, foia-gov ]
   applicabilityNotes: Each agency’s FOIA regulations set what makes a request proper, how its tracks and fee categories work, and who decides on expedited processing. Requests for records about the requester may also fall under the Privacy Act.
@@ -27,6 +28,7 @@
 
 - id: records-search-collection
   title: Records Search & Collection
+  stage: assess-decide
   description: Ability to find the records a request covers wherever the agency keeps them, including email and other electronic systems, collect them for review, and document how the search was done.
   sources: [ doj-foia-guide ]
   applicabilityNotes: A search needs to be reasonably calculated to find the records asked for. What that takes depends on how and where the agency keeps its records.
@@ -40,6 +42,7 @@
 
 - id: records-review-redaction
   title: Review, Redaction & Consultation
+  stage: assess-decide
   description: Ability to review the records found line by line, decide what can be released under the foreseeable harm standard, redact only what an exemption protects, and consult or refer other agencies with an interest in the records.
   sources: [ foia-statute, doj-foia-guide ]
   applicabilityNotes: Exemptions, exclusions, and consultation practices are technical. This describes the ability, not how to apply any exemption.
@@ -61,6 +64,7 @@
 
 - id: response-release
   title: Response & Release
+  stage: deliver-operate
   description: Ability to send each requester a determination that explains what was released and withheld and why, with their appeal rights and where to get help, and to deliver released records in the form asked for.
   sources: [ foia-statute, doj-foia-guide ]
   contributes_to: [ records-released-as-allowed, requests-answered-on-time ]
@@ -76,6 +80,7 @@
 
 - id: appeals-requester-assistance
   title: Appeals & Requester Assistance
+  stage: monitor-correct
   description: Ability to help requesters through a FOIA Public Liaison, decide administrative appeals of adverse determinations, and work with OGIS when a requester seeks mediation.
   sources: [ foia-statute, ogis ]
   applicabilityNotes: Who decides appeals, and how the FOIA Public Liaison works with requesters, is set by each agency.
@@ -92,6 +97,7 @@
 
 - id: proactive-disclosure
   title: Proactive Disclosure
+  stage: report-close
   description: Ability to publish the records the law requires agencies to make available without a request, such as final opinions, policy statements, staff manuals, and records released 3 or more times, in an online FOIA library people can search.
   sources: [ foia-statute, doj-foia-guide, oip-chief-foia-officer-guidelines ]
   contributes_to: [ frequently-requested-posted, backlog-kept-small ]
@@ -104,6 +110,7 @@
 
 - id: foia-reporting
   title: FOIA Reporting
+  stage: report-close
   description: Ability to compile the annual FOIA report, quarterly reports, and the Chief FOIA Officer report from the agency’s request data, and post them and their raw data online.
   sources:
     - foia-statute

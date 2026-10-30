@@ -438,3 +438,35 @@ describe('missions, measures, and ways to source a pattern (schema 0.4.0)', () =
     expect(check((p) => (p.elements.find((e) => e.id === hotline)!.attributes!.ways = []))).toContain('/ways must NOT have fewer than 1 items');
   });
 });
+
+describe('groups across missions (schema 0.5.0)', () => {
+  const check = (change: (pkg: BlueprintPackage) => void) => {
+    const pkg = structuredClone(original);
+    change(pkg);
+    return validatePackage(pkg, resolve).join('\n');
+  };
+  const first = (p: BlueprintPackage, type: string) => p.elements.find((e) => e.type === type)!;
+
+  it('accept every package, with each outcome, capability, and requirement in a group', () => {
+    for (const pkg of [original, common, foia, grants, acquisition]) {
+      expect(pkg.schemaVersion).toBe('0.5.0');
+      expect(validatePackage(pkg, resolve), pkg.packageId).toEqual([]);
+      for (const e of pkg.elements) {
+        const field = { outcome: 'theme', capability: 'stage', requirement: 'kind' }[e.type];
+        if (field) expect(e.attributes?.[field], e.id).toEqual(expect.any(String));
+      }
+    }
+  });
+
+  it.each<[string, (pkg: BlueprintPackage) => void, string]>([
+    ['an unknown theme', (p) => (first(p, 'outcome').attributes!.theme = 'popular'), '/attributes/theme must be equal to one of the allowed values'],
+    ['an unknown stage', (p) => (first(p, 'capability').attributes!.stage = 'someday'), '/attributes/stage must be equal to one of the allowed values'],
+    ['an unknown kind', (p) => (first(p, 'requirement').attributes = { kind: 'nice-to-have' }), '/attributes/kind must be equal to one of the allowed values'],
+  ])('reject %s', (_, change, message) => {
+    expect(check(change)).toContain(message);
+  });
+
+  it('keep a capability’s other attributes, such as its scope', () => {
+    expect(first(original, 'capability').attributes).toEqual({ scope: 'US-federal-OIG', stage: 'reach-take-in' });
+  });
+});

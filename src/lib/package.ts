@@ -2,10 +2,11 @@
 // first, then the reference checks a schema can't do. Schema 0.2.0 adds
 // dependencies, so a package can build on another one's elements. Schema
 // 0.3.0 gives patterns and solutions typed attributes, and lets a candidate
-// pattern say it only partly covers a capability. Schema 0.4.0 lets a logical
-// pattern list its ways to source it, and adds north stars: one mission's
-// long-term solution. Packages stay valid under the schema they were
-// published with.
+// pattern say it only partly covers a capability. Schema 0.4.0 gives every
+// pattern its ways to source it, and makes a mission's patterns its
+// architecture, with outcomes holding their measures. Schema 0.5.0 lets
+// outcomes, capabilities, and requirements name a group that holds across
+// missions. Packages stay valid under the schema they were published with.
 
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
@@ -13,6 +14,7 @@ import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json';
 import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json';
 import schema030 from '../../schemas/blueprint-package-0.3.0.schema.json';
 import schema040 from '../../schemas/blueprint-package-0.4.0.schema.json';
+import schema050 from '../../schemas/blueprint-package-0.5.0.schema.json';
 import { earlierLayers, elementTypes, patternApproaches, patternFields, patternLayers, predicates } from './vocabulary';
 
 export interface Source {
@@ -87,7 +89,7 @@ export interface Dependency {
 }
 
 export interface BlueprintPackage {
-  schemaVersion: '0.1.0' | '0.2.0' | '0.3.0' | '0.4.0';
+  schemaVersion: '0.1.0' | '0.2.0' | '0.3.0' | '0.4.0' | '0.5.0';
   packageId: string;
   version: string;
   title: string;
@@ -112,6 +114,7 @@ const schemas = {
   '0.2.0': ajv.compile<BlueprintPackage>(schema020),
   '0.3.0': ajv.compile<BlueprintPackage>(schema030),
   '0.4.0': ajv.compile<BlueprintPackage>(schema040),
+  '0.5.0': ajv.compile<BlueprintPackage>(schema050),
 };
 export const schemaVersions = Object.keys(schemas) as (keyof typeof schemas)[];
 

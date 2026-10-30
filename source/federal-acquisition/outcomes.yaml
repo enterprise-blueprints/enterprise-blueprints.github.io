@@ -2,6 +2,7 @@
 
 - id: needs-met-on-time
   title: The agency gets what it needs when it needs it
+  theme: timely
   description: Acquisitions start early enough, and move from request to award quickly enough, that the goods and services arrive when the program needs them.
   sources: [ far, palt-memo ]
   measures:
@@ -12,6 +13,7 @@
 
 - id: full-open-competition
   title: Contracts are competed openly and fairly
+  theme: fair-accessible
   description: Opportunities are publicized so businesses can compete, offers are judged only on the criteria the solicitation stated, and any exception to full and open competition is one the law allows, justified in writing.
   sources: [ competition-41-usc-3301, competition-exceptions-41-usc-3304, procurement-integrity-41-usc-2102 ]
   measures:
@@ -26,6 +28,7 @@
 
 - id: responsible-contractors
   title: Contracts go to responsible contractors
+  theme: integrity
   description: Before each award, the agency checks the contractor isn’t excluded, reviews its integrity and performance records, and determines it able to do the work.
   sources: [ far, integrity-records-41-usc-2313, sam-gov ]
   measures:
@@ -36,6 +39,7 @@
 
 - id: small-business-participation
   title: Small businesses get a fair share of the work
+  theme: fair-accessible
   description: The agency finds small businesses able to do its work, sets work aside for them where the rules call for it, and meets the goals it agreed with the Small Business Administration.
   sources: [ small-business-goals-15-usc-644 ]
   measures:
@@ -46,6 +50,7 @@
 
 - id: contracts-perform-as-agreed
   title: Contractors deliver what the contract calls for
+  theme: results
   description: Each contract is monitored against its terms, problems are raised while there’s time to fix them, and each contractor’s performance is evaluated and recorded for future source selections.
   sources: [ far, cpars ]
   measures:
@@ -56,6 +61,7 @@
 
 - id: invoices-paid-on-time
   title: Contractors are paid correctly and on time
+  theme: timely
   description: Invoices are checked against the contract and what was accepted, improper ones go back within 7 days with the reasons, and proper ones are paid by the due date.
   sources: [ prompt-payment-31-usc-3903, invoice-processing-platform ]
   measures:
@@ -70,6 +76,7 @@
 
 - id: award-decisions-hold-up
   title: Award decisions stand up to challenge
+  theme: accountable
   description: Each award decision is made and documented by the solicitation’s rules, so it holds up when an offeror protests, and protests are answered on time.
   sources: [ far, protest-decisions-31-usc-3554, gao-bid-protest-rules ]
   measures:
@@ -80,6 +87,7 @@
 
 - id: contract-data-public
   title: The contract spending is open to view
+  theme: transparent
   description: Each contract action is reported accurately within three business days, so the public can see on USAspending.gov who the government buys from and for what.
   sources: [ far, sam-gov, usaspending ]
   measures:
@@ -90,6 +98,7 @@
 
 - id: contracts-closed-on-time
   title: Contracts are closed out on time
+  theme: timely
   description: Once the work is done, each contract is closed within the time standard for its type, and money no longer needed is released while it can still be used.
   sources: [ far ]
   measures:

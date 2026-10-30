@@ -2,6 +2,7 @@
 
 - id: acquisition-planning-market-research
   title: Acquisition Planning & Market Research
+  stage: plan-prepare
   description: Ability to define each need with the program office, research the market for commercial products and services and for small businesses able to do the work, and plan the acquisition’s strategy, contract type, competition, and schedule early enough to meet the need.
   sources: [ far, small-business-goals-15-usc-644 ]
   applicabilityNotes: How much planning is written down depends on the acquisition’s size and the agency’s rules. Small purchases need little; major acquisitions need a written plan.
@@ -18,6 +19,7 @@
 
 - id: solicitation-publicizing
   title: Solicitation & Publicizing
+  stage: reach-take-in
   description: Ability to publicize each opportunity on SAM.gov, issue solicitations with clear requirements and evaluation criteria, answer offerors’ questions the same way for everyone, and receive offers securely by the deadline.
   sources: [ far, sam-gov, competition-41-usc-3301 ]
   applicabilityNotes: Orders under existing contracts, such as the GSA schedules, follow their own, simpler steps for notice and competition.
@@ -34,6 +36,7 @@
 
 - id: evaluation-source-selection
   title: Evaluation & Source Selection
+  stage: assess-decide
   description: Ability to evaluate offers only against the factors the solicitation stated, keep proposal and source selection information from anyone not authorized, document the award decision and its reasons, and notify and debrief offerors.
   sources: [ far, procurement-integrity-41-usc-2102 ]
   applicabilityNotes: Evaluations range from comparing prices on a simple purchase to a source selection board weighing many factors on a major one.
@@ -49,6 +52,7 @@
 
 - id: responsibility-determination
   title: Responsibility & Award
+  stage: assess-decide
   description: Ability to check that the apparent awardee is registered in SAM.gov and not excluded, review its integrity and performance records, determine it responsible, and issue the contract with the clauses its type and value call for.
   sources: [ far, integrity-records-41-usc-2313, sam-gov ]
   applicabilityNotes: Review of responsibility and qualification records is required above the simplified acquisition threshold. A small business found not responsible is referred to the Small Business Administration, which can issue a Certificate of Competency.
@@ -62,6 +66,7 @@
 
 - id: protest-handling
   title: Bid Protests
+  stage: monitor-correct
   description: Ability to receive and answer protests, at the agency, at GAO, or at the Court of Federal Claims, by their deadlines, hold off on award or performance when the law requires it, prepare the agency’s report from the contract file, and take corrective action where it’s warranted.
   sources: [ protest-stay-31-usc-3553, protest-decisions-31-usc-3554, gao-bid-protest-rules ]
   applicabilityNotes: Agency counsel usually leads the response with the contracting officer. Which forum hears a protest, and how quickly, depends on where and when it’s filed.
@@ -76,6 +81,7 @@
 
 - id: contract-administration
   title: Contract Administration & Surveillance
+  stage: deliver-operate
   description: Ability to monitor each contractor’s performance against the contract, inspect and accept what’s delivered, make changes only through written modifications by an authorized contracting officer, exercise options, and act on problems.
   sources: [ far ]
   applicabilityNotes: A contracting officer’s representative often monitors the work day to day, within the authority the contracting officer delegates in writing.
@@ -86,6 +92,7 @@
 
 - id: invoicing-payment
   title: Invoicing & Payment
+  stage: deliver-operate
   description: Ability to receive invoices electronically, check each against the contract and what was delivered and accepted, return improper ones within 7 days with the reasons, and pay proper ones by the due date, with any interest owed.
   sources: [ prompt-payment-31-usc-3903, invoice-processing-platform ]
   applicabilityNotes: Payment usually happens in the agency’s financial system, with acceptance from the program office and the contract’s terms from the contracting office.
@@ -99,6 +106,7 @@
 
 - id: past-performance-evaluation
   title: Past Performance Evaluation
+  stage: monitor-correct
   description: Ability to evaluate each contractor’s performance at least once a year and when the work is complete, give the contractor its chance to comment, have someone above the contracting officer settle disagreements, and record the evaluations in CPARS for future source selections.
   sources: [ far, cpars ]
   applicabilityNotes: Evaluations are required above set dollar thresholds, which differ by kind of contract. Source selections use evaluations within three years of the work’s completion, or six for construction and architect-engineer contracts.
@@ -115,6 +123,7 @@
 
 - id: contract-reporting
   title: Contract Data Reporting
+  stage: report-close
   description: Ability to report each contract action to SAM.gov within three business days after award, keep the data accurate, certify it each year, and see that contractors report their first-tier subcontracts.
   sources: [ far, sam-gov, usaspending ]
   applicabilityNotes: Contract data reported to SAM.gov flows on to USAspending.gov. Some information, such as classified actions, isn’t reported publicly.
@@ -126,6 +135,7 @@
 
 - id: contract-closeout
   title: Contract Closeout
+  stage: report-close
   description: Ability to close each contract within the time standard for its type after the work is done, settling the final invoice and any indirect cost rates, releasing funds no longer needed, and completing the contract file.
   sources: [ far ]
   applicabilityNotes: A contract can’t be closed while it’s in litigation or under appeal, or before a termination is settled.

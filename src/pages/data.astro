@@ -99,6 +99,13 @@ import { href } from '../lib/paths';
         no solutions. An outcome lists its <code>measures</code> in its <code>attributes</code>, instead of linking
         to measure elements.
       </p>
+      <p>
+        Since schema 0.5.0, an outcome can name its <code>theme</code>, a capability its <code>stage</code>, and a
+        requirement its <code>kind</code>, each in its <code>attributes</code>, from lists in the
+        <a href={href('vocabulary.json')}>vocabulary</a>. The groups hold across missions, so an outcome's theme
+        is what the public gets from it, a capability's stage is the part of the work it belongs to, and a
+        requirement's kind is the kind of obligation it is.
+      </p>
     </div>
   </div>
 </Base>

@@ -1,4 +1,4 @@
-import { readdirSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { compareVersions } from '../src/lib/format';
 import { catalog, vocabulary } from '../src/lib/publish';
@@ -11,6 +11,15 @@ describe('vocabulary', () => {
       for (const e of pkg.elements) expect(v.types, e.id).toHaveProperty(e.type);
       for (const r of pkg.relations) expect(v.predicates, r.id).toHaveProperty(r.predicate);
     }
+  });
+
+  it('lists the groups outcomes, capabilities, and requirements name, as the schema allows them', () => {
+    const v = vocabulary();
+    const defs = JSON.parse(readFileSync('schemas/blueprint-package-0.5.0.schema.json', 'utf8')).$defs;
+    expect(Object.keys(v.outcome.themes)).toEqual(defs.outcomeAttributes.properties.theme.enum);
+    expect(Object.keys(v.capability.stages)).toEqual(defs.capabilityAttributes.properties.stage.enum);
+    expect(Object.keys(v.requirement.kinds)).toEqual(defs.requirementAttributes.properties.kind.enum);
+    expect(v.capability.stages['assess-decide']).toEqual({ label: 'Assess and decide', hint: expect.any(String) });
   });
 
   it('gives each type a page address with the element key in it', () => {
@@ -45,8 +54,9 @@ describe('catalog', () => {
       'schemas/blueprint-package-0.2.0.schema.json',
       'schemas/blueprint-package-0.3.0.schema.json',
       'schemas/blueprint-package-0.4.0.schema.json',
+      'schemas/blueprint-package-0.5.0.schema.json',
     ]);
-    expect(catalog().schema).toBe('schemas/blueprint-package-0.4.0.schema.json');
+    expect(catalog().schema).toBe('schemas/blueprint-package-0.5.0.schema.json');
   });
 
   it('shows the current release on the pages, one package for each source folder', () => {

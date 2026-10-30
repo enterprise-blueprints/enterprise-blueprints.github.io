@@ -2,6 +2,7 @@
 
 - id: identity-access-management
   title: Identity & Access Management
+  stage: across-the-work
   description: Ability to know who is using the office’s systems and to grant, review, and remove their access to information according to their role and need.
   sources: [ nist-sp-800-53, nist-sp-800-63-4 ]
   applicabilityNotes: Shared across missions. Many offices rely on an agency-wide identity service; the office may still own who gets access to its own systems and records.
@@ -10,6 +11,7 @@
 
 - id: data-protection-privacy
   title: Data Protection & Privacy
+  stage: across-the-work
   description: "Ability to protect sensitive and personal information wherever it’s kept: knowing where it is, limiting who sees it, sharing it only as allowed, and keeping it safe in storage and in transit."
   sources: [ nist-sp-800-53, privacy-act, nist-privacy-framework ]
   applicabilityNotes: Shared across missions. What counts as sensitive, and which disclosures are allowed, depends on the laws and notices that apply to each office.
@@ -24,6 +26,7 @@
 
 - id: records-management
   title: Records Management
+  stage: across-the-work
   description: Ability to make and keep records of the office’s work and decisions, and to keep or dispose of each kind of record on an approved schedule.
   sources: [ records-44-usc-3101, nara-grs ]
   applicabilityNotes: Shared across missions. Schedules for mission-specific records are approved for each agency; the General Records Schedules cover records common to many.
@@ -38,6 +41,7 @@
 
 - id: security-logging-monitoring
   title: Security Logging & Monitoring
+  stage: across-the-work
   description: Ability to record what happens in the office’s systems, such as sign-ins, access to sensitive information, and changes, and to review those records and act on what they show.
   sources: [ nist-sp-800-53 ]
   applicabilityNotes: Shared across missions. Logging is often run agency-wide; the office decides what in its own systems needs watching.
@@ -50,6 +54,7 @@
 
 - id: case-management
   title: Case Management
+  stage: across-the-work
   description: "Ability to track each matter the office handles, such as a request, a complaint, or a case, from the time it arrives until it’s closed: who has it, where it stands, what’s due when, and what belongs to it."
   applicabilityNotes: Shared across missions. Each mission adds its own steps, such as triage or review, on top of the same way of tracking work.
   satisfies:

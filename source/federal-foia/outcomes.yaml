@@ -2,6 +2,7 @@
 
 - id: requests-answered-on-time
   title: Requests are answered within the time the law allows
+  theme: timely
   description: Requesters get a determination within 20 working days, or within the extension the law allows in unusual circumstances, and requests that qualify for expedited processing move faster.
   sources: [ foia-statute, doj-foia-guide ]
   measures:
@@ -16,6 +17,7 @@
 
 - id: backlog-kept-small
   title: Overdue requests don’t pile up
+  theme: timely
   description: Few requests and appeals are still open past their legal deadline, and the oldest ones get closed.
   sources: [ oip-annual-report-handbook, oip-backlog-guidance ]
   measures:
@@ -30,6 +32,7 @@
 
 - id: records-released-as-allowed
   title: Records are released unless the law calls for withholding
+  theme: fair-accessible
   description: Requesters get every record, and every reasonably segregable part of one, that the law allows. Information is withheld only under an exemption where release would foreseeably harm a protected interest, or where law prohibits release, and each withholding is marked.
   sources: [ foia-statute, doj-foia-guide ]
   measures:
@@ -40,6 +43,7 @@
 
 - id: frequently-requested-posted
   title: Records people often ask for are posted without a request
+  theme: transparent
   description: The agency posts the records the law requires it to make available, including records released 3 or more times, so people can find them without filing a request.
   sources: [ foia-statute, doj-foia-guide, oip-chief-foia-officer-guidelines ]
   measures:
@@ -50,6 +54,7 @@
 
 - id: requesters-helped
   title: Requesters can get help and resolve disputes
+  theme: easy-to-use
   description: Requesters can reach a FOIA Public Liaison with concerns, appeal an adverse determination, and turn to OGIS mediation instead of going to court.
   sources: [ foia-statute, ogis ]
   measures:
@@ -60,6 +65,7 @@
 
 - id: foia-performance-public
   title: The program’s performance is open to view
+  theme: transparent
   description: The Attorney General, OGIS, Congress, and the public can see how the agency’s FOIA program is doing through its annual, quarterly, and Chief FOIA Officer reports and their data.
   sources: [ foia-statute, oip-chief-foia-officer-guidelines, foia-gov ]
   measures:
