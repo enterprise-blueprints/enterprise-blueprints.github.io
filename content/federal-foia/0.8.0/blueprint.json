@@ -1507,23 +1507,33 @@
           "candidateMappings": [
             {
               "answerValue": "processing-times",
-              "elementId": "eb:outcome:requests-answered-on-time",
-              "interpretation": "The office already tracks “Time to process requests” and “Requests answered within 20 working days”, so there may be a value for today."
+              "elementId": "eb:measure:request-processing-time",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "processing-times",
+              "elementId": "eb:measure:requests-within-20-days",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "backlog",
-              "elementId": "eb:outcome:backlog-kept-small",
-              "interpretation": "The office already tracks “Backlogged requests” and “Age of the oldest pending requests”, so there may be a value for today."
+              "elementId": "eb:measure:backlogged-requests",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "backlog",
+              "elementId": "eb:measure:oldest-pending-requests",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "dispositions",
-              "elementId": "eb:outcome:records-released-as-allowed",
-              "interpretation": "The office already tracks “How requests are resolved”, so there may be a value for today."
+              "elementId": "eb:measure:request-dispositions",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "appeals",
-              "elementId": "eb:outcome:requesters-helped",
-              "interpretation": "The office already tracks “Time to decide appeals”, so there may be a value for today."
+              "elementId": "eb:measure:appeal-processing-time",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             }
           ]
         },

@@ -1387,28 +1387,38 @@
           "candidateMappings": [
             {
               "answerValue": "semiannual-statistics",
-              "elementId": "eb:outcome:fraud-waste-abuse-prevented",
-              "interpretation": "The office already tracks “Questioned and unsupported costs” and “Investigative results”, so there may be a value for today."
+              "elementId": "eb:measure:questioned-costs",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "semiannual-statistics",
-              "elementId": "eb:outcome:effective-programs",
-              "interpretation": "The office already tracks “Funds recommended for better use”, so there may be a value for today."
+              "elementId": "eb:measure:funds-put-to-better-use",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "semiannual-statistics",
+              "elementId": "eb:measure:investigative-results",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "recommendation-status",
-              "elementId": "eb:outcome:problems-corrected",
-              "interpretation": "The office already tracks “Open recommendations” and “Reports awaiting a management decision”, so there may be a value for today."
+              "elementId": "eb:measure:open-recommendations",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "recommendation-status",
+              "elementId": "eb:measure:reports-awaiting-decision",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "report-posting",
-              "elementId": "eb:outcome:leaders-congress-informed",
-              "interpretation": "The office already tracks “Reports posted within 3 days”, so there may be a value for today."
+              "elementId": "eb:measure:reports-posted-within-3-days",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "intake-times",
-              "elementId": "eb:outcome:concerns-raised-safely",
-              "interpretation": "The office already tracks “Time to review and route a matter”, so there may be a value for today."
+              "elementId": "eb:measure:time-to-route",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             }
           ]
         },

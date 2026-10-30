@@ -49,26 +49,26 @@
         - none: None of these regularly
       points:
         - when: reports-on-time
-          to: outcome:program-results-achieved
-          why: The office already tracks “Performance reports received on time”, so there may be a value for today.
+          to: measure:performance-reports-on-time
+          why: The office tracks this already, so there may be a value for today.
         - when: management-decisions
-          to: outcome:audit-findings-resolved
-          why: The office already tracks “Management decisions within six months”, so there may be a value for today.
+          to: measure:management-decisions-on-time
+          why: The office tracks this already, so there may be a value for today.
         - when: closeout
-          to: outcome:awards-closed-on-time
-          why: The office already tracks “Awards closed within a year”, so there may be a value for today.
+          to: measure:awards-closed-within-a-year
+          why: The office tracks this already, so there may be a value for today.
         - when: improper-payments
-          to: outcome:funds-used-as-allowed
-          why: The office already tracks “Improper payment rate” and “Improper payments recovered”, so there may be a value for today.
+          to: [ measure:improper-payment-rate, measure:improper-payments-recovered ]
+          why: The office tracks this already, so there may be a value for today.
     - id: grants-expired-awards-known
       prompt: Does the office know how many awards have ended but aren’t closed out?
       kind: boolean
       points:
         - when: true
-          to: outcome:awards-closed-on-time
-          why: The office already tracks “Expired awards not yet closed”, so there may be a value for today.
+          to: measure:expired-awards-open
+          why: The office knows this number, so there may be a value for today.
         - when: false
-          to: [ outcome:awards-closed-on-time, capability:award-closeout ]
+          to: [ measure:expired-awards-open, capability:award-closeout ]
           why: Not knowing how many expired awards remain open often means closeout is falling behind.
 
 - id: grants-operations
@@ -126,7 +126,7 @@
       kind: boolean
       points:
         - when: false
-          to: [ capability:audit-resolution-remedies, outcome:audit-findings-resolved ]
+          to: [ capability:audit-resolution-remedies, measure:management-decisions-on-time ]
           why: Findings not tracked to a decision are where the six-month deadline slips.
     - id: grants-usaspending-by-hand
       prompt: Is the award data for USAspending.gov put together by hand?

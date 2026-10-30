@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
-import { assessments, elements, type LibraryElement } from '../../lib/library';
+import { assessments, discoveryTarget, type DiscoveryTarget } from '../../lib/library';
 import type { Question } from '../../lib/package';
 import { href } from '../../lib/paths';
 import { downloadUrl } from '../../lib/publish';
@@ -11,9 +11,11 @@ export const getStaticPaths = (() =>
   assessments.map((assessment) => ({ params: { slug: assessment.slug }, props: { assessment } }))) satisfies GetStaticPaths;
 
 const { assessment } = Astro.props;
-const byId = new Map(elements.map((e) => [e.id, e]));
+// What an answer points at: an element, or an outcome's measure. Each is looked up once, so counts can compare them.
+const found = new Map<string, DiscoveryTarget | undefined>();
+const byId = { get: (id: string) => (found.has(id) ? found.get(id) : found.set(id, discoveryTarget(id)).get(id)) };
 const typeOrder = Object.keys(elementTypes);
-const ordered = (list: LibraryElement[]) =>
+const ordered = (list: DiscoveryTarget[]) =>
   [...list].sort((a, b) => typeOrder.indexOf(a.type) - typeOrder.indexOf(b.type) || a.title.localeCompare(b.title));
 
 const KIND: Record<Question['kind'], string> = {

@@ -1938,28 +1938,38 @@
           "candidateMappings": [
             {
               "answerValue": "lead-time",
-              "elementId": "eb:outcome:needs-met-on-time",
-              "interpretation": "The office already tracks “Procurement administrative lead time (PALT)”, so there may be a value for today."
+              "elementId": "eb:measure:procurement-lead-time",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "competition",
-              "elementId": "eb:outcome:full-open-competition",
-              "interpretation": "The office already tracks “Share of obligations competed” and “Competitions with only one offer”, so there may be a value for today."
+              "elementId": "eb:measure:competed-obligations-share",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "competition",
+              "elementId": "eb:measure:single-offer-awards",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "evaluations",
-              "elementId": "eb:outcome:contracts-perform-as-agreed",
-              "interpretation": "The office already tracks “Performance evaluations completed on time”, so there may be a value for today."
+              "elementId": "eb:measure:performance-evaluations-on-time",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "prompt-payment",
-              "elementId": "eb:outcome:invoices-paid-on-time",
-              "interpretation": "The office already tracks “Invoices paid on time” and “Prompt Payment interest paid”, so there may be a value for today."
+              "elementId": "eb:measure:proper-invoices-paid-on-time",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "prompt-payment",
+              "elementId": "eb:measure:interest-penalties-paid",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "closeout",
-              "elementId": "eb:outcome:contracts-closed-on-time",
-              "interpretation": "The office already tracks “Contracts overdue for closeout”, so there may be a value for today."
+              "elementId": "eb:measure:contracts-overdue-for-closeout",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             }
           ]
         },
@@ -1975,7 +1985,7 @@
             },
             {
               "answerValue": "false",
-              "elementId": "eb:outcome:needs-met-on-time",
+              "elementId": "eb:measure:procurement-lead-time",
               "interpretation": "The official lead time starts at the solicitation, so time spent before it, often the longest part, can go unseen."
             }
           ]

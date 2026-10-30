@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byRole, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, tagline } from '../src/lib/library';
+import { byRole, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, tagline } from '../src/lib/library';
 
 describe('missionBlueprint', () => {
   const mission = elements.find((e) => e.id === 'eb:mission:independent-government-oversight')!;
@@ -198,6 +198,16 @@ describe('the index pages', () => {
       const parents = indexParents(type)!;
       for (const e of elementsOfType(type)) expect(parents.get(e.id)?.package, e.id).toBe(e.package);
     }
+  });
+});
+
+describe('discovery answers that point at a measure', () => {
+  it('link it to its place on its outcome’s page, and show on the outcome’s page', () => {
+    const target = discoveryTarget('eb:measure:time-to-route')!;
+    expect(target).toMatchObject({ type: 'measure', title: 'Time to review and route a matter' });
+    expect(target.url).toMatch(/outcomes\/concerns-raised-safely\/#measure-time-to-route$/);
+    const outcome = elements.find((e) => e.id === 'eb:outcome:concerns-raised-safely')!;
+    expect(questionsAbout(outcome).map((q) => q.question.id)).toContain('question:tracked-measures');
   });
 });
 

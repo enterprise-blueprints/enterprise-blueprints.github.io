@@ -183,11 +183,11 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
     if (e.type === 'implementationPattern' || e.type === 'solution') errors.push(...patternProblems(e));
     if (!BEFORE_040.has(pkg.schemaVersion)) {
       if (e.type === 'measure') errors.push(`element ${e.id}: since schema 0.4.0, a measure is part of its outcome`);
-      const measures = (e.attributes?.measures ?? []) as { id: string; sourceIds?: string[] }[];
-      for (const id of duplicates(measures.map((m) => m.id))) errors.push(`outcome ${e.id} has two measures with the ID ${id}`);
-      for (const s of measures.flatMap((m) => m.sourceIds ?? [])) if (!sourceIds.has(s)) errors.push(`a measure of ${e.id} cites unknown source ${s}`);
+      for (const s of measuresIn(e).flatMap((m) => m.sourceIds ?? [])) if (!sourceIds.has(s)) errors.push(`a measure of ${e.id} cites unknown source ${s}`);
     }
   }
+  // A measure's ID is unique in its package, since discovery answers and tools name it as eb:measure:<id>.
+  for (const id of duplicates(pkg.elements.flatMap((e) => measuresIn(e).map((m) => m.id)))) errors.push(`two measures have the ID ${id}`);
 
   const edges = new Set<string>();
   for (const r of pkg.relations) {
@@ -222,10 +222,15 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
   }
 
   errors.push(...missionProblems(pkg, [...dependencyRelations, ...pkg.relations]));
-  errors.push(...assessmentProblems(pkg.assessments ?? [], reachable));
+  // Discovery answers can point at an outcome's measure, by its ID: eb:measure:<id>.
+  const targets = new Map(reachable);
+  for (const e of reachable.values()) for (const m of measuresIn(e)) targets.set(`eb:measure:${m.id}`, e);
+  errors.push(...assessmentProblems(pkg.assessments ?? [], targets));
   return errors;
 }
 
+/** An outcome's measures, since schema 0.4.0. */
+const measuresIn = (e: Element) => (e.type === 'outcome' && Array.isArray(e.attributes?.measures) ? (e.attributes.measures as { id: string; sourceIds?: string[] }[]) : []);
 const waysOf = (e: Element) => (Array.isArray(e.attributes?.ways) ? (e.attributes.ways as { id: string }[]).map((w) => w.id) : []);
 /** Schema versions before 0.4.0, which have example solutions, and measures as elements of their own. */
 const BEFORE_040 = new Set(['0.1.0', '0.2.0', '0.3.0']);

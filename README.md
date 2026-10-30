@@ -81,7 +81,7 @@ its message names each problem and the file it's in. A new element type or predi
 | `package.yaml` | The package's ID, title, description, and other details, and `dependencies`: the folder names of the packages it builds on. |
 | `sources.yaml` | The references it cites, each with an `id` that elements and links use. |
 | `missions.yaml`, `outcomes.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
-| `measures` on an outcome | The outcome's measures, each with an `id`, `title`, `description`, and optionally `sources`. They're published in the outcome's `attributes`; before schema 0.4.0, measures were elements of their own, linked by `measured_by`. |
+| `measures` on an outcome | The outcome's measures, each with an `id`, `title`, `description`, and optionally `sources`. They're published in the outcome's `attributes`; before schema 0.4.0, measures were elements of their own, linked by `measured_by`. A measure's `id` is unique in its package, and a discovery answer points at one as `measure:<id>`, published as `eb:measure:<id>`, the ID measures always had. |
 | `links.yaml` | Links from the elements of packages this one builds on, such as a shared capability that satisfies one of its requirements. |
 | `discovery.yaml` | Discovery question sets. |
 

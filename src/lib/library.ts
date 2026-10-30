@@ -83,10 +83,11 @@ function load(): PackageFile[] {
   // Element IDs are unique across the packages the pages show.
   const seen = new Map<string, string>();
   for (const pkg of current) {
-    for (const e of pkg.elements) {
-      const other = seen.get(e.id);
-      if (other) errors.push(`element ${e.id} is defined in both ${other} and ${pkg.packageId}`);
-      seen.set(e.id, pkg.packageId);
+    const measureIds = pkg.elements.flatMap((e) => (Array.isArray(e.attributes?.measures) ? (e.attributes.measures as { id: string }[]).map((m) => `eb:measure:${m.id}`) : []));
+    for (const id of [...pkg.elements.map((e) => e.id), ...measureIds]) {
+      const other = seen.get(id);
+      if (other) errors.push(`element ${id} is defined in both ${other} and ${pkg.packageId}`);
+      seen.set(id, pkg.packageId);
     }
   }
   if (!Object.keys(files).length) errors.push('no packages found under content/');
@@ -189,6 +190,8 @@ export function coversPartly(capability: LibraryElement, pattern: LibraryElement
 /** A way to tell how an outcome is going, listed on the outcome since schema 0.4.0. */
 export interface Measure {
   id: string;
+  /** The ID discovery answers and tools name it by: eb:measure:<id>. */
+  elementId: string;
   title: string;
   description: string;
   sourceIds?: string[];
@@ -200,7 +203,19 @@ export interface Measure {
 /** An outcome's measures, in order. */
 export function measuresOf(outcome: LibraryElement): Measure[] {
   const list = outcome.attributes?.measures;
-  return Array.isArray(list) ? (list as Omit<Measure, 'outcome' | 'url'>[]).map((m) => ({ ...m, outcome, url: `${outcome.url}#measure-${m.id}` })) : [];
+  return Array.isArray(list)
+    ? (list as Omit<Measure, 'outcome' | 'url' | 'elementId'>[]).map((m) => ({ ...m, elementId: `eb:measure:${m.id}`, outcome, url: `${outcome.url}#measure-${m.id}` }))
+    : [];
+}
+
+/** What a discovery answer can point at: an element, or an outcome's measure. */
+export type DiscoveryTarget = Pick<LibraryElement, 'id' | 'type' | 'title' | 'url'>;
+
+export function discoveryTarget(id: string): DiscoveryTarget | undefined {
+  const element = elements.find((e) => e.id === id);
+  if (element) return element;
+  const measure = elements.flatMap(measuresOf).find((m) => m.elementId === id);
+  return measure && { id, type: 'measure', title: measure.title, url: measure.url };
 }
 
 export interface MissionBlueprint {
@@ -463,9 +478,11 @@ export const assessments: LibraryAssessment[] = packages.flatMap((pkg) =>
 
 /** Discovery questions with an answer that points to this element, and the answers that do. */
 export function questionsAbout(element: LibraryElement): { question: LibraryQuestion; answers: { label: string; interpretation: string }[] }[] {
+  // An outcome's questions include those that point at its measures.
+  const ids = new Set([element.id, ...measuresOf(element).map((m) => m.elementId)]);
   return assessments.flatMap((a) =>
     a.questions.flatMap((q) => {
-      const mappings = (q.candidateMappings ?? []).filter((m) => m.elementId === element.id);
+      const mappings = (q.candidateMappings ?? []).filter((m) => ids.has(m.elementId));
       if (!mappings.length) return [];
       const label = (value: string) => q.options?.find((o) => o.value === value)?.label ?? (value === 'true' ? 'Yes' : value === 'false' ? 'No' : value);
       // Answers that mean the same thing for this element are listed together.

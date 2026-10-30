@@ -1508,23 +1508,28 @@
           "candidateMappings": [
             {
               "answerValue": "reports-on-time",
-              "elementId": "eb:outcome:program-results-achieved",
-              "interpretation": "The office already tracks “Performance reports received on time”, so there may be a value for today."
+              "elementId": "eb:measure:performance-reports-on-time",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "management-decisions",
-              "elementId": "eb:outcome:audit-findings-resolved",
-              "interpretation": "The office already tracks “Management decisions within six months”, so there may be a value for today."
+              "elementId": "eb:measure:management-decisions-on-time",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "closeout",
-              "elementId": "eb:outcome:awards-closed-on-time",
-              "interpretation": "The office already tracks “Awards closed within a year”, so there may be a value for today."
+              "elementId": "eb:measure:awards-closed-within-a-year",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
               "answerValue": "improper-payments",
-              "elementId": "eb:outcome:funds-used-as-allowed",
-              "interpretation": "The office already tracks “Improper payment rate” and “Improper payments recovered”, so there may be a value for today."
+              "elementId": "eb:measure:improper-payment-rate",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "improper-payments",
+              "elementId": "eb:measure:improper-payments-recovered",
+              "interpretation": "The office tracks this already, so there may be a value for today."
             }
           ]
         },
@@ -1535,12 +1540,12 @@
           "candidateMappings": [
             {
               "answerValue": "true",
-              "elementId": "eb:outcome:awards-closed-on-time",
-              "interpretation": "The office already tracks “Expired awards not yet closed”, so there may be a value for today."
+              "elementId": "eb:measure:expired-awards-open",
+              "interpretation": "The office knows this number, so there may be a value for today."
             },
             {
               "answerValue": "false",
-              "elementId": "eb:outcome:awards-closed-on-time",
+              "elementId": "eb:measure:expired-awards-open",
               "interpretation": "Not knowing how many expired awards remain open often means closeout is falling behind."
             },
             {
@@ -1721,7 +1726,7 @@
             },
             {
               "answerValue": "false",
-              "elementId": "eb:outcome:audit-findings-resolved",
+              "elementId": "eb:measure:management-decisions-on-time",
               "interpretation": "Findings not tracked to a decision are where the six-month deadline slips."
             }
           ]

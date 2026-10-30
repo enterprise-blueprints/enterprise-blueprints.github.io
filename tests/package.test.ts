@@ -195,18 +195,17 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
     expect(pkg.relations.filter((r) => r.predicate === 'measured_by')).toEqual([]);
   });
 
-  it('points discovery answers only at its own elements and the common package’s', () => {
-    const ids = new Set([...pkg.elements, ...common.elements].map((e) => e.id));
+  it('points discovery answers only at its own elements, its outcomes’ measures, and the common package’s elements', () => {
+    const measureIds = ofType(pkg, 'outcome').flatMap((o) => (o.attributes!.measures as { id: string }[]).map((m) => `eb:measure:${m.id}`));
+    const ids = new Set([...[...pkg.elements, ...common.elements].map((e) => e.id), ...measureIds]);
     for (const a of pkg.assessments!) for (const q of a.questions) for (const m of q.candidateMappings ?? []) expect(ids.has(m.elementId), m.elementId).toBe(true);
   });
 
-  it('starts discovery with which outcomes matter and what the office measures, naming the measures', () => {
+  it('starts discovery with which outcomes matter and which of their measures the office tracks', () => {
     const [first, second] = pkg.assessments![0].questions;
     const types = (q: typeof first) => new Set(q.candidateMappings!.map((m) => m.elementId.split(':')[1]));
     expect(types(first)).toEqual(new Set(['outcome']));
-    expect(types(second)).toEqual(new Set(['outcome']));
-    const titles = ofType(pkg, 'outcome').flatMap((o) => (o.attributes!.measures as { title: string }[]).map((m) => m.title));
-    for (const m of second.candidateMappings!) expect(titles.some((t) => m.interpretation.includes(`“${t}”`)), m.answerValue).toBe(true);
+    expect(types(second)).toEqual(new Set(['measure']));
   });
 
   it('describes each pattern as an example, with its ways to source it, layer, parts, strengths, fit, and what to watch for', () => {
@@ -426,6 +425,8 @@ describe('missions, measures, and ways to source a pattern (schema 0.4.0)', () =
     ['principles that aren’t statements', (p) => (p.elements.find((e) => e.type === 'mission')!.attributes!.principles = 'Be independent'), '/attributes/principles must be array'],
     ['a measure as an element of its own', (p) => p.elements.push({ id: 'eb:measure:x', type: 'measure', title: 'X', description: 'X.' }), 'a measure is part of its outcome'],
     ['a measure that cites an unknown source', (p) => ((p.elements.find((e) => e.type === 'outcome')!.attributes!.measures as { sourceIds: string[] }[])[0].sourceIds = ['src:missing']), 'cites unknown source src:missing'],
+    ['an answer that points at a measure no outcome has', (p) => (p.assessments![0].questions[1].candidateMappings![0].elementId = 'eb:measure:missing'), 'maps to unknown element eb:measure:missing'],
+    ['two measures with one ID', (p) => ((p.elements.filter((e) => e.type === 'outcome')[1].attributes!.measures as { id: string }[])[0].id = (p.elements.find((e) => e.type === 'outcome')!.attributes!.measures as { id: string }[])[0].id), 'two measures have the ID'],
     ['a measure without a title', (p) => delete (p.elements.find((e) => e.type === 'outcome')!.attributes!.measures as { title?: string }[])[0].title, "must have required property 'title'"],
   ])('reject %s', (_, change, message) => {
     expect(check(change)).toContain(message);

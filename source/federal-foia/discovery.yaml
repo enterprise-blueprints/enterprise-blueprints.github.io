@@ -45,17 +45,23 @@
         - none: None of these regularly
       points:
         - when: processing-times
-          to: outcome:requests-answered-on-time
-          why: The office already tracks “Time to process requests” and “Requests answered within 20 working days”, so there may be a value for today.
+          to: measure:request-processing-time
+          why: The office tracks this already, so there may be a value for today.
+        - when: processing-times
+          to: measure:requests-within-20-days
+          why: The office tracks this already, so there may be a value for today.
         - when: backlog
-          to: outcome:backlog-kept-small
-          why: The office already tracks “Backlogged requests” and “Age of the oldest pending requests”, so there may be a value for today.
+          to: measure:backlogged-requests
+          why: The office tracks this already, so there may be a value for today.
+        - when: backlog
+          to: measure:oldest-pending-requests
+          why: The office tracks this already, so there may be a value for today.
         - when: dispositions
-          to: outcome:records-released-as-allowed
-          why: The office already tracks “How requests are resolved”, so there may be a value for today.
+          to: measure:request-dispositions
+          why: The office tracks this already, so there may be a value for today.
         - when: appeals
-          to: outcome:requesters-helped
-          why: The office already tracks “Time to decide appeals”, so there may be a value for today.
+          to: measure:appeal-processing-time
+          why: The office tracks this already, so there may be a value for today.
     - id: foia-measure-sources
       prompt: Where do those figures come from today, and who puts them together?
       kind: text
