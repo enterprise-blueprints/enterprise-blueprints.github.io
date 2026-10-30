@@ -10,6 +10,7 @@
       kind: multiple-choice
       options:
         - open-fair-competition: Funding is open to everyone eligible and fairly reviewed
+        - applying-is-straightforward: Applying for and managing an award is straightforward
         - awards-to-capable-recipients: Awards go to eligible recipients able to manage them
         - funds-used-as-allowed: Funds are paid as needed and used as the award allows
         - program-results-achieved: Awards achieve what they were made for
@@ -19,6 +20,9 @@
       points:
         - when: open-fair-competition
           to: outcome:open-fair-competition
+          why: This effort is meant to advance this result.
+        - when: applying-is-straightforward
+          to: outcome:applying-is-straightforward
           why: This effort is meant to advance this result.
         - when: awards-to-capable-recipients
           to: outcome:awards-to-capable-recipients
@@ -135,3 +139,47 @@
         - when: true
           to: [ capability:award-transparency-reporting, implementationPattern:award-data-to-usaspending ]
           why: Reporting by hand is slow and error-prone, and errors show up in public.
+    - id: grants-program-design
+      prompt: When a program is designed, are its goals and performance measures set before the notice goes out?
+      kind: single-choice
+      options:
+        - always: Yes, for every program
+        - some: For some programs
+        - later: Measures come later, or not at all
+      points:
+        - when: [ some, later ]
+          to: [ capability:program-planning, requirement:design-program-before-notice ]
+          why: Measures set after awards are made are hard to hold recipients to, and hard to report results against.
+    - id: grants-notice-writing
+      prompt: How are funding notices written?
+      kind: single-choice
+      options:
+        - template: From a plain-language template with the required sections built in
+        - last-year: By copying and editing the last notice
+        - varies: It varies by program
+      points:
+        - when: [ last-year, varies ]
+          to: [ requirement:write-notices-plainly, outcome:applying-is-straightforward ]
+          why: Notices copied forward tend to grow, and applicants pay for what isn’t clear.
+    - id: grants-merit-review
+      prompt: How do reviewers score applications?
+      kind: single-choice
+      options:
+        - in-system: In the grants system, against the published criteria
+        - forms: On forms or spreadsheets that staff collect
+        - varies: It varies by program
+      points:
+        - when: [ forms, varies ]
+          to: [ capability:merit-review-selection, requirement:manage-reviewer-conflicts, implementationPattern:grants-management ]
+          why: Scores gathered by hand are hard to check against the criteria, and conflicts are easy to miss.
+    - id: grants-monitoring-approach
+      prompt: How does the office decide how closely to monitor each award?
+      kind: single-choice
+      options:
+        - by-risk: By the award’s risk, from the review before it was made
+        - same: Every award gets the same monitoring
+        - reports-only: Mostly by reading the reports recipients send
+      points:
+        - when: [ same, reports-only ]
+          to: [ capability:award-monitoring, requirement:monitor-by-risk, implementationPattern:grant-risk-analytics ]
+          why: Monitoring every award the same way spends effort where risk is low and misses it where it’s high.

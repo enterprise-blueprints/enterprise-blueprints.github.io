@@ -1,5 +1,17 @@
 # Requirements, in the order the pages show them, each with the links it holds.
 
+- id: design-program-before-notice
+  title: Design each program before announcing it
+  kind: decisions-on-record
+  description: Before announcing a funding opportunity, set the program’s goals and objectives, how its performance will be measured against them, and its Assistance Listing, aligned with the agency’s strategic goals.
+  sources: [ uniform-guidance ]
+
+- id: write-notices-plainly
+  title: Write each funding notice in plain language
+  kind: service-access
+  description: Write each notice of funding opportunity in plain language, with a short plain-language summary, the information the Uniform Guidance’s Appendix I calls for, and no more than applicants need at the application stage, and post answers to applicants’ questions where everyone can see them.
+  sources: [ uniform-guidance, grants-gov ]
+
 - id: post-opportunities
   title: Post each funding opportunity on Grants.gov
   kind: transparency-reporting

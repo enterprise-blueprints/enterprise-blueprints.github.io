@@ -52,7 +52,7 @@ describe('the FOIA mission', () => {
 
   it('builds on four of the common capabilities', () => {
     expect(blueprint.outcomes).toHaveLength(6);
-    expect(blueprint.capabilities).toHaveLength(11);
+    expect(blueprint.capabilities).toHaveLength(12);
     expect(shared).toEqual(['identity-access-management', 'data-protection-privacy', 'records-management', 'case-management']);
   });
 
@@ -133,11 +133,12 @@ describe('the grants mission', () => {
   const slug = (e: { id: string }) => e.id.split(':')[2];
   const blueprint = missionBlueprint(get('eb:mission:awarding-overseeing-federal-grants'));
 
-  it('seeks seven outcomes, each with its measures and the capabilities that contribute to it', () => {
+  it('seeks eight outcomes, each with its measures and the capabilities that contribute to it', () => {
     expect(blueprint.outcomes.map((o) => slug(o.outcome))).toEqual([
       'open-fair-competition',
       'awards-to-capable-recipients',
       'funds-used-as-allowed',
+      'applying-is-straightforward',
       'program-results-achieved',
       'audit-findings-resolved',
       'awards-closed-on-time',

@@ -1,5 +1,23 @@
 # Requirements, in the order the pages show them, each with the links it holds.
 
+- id: monitor-and-improve-the-program
+  title: Monitor the program and recommend improvements
+  kind: checks-controls
+  description: Monitor how the FOIA program is doing across the agency, keep the agency head, the chief legal officer, and the Attorney General informed, and recommend changes to practices, policies, staffing, and funding that would improve it.
+  sources: [ foia-statute ]
+
+- id: report-to-attorney-general
+  title: Report on the program to the Attorney General
+  kind: transparency-reporting
+  description: Review the agency’s FOIA performance and report on it to the Attorney General, through the agency head, at the times and in the format the Attorney General sets, in the Chief FOIA Officer Report.
+  sources: [ foia-statute, oip-chief-foia-officer-guidelines ]
+
+- id: keep-foia-regulations-current
+  title: Keep the agency’s FOIA regulations and fee schedule current
+  kind: fairness-due-process
+  description: Issue the agency’s FOIA regulations, including its fee schedule and when fees are waived or reduced, after public notice and comment, and update them as the law and the Office of Management and Budget’s fee guidelines change.
+  sources: [ foia-statute, doj-foia-guide ]
+
 - id: accept-portal-requests
   title: Accept requests from the national portal
   kind: service-access

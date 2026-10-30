@@ -37,6 +37,16 @@
       description: The amount of identified overpayments recovered, compared with the amount identified for recovery.
       sources: [ payment-integrity-31-usc-3352, payment-accuracy ]
 
+- id: applying-is-straightforward
+  title: Applying for and managing an award is straightforward
+  theme: easy-to-use
+  description: Notices are written in plain language with everything applicants need, answers to questions are posted for everyone, and the agency asks for only what it needs, when it needs it.
+  sources: [ uniform-guidance ]
+  measures:
+    - id: applications-set-aside
+      title: Applications set aside before review
+      description: The share of applications set aside as ineligible or incomplete before merit review. A high share can mean a notice wasn’t clear about who can apply or what to send. The office sets its own target.
+
 - id: program-results-achieved
   title: Awards achieve what they were made for
   theme: results

@@ -143,3 +143,43 @@
         - when: false
           to: [ capability:protest-handling, implementationPattern:shared-case-platform ]
           why: Protest deadlines are short, and missing one can lose the protest.
+    - id: acquisition-evaluation-records
+      prompt: Where do evaluators record their ratings and the consensus?
+      kind: single-choice
+      options:
+        - in-system: In the contract system or an evaluation tool
+        - documents: In documents and spreadsheets on a shared drive
+        - email: Mostly in email
+      points:
+        - when: [ documents, email ]
+          to: [ capability:evaluation-source-selection, requirement:protect-source-selection-information ]
+          why: Ratings in documents and email are hard to keep from people outside the evaluation, and hard to put together if the award is protested.
+    - id: acquisition-administration-records
+      prompt: How are contract changes and the contractor’s performance tracked after award?
+      kind: single-choice
+      options:
+        - in-system: On the contract’s record in the contract system
+        - file-email: In the contract file and email
+        - varies: It varies by contracting officer
+      points:
+        - when: [ file-email, varies ]
+          to: [ capability:contract-administration, implementationPattern:acquisition-management ]
+          why: Changes and problems tracked outside the contract’s record are hard to see when the next one comes up.
+    - id: acquisition-contract-reporting
+      prompt: How does each contract action reach SAM.gov after award?
+      kind: single-choice
+      options:
+        - automatic: The contract system reports it
+        - by-hand: Staff enter it in SAM.gov by hand
+        - not-sure: Not sure
+      points:
+        - when: [ by-hand, not-sure ]
+          to: [ capability:contract-reporting, implementationPattern:contract-data-to-sam ]
+          why: Actions entered by hand are where the three-day deadline and the year-end certification slip.
+    - id: acquisition-closeout-backlog
+      prompt: Does the office know which contracts are past their closeout standard?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:contract-closeout, implementationPattern:contract-spend-analytics ]
+          why: Contracts left open hold funds that could be released while they can still be used.

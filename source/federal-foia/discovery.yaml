@@ -256,6 +256,39 @@
         - when: mixed
           to: requirement:report-on-caseload
           why: Some counts don’t come straight from the request data yet.
+    - id: response-delivery
+      prompt: How are released records delivered to requesters?
+      kind: single-choice
+      options:
+        - portal: Through an online portal where requesters download them
+        - email: As email attachments
+        - mail: By mail or on disc
+      points:
+        - when: [ email, mail ]
+          to: [ capability:response-release, requirement:deliver-in-requested-format ]
+          why: Large releases by email or mail are slow to send and hard to deliver in parts.
+    - id: appeals-tracking
+      prompt: How are appeals tracked against the 20 working days the law allows?
+      kind: single-choice
+      options:
+        - same-system: In the same system as requests, with their own deadline
+        - separate: In a separate list or spreadsheet
+        - not-tracked: They aren’t tracked against the deadline
+      points:
+        - when: [ separate, not-tracked ]
+          to: [ capability:appeals-requester-assistance, requirement:decide-appeals-on-time ]
+          why: Appeals kept apart from requests are the ones that run past their deadline unnoticed.
+    - id: program-monitoring
+      prompt: How does the Chief FOIA Officer follow the program’s performance during the year?
+      kind: single-choice
+      options:
+        - live: From current figures on the backlog and response times
+        - at-report-time: Mostly when the annual reports are due
+        - not-regularly: Not regularly
+      points:
+        - when: [ at-report-time, not-regularly ]
+          to: [ capability:foia-program-leadership, requirement:monitor-and-improve-the-program, implementationPattern:foia-workload-dashboard ]
+          why: A backlog seen once a year is hard to turn around.
     - id: yearly-requests
       prompt: About how many FOIA requests does the office receive in a year?
       kind: number

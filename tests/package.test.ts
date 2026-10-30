@@ -73,11 +73,11 @@ describe('validatePackage', () => {
     expect(counts.solution).toBeUndefined();
   });
 
-  it('has one mission, six outcomes, seven capabilities, and seven patterns in the FOIA package', () => {
+  it('has one mission, six outcomes, eight capabilities, and seven patterns in the FOIA package', () => {
     const counts = Object.groupBy(foia.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.outcome).toHaveLength(6);
-    expect(counts.capability).toHaveLength(7);
+    expect(counts.capability).toHaveLength(8);
     expect(counts.implementationPattern).toHaveLength(7);
   });
 
@@ -124,12 +124,12 @@ describe('validatePackage', () => {
     expect(validatePackage(pkg, resolve).join('\n')).toContain(message);
   });
 
-  it('has one mission, seven outcomes, eight capabilities, sixteen requirements, and eight patterns (three replaced) in the grants package', () => {
+  it('has one mission, eight outcomes, nine capabilities, eighteen requirements, and eight patterns (three replaced) in the grants package', () => {
     const counts = Object.groupBy(grants.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
-    expect(counts.outcome).toHaveLength(7);
-    expect(counts.capability).toHaveLength(8);
-    expect(counts.requirement).toHaveLength(16);
+    expect(counts.outcome).toHaveLength(8);
+    expect(counts.capability).toHaveLength(9);
+    expect(counts.requirement).toHaveLength(18);
     expect(counts.implementationPattern).toHaveLength(8);
     expect(new Set(counts.implementationPattern!.flatMap((p) => p.replacedBy ?? []))).toEqual(new Set(['eb:implementationPattern:grants-management']));
     expect(grants.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);

@@ -1,12 +1,25 @@
 # Capabilities, in the order the pages show them, each with the links it holds.
 
+- id: program-planning
+  title: Program Planning & Notice Design
+  stage: plan-prepare
+  description: Ability to design each grant program before announcing it, with clear goals and objectives, how performance will be measured, and its Assistance Listing, and to write each funding notice in plain language with everything applicants need to decide whether and how to apply.
+  sources: [ uniform-guidance ]
+  applicabilityNotes: The program’s statute sets its purpose and often its eligibility. Formula and mandatory programs have less to design, but still set goals and measures.
+  contributes_to: [ program-results-achieved, open-fair-competition, applying-is-straightforward ]
+  satisfies: [ design-program-before-notice, write-notices-plainly ]
+  candidate_pattern:
+    - to: grants-management
+      coverage: partial
+      note: Holds each program’s goals and measures, and builds its notices from them. Designing the program is the office’s work with the program’s community.
+
 - id: funding-opportunities-applications
   title: Funding Opportunities & Applications
   stage: reach-take-in
   description: Ability to announce each funding opportunity on Grants.gov with its goals, eligibility, criteria, and deadlines, receive applications through Grants.gov and any other allowed channel, and check each one for eligibility and completeness.
   sources: [ uniform-guidance, grants-gov, sam-registration-2-cfr-25 ]
   applicabilityNotes: Some programs are formula or mandatory awards with no competition; the program’s statute and regulations set who can apply and how.
-  contributes_to: [ open-fair-competition ]
+  contributes_to: [ open-fair-competition, applying-is-straightforward ]
   satisfies: [ post-opportunities, check-applications ]
   candidate_pattern:
     - grants-management

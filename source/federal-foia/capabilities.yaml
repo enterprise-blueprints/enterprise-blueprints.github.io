@@ -1,5 +1,18 @@
 # Capabilities, in the order the pages show them, each with the links it holds.
 
+- id: foia-program-leadership
+  title: FOIA Program Leadership
+  stage: plan-prepare
+  description: Ability to lead the agency’s FOIA program through its Chief FOIA Officer, who is responsible agency-wide for compliance, monitors how the program is doing, recommends changes to its practices, policies, staffing, and funding, and reports to the Attorney General, and to keep the agency’s FOIA regulations and fee schedule current.
+  sources: [ foia-statute, oip-chief-foia-officer-guidelines ]
+  applicabilityNotes: The Chief FOIA Officer is a senior official, at the Assistant Secretary level or equivalent. The Department of Justice sets when Chief FOIA Officer Reports are due and what they cover each year.
+  contributes_to: [ requests-answered-on-time, backlog-kept-small, foia-performance-public ]
+  satisfies: [ monitor-and-improve-the-program, report-to-attorney-general, keep-foia-regulations-current ]
+  candidate_pattern:
+    - to: foia-workload-dashboard
+      coverage: partial
+      note: Shows the backlog, response times, and workload as they stand, for the Chief FOIA Officer to act on. Recommending and reporting are the officer’s work.
+
 - id: foia-request-intake
   title: Request Intake
   stage: reach-take-in
