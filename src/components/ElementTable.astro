@@ -45,6 +45,8 @@ const { elements, notes, partial, parents, showPackage } = Astro.props;
   .element-table__from { color: var(--text-muted); }
   .element-table__tagline { display: block; margin-bottom: .2rem; color: var(--text); font-weight: 600; }
   @media (min-width: 46rem) {
-    .element-table th[scope='row'] { width: 34%; }
+    /* A 1px height lets the button take the row's full height, however tall the description makes it. */
+    .element-table th[scope='row'] { width: 34%; height: 1px; }
+    .element-table .element-link { height: 100%; }
   }
 </style>
