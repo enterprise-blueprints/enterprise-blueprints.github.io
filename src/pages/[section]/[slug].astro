@@ -5,7 +5,7 @@ import TypeBadge from '../../components/TypeBadge.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import ElementTable from '../../components/ElementTable.astro';
 import SourceList from '../../components/SourceList.astro';
-import MissionStack from '../../components/MissionStack.astro';
+import MissionExplorer from '../../components/MissionExplorer.astro';
 import OutcomeMatrix from '../../components/OutcomeMatrix.astro';
 import PatternCompare from '../../components/PatternCompare.astro';
 import {
@@ -88,6 +88,8 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
       <p class="lede">{element.description}</p>
     </header>
 
+    {stacked && <MissionExplorer blueprint={blueprint!} />}
+
     <div class="record-layout">
       <div class="record-main">
         {replacement && (
@@ -95,8 +97,6 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
             <p>This pattern has been replaced by <a href={replacement.url}>{replacement.title}</a>, which describes it as one of its ways.</p>
           </div>
         )}
-
-        {stacked && <MissionStack blueprint={blueprint!} />}
 
         {measures.length > 0 && (
           <section class="section">
