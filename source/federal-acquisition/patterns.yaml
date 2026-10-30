@@ -1,11 +1,89 @@
 # Implementation patterns, in the order the pages show them, each with the links it holds.
 
+- id: acquisition-management
+  title: Acquisition Management
+  description: "An example architecture: one system of record for each acquisition, from the program office’s request through solicitation, evaluation, award, modifications, and closeout, with clauses chosen by the contract’s type and value and connections to SAM.gov and the agency’s financial system."
+  sources: [ far, sam-gov ]
+  attributes:
+    role: business-applications
+    parts:
+      - Requests from program offices, with funding checked in the financial system
+      - Solicitations, awards, and modifications assembled from templates, with clauses chosen by rules
+      - Reviews and approvals set by the acquisition’s value and type
+      - Evaluation team assignments and ratings, open only to the team
+      - Notices posted to SAM.gov, and contract action reports sent there after award
+      - Obligations sent to the financial system as each award and modification is signed
+      - The contract file, with each document and approval in one place, and closeout steps for each completed contract
+    strengths:
+      - One record for each contract, from request to closeout
+      - Program offices can see where their requests stand
+      - Contract data reaches SAM.gov and the financial system without retyping
+    fitsWhen:
+      - Its current tools are document templates, email, or an aging custom system
+    watchFor:
+      - The FAR overhaul and each agency’s deviations change clauses and steps, so clause rules need an owner who keeps them current
+      - Moving open contracts from an old system needs careful planning
+      - Connections to the financial system often take the most work
+    ways:
+      - id: product
+        approach: product
+        title: A contract writing product
+        description: A contract writing product, configured for the agency’s rules and deviations and run by its contracting office.
+        strengths:
+          - Clause logic keeps awards consistent with the rules, and can be updated as the FAR changes
+        fitsWhen:
+          - The agency awards many contracts, or contracts of many kinds
+        watchFor:
+          - Another product to buy, secure, and keep up
+      - id: agency-platform
+        approach: platform
+        title: The agency’s shared case platform
+        description: Request and contract records, their steps, and documents from templates, built on the agency’s shared case platform.
+        strengths:
+          - Uses licenses, skills, and security approvals the agency already has
+          - Acquisition work can share a platform with the agency’s other case work
+        fitsWhen:
+          - The agency already runs a platform like this, with people who configure it
+          - Its acquisitions are mostly simple, such as orders under existing contracts
+        watchFor:
+          - Clause selection, posting to SAM.gov, and contract action reporting take real building, and keeping them current with the FAR is ongoing work
+          - Contract data the agency reports must still meet SAM.gov’s data standards
+      - id: assisted-acquisition
+        approach: product
+        title: Another agency’s contracting office
+        description: Another federal agency’s contracting office awards and administers contracts for the agency, under an interagency agreement, in its own contract writing system, while the agency defines its needs, funds them, and monitors the work.
+        strengths:
+          - The agency doesn’t need its own contracting staff and systems for every kind of buy
+          - Providers bring experience with acquisitions the agency rarely makes
+          - Reporting to SAM.gov and closeout are handled by the provider’s office
+        fitsWhen:
+          - The agency is small, or makes few acquisitions of some kinds
+          - A provider already buys what the agency needs for other agencies
+        watchFor:
+          - Fees add to the cost of each acquisition
+          - The agency still owns its requirements, its funds, and the results, and needs people who can do that well
+          - Getting the agency’s contract data and files back, for reporting or a later move, needs agreeing up front
+  depends_on:
+    - to: shared-case-platform
+      way: agency-platform
+      note: The request and contract records and their steps are the shared platform, set up for acquisition.
+  works_with:
+    - to: contract-data-to-sam
+      note: The system’s connection sends each contract action report to SAM.gov.
+    - to: invoices-through-ipp
+      note: Awards and their line items set up what vendors invoice against.
+    - to: cpars-from-contract-data
+      note: Contract data registers each contract in CPARS and sets its evaluation dates.
+    - to: sam-gov-entity-checks
+      note: Registration and exclusion results show on the award screens.
+
 - id: contract-writing-system
+  status: deprecated
+  replacedBy: acquisition-management
   title: Contract Writing System
   description: "An example architecture: a contract writing product, configured for the agency’s rules and deviations, that carries each acquisition from the program office’s request through solicitation, award, modifications, and closeout, choosing clauses by the contract’s type and value and connecting to SAM.gov and the agency’s financial system."
   sources: [ far, sam-gov ]
   attributes:
-    approach: product
     role: business-applications
     parts:
       - Requests from program offices, with funding checked in the financial system
@@ -26,22 +104,18 @@
       - The FAR overhaul and each agency’s deviations change clauses and steps, so clause rules need an owner who keeps them current
       - Moving open contracts from an old system needs careful planning
       - Connections to the financial system often take the most work
-  works_with:
-    - to: contract-data-to-sam
-      note: The product’s connection sends each contract action report to SAM.gov.
-    - to: invoices-through-ipp
-      note: Awards and their line items set up what vendors invoice against.
-    - to: cpars-from-contract-data
-      note: Contract data registers each contract in CPARS and sets its evaluation dates.
-    - to: sam-gov-entity-checks
-      note: Registration and exclusion results show on the award screens.
+    ways:
+      - id: product
+        approach: product
+        title: A contract writing product
 
 - id: acquisition-on-shared-platform
+  status: deprecated
+  replacedBy: acquisition-management
   title: Acquisition Requests and Contracts on the Agency’s Shared Platform
   description: "An example architecture: acquisition work built on the agency’s shared case platform, with each request and contract as a record that moves through planning, solicitation, evaluation, award, administration, and closeout, and documents assembled from templates."
   sources: [ far ]
   attributes:
-    approach: platform
     role: business-applications
     parts:
       - Request records from program offices, with the need, funding, and timing
@@ -61,16 +135,18 @@
       - Clause selection, posting to SAM.gov, and contract action reporting take real building, and keeping them current with the FAR is ongoing work
       - Each change from the FAR overhaul or an agency deviation has to be built into the platform
       - Contract data the agency reports must still meet SAM.gov’s data standards
-  depends_on:
-    - to: shared-case-platform
-      note: The request and contract records and their steps are the shared platform, set up for acquisition.
+    ways:
+      - id: platform
+        approach: platform
+        title: The agency’s shared case platform
 
 - id: assisted-acquisition-service
+  status: deprecated
+  replacedBy: acquisition-management
   title: Assisted Acquisition from Another Federal Agency
   description: "An example architecture: the agency has another federal agency’s contracting office award and administer contracts for it, under an interagency agreement, using the provider’s contract writing system, while the agency defines its needs, funds them, and monitors the work."
   sources: [ far ]
   attributes:
-    approach: product
     role: business-applications
     parts:
       - An interagency agreement that sets the services, fees, and who does what
@@ -89,13 +165,16 @@
       - Fees add to the cost of each acquisition
       - The agency still owns its requirements, its funds, and the results, and needs people who can do that well
       - Getting the agency’s contract data and files back, for reporting or a later move, needs agreeing up front
+    ways:
+      - id: product
+        approach: product
+        title: Another agency’s contracting office
 
 - id: vendor-proposal-portal
   title: A Secure Proposal Portal for Vendors
   description: "An example architecture: vendors submit questions and offers through a portal with their SAM.gov-registered accounts, each upload is time-stamped, and offers open only for the evaluation team after the deadline."
   sources: [ far, procurement-integrity-41-usc-2102 ]
   attributes:
-    approach: combine
     role: public-facing
     parts:
       - Vendor accounts tied to their SAM.gov registration
@@ -113,16 +192,19 @@
     watchFor:
       - An outage near a deadline raises questions of fairness, so there needs to be a plan for one
       - Access for evaluators has to be granted and removed for each source selection
+    ways:
+      - id: combine
+        approach: combine
+        title: A portal combined from secure upload and sign-in tools
   works_with:
-    - to: contract-writing-system
-      note: Offers and questions are linked to the solicitation in the contract writing system.
+    - to: acquisition-management
+      note: Offers and questions are linked to the solicitation in the acquisition system.
 
 - id: contract-data-to-sam
   title: Contract Action Reports to SAM.gov from the Contract Writing System
   description: "An example architecture: the contract writing system sends each contract action report to SAM.gov through its system-to-system connection when the award is signed, flags reports still in draft or error, and lists contracts whose subcontract reports are missing."
   sources: [ far, sam-gov, usaspending ]
   attributes:
-    approach: build
     role: processing
     parts:
       - A connection from the contract writing system to SAM.gov’s contract data reporting service
@@ -138,15 +220,18 @@
     watchFor:
       - SAM.gov’s services and data standards change, as they did when FPDS moved into SAM.gov, so the connection needs keeping up
       - Fixes made in SAM.gov instead of the contract writing system come back next time
+    ways:
+      - id: build
+        approach: build
+        title: The contract system’s connection to SAM.gov
   works_with:
-    - acquisition-on-shared-platform
+    - to: acquisition-management
 
 - id: invoices-through-ipp
   title: Invoices through Treasury’s Invoice Processing Platform
   description: "An example architecture: vendors send invoices through Treasury’s Invoice Processing Platform, each invoice is matched to its order and routed for acceptance, and the agency’s financial system pays it by the due date, with status visible to the vendor throughout."
   sources: [ invoice-processing-platform, prompt-payment-31-usc-3903 ]
   attributes:
-    approach: platform
     role: processing
     parts:
       - Vendor enrollment in IPP, with orders sent from the agency’s financial or contract writing system
@@ -164,6 +249,10 @@
     watchFor:
       - Acceptance by the program office is often what makes payments late, so routing and reminders need care
       - Some kinds of payments, such as utilities, may stay outside IPP
+    ways:
+      - id: platform
+        approach: platform
+        title: Treasury’s Invoice Processing Platform
   works_with:
     - to: contract-spend-analytics
       note: Invoice and payment dates feed the reports on late payments.
@@ -173,7 +262,6 @@
   description: "An example architecture: each contract that needs evaluations is registered in CPARS from the contract data, with its assessing officials and due dates, and reminders go to them and their managers until each evaluation is done."
   sources: [ cpars, far ]
   attributes:
-    approach: platform
     role: business-applications
     parts:
       - Registration of each contract that needs evaluations, from the contract writing system or SAM.gov data
@@ -190,13 +278,16 @@
     watchFor:
       - CPARS is moving into SAM.gov, so the connection and the steps may change
       - A scheduled evaluation still needs someone who knows the work to write it
+    ways:
+      - id: platform
+        approach: platform
+        title: CPARS, fed from contract data
 
 - id: acquisition-ai-drafting
   title: AI Help Drafting Acquisition Documents
   description: "An example architecture: contracting and program staff use an AI model, in an environment the agency approves, to draft market research summaries, statements of work, evaluation criteria, and acquisition plans from the agency’s templates and guidance, and then check and finish each draft themselves."
   sources: [ nist-ai-rmf, procurement-integrity-41-usc-2102 ]
   attributes:
-    approach: platform
     role: ai-insights
     parts:
       - An AI model in an environment the agency has approved for acquisition information
@@ -215,13 +306,16 @@
       - Drafts can be wrong or out of date, such as citing rules the overhaul changed, so staff check each one
       - Proposal and source selection information must stay where the Procurement Integrity Act allows
       - The agency’s AI governance may require an impact assessment and a listing in its AI use case inventory first
+    ways:
+      - id: platform
+        approach: platform
+        title: An AI model the agency approves
 
 - id: contract-spend-analytics
   title: Contract and Spend Analytics
   description: "An example architecture: an analytics workspace that brings together the agency’s contract data, obligations, invoices, and evaluation and closeout dates, and shows what the agency buys and from whom, where lead times run long, which competitions draw one offer, and which evaluations and closeouts are overdue."
   sources: [ sam-gov, far ]
   attributes:
-    approach: build
     role: ai-insights
     parts:
       - Regular feeds from SAM.gov contract data, the contract writing system, the financial system, and invoicing
@@ -239,5 +333,9 @@
     watchFor:
       - SAM.gov’s data and the agency’s own records can disagree, so which one wins needs deciding
       - Numbers like single-offer rates need context before they become targets
+    ways:
+      - id: build
+        approach: build
+        title: An analytics workspace
   works_with:
-    - contract-writing-system
+    - to: acquisition-management

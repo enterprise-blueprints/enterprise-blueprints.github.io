@@ -152,7 +152,7 @@ describe('plan', () => {
     const steps = plan([shared()], files, published(['shared@0.1.0', 'mission@0.1.0']), '2026-10-29');
     expect(steps.map((s) => [s.name, s.version, Boolean(s.write), s.remove, Boolean(s.retired)])).toEqual([
       ['shared', '0.2.0', true, [], false],
-      ['mission', '0.2.0', false, ['0.2.0'], true],
+      ['mission', '0.1.0', false, ['0.2.0'], true],
     ]);
   });
 

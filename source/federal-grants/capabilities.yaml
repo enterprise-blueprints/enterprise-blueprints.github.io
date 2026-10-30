@@ -8,9 +8,7 @@
   contributes_to: [ open-fair-competition ]
   satisfies: [ post-opportunities, check-applications ]
   candidate_pattern:
-    - grants-management-product
-    - grants-shared-service
-    - grants-on-shared-platform
+    - grants-management
     - to: grants-gov-system-to-system
       coverage: partial
       note: Brings applications in from Grants.gov. Announcements and eligibility checks happen in the grants system.
@@ -23,11 +21,7 @@
   contributes_to: [ open-fair-competition, program-results-achieved ]
   satisfies: [ review-against-criteria, manage-reviewer-conflicts ]
   candidate_pattern:
-    - grants-management-product
-    - grants-shared-service
-    - to: grants-on-shared-platform
-      coverage: partial
-      note: Assignments and scores can be tracked on the platform. Reviewer portals and conflict checks usually need building.
+    - grants-management
 
 - id: risk-review-award
   title: Risk Review & Award
@@ -37,9 +31,7 @@
   contributes_to: [ awards-to-capable-recipients, funds-used-as-allowed ]
   satisfies: [ check-eligibility-integrity, document-risk-review ]
   candidate_pattern:
-    - grants-management-product
-    - grants-shared-service
-    - grants-on-shared-platform
+    - grants-management
     - to: grant-risk-analytics
       coverage: partial
       note: Brings the risk information together and suggests where to look. Staff decide each award and its conditions.
@@ -68,11 +60,7 @@
   contributes_to: [ program-results-achieved, funds-used-as-allowed ]
   satisfies: [ collect-reports-on-schedule, monitor-by-risk ]
   candidate_pattern:
-    - grants-management-product
-    - grants-shared-service
-    - to: grants-on-shared-platform
-      coverage: partial
-      note: Report due dates and reviews can be tracked on the platform. Report forms and the recipient portal usually need building.
+    - grants-management
     - to: grant-risk-analytics
       coverage: partial
       note: Suggests which awards to monitor more closely. The monitoring itself happens in the grants system.
@@ -85,9 +73,9 @@
   contributes_to: [ audit-findings-resolved, funds-used-as-allowed ]
   satisfies: [ decide-audit-findings, track-corrective-action ]
   candidate_pattern:
-    - to: grants-management-product
+    - to: grants-management
       coverage: partial
-      note: Where the product tracks audit findings. Many offices track them separately.
+      note: Where the system tracks audit findings. Many offices track them separately.
     - to: shared-case-platform
       note: Each finding tracked as its own case, from management decision to closure.
 
@@ -99,9 +87,7 @@
   contributes_to: [ awards-closed-on-time ]
   satisfies: [ collect-final-reports, close-within-a-year ]
   candidate_pattern:
-    - grants-management-product
-    - grants-shared-service
-    - grants-on-shared-platform
+    - grants-management
 
 - id: award-transparency-reporting
   title: Award & Subaward Reporting
@@ -112,9 +98,6 @@
   satisfies: [ report-awards, check-subaward-reporting ]
   candidate_pattern:
     - award-data-to-usaspending
-    - to: grants-management-product
+    - to: grants-management
       coverage: partial
-      note: Where the product produces the agency’s award submission. Checking it and following up on subaward reporting often happen outside it.
-    - to: grants-shared-service
-      coverage: partial
-      note: The provider usually submits the award data. The agency still checks it and follows up on subaward reporting.
+      note: Where the system produces the agency’s award submission. Checking it and following up on subaward reporting often happen outside it.

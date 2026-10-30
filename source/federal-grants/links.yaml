@@ -4,12 +4,7 @@
 - from: capability:case-management
   contributes_to: [ awards-closed-on-time, audit-findings-resolved ]
   candidate_pattern:
-    - to: grants-on-shared-platform
-      note: Each award tracked as a case on the platform, from application to closeout.
-    - to: grants-management-product
-      note: Each award tracked in the product, from application to closeout.
-    - to: grants-shared-service
-      note: Each award tracked in the shared service’s system, from application to closeout.
+    - grants-management
 
 - from: capability:records-management
   contributes_to: [ audit-findings-resolved, awards-closed-on-time ]

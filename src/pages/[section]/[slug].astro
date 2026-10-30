@@ -12,11 +12,10 @@ import {
   elements,
   lastReviewed,
   missionBlueprint,
-  northStarFor,
   patternDetails,
   questionsAbout,
   relationGroups,
-  solutionsFor,
+  solutionFor,
   solutionView,
   scopeLabel,
   sourcesOf,
@@ -51,15 +50,14 @@ const questions = questionsAbout(element);
 const users = usedBy(element);
 // A mission shows everything under it, band by band, and which capabilities serve which outcomes.
 const blueprint = element.type === 'mission' ? missionBlueprint(element) : null;
-const solutions = element.type === 'mission' ? solutionsFor(element) : [];
-const star = element.type === 'mission' ? northStarFor(element) : undefined;
+const star = element.type === 'mission' ? solutionFor(element) : undefined;
 const stacked = Boolean(blueprint?.capabilities.length);
-// A solution shows its patterns by role and what it covers for each mission. A north star shows its principles too.
+// A solution shows its principles, its patterns by layer, and what it covers for its mission.
 const solution = element.type === 'solution' ? solutionView(element) : null;
 const replacement = element.replacedBy ? elements.find((e) => e.id === element.replacedBy) : undefined;
 const chosen = (items: { pattern: { id: string }; way?: { title: string } }[]) => new Map(items.flatMap((i) => (i.way ? [[i.pattern.id, i.way.title] as const] : [])));
 const notesOf = (items: { pattern: { id: string }; note?: string }[]) => new Map(items.flatMap((i) => (i.note ? [[i.pattern.id, i.note] as const] : [])));
-// The stack already shows the mission's outcomes, capabilities, and solutions, a capability compares its
+// The stack already shows the mission's outcomes, capabilities, and solution, a capability compares its
 // patterns, and a solution lays out its own.
 const covered = [
   ...(stacked ? [predicates.seeks.outgoing, predicates.supports_mission.incoming, predicates.supports.incoming] : []),
@@ -85,9 +83,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
         <StatusBadge status={element.status} />
         {element.type === 'mission' && scopeLabel(element.package) && <span class="scope-badge">{scopeLabel(element.package)}</span>}
         {pattern?.role && <span class="approach-badge">{patternRoles[pattern.role].label}</span>}
-        {pattern?.approach && <span class="approach-badge">{pattern.approach}</span>}
-        {pattern && pattern.ways.length > 0 && <span class="approach-badge">{pattern.ways.length} ways to source it</span>}
-        {solution?.northStar && <span class="approach-badge approach-badge--star">North star</span>}
+        {pattern?.sourcing && <span class="approach-badge">{pattern.sourcing}</span>}
       </div>
       <h1>{element.title}</h1>
       {line && <p class="record-tagline">{line}</p>}
@@ -102,14 +98,14 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           </div>
         )}
 
-        {stacked && <MissionStack blueprint={blueprint!} solutions={solutions} />}
+        {stacked && <MissionStack blueprint={blueprint!} solution={star} />}
 
         {star && (
           <section class="section">
             <h2>North star</h2>
             <p class="section-note">
               <a href={star.solution.url}>{star.solution.title}</a> is the long-term architecture this library recommends for the mission, with
-              {' '}{star.patterns.length} patterns by the part each one plays.
+              {' '}{star.patterns.length} patterns by layer.
             </p>
             <div class="table-wrap">
               <table class="stack-table layer-table">
@@ -127,7 +123,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           </section>
         )}
 
-        {solution?.northStar && solution.principles.length > 0 && (
+        {solution && solution.principles.length > 0 && (
           <section class="section">
             <h2>Principles</h2>
             <ol class="principles">{solution.principles.map((s) => <li>{s}</li>)}</ol>
@@ -149,7 +145,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           <section class="section">
             <h2>How it fits together</h2>
             <p class="section-note">
-              The patterns it combines, by the part each one plays, for {new Intl.ListFormat('en').format(solution.missions.map((m) => m.title))}.
+              The patterns it combines for {new Intl.ListFormat('en').format(solution.missions.map((m) => m.title))}, by layer, with the way it chose to source each one.
             </p>
             {solution.roles.map((g) => (
               <div class="solution-role">
@@ -165,7 +161,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           <section class="section">
             <h2>What it covers</h2>
             <p class="section-note">
-              For each mission, the capabilities that one of its patterns might help realize, the ones its patterns cover only part of, and the ones it has
+              The mission’s capabilities that one of its patterns might help realize, the ones its patterns cover only part of, and the ones it has
               no pattern for yet.
             </p>
             {solution.missing.length > 0 && (
@@ -234,7 +230,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           </div>
         )}
 
-        {pattern && !solution && pattern.ways.length > 0 && (
+        {pattern && !solution && pattern.ways.length > 1 && (
           <section class="section">
             <h2>Ways to source it</h2>
             <p class="section-note">Any of these can supply the parts above. Each has its own tradeoffs, and some need another pattern.</p>
@@ -243,7 +239,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
                 <article class="way" id={`way-${w.id}`}>
                   <p class="way__approach">{w.approach}</p>
                   <h3>{w.title}</h3>
-                  <p>{w.description}</p>
+                  {w.description && <p>{w.description}</p>}
                   {w.fields.map((f) => (
                     <div class="way__field">
                       <h4>{f.label}</h4>

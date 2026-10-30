@@ -215,34 +215,37 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
     edges.add(edge);
   }
 
-  errors.push(...northStarProblems(pkg, [...dependencyRelations, ...pkg.relations]));
+  errors.push(...solutionProblems(pkg, [...dependencyRelations, ...pkg.relations]));
   errors.push(...assessmentProblems(pkg.assessments ?? [], reachable));
   return errors;
 }
 
-const isNorthStar = (e: Element) => e.type === 'solution' && e.attributes?.kind === 'north-star';
 const waysOf = (e: Element) => (Array.isArray(e.attributes?.ways) ? (e.attributes.ways as { id: string }[]).map((w) => w.id) : []);
+/** Schema versions whose solutions are examples that can span missions. */
+const EXAMPLE_SOLUTIONS = new Set(['0.1.0', '0.2.0', '0.3.0']);
 /**
- * A north star supports one mission, and only one north star in a package
- * supports each mission. It includes everything its patterns need, for the
- * ways it chose.
+ * Since schema 0.4.0, a solution is its mission's: it supports one mission of
+ * its own package, which has no other solution. It includes everything its
+ * patterns need, for the ways it chose.
  */
-function northStarProblems(pkg: BlueprintPackage, relations: Relation[]): string[] {
+function solutionProblems(pkg: BlueprintPackage, relations: Relation[]): string[] {
+  if (EXAMPLE_SOLUTIONS.has(pkg.schemaVersion)) return [];
   const errors: string[] = [];
   const missions = new Map<string, string>();
-  for (const star of pkg.elements.filter(isNorthStar)) {
-    const own = pkg.relations.filter((r) => r.from === star.id);
+  for (const solution of pkg.elements.filter((e) => e.type === 'solution')) {
+    const own = pkg.relations.filter((r) => r.from === solution.id);
     const supports = own.filter((r) => r.predicate === 'supports');
-    if (supports.length !== 1) errors.push(`north star ${star.id} supports ${supports.length} missions, not one`);
+    if (supports.length !== 1) errors.push(`solution ${solution.id} supports ${supports.length} missions, not one`);
     for (const r of supports) {
-      if (missions.has(r.to)) errors.push(`${r.to} has two north stars, ${missions.get(r.to)} and ${star.id}`);
-      missions.set(r.to, star.id);
+      if (!pkg.elements.some((e) => e.id === r.to)) errors.push(`solution ${solution.id} supports ${r.to}, which isn't a mission of this package`);
+      if (missions.has(r.to)) errors.push(`${r.to} has two solutions, ${missions.get(r.to)} and ${solution.id}`);
+      missions.set(r.to, solution.id);
     }
     const included = new Map(own.filter((r) => r.predicate === 'includes').map((r) => [r.to, r]));
     for (const [pattern, r] of included) {
       const needs = relations.filter((d) => d.predicate === 'depends_on' && d.from === pattern && (!d.way || d.way === r.way));
       for (const need of needs) {
-        if (!included.has(need.to)) errors.push(`north star ${star.id} includes ${pattern}, which needs ${need.to}, but not ${need.to}`);
+        if (!included.has(need.to)) errors.push(`solution ${solution.id} includes ${pattern}, which needs ${need.to}, but not ${need.to}`);
       }
     }
   }

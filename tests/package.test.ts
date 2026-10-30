@@ -12,7 +12,6 @@ const latest = (name: string) => read(`content/${name}/${readdirSync(`content/${
 const original = latest('federal-oig');
 const common = latest('common');
 const foia = latest('federal-foia');
-const solutions = latest('solutions');
 const grants = latest('federal-grants');
 const acquisition = latest('federal-acquisition');
 // Published versions, which never change.
@@ -32,7 +31,7 @@ const common010 = read('content/common/0.1.0/blueprint.json');
 const common020 = read('content/common/0.2.0/blueprint.json');
 const foia010 = read('content/federal-foia/0.1.0/blueprint.json');
 const published = [oig010, oig020, oig030, oig040, oig050, common010, common020, common030, common040, foia010, foia020, foia030, grants010, solutions010, solutions020];
-const all = [original, common, foia, solutions, grants, acquisition, ...published];
+const all = [original, common, foia, grants, acquisition, ...published];
 const resolve: Resolve = (id, version) => all.find((p) => p.packageId === id && p.version === version);
 const missions = [original, foia, grants, acquisition];
 
@@ -63,14 +62,14 @@ describe('validatePackage', () => {
     for (const pkg of [common010, common020, common030, common040]) expect(validatePackage(pkg), pkg.version).toEqual([]);
   });
 
-  it('has one mission, five capabilities, eleven requirements, eight patterns (one replaced), and a north star in the OIG package', () => {
+  it('has one mission, five capabilities, eleven requirements, eight patterns (one replaced), and a solution in the OIG package', () => {
     const counts = Object.groupBy(original.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.capability).toHaveLength(5);
     expect(counts.implementationPattern).toHaveLength(8);
     expect(counts.implementationPattern!.filter((p) => p.status === 'deprecated').map((p) => p.replacedBy)).toEqual(['eb:implementationPattern:audit-management-system']);
     expect(counts.requirement).toHaveLength(11);
-    expect(counts.solution!.map((s) => s.attributes!.kind)).toEqual(['north-star']);
+    expect(counts.solution!.map((s) => s.id)).toEqual(['eb:solution:oig-north-star']);
   });
 
   it('has one mission, six outcomes, seven capabilities, and seven patterns in the FOIA package', () => {
@@ -98,7 +97,8 @@ describe('validatePackage', () => {
     ['a repeated relationship', (p) => p.relations.push({ ...p.relations[0], id: 'rel:copy' }), 'repeats'],
     ['an unknown schema version', (p) => ((p as { schemaVersion: string }).schemaVersion = '9.0.0'), 'schemaVersion should be one of 0.1.0, 0.2.0, 0.3.0'],
     ['dependencies under schema 0.1.0', (p) => (p.schemaVersion = '0.1.0'), 'must NOT have additional properties'],
-    ['a pattern with an unknown approach', (p) => (patternOf(p).attributes!.approach = 'outsource'), '/attributes/approach must be equal to one of the allowed values'],
+    ['a way with an unknown approach', (p) => ((patternOf(p).attributes!.ways as { approach: string }[])[0].approach = 'outsource'), '/ways/0/approach must be equal to one of the allowed values'],
+    ['a pattern with an approach of its own, under schema 0.4.0', (p) => (patternOf(p).attributes!.approach = 'product'), 'must NOT have additional properties'],
     ['a pattern with an empty list', (p) => (patternOf(p).attributes!.watchFor = []), '/attributes/watchFor must NOT have fewer than 1 items'],
     ['a pattern with a list that isn’t statements', (p) => (patternOf(p).attributes!.parts = 'a database'), '/attributes/parts must be array'],
     ['a pattern with an unknown role', (p) => (patternOf(p).attributes!.role = 'middleware'), '/attributes/role must be equal to one of the allowed values'],
@@ -122,13 +122,14 @@ describe('validatePackage', () => {
     expect(validatePackage(pkg, resolve).join('\n')).toContain(message);
   });
 
-  it('has one mission, seven outcomes, eight capabilities, sixteen requirements, and seven patterns in the grants package', () => {
+  it('has one mission, seven outcomes, eight capabilities, sixteen requirements, and eight patterns (three replaced) in the grants package', () => {
     const counts = Object.groupBy(grants.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.outcome).toHaveLength(7);
     expect(counts.capability).toHaveLength(8);
     expect(counts.requirement).toHaveLength(16);
-    expect(counts.implementationPattern).toHaveLength(7);
+    expect(counts.implementationPattern).toHaveLength(8);
+    expect(new Set(counts.implementationPattern!.flatMap((p) => p.replacedBy ?? []))).toEqual(new Set(['eb:implementationPattern:grants-management']));
     expect(grants.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
     // Every outcome has a measure, and every capability contributes to an outcome and has a candidate pattern.
     for (const o of ofType(grants, 'outcome')) expect(grants.relations.some((r) => r.from === o.id && r.predicate === 'measured_by'), o.id).toBe(true);
@@ -138,14 +139,15 @@ describe('validatePackage', () => {
     }
   });
 
-  it('has one mission, nine outcomes, ten capabilities, twenty-two requirements, and nine patterns in the acquisition package', () => {
+  it('has one mission, nine outcomes, ten capabilities, twenty-two requirements, and ten patterns (three replaced) in the acquisition package', () => {
     const counts = Object.groupBy(acquisition.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.outcome).toHaveLength(9);
     expect(counts.measure).toHaveLength(11);
     expect(counts.capability).toHaveLength(10);
     expect(counts.requirement).toHaveLength(22);
-    expect(counts.implementationPattern).toHaveLength(9);
+    expect(counts.implementationPattern).toHaveLength(10);
+    expect(new Set(counts.implementationPattern!.flatMap((p) => p.replacedBy ?? []))).toEqual(new Set(['eb:implementationPattern:acquisition-management']));
     expect(acquisition.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
     // Every capability has a candidate pattern.
     for (const c of ofType(acquisition, 'capability')) expect(acquisition.relations.some((r) => r.from === c.id && r.predicate === 'candidate_pattern'), c.id).toBe(true);
@@ -202,14 +204,12 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
     expect(types(second)).toEqual(new Set(['measure']));
   });
 
-  it('describes each pattern as an example, with its approach or ways to source it, role, parts, strengths, fit, and what to watch for', () => {
+  it('describes each pattern as an example, with its ways to source it, layer, parts, strengths, fit, and what to watch for', () => {
     const patterns = ofType(pkg, 'implementationPattern');
     expect(patterns.length).toBeGreaterThanOrEqual(5);
     for (const p of patterns) {
       expect(p.description, p.id).toMatch(/^An example architecture/);
-      const keys = Object.keys(p.attributes!);
-      expect(keys.filter((k) => k === 'approach' || k === 'ways'), p.id).toHaveLength(1);
-      expect(keys.filter((k) => k !== 'approach' && k !== 'ways').sort(), p.id).toEqual(['fitsWhen', 'parts', 'role', 'strengths', 'watchFor']);
+      expect(Object.keys(p.attributes!).sort(), p.id).toEqual(['fitsWhen', 'parts', 'role', 'strengths', 'watchFor', 'ways']);
       expect(p.sourceIds?.length, p.id).toBeGreaterThan(0);
     }
   });
@@ -221,39 +221,32 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
   });
 });
 
-describe('example solutions', () => {
+describe('solutions', () => {
+  const missions = [original, foia, grants, acquisition];
   const patterns = [original, common, foia, grants, acquisition].flatMap((p) => ofType(p, 'implementationPattern'));
   const roleOf = (id: string) => patterns.find((p) => p.id === id)!.attributes!.role;
 
-  it('build on the four missions and the common package, and validate', () => {
-    expect(validatePackage(solutions, resolve)).toEqual([]);
-    expect(solutions.dependencies).toEqual([common, original, foia, grants, acquisition].map((p) => ({ packageId: p.packageId, version: p.version })));
-  });
-
-  it('each support all four missions, with sign-on and business applications, and say why each pattern is there', () => {
-    for (const s of ofType(solutions, 'solution')) {
-      const rels = solutions.relations.filter((r) => r.from === s.id);
-      expect(rels.filter((r) => r.predicate === 'supports').map((r) => r.to).sort(), s.id).toEqual([
-        'eb:mission:acquiring-goods-and-services',
-        'eb:mission:awarding-overseeing-federal-grants',
-        'eb:mission:independent-government-oversight',
-        'eb:mission:public-access-to-agency-records',
-      ]);
-      const included = rels.filter((r) => r.predicate === 'includes');
-      expect(included.map((r) => r.to), s.id).toContain('eb:implementationPattern:agency-sign-on');
-      expect(included.filter((r) => roleOf(r.to) === 'business-applications').length, s.id).toBeGreaterThanOrEqual(4);
+  it('are one in each mission package, supporting its own mission, with principles and what to watch for', () => {
+    for (const pkg of missions) {
+      const [s, ...others] = ofType(pkg, 'solution');
+      expect(others, pkg.packageId).toEqual([]);
+      expect(pkg.relations.filter((r) => r.from === s.id && r.predicate === 'supports').map((r) => r.to), s.id).toEqual(ofType(pkg, 'mission').map((m) => m.id));
+      expect(Object.keys(s.attributes!).sort(), s.id).toEqual(['principles', 'watchFor']);
+      const included = pkg.relations.filter((r) => r.from === s.id && r.predicate === 'includes');
+      expect(included.filter((r) => roleOf(r.to) === 'business-applications').length, s.id).toBeGreaterThanOrEqual(1);
       for (const r of included) expect(r.description, r.id).toBeTruthy();
-      expect(Object.keys(s.attributes!).sort(), s.id).toEqual(['fitsWhen', 'watchFor']);
     }
+    expect(ofType(common, 'solution')).toEqual([]);
   });
 
-  it('give every pattern in the library a role', () => {
+  it('give every pattern in the library a layer', () => {
     for (const p of patterns) expect(roleOf(p.id), p.id).toBeTruthy();
   });
 
   it('reject a solution that includes something other than a pattern', () => {
-    const pkg = structuredClone(solutions);
-    pkg.relations[0] = { ...pkg.relations[0], predicate: 'includes', to: 'eb:capability:case-management' };
+    const pkg = structuredClone(original);
+    const r = pkg.relations.find((r) => r.predicate === 'includes')!;
+    r.to = 'eb:capability:case-management';
     expect(validatePackage(pkg, resolve).join('\n')).toContain(`"includes" can't link solution`);
   });
 });
@@ -418,7 +411,7 @@ describe('versions', () => {
   });
 });
 
-describe('north stars and ways to source a pattern (schema 0.4.0)', () => {
+describe('solutions and ways to source a pattern (schema 0.4.0)', () => {
   const star = 'eb:solution:oig-north-star';
   const caseSystem = 'eb:implementationPattern:oversight-intake-case-tracking';
   const withStar = (change: (pkg: BlueprintPackage) => void) => {
@@ -428,7 +421,7 @@ describe('north stars and ways to source a pattern (schema 0.4.0)', () => {
   };
   const include = (pkg: BlueprintPackage, to: string) => pkg.relations.find((r) => r.from === star && r.predicate === 'includes' && r.to === to)!;
 
-  it('accept the OIG north star, with a way chosen for its logical patterns', () => {
+  it('accept the OIG solution, with a way chosen for its logical patterns', () => {
     expect(validatePackage(original, resolve)).toEqual([]);
     expect(include(original, caseSystem)).toMatchObject({ way: 'product' });
   });
@@ -441,14 +434,25 @@ describe('north stars and ways to source a pattern (schema 0.4.0)', () => {
       `includes ${caseSystem}, which needs eb:implementationPattern:shared-case-platform, but not`,
     ],
     ['two missions', (p) => p.relations.push({ id: 'rel:x', from: star, predicate: 'supports', to: 'eb:mission:public-access-to-agency-records' }), 'supports 2 missions, not one'],
+    ['another package’s mission', (p) => (p.relations.find((r) => r.from === star && r.predicate === 'supports')!.to = 'eb:mission:public-access-to-agency-records'), "isn't a mission of this package"],
+    [
+      'a second solution for the mission',
+      (p) => {
+        p.elements.push({ ...p.elements.find((e) => e.id === star)!, id: 'eb:solution:another' });
+        p.relations.push({ id: 'rel:another', from: 'eb:solution:another', predicate: 'supports', to: 'eb:mission:independent-government-oversight' });
+      },
+      'has two solutions',
+    ],
+    ['a kind of solution', (p) => (p.elements.find((e) => e.id === star)!.attributes!.kind = 'north-star'), 'must NOT have additional properties'],
     ['a way on something else', (p) => (p.relations.find((r) => r.predicate === 'satisfies')!.way = 'product'), 'only includes and depends_on name a way'],
   ])('reject %s', (_, change, message) => {
     expect(withStar(change)).toContain(message);
   });
 
-  it('need a pattern to have an approach or at least two ways', () => {
-    expect(withStar((p) => delete (p.elements.find((e) => e.id === caseSystem)!.attributes as Record<string, unknown>).ways)).toContain('schema:');
-    expect(withStar((p) => ((p.elements.find((e) => e.id === caseSystem)!.attributes!.ways as unknown[]).length = 1))).toContain('schema:');
+  it('need every pattern to have at least one way', () => {
+    const hotline = 'eb:implementationPattern:confidential-hotline-intake';
+    expect(withStar((p) => delete (p.elements.find((e) => e.id === hotline)!.attributes as Record<string, unknown>).ways)).toContain("must have required property 'ways'");
+    expect(withStar((p) => (p.elements.find((e) => e.id === hotline)!.attributes!.ways = []))).toContain('/ways must NOT have fewer than 1 items');
   });
 });
 

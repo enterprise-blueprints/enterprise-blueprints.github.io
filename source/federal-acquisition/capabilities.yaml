@@ -8,13 +8,7 @@
   contributes_to: [ needs-met-on-time, full-open-competition, small-business-participation ]
   satisfies: [ plan-each-acquisition, research-the-market ]
   candidate_pattern:
-    - acquisition-on-shared-platform
-    - to: contract-writing-system
-      coverage: partial
-      note: Where the product takes requests and holds the plan. Market research is usually done and recorded outside it.
-    - to: assisted-acquisition-service
-      coverage: partial
-      note: The provider plans the acquisition, but the agency still defines the need, its funding, and its timing.
+    - acquisition-management
     - to: acquisition-ai-drafting
       coverage: partial
       note: Drafts market research summaries and plans for staff to check and finish.
@@ -30,11 +24,7 @@
   contributes_to: [ full-open-competition, small-business-participation ]
   satisfies: [ publicize-on-sam, justify-other-than-full-open, receive-offers-securely ]
   candidate_pattern:
-    - contract-writing-system
-    - assisted-acquisition-service
-    - to: acquisition-on-shared-platform
-      coverage: partial
-      note: Solicitations can be assembled from templates on the platform, but clause selection and posting to SAM.gov usually need building.
+    - acquisition-management
     - to: vendor-proposal-portal
       coverage: partial
       note: Receives offers and answers questions. The solicitation itself is written and posted elsewhere.
@@ -50,15 +40,9 @@
   contributes_to: [ full-open-competition, award-decisions-hold-up ]
   satisfies: [ evaluate-against-stated-criteria, protect-source-selection-information, document-award-decision ]
   candidate_pattern:
-    - to: contract-writing-system
+    - to: acquisition-management
       coverage: partial
       note: Holds the award decision and notices. Evaluators’ worksheets and consensus often live in a separate evaluation tool or workspace.
-    - to: acquisition-on-shared-platform
-      coverage: partial
-      note: Evaluator assignments and ratings can be tracked on the platform, with access limited to the evaluation team.
-    - to: assisted-acquisition-service
-      coverage: partial
-      note: The provider runs the evaluation, but the agency’s own technical experts usually evaluate the offers.
     - to: vendor-proposal-portal
       coverage: partial
       note: Keeps proposals where only the evaluation team can open them.
@@ -71,11 +55,7 @@
   contributes_to: [ responsible-contractors, award-decisions-hold-up ]
   satisfies: [ check-exclusions-integrity, determine-responsibility ]
   candidate_pattern:
-    - contract-writing-system
-    - assisted-acquisition-service
-    - to: acquisition-on-shared-platform
-      coverage: partial
-      note: The determination can be recorded on the platform. The award document with its clauses usually comes from a contract writing system.
+    - acquisition-management
     - to: sam-gov-entity-checks
       coverage: partial
       note: Checks registration, exclusions, and integrity records automatically. The contracting officer still makes the determination.
@@ -90,15 +70,9 @@
   candidate_pattern:
     - to: shared-case-platform
       note: Each protest tracked as its own case, with its forum, deadlines, documents, and outcome.
-    - to: acquisition-on-shared-platform
+    - to: acquisition-management
       coverage: partial
       note: Where protests are tracked with the acquisitions they challenge. Counsel’s own work is often tracked in a separate legal matter system.
-    - to: contract-writing-system
-      coverage: partial
-      note: Records the protest against the acquisition, holds the award or the work, and supplies the contract file for the agency’s report. Counsel tracks the protest’s deadlines and filings elsewhere.
-    - to: assisted-acquisition-service
-      coverage: partial
-      note: The provider’s counsel answers protests of its awards, but needs the agency’s experts and records.
 
 - id: contract-administration
   title: Contract Administration & Surveillance
@@ -108,13 +82,7 @@
   contributes_to: [ contracts-perform-as-agreed, needs-met-on-time ]
   satisfies: [ monitor-performance, manage-modifications ]
   candidate_pattern:
-    - contract-writing-system
-    - to: acquisition-on-shared-platform
-      coverage: partial
-      note: Surveillance records and modification requests can be tracked on the platform. The modifications themselves usually come from a contract writing system.
-    - to: assisted-acquisition-service
-      coverage: partial
-      note: The provider’s contracting officer makes the modifications. The agency’s own representative monitors the work.
+    - acquisition-management
 
 - id: invoicing-payment
   title: Invoicing & Payment
@@ -125,9 +93,9 @@
   satisfies: [ receive-invoices-electronically, pay-by-due-date ]
   candidate_pattern:
     - invoices-through-ipp
-    - to: assisted-acquisition-service
+    - to: acquisition-management
       coverage: partial
-      note: Some providers process invoices and payments for the contracts they award. Others leave payment to the agency.
+      note: When another agency awards the contracts, some providers process invoices and payments too. Others leave payment to the agency.
 
 - id: past-performance-evaluation
   title: Past Performance Evaluation
@@ -138,9 +106,9 @@
   satisfies: [ evaluate-performance-on-schedule ]
   candidate_pattern:
     - cpars-from-contract-data
-    - to: assisted-acquisition-service
+    - to: acquisition-management
       coverage: partial
-      note: The provider’s contracting officer completes the evaluation, with the agency’s representative’s input.
+      note: When another agency awards the contracts, its contracting officer completes the evaluation, with the agency’s representative’s input.
     - to: contract-spend-analytics
       coverage: partial
       note: Finds evaluations coming due or overdue. The evaluations themselves are written in CPARS.
@@ -154,10 +122,7 @@
   satisfies: [ report-contract-actions, certify-contract-data, check-subcontract-reporting ]
   candidate_pattern:
     - contract-data-to-sam
-    - assisted-acquisition-service
-    - to: contract-writing-system
-      coverage: partial
-      note: Where the product sends contract action reports itself. Checking subcontract reporting often happens outside it.
+    - acquisition-management
 
 - id: contract-closeout
   title: Contract Closeout
@@ -167,11 +132,7 @@
   contributes_to: [ contracts-closed-on-time ]
   satisfies: [ close-within-standards, release-unneeded-funds ]
   candidate_pattern:
-    - contract-writing-system
-    - assisted-acquisition-service
-    - to: acquisition-on-shared-platform
-      coverage: partial
-      note: Closeout checklists can be tracked on the platform. Releasing funds happens in the financial system.
+    - acquisition-management
     - to: contract-spend-analytics
       coverage: partial
       note: Finds contracts past their closeout standard and the funds still on them.

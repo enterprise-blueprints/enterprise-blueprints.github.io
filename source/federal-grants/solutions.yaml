@@ -1,0 +1,40 @@
+# Solutions, in the order the pages show them, each with the links it holds.
+
+- id: grants-north-star
+  title: Grants Management North Star
+  description: "The long-term architecture this library recommends for a grants office: one grants system that carries each award from the funding announcement to closeout, connected to Grants.gov, ASAP.gov, and USAspending.gov, with the same SAM.gov checks for every applicant and risk analytics that point monitoring at the highest risks."
+  attributes:
+    principles:
+      - Each award is one record from the funding announcement to closeout
+      - Applications arrive from Grants.gov, and award data goes to USAspending.gov, without retyping
+      - Recipients have one place to apply, report, and ask for changes
+      - Every applicant gets the same SAM.gov checks, recorded with the award decision
+      - Payments go through Treasury, against accounts set up from each award
+      - Analytics point monitoring at the highest risks, and staff decide
+    watchFor:
+      - Programs with unusual rules, such as formula awards, may need steps of their own
+      - When the agency’s programs are few or small, a federal shared service can take the product’s place
+  includes:
+    - to: agency-sign-on
+      note: Staff sign in through the agency, with roles the grants office administers.
+    - to: grants-gov-system-to-system
+      note: Posts each opportunity and brings each application into the grants system.
+    - to: grants-management
+      way: product
+      note: A product made for grants, configured for the agency’s programs, so the Uniform Guidance’s steps come ready.
+    - to: records-aware-collaboration
+      note: Where staff and reviewers draft and collaborate, with records and sensitivity labels applied.
+    - to: sam-gov-entity-checks
+      note: The grants system checks each applicant’s registration and exclusions before award.
+    - to: payments-through-asap
+      note: Accounts set up from each award in the grants system, with drawdowns reported back.
+    - to: award-data-to-usaspending
+      note: The grants system’s award records, checked against the financial system and submitted on schedule.
+    - to: records-in-business-systems
+      way: built-in
+      note: The grants system keeps each award’s file on its records schedule.
+    - to: grant-risk-analytics
+      note: Risk scores from SAM.gov, audits, and drawdowns, shown in the grants system’s review and monitoring screens.
+    - to: agency-security-monitoring
+      note: The grants system and recipient portal send their logs to the agency.
+  supports: [ awarding-overseeing-federal-grants ]

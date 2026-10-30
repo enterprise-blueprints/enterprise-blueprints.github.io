@@ -353,7 +353,10 @@ export function plan(
   const build = (src: PackageSource, version: string, date: string) => compilePackage(src, pins(version), version, date);
   const retired = Object.keys(content)
     .filter((name) => !names.includes(name))
-    .map((name): Step => ({ name, version: newest(Object.keys(have(name))) ?? '', remove: drafts(name), retired: true, reason: 'retired, with its published versions kept' }));
+    .map((name): Step => {
+      const last = newest(Object.keys(have(name)).filter((v) => isPublished(name, v))) ?? '';
+      return { name, version: last, remove: drafts(name), retired: true, reason: 'retired, with its published versions kept' };
+    });
 
   const inRelease = release ? all.filter((v) => v.version === release && isPublished(v.name, v.version)).map((v) => v.name) : [];
   const unchanged =

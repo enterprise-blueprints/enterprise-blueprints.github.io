@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.3.0",
+  "schemaVersion": "0.4.0",
   "packageId": "org.enterprise-blueprints.federal-grants",
   "version": "0.8.0",
   "title": "Grants Management — Awarding and Overseeing Financial Assistance",
@@ -582,16 +582,107 @@
       ]
     },
     {
-      "id": "eb:implementationPattern:grants-management-product",
+      "id": "eb:implementationPattern:grants-management",
       "type": "implementationPattern",
-      "title": "Grants Management Product",
-      "description": "An example architecture: a grants management product, configured for the agency’s programs, that carries each award from the funding announcement through applications, review, risk checks, award, payments, monitoring, and closeout, with a portal where recipients apply and report.",
+      "title": "Grants Management",
+      "description": "An example architecture: one grants system that carries each award from the funding announcement through applications, merit review, risk checks, award, payments, monitoring, and closeout, with a portal where recipients apply, report, and ask for changes.",
       "status": "reference",
       "sourceIds": [
         "src:uniform-guidance"
       ],
       "attributes": {
-        "approach": "product",
+        "role": "business-applications",
+        "parts": [
+          "Funding announcements prepared in the system and posted to Grants.gov",
+          "Applications received from Grants.gov, with eligibility and completeness checks",
+          "Reviewer assignments, conflict disclosures, and scoring against each notice’s criteria",
+          "Risk reviews and award documents with standard terms and any specific conditions",
+          "A recipient portal for reports, change requests, and closeout",
+          "Monitoring plans, site visit records, and audit findings for each award",
+          "The award data the agency reports to USAspending.gov"
+        ],
+        "strengths": [
+          "One record for each award, from announcement to closeout",
+          "Recipients have one place to apply, report, and ask for changes"
+        ],
+        "fitsWhen": [
+          "The agency runs grant programs with similar steps",
+          "Its current tools are spreadsheets, email, or an aging custom system"
+        ],
+        "watchFor": [
+          "Programs with unusual rules, such as formula awards, may not fit standard steps",
+          "Moving open awards from an old system mid-stream needs careful planning",
+          "Connections to the agency’s financial system and payment system often take the most work"
+        ],
+        "ways": [
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "A grants management product",
+            "description": "A product made for grants, configured for the agency’s programs and run by the agency.",
+            "strengths": [
+              "Built around the Uniform Guidance, so much of the process comes ready"
+            ],
+            "fitsWhen": [
+              "The agency runs several grant programs, with staff to administer a system"
+            ],
+            "watchFor": [
+              "Another product to buy, secure, and keep up"
+            ]
+          },
+          {
+            "id": "shared-service",
+            "approach": "product",
+            "title": "A federal grants shared service",
+            "description": "A grants system another federal agency runs as a shared service, configured for the agency’s programs, under an agreement that sets the service, its costs, and who does what.",
+            "strengths": [
+              "The provider keeps the system current with federal rules and systems",
+              "The agency doesn’t buy, host, or secure a system of its own",
+              "Recipients may already know the system from other agencies’ awards"
+            ],
+            "fitsWhen": [
+              "The agency’s grant programs are small or few",
+              "A shared service already serves programs like the agency’s"
+            ],
+            "watchFor": [
+              "Changes for the agency’s programs wait on the provider’s priorities",
+              "Getting the agency’s data out, for reporting or a later move, needs agreeing up front",
+              "Costs can grow with the number of awards and users"
+            ]
+          },
+          {
+            "id": "agency-platform",
+            "approach": "platform",
+            "title": "The agency’s shared case platform",
+            "description": "Application and award records, their steps, and a recipient portal, built on the agency’s shared case platform.",
+            "strengths": [
+              "Uses licenses, skills, and security approvals the agency already has",
+              "Grants work can share a platform with the agency’s other case work"
+            ],
+            "fitsWhen": [
+              "The agency already runs a platform like this, with people who configure it",
+              "Its programs are fairly simple, with few awards each"
+            ],
+            "watchFor": [
+              "Merit review, reporting forms, and the recipient portal often take more building than expected",
+              "Federal reporting, such as to USAspending.gov, has to be built and kept up",
+              "Rules change with the Uniform Guidance, and someone has to update the platform each time"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "eb:implementationPattern:grants-management-product",
+      "type": "implementationPattern",
+      "title": "Grants Management Product",
+      "description": "An example architecture: a grants management product, configured for the agency’s programs, that carries each award from the funding announcement through applications, review, risk checks, award, payments, monitoring, and closeout, with a portal where recipients apply and report.",
+      "status": "deprecated",
+      "replacedBy": "eb:implementationPattern:grants-management",
+      "sourceIds": [
+        "src:uniform-guidance"
+      ],
+      "attributes": {
         "role": "business-applications",
         "parts": [
           "Funding announcements prepared in the product and posted to Grants.gov",
@@ -615,6 +706,13 @@
           "Programs with unusual rules, such as formula awards, may not fit the product’s standard steps",
           "Moving open awards from an old system mid-stream needs careful planning",
           "Connections to the agency’s financial system and payment system often take the most work"
+        ],
+        "ways": [
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "A grants management product"
+          }
         ]
       }
     },
@@ -623,12 +721,12 @@
       "type": "implementationPattern",
       "title": "A Federal Grants Shared Service",
       "description": "An example architecture: the agency uses a grants management system another federal agency runs as a shared service, configured for its programs, instead of running its own.",
-      "status": "reference",
+      "status": "deprecated",
+      "replacedBy": "eb:implementationPattern:grants-management",
       "sourceIds": [
         "src:uniform-guidance"
       ],
       "attributes": {
-        "approach": "product",
         "role": "business-applications",
         "parts": [
           "The provider’s grants system, with the agency’s programs, forms, and workflows set up in it",
@@ -649,6 +747,13 @@
           "Changes for the agency’s programs wait on the provider’s priorities",
           "Getting the agency’s data out, for reporting or a later move, needs agreeing up front",
           "Costs can grow with the number of awards and users"
+        ],
+        "ways": [
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "A federal grants shared service"
+          }
         ]
       }
     },
@@ -657,12 +762,12 @@
       "type": "implementationPattern",
       "title": "Grants on the Agency’s Shared Platform",
       "description": "An example architecture: grants management built on the agency’s shared case platform, with each application and award as a record that moves through review, award, monitoring, and closeout, and a portal for recipients.",
-      "status": "reference",
+      "status": "deprecated",
+      "replacedBy": "eb:implementationPattern:grants-management",
       "sourceIds": [
         "src:uniform-guidance"
       ],
       "attributes": {
-        "approach": "platform",
         "role": "business-applications",
         "parts": [
           "Application and award records, with their status, dates, amounts, and documents",
@@ -684,6 +789,13 @@
           "Merit review, reporting forms, and the recipient portal often take more building than expected",
           "Federal reporting, such as to USAspending.gov, has to be built and kept up",
           "Rules change with the Uniform Guidance, and someone has to update the platform each time"
+        ],
+        "ways": [
+          {
+            "id": "platform",
+            "approach": "platform",
+            "title": "The agency’s shared case platform"
+          }
         ]
       }
     },
@@ -698,7 +810,6 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "approach": "build",
         "role": "public-facing",
         "parts": [
           "A connection in the agency’s grants system to Grants.gov’s system-to-system service",
@@ -718,6 +829,13 @@
         "watchFor": [
           "Changes to Grants.gov’s forms and service need following",
           "Applications that fail to arrive must be noticed before the deadline passes"
+        ],
+        "ways": [
+          {
+            "id": "build",
+            "approach": "build",
+            "title": "A connection to Grants.gov’s system-to-system service"
+          }
         ]
       }
     },
@@ -732,7 +850,6 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "approach": "platform",
         "role": "processing",
         "parts": [
           "Recipient enrollment in ASAP.gov, with their banking details kept by Treasury",
@@ -753,6 +870,13 @@
         "watchFor": [
           "Drawdown data has to be reconciled with the agency’s financial and grants records",
           "Controls on requests need setting for each award, or large drawdowns go through unchecked"
+        ],
+        "ways": [
+          {
+            "id": "platform",
+            "approach": "platform",
+            "title": "Treasury’s ASAP.gov"
+          }
         ]
       }
     },
@@ -769,7 +893,6 @@
         "src:federal-audit-clearinghouse"
       ],
       "attributes": {
-        "approach": "build",
         "role": "ai-insights",
         "parts": [
           "Regular feeds from SAM.gov, Do Not Pay, the Federal Audit Clearinghouse, and the agency’s grants and payment systems",
@@ -791,6 +914,13 @@
           "A flag isn’t a finding, so staff decide each award, condition, and monitoring step",
           "Risk scores can be unfair to new or small applicants with little history, so how they’re used needs care",
           "Combining data sets may need agreements, and privacy rules apply to information about individuals"
+        ],
+        "ways": [
+          {
+            "id": "build",
+            "approach": "build",
+            "title": "An analytics workspace"
+          }
         ]
       }
     },
@@ -805,7 +935,6 @@
         "src:award-reporting-2-cfr-170"
       ],
       "attributes": {
-        "approach": "build",
         "role": "processing",
         "parts": [
           "An extract of new awards and changes from the grants system, on a schedule",
@@ -824,6 +953,34 @@
         "watchFor": [
           "The data standard changes from time to time, and the extract has to follow",
           "Fixes made in the submission instead of the grants system come back next time"
+        ],
+        "ways": [
+          {
+            "id": "build",
+            "approach": "build",
+            "title": "Scheduled submissions from the grants system"
+          }
+        ]
+      }
+    },
+    {
+      "id": "eb:solution:grants-north-star",
+      "type": "solution",
+      "title": "Grants Management North Star",
+      "description": "The long-term architecture this library recommends for a grants office: one grants system that carries each award from the funding announcement to closeout, connected to Grants.gov, ASAP.gov, and USAspending.gov, with the same SAM.gov checks for every applicant and risk analytics that point monitoring at the highest risks.",
+      "status": "reference",
+      "attributes": {
+        "principles": [
+          "Each award is one record from the funding announcement to closeout",
+          "Applications arrive from Grants.gov, and award data goes to USAspending.gov, without retyping",
+          "Recipients have one place to apply, report, and ask for changes",
+          "Every applicant gets the same SAM.gov checks, recorded with the award decision",
+          "Payments go through Treasury, against accounts set up from each award",
+          "Analytics point monitoring at the highest risks, and staff decide"
+        ],
+        "watchFor": [
+          "Programs with unusual rules, such as formula awards, may need steps of their own",
+          "When the agency’s programs are few or small, a federal shared service can take the product’s place"
         ]
       }
     }
@@ -944,22 +1101,10 @@
       "to": "eb:requirement:check-applications"
     },
     {
-      "id": "rel:funding-opportunities-applications-candidate-pattern-grants-management-product",
+      "id": "rel:funding-opportunities-applications-candidate-pattern-grants-management",
       "from": "eb:capability:funding-opportunities-applications",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-management-product"
-    },
-    {
-      "id": "rel:funding-opportunities-applications-candidate-pattern-grants-shared-service",
-      "from": "eb:capability:funding-opportunities-applications",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-shared-service"
-    },
-    {
-      "id": "rel:funding-opportunities-applications-candidate-pattern-grants-on-shared-platform",
-      "from": "eb:capability:funding-opportunities-applications",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-on-shared-platform"
+      "to": "eb:implementationPattern:grants-management"
     },
     {
       "id": "rel:funding-opportunities-applications-candidate-pattern-grants-gov-system-to-system",
@@ -994,24 +1139,10 @@
       "to": "eb:requirement:manage-reviewer-conflicts"
     },
     {
-      "id": "rel:merit-review-selection-candidate-pattern-grants-management-product",
+      "id": "rel:merit-review-selection-candidate-pattern-grants-management",
       "from": "eb:capability:merit-review-selection",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-management-product"
-    },
-    {
-      "id": "rel:merit-review-selection-candidate-pattern-grants-shared-service",
-      "from": "eb:capability:merit-review-selection",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-shared-service"
-    },
-    {
-      "id": "rel:merit-review-selection-candidate-pattern-grants-on-shared-platform",
-      "from": "eb:capability:merit-review-selection",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-on-shared-platform",
-      "coverage": "partial",
-      "description": "Assignments and scores can be tracked on the platform. Reviewer portals and conflict checks usually need building."
+      "to": "eb:implementationPattern:grants-management"
     },
     {
       "id": "rel:risk-review-award-contributes-to-awards-to-capable-recipients",
@@ -1038,22 +1169,10 @@
       "to": "eb:requirement:document-risk-review"
     },
     {
-      "id": "rel:risk-review-award-candidate-pattern-grants-management-product",
+      "id": "rel:risk-review-award-candidate-pattern-grants-management",
       "from": "eb:capability:risk-review-award",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-management-product"
-    },
-    {
-      "id": "rel:risk-review-award-candidate-pattern-grants-shared-service",
-      "from": "eb:capability:risk-review-award",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-shared-service"
-    },
-    {
-      "id": "rel:risk-review-award-candidate-pattern-grants-on-shared-platform",
-      "from": "eb:capability:risk-review-award",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-on-shared-platform"
+      "to": "eb:implementationPattern:grants-management"
     },
     {
       "id": "rel:risk-review-award-candidate-pattern-grant-risk-analytics",
@@ -1128,24 +1247,10 @@
       "to": "eb:requirement:monitor-by-risk"
     },
     {
-      "id": "rel:award-monitoring-candidate-pattern-grants-management-product",
+      "id": "rel:award-monitoring-candidate-pattern-grants-management",
       "from": "eb:capability:award-monitoring",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-management-product"
-    },
-    {
-      "id": "rel:award-monitoring-candidate-pattern-grants-shared-service",
-      "from": "eb:capability:award-monitoring",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-shared-service"
-    },
-    {
-      "id": "rel:award-monitoring-candidate-pattern-grants-on-shared-platform",
-      "from": "eb:capability:award-monitoring",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-on-shared-platform",
-      "coverage": "partial",
-      "description": "Report due dates and reviews can be tracked on the platform. Report forms and the recipient portal usually need building."
+      "to": "eb:implementationPattern:grants-management"
     },
     {
       "id": "rel:award-monitoring-candidate-pattern-grant-risk-analytics",
@@ -1180,12 +1285,12 @@
       "to": "eb:requirement:track-corrective-action"
     },
     {
-      "id": "rel:audit-resolution-remedies-candidate-pattern-grants-management-product",
+      "id": "rel:audit-resolution-remedies-candidate-pattern-grants-management",
       "from": "eb:capability:audit-resolution-remedies",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-management-product",
+      "to": "eb:implementationPattern:grants-management",
       "coverage": "partial",
-      "description": "Where the product tracks audit findings. Many offices track them separately."
+      "description": "Where the system tracks audit findings. Many offices track them separately."
     },
     {
       "id": "rel:audit-resolution-remedies-candidate-pattern-shared-case-platform",
@@ -1213,22 +1318,10 @@
       "to": "eb:requirement:close-within-a-year"
     },
     {
-      "id": "rel:award-closeout-candidate-pattern-grants-management-product",
+      "id": "rel:award-closeout-candidate-pattern-grants-management",
       "from": "eb:capability:award-closeout",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-management-product"
-    },
-    {
-      "id": "rel:award-closeout-candidate-pattern-grants-shared-service",
-      "from": "eb:capability:award-closeout",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-shared-service"
-    },
-    {
-      "id": "rel:award-closeout-candidate-pattern-grants-on-shared-platform",
-      "from": "eb:capability:award-closeout",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-on-shared-platform"
+      "to": "eb:implementationPattern:grants-management"
     },
     {
       "id": "rel:award-transparency-reporting-contributes-to-spending-public",
@@ -1255,54 +1348,47 @@
       "to": "eb:implementationPattern:award-data-to-usaspending"
     },
     {
-      "id": "rel:award-transparency-reporting-candidate-pattern-grants-management-product",
+      "id": "rel:award-transparency-reporting-candidate-pattern-grants-management",
       "from": "eb:capability:award-transparency-reporting",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-management-product",
+      "to": "eb:implementationPattern:grants-management",
       "coverage": "partial",
-      "description": "Where the product produces the agency’s award submission. Checking it and following up on subaward reporting often happen outside it."
+      "description": "Where the system produces the agency’s award submission. Checking it and following up on subaward reporting often happen outside it."
     },
     {
-      "id": "rel:award-transparency-reporting-candidate-pattern-grants-shared-service",
-      "from": "eb:capability:award-transparency-reporting",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-shared-service",
-      "coverage": "partial",
-      "description": "The provider usually submits the award data. The agency still checks it and follows up on subaward reporting."
+      "id": "rel:grants-management-depends-on-shared-case-platform",
+      "from": "eb:implementationPattern:grants-management",
+      "predicate": "depends_on",
+      "to": "eb:implementationPattern:shared-case-platform",
+      "way": "agency-platform",
+      "description": "The award records and steps are the shared platform, set up for grants."
     },
     {
-      "id": "rel:grants-management-product-works-with-grants-gov-system-to-system",
-      "from": "eb:implementationPattern:grants-management-product",
+      "id": "rel:grants-management-works-with-grants-gov-system-to-system",
+      "from": "eb:implementationPattern:grants-management",
       "predicate": "works_with",
       "to": "eb:implementationPattern:grants-gov-system-to-system",
-      "description": "Applications arrive from Grants.gov through the product’s connection."
+      "description": "Applications arrive from Grants.gov through the system’s connection."
     },
     {
-      "id": "rel:grants-management-product-works-with-payments-through-asap",
-      "from": "eb:implementationPattern:grants-management-product",
+      "id": "rel:grants-management-works-with-payments-through-asap",
+      "from": "eb:implementationPattern:grants-management",
       "predicate": "works_with",
       "to": "eb:implementationPattern:payments-through-asap",
       "description": "Awards and their amounts feed the payment system’s accounts."
     },
     {
-      "id": "rel:grants-management-product-works-with-grant-risk-analytics",
-      "from": "eb:implementationPattern:grants-management-product",
+      "id": "rel:grants-management-works-with-grant-risk-analytics",
+      "from": "eb:implementationPattern:grants-management",
       "predicate": "works_with",
       "to": "eb:implementationPattern:grant-risk-analytics",
-      "description": "Risk scores show in the product’s review and monitoring screens."
+      "description": "Risk scores show in the system’s review and monitoring screens."
     },
     {
-      "id": "rel:grants-on-shared-platform-depends-on-shared-case-platform",
-      "from": "eb:implementationPattern:grants-on-shared-platform",
-      "predicate": "depends_on",
-      "to": "eb:implementationPattern:shared-case-platform",
-      "description": "The award records and steps are the shared platform, set up for grants."
-    },
-    {
-      "id": "rel:grants-gov-system-to-system-works-with-grants-on-shared-platform",
+      "id": "rel:grants-gov-system-to-system-works-with-grants-management",
       "from": "eb:implementationPattern:grants-gov-system-to-system",
       "predicate": "works_with",
-      "to": "eb:implementationPattern:grants-on-shared-platform"
+      "to": "eb:implementationPattern:grants-management"
     },
     {
       "id": "rel:payments-through-asap-works-with-grant-risk-analytics",
@@ -1319,16 +1405,88 @@
       "description": "The same SAM.gov checks feed each applicant’s and recipient’s risk profile."
     },
     {
-      "id": "rel:award-data-to-usaspending-works-with-grants-management-product",
+      "id": "rel:award-data-to-usaspending-works-with-grants-management",
       "from": "eb:implementationPattern:award-data-to-usaspending",
       "predicate": "works_with",
-      "to": "eb:implementationPattern:grants-management-product"
+      "to": "eb:implementationPattern:grants-management"
     },
     {
-      "id": "rel:award-data-to-usaspending-works-with-grants-on-shared-platform",
-      "from": "eb:implementationPattern:award-data-to-usaspending",
-      "predicate": "works_with",
-      "to": "eb:implementationPattern:grants-on-shared-platform"
+      "id": "rel:grants-north-star-includes-agency-sign-on",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:agency-sign-on",
+      "description": "Staff sign in through the agency, with roles the grants office administers."
+    },
+    {
+      "id": "rel:grants-north-star-includes-grants-gov-system-to-system",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:grants-gov-system-to-system",
+      "description": "Posts each opportunity and brings each application into the grants system."
+    },
+    {
+      "id": "rel:grants-north-star-includes-grants-management",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:grants-management",
+      "way": "product",
+      "description": "A product made for grants, configured for the agency’s programs, so the Uniform Guidance’s steps come ready."
+    },
+    {
+      "id": "rel:grants-north-star-includes-records-aware-collaboration",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "Where staff and reviewers draft and collaborate, with records and sensitivity labels applied."
+    },
+    {
+      "id": "rel:grants-north-star-includes-sam-gov-entity-checks",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:sam-gov-entity-checks",
+      "description": "The grants system checks each applicant’s registration and exclusions before award."
+    },
+    {
+      "id": "rel:grants-north-star-includes-payments-through-asap",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:payments-through-asap",
+      "description": "Accounts set up from each award in the grants system, with drawdowns reported back."
+    },
+    {
+      "id": "rel:grants-north-star-includes-award-data-to-usaspending",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:award-data-to-usaspending",
+      "description": "The grants system’s award records, checked against the financial system and submitted on schedule."
+    },
+    {
+      "id": "rel:grants-north-star-includes-records-in-business-systems",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-in-business-systems",
+      "way": "built-in",
+      "description": "The grants system keeps each award’s file on its records schedule."
+    },
+    {
+      "id": "rel:grants-north-star-includes-grant-risk-analytics",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:grant-risk-analytics",
+      "description": "Risk scores from SAM.gov, audits, and drawdowns, shown in the grants system’s review and monitoring screens."
+    },
+    {
+      "id": "rel:grants-north-star-includes-agency-security-monitoring",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:agency-security-monitoring",
+      "description": "The grants system and recipient portal send their logs to the agency."
+    },
+    {
+      "id": "rel:grants-north-star-supports-awarding-overseeing-federal-grants",
+      "from": "eb:solution:grants-north-star",
+      "predicate": "supports",
+      "to": "eb:mission:awarding-overseeing-federal-grants"
     },
     {
       "id": "rel:case-management-contributes-to-awards-closed-on-time",
@@ -1343,25 +1501,10 @@
       "to": "eb:outcome:audit-findings-resolved"
     },
     {
-      "id": "rel:case-management-candidate-pattern-grants-on-shared-platform",
+      "id": "rel:case-management-candidate-pattern-grants-management",
       "from": "eb:capability:case-management",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-on-shared-platform",
-      "description": "Each award tracked as a case on the platform, from application to closeout."
-    },
-    {
-      "id": "rel:case-management-candidate-pattern-grants-management-product",
-      "from": "eb:capability:case-management",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-management-product",
-      "description": "Each award tracked in the product, from application to closeout."
-    },
-    {
-      "id": "rel:case-management-candidate-pattern-grants-shared-service",
-      "from": "eb:capability:case-management",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:grants-shared-service",
-      "description": "Each award tracked in the shared service’s system, from application to closeout."
+      "to": "eb:implementationPattern:grants-management"
     },
     {
       "id": "rel:records-management-contributes-to-audit-findings-resolved",
@@ -1583,32 +1726,12 @@
           "candidateMappings": [
             {
               "answerValue": "spreadsheets",
-              "elementId": "eb:implementationPattern:grants-management-product",
+              "elementId": "eb:implementationPattern:grants-management",
               "interpretation": "These are example ways to bring each award onto one record, from announcement to closeout."
             },
             {
               "answerValue": "custom-system",
-              "elementId": "eb:implementationPattern:grants-management-product",
-              "interpretation": "These are example ways to bring each award onto one record, from announcement to closeout."
-            },
-            {
-              "answerValue": "spreadsheets",
-              "elementId": "eb:implementationPattern:grants-shared-service",
-              "interpretation": "These are example ways to bring each award onto one record, from announcement to closeout."
-            },
-            {
-              "answerValue": "custom-system",
-              "elementId": "eb:implementationPattern:grants-shared-service",
-              "interpretation": "These are example ways to bring each award onto one record, from announcement to closeout."
-            },
-            {
-              "answerValue": "spreadsheets",
-              "elementId": "eb:implementationPattern:grants-on-shared-platform",
-              "interpretation": "These are example ways to bring each award onto one record, from announcement to closeout."
-            },
-            {
-              "answerValue": "custom-system",
-              "elementId": "eb:implementationPattern:grants-on-shared-platform",
+              "elementId": "eb:implementationPattern:grants-management",
               "interpretation": "These are example ways to bring each award onto one record, from announcement to closeout."
             }
           ]

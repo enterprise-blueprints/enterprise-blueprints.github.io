@@ -244,12 +244,12 @@ export function relationNote(from: LibraryElement, predicate: string, to: Librar
 }
 
 export interface PatternDetails {
-  /** The approach's label, such as "Configure a product". */
-  approach?: string;
-  /** The part it plays, such as "business-applications". */
+  /** How it's sourced, in a few words: its one way's approach, such as "Configure a product", or how many ways it has. */
+  sourcing?: string;
+  /** The layer of a solution it belongs to, such as "business-applications". */
   role?: string;
   fields: { key: string; label: string; items: string[] }[];
-  /** A logical pattern's ways to source it, each with what it needs. */
+  /** Its ways to source it, each with what it needs. */
   ways: PatternWay[];
 }
 
@@ -258,7 +258,7 @@ export interface PatternWay {
   /** The approach's label, such as "Configure a product". */
   approach: string;
   title: string;
-  description: string;
+  description?: string;
   fields: { key: string; label: string; items: string[] }[];
   /** Patterns this way can't work without. */
   needs: { pattern: LibraryElement; note?: string }[];
@@ -270,15 +270,16 @@ export function patternDetails(pattern: LibraryElement): PatternDetails {
   const fieldsOf = (o: Record<string, unknown>) =>
     Object.entries(patternFields).flatMap(([key, f]) => (Array.isArray(o[key]) ? [{ key, label: f.label, items: o[key] as string[] }] : []));
   const ways = Array.isArray(a.ways) ? (a.ways as Record<string, unknown>[]) : [];
+  const approach = (value: unknown) => patternApproaches[String(value)] ?? String(value);
   return {
-    approach: typeof a.approach === 'string' ? patternApproaches[a.approach] : undefined,
+    sourcing: ways.length === 1 ? approach(ways[0].approach) : ways.length ? `${ways.length} ways to source it` : undefined,
     role: typeof a.role === 'string' && patternRoles[a.role] ? a.role : undefined,
     fields: fieldsOf(a),
     ways: ways.map((w) => ({
       id: String(w.id),
-      approach: patternApproaches[String(w.approach)] ?? String(w.approach),
+      approach: approach(w.approach),
       title: String(w.title),
-      description: String(w.description),
+      description: typeof w.description === 'string' ? w.description : undefined,
       fields: fieldsOf(w),
       needs: relationsOf(pattern, 'depends_on', 'outgoing')
         .filter((r) => r.way === w.id)
@@ -294,8 +295,6 @@ function needsOf(pattern: LibraryElement, way?: string): LibraryElement[] {
     .map((r) => byId.get(r.to)!);
 }
 
-/** A north star: one mission's long-term solution. */
-export const isNorthStar = (e: LibraryElement) => e.type === 'solution' && e.attributes?.kind === 'north-star';
 
 export interface RoleGroup<T> {
   role: string | undefined;
@@ -326,10 +325,9 @@ export interface SolutionItem {
 
 export interface SolutionView {
   solution: LibraryElement;
-  northStar: boolean;
   principles: string[];
   missions: LibraryElement[];
-  /** Its patterns by role, each with what the solution says about it. */
+  /** Its patterns by layer, each with what the solution says about it. */
   roles: RoleGroup<SolutionItem>[];
   patterns: LibraryElement[];
   /**
@@ -341,7 +339,7 @@ export interface SolutionView {
   missing: { pattern: LibraryElement; neededBy: LibraryElement[] }[];
 }
 
-/** A solution: its patterns by role, the missions it supports, and what it covers for each. */
+/** A solution: its patterns by layer, the missions it supports, and what it covers for each. */
 export function solutionView(solution: LibraryElement): SolutionView {
   const includes = relationsOf(solution, 'includes', 'outgoing');
   const items: SolutionItem[] = includes.map((r) => {
@@ -353,7 +351,6 @@ export function solutionView(solution: LibraryElement): SolutionView {
   const principles = solution.attributes?.principles;
   return {
     solution,
-    northStar: isNorthStar(solution),
     principles: Array.isArray(principles) ? (principles as string[]) : [],
     missions,
     patterns,
@@ -376,15 +373,10 @@ export function solutionView(solution: LibraryElement): SolutionView {
   };
 }
 
-/** The example solutions that support a mission, not counting its north star. */
-export function solutionsFor(mission: LibraryElement): SolutionView[] {
-  return related(mission, 'supports', 'incoming').filter((s) => !isNorthStar(s)).map(solutionView);
-}
-
-/** The mission's north star, if it has one. */
-export function northStarFor(mission: LibraryElement): SolutionView | undefined {
-  const star = related(mission, 'supports', 'incoming').find(isNorthStar);
-  return star && solutionView(star);
+/** The mission's solution, its north star, if it has one. */
+export function solutionFor(mission: LibraryElement): SolutionView | undefined {
+  const solution = related(mission, 'supports', 'incoming')[0];
+  return solution && solutionView(solution);
 }
 
 /** A mission's tagline, the phrase under its plain name, such as "Acquiring goods and services for the government". */
@@ -424,14 +416,6 @@ const groupedTypes = new Set(['outcome', 'measure', 'capability', 'requirement']
  */
 export function indexGroups(type: string): IndexGroup[] {
   const items = elementsOfType(type).filter((e) => e.status !== 'deprecated');
-  if (type === 'solution') {
-    const stars = items.filter(isNorthStar);
-    if (!stars.length) return [{ id: 'all', label: '', items }];
-    return [
-      { id: 'north-stars', label: 'North stars', hint: 'One long-term architecture for each mission.', items: stars },
-      { id: 'examples', label: 'Example solutions', hint: 'Ways an agency could combine patterns across its missions.', items: items.filter((e) => !isNorthStar(e)) },
-    ];
-  }
   // A role's hint is written for one office's patterns; its first sentence fits the whole library.
   if (type === 'implementationPattern') return byRole(items, (p) => p).map((g) => ({ id: g.role ?? 'other', label: g.label, hint: g.hint?.split(/(?<=\.) /)[0], items: g.items }));
   if (!groupedTypes.has(type)) return [{ id: 'all', label: '', items }];

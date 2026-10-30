@@ -81,7 +81,8 @@ for (const schema of catalog.schemas ?? []) {
 const vocabulary = catalog.vocabulary && existsSync(join(dist, catalog.vocabulary)) ? JSON.parse(readFileSync(join(dist, catalog.vocabulary), 'utf8')) : null;
 if (!vocabulary) errors.push(`catalog: vocabulary ${catalog.vocabulary} doesn't exist`);
 let elementCount = 0;
-for (const entry of vocabulary ? catalog.packages : []) {
+// The pages show the current release, so its elements are the ones with pages. Earlier versions stay downloadable.
+for (const entry of vocabulary ? catalog.packages.filter((p) => p.latest) : []) {
   const pkg = JSON.parse(readFileSync(join(dist, entry.href), 'utf8'));
   for (const element of pkg.elements) {
     elementCount++;

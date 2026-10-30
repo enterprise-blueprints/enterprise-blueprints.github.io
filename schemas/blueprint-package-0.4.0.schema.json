@@ -528,21 +528,14 @@
       }
     },
     "patternAttributes": {
-      "description": "What an implementation pattern says about itself, so patterns can be compared and grouped by the role they play. A logical pattern lists its ways to source it instead of one approach.",
+      "description": "What an implementation pattern says about itself, so patterns can be compared and grouped by the layer of a solution they belong to. A pattern is a logical part of a solution, with one or more ways to source it.",
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "role"
+        "role",
+        "ways"
       ],
       "properties": {
-        "approach": {
-          "enum": [
-            "product",
-            "platform",
-            "combine",
-            "build"
-          ]
-        },
         "role": {
           "enum": [
             "public-facing",
@@ -551,7 +544,8 @@
             "processing",
             "ai-insights",
             "infrastructure"
-          ]
+          ],
+          "description": "The layer of a solution the pattern belongs to."
         },
         "parts": {
           "$ref": "#/$defs/statements"
@@ -567,47 +561,20 @@
         },
         "ways": {
           "type": "array",
-          "minItems": 2,
+          "minItems": 1,
           "items": {
             "$ref": "#/$defs/way"
           }
         }
-      },
-      "anyOf": [
-        {
-          "properties": {
-            "approach": true
-          },
-          "required": [
-            "approach"
-          ]
-        },
-        {
-          "properties": {
-            "ways": true
-          },
-          "required": [
-            "ways"
-          ]
-        }
-      ]
+      }
     },
     "solutionAttributes": {
-      "description": "When a solution fits, and what to watch for. A north star is one mission’s long-term architecture, with the principles it follows.",
+      "description": "A mission’s solution: the principles it follows, and what to watch for.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "fitsWhen": {
-          "$ref": "#/$defs/statements"
-        },
         "watchFor": {
           "$ref": "#/$defs/statements"
-        },
-        "kind": {
-          "description": "A north star, or an example solution when absent.",
-          "enum": [
-            "north-star"
-          ]
         },
         "principles": {
           "$ref": "#/$defs/statements"
@@ -615,14 +582,13 @@
       }
     },
     "way": {
-      "description": "One way to source a logical pattern, such as configuring a product or extending a platform the agency has.",
+      "description": "One way to source a pattern, such as configuring a product or extending a platform the agency has. A way's own strengths, fit, and what to watch for add to the pattern's.",
       "type": "object",
       "additionalProperties": false,
       "required": [
         "id",
         "approach",
-        "title",
-        "description"
+        "title"
       ],
       "properties": {
         "id": {

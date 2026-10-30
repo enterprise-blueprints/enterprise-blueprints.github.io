@@ -12,11 +12,12 @@ import { plural } from '../lib/format';
 
 interface Props {
   blueprint: MissionBlueprint;
-  /** The example solutions that support this mission. */
-  solutions?: SolutionView[];
+  /** The mission's solution, if it has one. */
+  solution?: SolutionView;
 }
 
-const { blueprint, solutions = [] } = Astro.props;
+const { blueprint, solution } = Astro.props;
+const solutions = solution ? [solution] : [];
 const { outcomes, capabilities, measures, requirements, patterns } = blueprint;
 const own = capabilities.filter((c) => !c.sharedFrom);
 const shared = capabilities.filter((c) => c.sharedFrom);
@@ -158,7 +159,7 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
         const row = (e: LibraryElement) => {
           const owners = band.owners(e.id);
           // A pattern says how it goes about it, such as "Configure a product".
-          const meta = [patternDetails(e).approach, owners.length > 1 && `For ${capabilityCount(owners.length)}`].filter(Boolean).join(' · ');
+          const meta = [patternDetails(e).sourcing, owners.length > 1 && `For ${capabilityCount(owners.length)}`].filter(Boolean).join(' · ');
           return (
             <StackItem
               element={e}
@@ -200,12 +201,12 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
       <li class="bp-band type-solution">
         <details class="bp-band__details" open data-collapsible>
           <summary class="bp-band__label">
-            <h3 class="bp-band__name">Solutions</h3>
-            <span class="bp-band__count">{solutionRows.length} examples</span>
+            <h3 class="bp-band__name">Solution</h3>
+            <span class="bp-band__count">North star</span>
             <span class="bp-band__lit" data-lit-count hidden></span>
           </summary>
           <div class="bp-band__body">
-            <p class="bp-role__hint">Ways the patterns could be combined across the agency. Select one to see what it covers for this mission.</p>
+            <p class="bp-role__hint">The long-term architecture this library recommends. Select it to see its patterns and what it covers.</p>
             <ul class="bp-items">
               {solutionRows.map((s) => (
                 <StackItem

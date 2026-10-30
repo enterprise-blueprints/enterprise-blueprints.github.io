@@ -4,13 +4,7 @@
 - from: capability:case-management
   contributes_to: [ needs-met-on-time, contracts-closed-on-time ]
   candidate_pattern:
-    - to: contract-writing-system
-      note: Each acquisition tracked in the product, from request to closeout.
-    - to: acquisition-on-shared-platform
-      note: Each request and contract tracked as a case on the platform, from request to closeout.
-    - to: assisted-acquisition-service
-      coverage: partial
-      note: The provider tracks each acquisition in its own system. The agency tracks its requests and what the provider reports.
+    - acquisition-management
 
 - from: capability:records-management
   contributes_to: [ award-decisions-hold-up, contracts-closed-on-time ]

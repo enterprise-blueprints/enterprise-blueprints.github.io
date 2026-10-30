@@ -60,7 +60,7 @@ export const elementTypes: Record<string, ElementTypeInfo> = {
     plural: 'Solutions',
     navLabel: 'Solutions',
     section: 'solutions',
-    definition: 'An example of how several patterns could fit together to support an agency’s missions.',
+    definition: 'The long-term architecture the library recommends for a mission: its patterns by layer, with a way chosen to source each one.',
   },
 };
 
@@ -121,8 +121,8 @@ export const predicates: Record<string, PredicateInfo> = {
   supports: {
     from: ['solution'],
     to: ['mission'],
-    outgoing: 'Missions it supports',
-    incoming: 'Example solutions',
+    outgoing: 'Mission it supports',
+    incoming: 'Solution',
   },
   // How patterns fit together, since schema 0.3.0: one can't work without
   // the other, or the two are often used together.
@@ -141,8 +141,9 @@ export const predicates: Record<string, PredicateInfo> = {
 };
 
 // An implementation pattern describes itself in `attributes`, with these
-// fields, so patterns can be compared side by side and grouped by the part
-// they play in a solution. A solution uses fitsWhen and watchFor too.
+// fields, so patterns can be compared side by side and grouped by the layer
+// of a solution they belong to, which the `role` field names. A solution uses
+// watchFor too.
 export const patternRoles: Record<string, { label: string; hint: string }> = {
   'public-facing': {
     label: 'Public facing',
@@ -150,7 +151,7 @@ export const patternRoles: Record<string, { label: string; hint: string }> = {
   },
   'business-applications': {
     label: 'Business applications',
-    hint: 'Where the office’s work is tracked and done. These are alternatives: a solution usually picks one for each kind of work.',
+    hint: 'Where the office’s work is tracked and done, one system of record for each kind of work.',
   },
   'worker-productivity': {
     label: 'Worker productivity',
@@ -175,11 +176,6 @@ export const patternApproaches: Record<string, string> = {
   platform: 'Extend a platform the agency has',
   combine: 'Combine tools',
   build: 'Build to fit',
-};
-
-// Since schema 0.4.0, a solution can be a mission's north star.
-export const solutionKinds: Record<string, string> = {
-  'north-star': 'North star',
 };
 
 export const patternFields: Record<string, { label: string; definition: string }> = {

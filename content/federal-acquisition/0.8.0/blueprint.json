@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.3.0",
+  "schemaVersion": "0.4.0",
   "packageId": "org.enterprise-blueprints.federal-acquisition",
   "version": "0.8.0",
   "title": "Acquisition — Buying Goods and Services for the Government",
@@ -753,17 +753,108 @@
       ]
     },
     {
-      "id": "eb:implementationPattern:contract-writing-system",
+      "id": "eb:implementationPattern:acquisition-management",
       "type": "implementationPattern",
-      "title": "Contract Writing System",
-      "description": "An example architecture: a contract writing product, configured for the agency’s rules and deviations, that carries each acquisition from the program office’s request through solicitation, award, modifications, and closeout, choosing clauses by the contract’s type and value and connecting to SAM.gov and the agency’s financial system.",
+      "title": "Acquisition Management",
+      "description": "An example architecture: one system of record for each acquisition, from the program office’s request through solicitation, evaluation, award, modifications, and closeout, with clauses chosen by the contract’s type and value and connections to SAM.gov and the agency’s financial system.",
       "status": "reference",
       "sourceIds": [
         "src:far",
         "src:sam-gov"
       ],
       "attributes": {
-        "approach": "product",
+        "role": "business-applications",
+        "parts": [
+          "Requests from program offices, with funding checked in the financial system",
+          "Solicitations, awards, and modifications assembled from templates, with clauses chosen by rules",
+          "Reviews and approvals set by the acquisition’s value and type",
+          "Evaluation team assignments and ratings, open only to the team",
+          "Notices posted to SAM.gov, and contract action reports sent there after award",
+          "Obligations sent to the financial system as each award and modification is signed",
+          "The contract file, with each document and approval in one place, and closeout steps for each completed contract"
+        ],
+        "strengths": [
+          "One record for each contract, from request to closeout",
+          "Program offices can see where their requests stand",
+          "Contract data reaches SAM.gov and the financial system without retyping"
+        ],
+        "fitsWhen": [
+          "Its current tools are document templates, email, or an aging custom system"
+        ],
+        "watchFor": [
+          "The FAR overhaul and each agency’s deviations change clauses and steps, so clause rules need an owner who keeps them current",
+          "Moving open contracts from an old system needs careful planning",
+          "Connections to the financial system often take the most work"
+        ],
+        "ways": [
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "A contract writing product",
+            "description": "A contract writing product, configured for the agency’s rules and deviations and run by its contracting office.",
+            "strengths": [
+              "Clause logic keeps awards consistent with the rules, and can be updated as the FAR changes"
+            ],
+            "fitsWhen": [
+              "The agency awards many contracts, or contracts of many kinds"
+            ],
+            "watchFor": [
+              "Another product to buy, secure, and keep up"
+            ]
+          },
+          {
+            "id": "agency-platform",
+            "approach": "platform",
+            "title": "The agency’s shared case platform",
+            "description": "Request and contract records, their steps, and documents from templates, built on the agency’s shared case platform.",
+            "strengths": [
+              "Uses licenses, skills, and security approvals the agency already has",
+              "Acquisition work can share a platform with the agency’s other case work"
+            ],
+            "fitsWhen": [
+              "The agency already runs a platform like this, with people who configure it",
+              "Its acquisitions are mostly simple, such as orders under existing contracts"
+            ],
+            "watchFor": [
+              "Clause selection, posting to SAM.gov, and contract action reporting take real building, and keeping them current with the FAR is ongoing work",
+              "Contract data the agency reports must still meet SAM.gov’s data standards"
+            ]
+          },
+          {
+            "id": "assisted-acquisition",
+            "approach": "product",
+            "title": "Another agency’s contracting office",
+            "description": "Another federal agency’s contracting office awards and administers contracts for the agency, under an interagency agreement, in its own contract writing system, while the agency defines its needs, funds them, and monitors the work.",
+            "strengths": [
+              "The agency doesn’t need its own contracting staff and systems for every kind of buy",
+              "Providers bring experience with acquisitions the agency rarely makes",
+              "Reporting to SAM.gov and closeout are handled by the provider’s office"
+            ],
+            "fitsWhen": [
+              "The agency is small, or makes few acquisitions of some kinds",
+              "A provider already buys what the agency needs for other agencies"
+            ],
+            "watchFor": [
+              "Fees add to the cost of each acquisition",
+              "The agency still owns its requirements, its funds, and the results, and needs people who can do that well",
+              "Getting the agency’s contract data and files back, for reporting or a later move, needs agreeing up front"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "eb:implementationPattern:contract-writing-system",
+      "type": "implementationPattern",
+      "title": "Contract Writing System",
+      "description": "An example architecture: a contract writing product, configured for the agency’s rules and deviations, that carries each acquisition from the program office’s request through solicitation, award, modifications, and closeout, choosing clauses by the contract’s type and value and connecting to SAM.gov and the agency’s financial system.",
+      "status": "deprecated",
+      "replacedBy": "eb:implementationPattern:acquisition-management",
+      "sourceIds": [
+        "src:far",
+        "src:sam-gov"
+      ],
+      "attributes": {
         "role": "business-applications",
         "parts": [
           "Requests from program offices, with funding checked in the financial system",
@@ -787,6 +878,13 @@
           "The FAR overhaul and each agency’s deviations change clauses and steps, so clause rules need an owner who keeps them current",
           "Moving open contracts from an old system needs careful planning",
           "Connections to the financial system often take the most work"
+        ],
+        "ways": [
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "A contract writing product"
+          }
         ]
       }
     },
@@ -795,12 +893,12 @@
       "type": "implementationPattern",
       "title": "Acquisition Requests and Contracts on the Agency’s Shared Platform",
       "description": "An example architecture: acquisition work built on the agency’s shared case platform, with each request and contract as a record that moves through planning, solicitation, evaluation, award, administration, and closeout, and documents assembled from templates.",
-      "status": "reference",
+      "status": "deprecated",
+      "replacedBy": "eb:implementationPattern:acquisition-management",
       "sourceIds": [
         "src:far"
       ],
       "attributes": {
-        "approach": "platform",
         "role": "business-applications",
         "parts": [
           "Request records from program offices, with the need, funding, and timing",
@@ -823,6 +921,13 @@
           "Clause selection, posting to SAM.gov, and contract action reporting take real building, and keeping them current with the FAR is ongoing work",
           "Each change from the FAR overhaul or an agency deviation has to be built into the platform",
           "Contract data the agency reports must still meet SAM.gov’s data standards"
+        ],
+        "ways": [
+          {
+            "id": "platform",
+            "approach": "platform",
+            "title": "The agency’s shared case platform"
+          }
         ]
       }
     },
@@ -831,12 +936,12 @@
       "type": "implementationPattern",
       "title": "Assisted Acquisition from Another Federal Agency",
       "description": "An example architecture: the agency has another federal agency’s contracting office award and administer contracts for it, under an interagency agreement, using the provider’s contract writing system, while the agency defines its needs, funds them, and monitors the work.",
-      "status": "reference",
+      "status": "deprecated",
+      "replacedBy": "eb:implementationPattern:acquisition-management",
       "sourceIds": [
         "src:far"
       ],
       "attributes": {
-        "approach": "product",
         "role": "business-applications",
         "parts": [
           "An interagency agreement that sets the services, fees, and who does what",
@@ -858,6 +963,13 @@
           "Fees add to the cost of each acquisition",
           "The agency still owns its requirements, its funds, and the results, and needs people who can do that well",
           "Getting the agency’s contract data and files back, for reporting or a later move, needs agreeing up front"
+        ],
+        "ways": [
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "Another agency’s contracting office"
+          }
         ]
       }
     },
@@ -872,7 +984,6 @@
         "src:procurement-integrity-41-usc-2102"
       ],
       "attributes": {
-        "approach": "combine",
         "role": "public-facing",
         "parts": [
           "Vendor accounts tied to their SAM.gov registration",
@@ -893,6 +1004,13 @@
         "watchFor": [
           "An outage near a deadline raises questions of fairness, so there needs to be a plan for one",
           "Access for evaluators has to be granted and removed for each source selection"
+        ],
+        "ways": [
+          {
+            "id": "combine",
+            "approach": "combine",
+            "title": "A portal combined from secure upload and sign-in tools"
+          }
         ]
       }
     },
@@ -908,7 +1026,6 @@
         "src:usaspending"
       ],
       "attributes": {
-        "approach": "build",
         "role": "processing",
         "parts": [
           "A connection from the contract writing system to SAM.gov’s contract data reporting service",
@@ -927,6 +1044,13 @@
         "watchFor": [
           "SAM.gov’s services and data standards change, as they did when FPDS moved into SAM.gov, so the connection needs keeping up",
           "Fixes made in SAM.gov instead of the contract writing system come back next time"
+        ],
+        "ways": [
+          {
+            "id": "build",
+            "approach": "build",
+            "title": "The contract system’s connection to SAM.gov"
+          }
         ]
       }
     },
@@ -941,7 +1065,6 @@
         "src:prompt-payment-31-usc-3903"
       ],
       "attributes": {
-        "approach": "platform",
         "role": "processing",
         "parts": [
           "Vendor enrollment in IPP, with orders sent from the agency’s financial or contract writing system",
@@ -962,6 +1085,13 @@
         "watchFor": [
           "Acceptance by the program office is often what makes payments late, so routing and reminders need care",
           "Some kinds of payments, such as utilities, may stay outside IPP"
+        ],
+        "ways": [
+          {
+            "id": "platform",
+            "approach": "platform",
+            "title": "Treasury’s Invoice Processing Platform"
+          }
         ]
       }
     },
@@ -976,7 +1106,6 @@
         "src:far"
       ],
       "attributes": {
-        "approach": "platform",
         "role": "business-applications",
         "parts": [
           "Registration of each contract that needs evaluations, from the contract writing system or SAM.gov data",
@@ -996,6 +1125,13 @@
         "watchFor": [
           "CPARS is moving into SAM.gov, so the connection and the steps may change",
           "A scheduled evaluation still needs someone who knows the work to write it"
+        ],
+        "ways": [
+          {
+            "id": "platform",
+            "approach": "platform",
+            "title": "CPARS, fed from contract data"
+          }
         ]
       }
     },
@@ -1010,7 +1146,6 @@
         "src:procurement-integrity-41-usc-2102"
       ],
       "attributes": {
-        "approach": "platform",
         "role": "ai-insights",
         "parts": [
           "An AI model in an environment the agency has approved for acquisition information",
@@ -1032,6 +1167,13 @@
           "Drafts can be wrong or out of date, such as citing rules the overhaul changed, so staff check each one",
           "Proposal and source selection information must stay where the Procurement Integrity Act allows",
           "The agency’s AI governance may require an impact assessment and a listing in its AI use case inventory first"
+        ],
+        "ways": [
+          {
+            "id": "platform",
+            "approach": "platform",
+            "title": "An AI model the agency approves"
+          }
         ]
       }
     },
@@ -1046,7 +1188,6 @@
         "src:far"
       ],
       "attributes": {
-        "approach": "build",
         "role": "ai-insights",
         "parts": [
           "Regular feeds from SAM.gov contract data, the contract writing system, the financial system, and invoicing",
@@ -1067,6 +1208,34 @@
         "watchFor": [
           "SAM.gov’s data and the agency’s own records can disagree, so which one wins needs deciding",
           "Numbers like single-offer rates need context before they become targets"
+        ],
+        "ways": [
+          {
+            "id": "build",
+            "approach": "build",
+            "title": "An analytics workspace"
+          }
+        ]
+      }
+    },
+    {
+      "id": "eb:solution:acquisition-north-star",
+      "type": "solution",
+      "title": "Acquisition North Star",
+      "description": "The long-term architecture this library recommends for a contracting office: one acquisition system that carries each acquisition from the program office’s request to closeout, with a secure proposal portal, contract data that reaches SAM.gov, CPARS, and the financial system without retyping, invoices through Treasury, and analytics and AI drafting on top.",
+      "status": "reference",
+      "attributes": {
+        "principles": [
+          "Each acquisition is one record from the program office’s request to closeout",
+          "Clauses come from rules the contracting office keeps current as the FAR changes",
+          "Contract data reaches SAM.gov, CPARS, and the financial system without retyping",
+          "Vendors submit offers through one secure portal, and offers open only after the deadline",
+          "Every offeror gets the same SAM.gov checks the agency uses for grants applicants",
+          "AI drafts and analytics inform, and contracting officers decide"
+        ],
+        "watchFor": [
+          "Clause rules need an owner while the FAR overhaul is under way",
+          "For buys the agency rarely makes, another agency’s contracting office can still be the better way"
         ]
       }
     }
@@ -1223,26 +1392,10 @@
       "to": "eb:requirement:research-the-market"
     },
     {
-      "id": "rel:acquisition-planning-market-research-candidate-pattern-acquisition-on-shared-platform",
+      "id": "rel:acquisition-planning-market-research-candidate-pattern-acquisition-management",
       "from": "eb:capability:acquisition-planning-market-research",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:acquisition-on-shared-platform"
-    },
-    {
-      "id": "rel:acquisition-planning-market-research-candidate-pattern-contract-writing-system",
-      "from": "eb:capability:acquisition-planning-market-research",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:contract-writing-system",
-      "coverage": "partial",
-      "description": "Where the product takes requests and holds the plan. Market research is usually done and recorded outside it."
-    },
-    {
-      "id": "rel:acquisition-planning-market-research-candidate-pattern-assisted-acquisition-service",
-      "from": "eb:capability:acquisition-planning-market-research",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service",
-      "coverage": "partial",
-      "description": "The provider plans the acquisition, but the agency still defines the need, its funding, and its timing."
+      "to": "eb:implementationPattern:acquisition-management"
     },
     {
       "id": "rel:acquisition-planning-market-research-candidate-pattern-acquisition-ai-drafting",
@@ -1291,24 +1444,10 @@
       "to": "eb:requirement:receive-offers-securely"
     },
     {
-      "id": "rel:solicitation-publicizing-candidate-pattern-contract-writing-system",
+      "id": "rel:solicitation-publicizing-candidate-pattern-acquisition-management",
       "from": "eb:capability:solicitation-publicizing",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:contract-writing-system"
-    },
-    {
-      "id": "rel:solicitation-publicizing-candidate-pattern-assisted-acquisition-service",
-      "from": "eb:capability:solicitation-publicizing",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service"
-    },
-    {
-      "id": "rel:solicitation-publicizing-candidate-pattern-acquisition-on-shared-platform",
-      "from": "eb:capability:solicitation-publicizing",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:acquisition-on-shared-platform",
-      "coverage": "partial",
-      "description": "Solicitations can be assembled from templates on the platform, but clause selection and posting to SAM.gov usually need building."
+      "to": "eb:implementationPattern:acquisition-management"
     },
     {
       "id": "rel:solicitation-publicizing-candidate-pattern-vendor-proposal-portal",
@@ -1357,28 +1496,12 @@
       "to": "eb:requirement:document-award-decision"
     },
     {
-      "id": "rel:evaluation-source-selection-candidate-pattern-contract-writing-system",
+      "id": "rel:evaluation-source-selection-candidate-pattern-acquisition-management",
       "from": "eb:capability:evaluation-source-selection",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:contract-writing-system",
+      "to": "eb:implementationPattern:acquisition-management",
       "coverage": "partial",
       "description": "Holds the award decision and notices. Evaluators’ worksheets and consensus often live in a separate evaluation tool or workspace."
-    },
-    {
-      "id": "rel:evaluation-source-selection-candidate-pattern-acquisition-on-shared-platform",
-      "from": "eb:capability:evaluation-source-selection",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:acquisition-on-shared-platform",
-      "coverage": "partial",
-      "description": "Evaluator assignments and ratings can be tracked on the platform, with access limited to the evaluation team."
-    },
-    {
-      "id": "rel:evaluation-source-selection-candidate-pattern-assisted-acquisition-service",
-      "from": "eb:capability:evaluation-source-selection",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service",
-      "coverage": "partial",
-      "description": "The provider runs the evaluation, but the agency’s own technical experts usually evaluate the offers."
     },
     {
       "id": "rel:evaluation-source-selection-candidate-pattern-vendor-proposal-portal",
@@ -1413,24 +1536,10 @@
       "to": "eb:requirement:determine-responsibility"
     },
     {
-      "id": "rel:responsibility-determination-candidate-pattern-contract-writing-system",
+      "id": "rel:responsibility-determination-candidate-pattern-acquisition-management",
       "from": "eb:capability:responsibility-determination",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:contract-writing-system"
-    },
-    {
-      "id": "rel:responsibility-determination-candidate-pattern-assisted-acquisition-service",
-      "from": "eb:capability:responsibility-determination",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service"
-    },
-    {
-      "id": "rel:responsibility-determination-candidate-pattern-acquisition-on-shared-platform",
-      "from": "eb:capability:responsibility-determination",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:acquisition-on-shared-platform",
-      "coverage": "partial",
-      "description": "The determination can be recorded on the platform. The award document with its clauses usually comes from a contract writing system."
+      "to": "eb:implementationPattern:acquisition-management"
     },
     {
       "id": "rel:responsibility-determination-candidate-pattern-sam-gov-entity-checks",
@@ -1466,28 +1575,12 @@
       "description": "Each protest tracked as its own case, with its forum, deadlines, documents, and outcome."
     },
     {
-      "id": "rel:protest-handling-candidate-pattern-acquisition-on-shared-platform",
+      "id": "rel:protest-handling-candidate-pattern-acquisition-management",
       "from": "eb:capability:protest-handling",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:acquisition-on-shared-platform",
+      "to": "eb:implementationPattern:acquisition-management",
       "coverage": "partial",
       "description": "Where protests are tracked with the acquisitions they challenge. Counsel’s own work is often tracked in a separate legal matter system."
-    },
-    {
-      "id": "rel:protest-handling-candidate-pattern-contract-writing-system",
-      "from": "eb:capability:protest-handling",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:contract-writing-system",
-      "coverage": "partial",
-      "description": "Records the protest against the acquisition, holds the award or the work, and supplies the contract file for the agency’s report. Counsel tracks the protest’s deadlines and filings elsewhere."
-    },
-    {
-      "id": "rel:protest-handling-candidate-pattern-assisted-acquisition-service",
-      "from": "eb:capability:protest-handling",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service",
-      "coverage": "partial",
-      "description": "The provider’s counsel answers protests of its awards, but needs the agency’s experts and records."
     },
     {
       "id": "rel:contract-administration-contributes-to-contracts-perform-as-agreed",
@@ -1514,26 +1607,10 @@
       "to": "eb:requirement:manage-modifications"
     },
     {
-      "id": "rel:contract-administration-candidate-pattern-contract-writing-system",
+      "id": "rel:contract-administration-candidate-pattern-acquisition-management",
       "from": "eb:capability:contract-administration",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:contract-writing-system"
-    },
-    {
-      "id": "rel:contract-administration-candidate-pattern-acquisition-on-shared-platform",
-      "from": "eb:capability:contract-administration",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:acquisition-on-shared-platform",
-      "coverage": "partial",
-      "description": "Surveillance records and modification requests can be tracked on the platform. The modifications themselves usually come from a contract writing system."
-    },
-    {
-      "id": "rel:contract-administration-candidate-pattern-assisted-acquisition-service",
-      "from": "eb:capability:contract-administration",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service",
-      "coverage": "partial",
-      "description": "The provider’s contracting officer makes the modifications. The agency’s own representative monitors the work."
+      "to": "eb:implementationPattern:acquisition-management"
     },
     {
       "id": "rel:invoicing-payment-contributes-to-invoices-paid-on-time",
@@ -1560,12 +1637,12 @@
       "to": "eb:implementationPattern:invoices-through-ipp"
     },
     {
-      "id": "rel:invoicing-payment-candidate-pattern-assisted-acquisition-service",
+      "id": "rel:invoicing-payment-candidate-pattern-acquisition-management",
       "from": "eb:capability:invoicing-payment",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service",
+      "to": "eb:implementationPattern:acquisition-management",
       "coverage": "partial",
-      "description": "Some providers process invoices and payments for the contracts they award. Others leave payment to the agency."
+      "description": "When another agency awards the contracts, some providers process invoices and payments too. Others leave payment to the agency."
     },
     {
       "id": "rel:past-performance-evaluation-contributes-to-contracts-perform-as-agreed",
@@ -1592,12 +1669,12 @@
       "to": "eb:implementationPattern:cpars-from-contract-data"
     },
     {
-      "id": "rel:past-performance-evaluation-candidate-pattern-assisted-acquisition-service",
+      "id": "rel:past-performance-evaluation-candidate-pattern-acquisition-management",
       "from": "eb:capability:past-performance-evaluation",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service",
+      "to": "eb:implementationPattern:acquisition-management",
       "coverage": "partial",
-      "description": "The provider’s contracting officer completes the evaluation, with the agency’s representative’s input."
+      "description": "When another agency awards the contracts, its contracting officer completes the evaluation, with the agency’s representative’s input."
     },
     {
       "id": "rel:past-performance-evaluation-candidate-pattern-contract-spend-analytics",
@@ -1644,18 +1721,10 @@
       "to": "eb:implementationPattern:contract-data-to-sam"
     },
     {
-      "id": "rel:contract-reporting-candidate-pattern-assisted-acquisition-service",
+      "id": "rel:contract-reporting-candidate-pattern-acquisition-management",
       "from": "eb:capability:contract-reporting",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service"
-    },
-    {
-      "id": "rel:contract-reporting-candidate-pattern-contract-writing-system",
-      "from": "eb:capability:contract-reporting",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:contract-writing-system",
-      "coverage": "partial",
-      "description": "Where the product sends contract action reports itself. Checking subcontract reporting often happens outside it."
+      "to": "eb:implementationPattern:acquisition-management"
     },
     {
       "id": "rel:contract-closeout-contributes-to-contracts-closed-on-time",
@@ -1676,24 +1745,10 @@
       "to": "eb:requirement:release-unneeded-funds"
     },
     {
-      "id": "rel:contract-closeout-candidate-pattern-contract-writing-system",
+      "id": "rel:contract-closeout-candidate-pattern-acquisition-management",
       "from": "eb:capability:contract-closeout",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:contract-writing-system"
-    },
-    {
-      "id": "rel:contract-closeout-candidate-pattern-assisted-acquisition-service",
-      "from": "eb:capability:contract-closeout",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service"
-    },
-    {
-      "id": "rel:contract-closeout-candidate-pattern-acquisition-on-shared-platform",
-      "from": "eb:capability:contract-closeout",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:acquisition-on-shared-platform",
-      "coverage": "partial",
-      "description": "Closeout checklists can be tracked on the platform. Releasing funds happens in the financial system."
+      "to": "eb:implementationPattern:acquisition-management"
     },
     {
       "id": "rel:contract-closeout-candidate-pattern-contract-spend-analytics",
@@ -1704,52 +1759,53 @@
       "description": "Finds contracts past their closeout standard and the funds still on them."
     },
     {
-      "id": "rel:contract-writing-system-works-with-contract-data-to-sam",
-      "from": "eb:implementationPattern:contract-writing-system",
-      "predicate": "works_with",
-      "to": "eb:implementationPattern:contract-data-to-sam",
-      "description": "The product’s connection sends each contract action report to SAM.gov."
+      "id": "rel:acquisition-management-depends-on-shared-case-platform",
+      "from": "eb:implementationPattern:acquisition-management",
+      "predicate": "depends_on",
+      "to": "eb:implementationPattern:shared-case-platform",
+      "way": "agency-platform",
+      "description": "The request and contract records and their steps are the shared platform, set up for acquisition."
     },
     {
-      "id": "rel:contract-writing-system-works-with-invoices-through-ipp",
-      "from": "eb:implementationPattern:contract-writing-system",
+      "id": "rel:acquisition-management-works-with-contract-data-to-sam",
+      "from": "eb:implementationPattern:acquisition-management",
+      "predicate": "works_with",
+      "to": "eb:implementationPattern:contract-data-to-sam",
+      "description": "The system’s connection sends each contract action report to SAM.gov."
+    },
+    {
+      "id": "rel:acquisition-management-works-with-invoices-through-ipp",
+      "from": "eb:implementationPattern:acquisition-management",
       "predicate": "works_with",
       "to": "eb:implementationPattern:invoices-through-ipp",
       "description": "Awards and their line items set up what vendors invoice against."
     },
     {
-      "id": "rel:contract-writing-system-works-with-cpars-from-contract-data",
-      "from": "eb:implementationPattern:contract-writing-system",
+      "id": "rel:acquisition-management-works-with-cpars-from-contract-data",
+      "from": "eb:implementationPattern:acquisition-management",
       "predicate": "works_with",
       "to": "eb:implementationPattern:cpars-from-contract-data",
       "description": "Contract data registers each contract in CPARS and sets its evaluation dates."
     },
     {
-      "id": "rel:contract-writing-system-works-with-sam-gov-entity-checks",
-      "from": "eb:implementationPattern:contract-writing-system",
+      "id": "rel:acquisition-management-works-with-sam-gov-entity-checks",
+      "from": "eb:implementationPattern:acquisition-management",
       "predicate": "works_with",
       "to": "eb:implementationPattern:sam-gov-entity-checks",
       "description": "Registration and exclusion results show on the award screens."
     },
     {
-      "id": "rel:acquisition-on-shared-platform-depends-on-shared-case-platform",
-      "from": "eb:implementationPattern:acquisition-on-shared-platform",
-      "predicate": "depends_on",
-      "to": "eb:implementationPattern:shared-case-platform",
-      "description": "The request and contract records and their steps are the shared platform, set up for acquisition."
-    },
-    {
-      "id": "rel:vendor-proposal-portal-works-with-contract-writing-system",
+      "id": "rel:vendor-proposal-portal-works-with-acquisition-management",
       "from": "eb:implementationPattern:vendor-proposal-portal",
       "predicate": "works_with",
-      "to": "eb:implementationPattern:contract-writing-system",
-      "description": "Offers and questions are linked to the solicitation in the contract writing system."
+      "to": "eb:implementationPattern:acquisition-management",
+      "description": "Offers and questions are linked to the solicitation in the acquisition system."
     },
     {
-      "id": "rel:contract-data-to-sam-works-with-acquisition-on-shared-platform",
+      "id": "rel:contract-data-to-sam-works-with-acquisition-management",
       "from": "eb:implementationPattern:contract-data-to-sam",
       "predicate": "works_with",
-      "to": "eb:implementationPattern:acquisition-on-shared-platform"
+      "to": "eb:implementationPattern:acquisition-management"
     },
     {
       "id": "rel:invoices-through-ipp-works-with-contract-spend-analytics",
@@ -1759,10 +1815,102 @@
       "description": "Invoice and payment dates feed the reports on late payments."
     },
     {
-      "id": "rel:contract-spend-analytics-works-with-contract-writing-system",
+      "id": "rel:contract-spend-analytics-works-with-acquisition-management",
       "from": "eb:implementationPattern:contract-spend-analytics",
       "predicate": "works_with",
-      "to": "eb:implementationPattern:contract-writing-system"
+      "to": "eb:implementationPattern:acquisition-management"
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-agency-sign-on",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:agency-sign-on",
+      "description": "Staff sign in through the agency, with roles the contracting office administers."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-vendor-proposal-portal",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:vendor-proposal-portal",
+      "description": "Offers and questions land with the solicitation they answer in the acquisition system."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-acquisition-management",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:acquisition-management",
+      "way": "product",
+      "description": "A contract writing product, so clause logic, approvals, and SAM.gov reporting come built in."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-records-aware-collaboration",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "Where program offices and contracting staff draft and collaborate, with records and sensitivity labels applied."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-acquisition-ai-drafting",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:acquisition-ai-drafting",
+      "description": "Drafts that program offices and contracting staff start from, using the agency’s templates."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-sam-gov-entity-checks",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:sam-gov-entity-checks",
+      "description": "The acquisition system checks each offeror’s registration, exclusions, and responsibility records before award."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-contract-data-to-sam",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:contract-data-to-sam",
+      "description": "The acquisition system sends each contract action report to SAM.gov when the award is signed."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-invoices-through-ipp",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:invoices-through-ipp",
+      "description": "Vendors invoice against the awards in the acquisition system, and acceptance is routed to the program office."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-cpars-from-contract-data",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:cpars-from-contract-data",
+      "description": "Contracts registered in CPARS from the acquisition system’s records, with their evaluation dates."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-records-in-business-systems",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-in-business-systems",
+      "way": "built-in",
+      "description": "The acquisition system keeps each contract file on its records schedule."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-contract-spend-analytics",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:contract-spend-analytics",
+      "description": "Brings the acquisition system’s data together with spending, invoices, and evaluations."
+    },
+    {
+      "id": "rel:acquisition-north-star-includes-agency-security-monitoring",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:agency-security-monitoring",
+      "description": "The acquisition system and proposal portal send their logs to the agency."
+    },
+    {
+      "id": "rel:acquisition-north-star-supports-acquiring-goods-and-services",
+      "from": "eb:solution:acquisition-north-star",
+      "predicate": "supports",
+      "to": "eb:mission:acquiring-goods-and-services"
     },
     {
       "id": "rel:case-management-contributes-to-needs-met-on-time",
@@ -1777,26 +1925,10 @@
       "to": "eb:outcome:contracts-closed-on-time"
     },
     {
-      "id": "rel:case-management-candidate-pattern-contract-writing-system",
+      "id": "rel:case-management-candidate-pattern-acquisition-management",
       "from": "eb:capability:case-management",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:contract-writing-system",
-      "description": "Each acquisition tracked in the product, from request to closeout."
-    },
-    {
-      "id": "rel:case-management-candidate-pattern-acquisition-on-shared-platform",
-      "from": "eb:capability:case-management",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:acquisition-on-shared-platform",
-      "description": "Each request and contract tracked as a case on the platform, from request to closeout."
-    },
-    {
-      "id": "rel:case-management-candidate-pattern-assisted-acquisition-service",
-      "from": "eb:capability:case-management",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:assisted-acquisition-service",
-      "coverage": "partial",
-      "description": "The provider tracks each acquisition in its own system. The agency tracks its requests and what the provider reports."
+      "to": "eb:implementationPattern:acquisition-management"
     },
     {
       "id": "rel:records-management-contributes-to-award-decisions-hold-up",
@@ -2051,32 +2183,12 @@
           "candidateMappings": [
             {
               "answerValue": "documents",
-              "elementId": "eb:implementationPattern:contract-writing-system",
+              "elementId": "eb:implementationPattern:acquisition-management",
               "interpretation": "These are example ways to bring each contract onto one record, from request to closeout."
             },
             {
               "answerValue": "custom-system",
-              "elementId": "eb:implementationPattern:contract-writing-system",
-              "interpretation": "These are example ways to bring each contract onto one record, from request to closeout."
-            },
-            {
-              "answerValue": "documents",
-              "elementId": "eb:implementationPattern:acquisition-on-shared-platform",
-              "interpretation": "These are example ways to bring each contract onto one record, from request to closeout."
-            },
-            {
-              "answerValue": "custom-system",
-              "elementId": "eb:implementationPattern:acquisition-on-shared-platform",
-              "interpretation": "These are example ways to bring each contract onto one record, from request to closeout."
-            },
-            {
-              "answerValue": "documents",
-              "elementId": "eb:implementationPattern:assisted-acquisition-service",
-              "interpretation": "These are example ways to bring each contract onto one record, from request to closeout."
-            },
-            {
-              "answerValue": "custom-system",
-              "elementId": "eb:implementationPattern:assisted-acquisition-service",
+              "elementId": "eb:implementationPattern:acquisition-management",
               "interpretation": "These are example ways to bring each contract onto one record, from request to closeout."
             }
           ]

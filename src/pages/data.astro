@@ -87,16 +87,16 @@ import { href } from '../lib/paths';
       </p>
       <p>
         Since schema 0.3.0, the schema checks what implementation patterns and solutions say about themselves in
-        <code>attributes</code>: a pattern's approach and role, and lists such as its strengths and what to watch
+        <code>attributes</code>: a pattern's approach and layer, and lists such as its strengths and what to watch
         for. A <code>candidate_pattern</code> relation can say <code>"coverage": "partial"</code> when the pattern
         covers only part of the capability; without it, the pattern covers it fully. Patterns can also say they
         need another (<code>depends_on</code>) or work well with one (<code>works_with</code>).
       </p>
       <p>
-        Since schema 0.4.0, a logical pattern lists its <code>ways</code> to source it, and a <code>depends_on</code>
-        relation with a <code>way</code> is a need of that way only. A solution with <code>"kind": "north-star"</code>
-        is one mission's long-term architecture, with <code>principles</code>; each of its <code>includes</code>
-        relations to a logical pattern names the <code>way</code> it prefers.
+        Since schema 0.4.0, every pattern lists its <code>ways</code> to source it, each with its approach, and a
+        <code>depends_on</code> relation with a <code>way</code> is a need of that way only. Each mission has one
+        solution, in its own package: its long-term architecture, with <code>principles</code>. Each of its
+        <code>includes</code> relations to a pattern with several ways names the <code>way</code> it chose.
       </p>
     </div>
   </div>

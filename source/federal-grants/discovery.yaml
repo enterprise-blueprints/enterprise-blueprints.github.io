@@ -86,7 +86,7 @@
         - custom-system: A custom system built for the agency
       points:
         - when: [ spreadsheets, custom-system ]
-          to: [ implementationPattern:grants-management-product, implementationPattern:grants-shared-service, implementationPattern:grants-on-shared-platform ]
+          to: implementationPattern:grants-management
           why: These are example ways to bring each award onto one record, from announcement to closeout.
     - id: grants-application-intake
       prompt: How do applications from Grants.gov reach the office’s system?

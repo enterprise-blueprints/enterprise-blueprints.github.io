@@ -125,7 +125,7 @@
           to: requirement:track-case-status
           why: Status kept in several places is hard to see in one place.
         - when: general-system
-          to: implementationPattern:foia-tracking-with-review-tool
+          to: implementationPattern:foia-request-processing
           why: A general system can track requests if FOIA’s deadlines are built in and review happens in a separate tool.
     - id: records-search
       prompt: How does the office find the records a request covers?

@@ -4,7 +4,6 @@
   title: Office of Inspector General North Star
   description: "The long-term architecture this library recommends for an Office of Inspector General: one case system and one audit system that the office runs itself, with a confidential hotline, a digital evidence store, and a recommendation tracker the agency works in, all reporting from the source, and analytics and AI on top."
   attributes:
-    kind: north-star
     principles:
       - The office runs its own systems, administering them and deciding who sees its work, as its independence requires
       - Each matter is one record from intake to closure, and each engagement one record from plan to its last recommendation

@@ -22,9 +22,6 @@
     - to: ai-assisted-intake-sorting
       coverage: partial
       note: Suggests a category and where to route each allegation, and intake staff decide. What the model sees must keep the identity of people who report confidential.
-    - to: shared-case-platform
-      note: For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report.
-      sources: [ cigie-silver-book ]
 
 - id: audit-inspection-evaluation
   title: Audit, Inspection & Evaluation
@@ -53,10 +50,6 @@
   candidate_pattern:
     - to: oversight-intake-case-tracking
       id: oig-candidate-pattern-2
-    - to: shared-case-platform
-      coverage: partial
-      note: For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report. Evidence handling, such as chain of custody, usually needs building.
-      sources: [ cigie-silver-book ]
     - to: oversight-data-analytics
       coverage: partial
       note: Finds leads. Each one is assessed and investigated in the case system.

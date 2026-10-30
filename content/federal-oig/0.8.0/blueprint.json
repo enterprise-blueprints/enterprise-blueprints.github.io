@@ -550,7 +550,6 @@
         "src:oversight-hotline"
       ],
       "attributes": {
-        "approach": "product",
         "role": "public-facing",
         "parts": [
           "A public web form linked directly from the office’s home page, and a phone line",
@@ -572,6 +571,13 @@
           "Anonymous reports are hard to act on without a way to follow up",
           "Spam and duplicate reports need screening before triage",
           "What people type must not be recorded anywhere outside the intake system, such as in web analytics"
+        ],
+        "ways": [
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "A hotline product"
+          }
         ]
       }
     },
@@ -719,7 +725,6 @@
         "src:oversight-mission"
       ],
       "attributes": {
-        "approach": "build",
         "role": "ai-insights",
         "parts": [
           "Feeds from the case, audit, and recommendation systems into one reporting store",
@@ -740,6 +745,13 @@
           "It’s only as good as the data in the systems that feed it",
           "Each definition needs an owner for when the law or guidance changes",
           "Sensitive details must stay out of anything published"
+        ],
+        "ways": [
+          {
+            "id": "build",
+            "approach": "build",
+            "title": "A reporting store fed by the office’s systems"
+          }
         ]
       }
     },
@@ -755,7 +767,6 @@
         "src:gao-yellow-book"
       ],
       "attributes": {
-        "approach": "build",
         "role": "ai-insights",
         "parts": [
           "Agreements and regular feeds for the agency data the office has a right to, such as payments, contracts, and grants",
@@ -777,6 +788,13 @@
           "A flag isn’t a finding, so every lead needs review and evidence before anything is done",
           "Models can carry gaps or bias in the data, so their results need checking over time",
           "Data sharing agreements and privacy rules limit what can be combined"
+        ],
+        "ways": [
+          {
+            "id": "build",
+            "approach": "build",
+            "title": "An analytics workspace"
+          }
         ]
       }
     },
@@ -792,7 +810,6 @@
         "src:cigie-blue-book"
       ],
       "attributes": {
-        "approach": "combine",
         "role": "business-applications",
         "parts": [
           "A workspace for each engagement, made from a template with standard folders",
@@ -813,6 +830,13 @@
           "Cross-references and review sign-offs depend on discipline, which peer reviews will test",
           "Reporting across engagements, such as on open recommendations, takes manual work",
           "Collaboration tools make sharing easy, so access to engagement workspaces needs limiting"
+        ],
+        "ways": [
+          {
+            "id": "combine",
+            "approach": "combine",
+            "title": "Workspaces in the collaboration suite"
+          }
         ]
       }
     },
@@ -883,7 +907,6 @@
       "description": "The long-term architecture this library recommends for an Office of Inspector General: one case system and one audit system that the office runs itself, with a confidential hotline, a digital evidence store, and a recommendation tracker the agency works in, all reporting from the source, and analytics and AI on top.",
       "status": "reference",
       "attributes": {
-        "kind": "north-star",
         "principles": [
           "The office runs its own systems, administering them and deciding who sees its work, as its independence requires",
           "Each matter is one record from intake to closure, and each engagement one record from plan to its last recommendation",
@@ -1043,16 +1066,6 @@
       "description": "Suggests a category and where to route each allegation, and intake staff decide. What the model sees must keep the identity of people who report confidential."
     },
     {
-      "id": "rel:complaint-allegation-disclosure-intake-candidate-pattern-shared-case-platform",
-      "from": "eb:capability:complaint-allegation-disclosure-intake",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:shared-case-platform",
-      "description": "For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report.",
-      "sourceIds": [
-        "src:cigie-silver-book"
-      ]
-    },
-    {
       "id": "rel:audit-inspection-evaluation-contributes-to-effective-programs",
       "from": "eb:capability:audit-inspection-evaluation",
       "predicate": "contributes_to",
@@ -1125,17 +1138,6 @@
       "from": "eb:capability:investigation-management",
       "predicate": "candidate_pattern",
       "to": "eb:implementationPattern:oversight-intake-case-tracking"
-    },
-    {
-      "id": "rel:investigation-management-candidate-pattern-shared-case-platform",
-      "from": "eb:capability:investigation-management",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:shared-case-platform",
-      "coverage": "partial",
-      "description": "For an OIG, the office needs to control who administers the platform and who can see its cases, so agency administrators can’t see investigations or the identities of people who report. Evidence handling, such as chain of custody, usually needs building.",
-      "sourceIds": [
-        "src:cigie-silver-book"
-      ]
     },
     {
       "id": "rel:investigation-management-candidate-pattern-oversight-data-analytics",
@@ -1300,13 +1302,6 @@
       "predicate": "works_with",
       "to": "eb:implementationPattern:audit-management-system",
       "description": "Risks it finds feed the plan of oversight work."
-    },
-    {
-      "id": "rel:audit-workpapers-collaboration-depends-on-records-aware-collaboration",
-      "from": "eb:implementationPattern:audit-workpapers-collaboration",
-      "predicate": "depends_on",
-      "to": "eb:implementationPattern:records-aware-collaboration",
-      "description": "The workspaces, approvals, and retention labels are the agency’s collaboration suite."
     },
     {
       "id": "rel:oig-north-star-includes-agency-sign-on",

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.3.0",
+  "schemaVersion": "0.4.0",
   "packageId": "org.enterprise-blueprints.federal-foia",
   "version": "0.8.0",
   "title": "FOIA Program — Public Access to Agency Records",
@@ -603,14 +603,14 @@
       "id": "eb:implementationPattern:foia-request-processing",
       "type": "implementationPattern",
       "title": "FOIA Request Processing",
-      "description": "An example architecture: a FOIA product that handles a request from start to finish. It takes requests from the national portal and the agency’s own form, tracks them on FOIA’s tracks and deadlines, collects records and sets duplicates aside, applies marked redactions, publishes releases to the FOIA library, and produces the annual report from the same data.",
+      "description": "An example architecture: one place to handle a FOIA request from start to finish. It takes requests from the national portal and the agency’s own form, tracks them on FOIA’s tracks and deadlines, collects records and sets duplicates aside, applies marked redactions, publishes releases to the FOIA library, and produces the annual report from the same data.",
       "status": "reference",
       "sourceIds": [
         "src:foia-gov",
-        "src:doj-foia-guide"
+        "src:doj-foia-guide",
+        "src:foia-statute"
       ],
       "attributes": {
-        "approach": "product",
         "role": "business-applications",
         "parts": [
           "Request intake from the national portal and the agency’s own form",
@@ -621,18 +621,52 @@
           "Annual and quarterly report figures from the request data"
         ],
         "strengths": [
-          "Knows FOIA’s rules, such as tracks, working-day deadlines, fee categories, and exemption codes",
           "The annual report’s figures come from the same records staff work in",
           "The requester’s whole history is in one place"
         ],
         "fitsWhen": [
-          "The office handles hundreds of requests a year or more",
           "Tracking and review happen in separate tools today, with retyping between them"
         ],
         "watchFor": [
-          "Built-in review may struggle with very large email collections",
           "Moving open requests from an old system mid-year can disturb the annual report’s counts",
-          "A hosted product needs a security authorization before it can hold unredacted records"
+          "A hosted system needs a security authorization before it can hold unredacted records"
+        ],
+        "ways": [
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "A FOIA product",
+            "description": "A product made for FOIA that handles tracking, review, release, and reporting in one place.",
+            "strengths": [
+              "Knows FOIA’s rules, such as tracks, working-day deadlines, fee categories, and exemption codes"
+            ],
+            "fitsWhen": [
+              "The office handles hundreds of requests a year or more"
+            ],
+            "watchFor": [
+              "Built-in review may struggle with very large email collections"
+            ]
+          },
+          {
+            "id": "platform-and-review-tool",
+            "approach": "combine",
+            "title": "The shared case platform, with a separate review tool",
+            "description": "Requests tracked on the agency’s shared case platform, set up for FOIA’s tracks and deadlines, with a separate document review tool for collecting, deduplicating, and redacting records, and a handoff between the two.",
+            "strengths": [
+              "Uses a platform the agency already has for the tracking",
+              "Either tool can be replaced without replacing the other",
+              "Suits offices that already own a review tool"
+            ],
+            "fitsWhen": [
+              "The agency’s shared case platform is well supported",
+              "Request volume is moderate, and records are mostly documents rather than large email collections"
+            ],
+            "watchFor": [
+              "The handoff between the tools is where requests stall or records go missing",
+              "Deadline rules, such as pausing the clock, must be built and kept up to date",
+              "Two tools to authorize, secure, and train people on"
+            ]
+          }
         ]
       }
     },
@@ -641,13 +675,13 @@
       "type": "implementationPattern",
       "title": "Request Tracking with a Separate Review Tool",
       "description": "An example architecture: requests tracked on the agency’s shared case platform, set up for FOIA’s tracks and deadlines, with a separate document review tool for collecting, deduplicating, and redacting records, and a handoff between the two.",
-      "status": "reference",
+      "status": "deprecated",
+      "replacedBy": "eb:implementationPattern:foia-request-processing",
       "sourceIds": [
         "src:doj-foia-guide",
         "src:foia-statute"
       ],
       "attributes": {
-        "approach": "combine",
         "role": "business-applications",
         "parts": [
           "FOIA request tracking set up on the agency’s shared case platform",
@@ -669,6 +703,13 @@
           "The handoff between the tools is where requests stall or records go missing",
           "Deadline rules, such as pausing the clock, must be built and kept up to date",
           "Two tools to authorize, secure, and train people on"
+        ],
+        "ways": [
+          {
+            "id": "combine",
+            "approach": "combine",
+            "title": "The shared case platform, with a separate review tool"
+          }
         ]
       }
     },
@@ -683,7 +724,6 @@
         "src:doj-foia-guide"
       ],
       "attributes": {
-        "approach": "platform",
         "role": "processing",
         "parts": [
           "Searches across mailboxes, chats, and shared files by person, terms, and date range",
@@ -705,6 +745,13 @@
           "Searches can wait in IT’s queue for a long time",
           "For a single known record, asking the person who keeps it is faster",
           "Threading and deduplication need checking, since copies still slip through"
+        ],
+        "ways": [
+          {
+            "id": "platform",
+            "approach": "platform",
+            "title": "The agency’s eDiscovery tools"
+          }
         ]
       }
     },
@@ -720,7 +767,6 @@
         "src:foia-gov"
       ],
       "attributes": {
-        "approach": "build",
         "role": "public-facing",
         "parts": [
           "A connection in the agency’s FOIA system that implements the portal’s agency API",
@@ -741,6 +787,13 @@
         "watchFor": [
           "Changes to the portal’s API need following",
           "Each component’s routing must match how FOIA.gov lists it"
+        ],
+        "ways": [
+          {
+            "id": "build",
+            "approach": "build",
+            "title": "A connection to FOIA.gov’s agency API"
+          }
         ]
       }
     },
@@ -756,7 +809,6 @@
         "src:section-508"
       ],
       "attributes": {
-        "approach": "platform",
         "role": "public-facing",
         "parts": [
           "A FOIA library section of the agency’s website, with search",
@@ -777,6 +829,13 @@
           "Records released to people about themselves must never be posted",
           "Making older scanned records accessible takes effort",
           "Posted records still follow a records schedule"
+        ],
+        "ways": [
+          {
+            "id": "platform",
+            "approach": "platform",
+            "title": "The agency’s online FOIA library"
+          }
         ]
       }
     },
@@ -791,7 +850,6 @@
         "src:doj-foia-guide"
       ],
       "attributes": {
-        "approach": "product",
         "role": "ai-insights",
         "parts": [
           "Suggested redactions for patterns such as Social Security numbers, phone numbers, and names",
@@ -813,6 +871,13 @@
           "Exemptions turn on judgment, including the foreseeable harm standard, so a person decides every withholding",
           "Relying on suggestions can lead to withholding more than the law allows",
           "Records under review hold sensitive information, so the model must run where the records are allowed to be"
+        ],
+        "ways": [
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "The review tool’s AI features"
+          }
         ]
       }
     },
@@ -827,7 +892,6 @@
         "src:oip-backlog-guidance"
       ],
       "attributes": {
-        "approach": "build",
         "role": "ai-insights",
         "parts": [
           "A daily copy of the tracking data in a reporting store",
@@ -848,6 +912,35 @@
         "watchFor": [
           "Definitions must match the handbook, or the dashboard and the report will disagree",
           "Request details can be sensitive, so dashboards should show counts rather than requesters"
+        ],
+        "ways": [
+          {
+            "id": "build",
+            "approach": "build",
+            "title": "A dashboard on the tracking data"
+          }
+        ]
+      }
+    },
+    {
+      "id": "eb:solution:foia-north-star",
+      "type": "solution",
+      "title": "FOIA Program North Star",
+      "description": "The long-term architecture this library recommends for a FOIA program: one FOIA system that carries each request from receipt to release, fed by the national portal, with eDiscovery for large email collections, a FOIA library for proactive releases, and reporting and AI from the same records.",
+      "status": "reference",
+      "attributes": {
+        "principles": [
+          "Each request is one record from receipt to final response, with every letter and decision in it",
+          "The system keeps FOIA’s clock, with its tracks, working days, pauses, and extensions",
+          "Requests from FOIA.gov arrive as records, without retyping",
+          "Records are reviewed and redacted in one place, with each redaction marked with its exemption",
+          "Records people ask for again and again are posted without waiting for the next request",
+          "The annual report comes from the system of record, not from spreadsheets",
+          "AI suggests redactions, and staff decide"
+        ],
+        "watchFor": [
+          "Very large email collections still need the agency’s eDiscovery tools alongside the FOIA system",
+          "Moving open requests from an old system mid-year can disturb the annual report’s counts"
         ]
       }
     }
@@ -992,12 +1085,6 @@
       "to": "eb:implementationPattern:foia-request-processing"
     },
     {
-      "id": "rel:foia-request-intake-candidate-pattern-foia-tracking-with-review-tool",
-      "from": "eb:capability:foia-request-intake",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:foia-tracking-with-review-tool"
-    },
-    {
       "id": "rel:foia-request-intake-candidate-pattern-national-portal-api",
       "from": "eb:capability:foia-request-intake",
       "predicate": "candidate_pattern",
@@ -1114,12 +1201,6 @@
       "to": "eb:implementationPattern:foia-request-processing"
     },
     {
-      "id": "rel:records-review-redaction-candidate-pattern-foia-tracking-with-review-tool",
-      "from": "eb:capability:records-review-redaction",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:foia-tracking-with-review-tool"
-    },
-    {
       "id": "rel:records-review-redaction-candidate-pattern-ediscovery-search-review",
       "from": "eb:capability:records-review-redaction",
       "predicate": "candidate_pattern",
@@ -1170,12 +1251,6 @@
       "from": "eb:capability:response-release",
       "predicate": "candidate_pattern",
       "to": "eb:implementationPattern:foia-request-processing"
-    },
-    {
-      "id": "rel:response-release-candidate-pattern-foia-tracking-with-review-tool",
-      "from": "eb:capability:response-release",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:foia-tracking-with-review-tool"
     },
     {
       "id": "rel:response-release-candidate-pattern-letters-from-case-data",
@@ -1297,12 +1372,6 @@
       "to": "eb:implementationPattern:foia-request-processing"
     },
     {
-      "id": "rel:foia-reporting-candidate-pattern-foia-tracking-with-review-tool",
-      "from": "eb:capability:foia-reporting",
-      "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:foia-tracking-with-review-tool"
-    },
-    {
       "id": "rel:foia-reporting-candidate-pattern-foia-workload-dashboard",
       "from": "eb:capability:foia-reporting",
       "predicate": "candidate_pattern",
@@ -1311,25 +1380,19 @@
       "description": "Tracks the measures the reports use all year. The reports themselves are compiled and posted from the tracking system."
     },
     {
-      "id": "rel:foia-tracking-with-review-tool-depends-on-shared-case-platform",
-      "from": "eb:implementationPattern:foia-tracking-with-review-tool",
+      "id": "rel:foia-request-processing-depends-on-shared-case-platform",
+      "from": "eb:implementationPattern:foia-request-processing",
       "predicate": "depends_on",
       "to": "eb:implementationPattern:shared-case-platform",
+      "way": "platform-and-review-tool",
       "description": "The tracking half is the shared platform, set up for FOIA."
-    },
-    {
-      "id": "rel:ediscovery-search-review-works-with-foia-tracking-with-review-tool",
-      "from": "eb:implementationPattern:ediscovery-search-review",
-      "predicate": "works_with",
-      "to": "eb:implementationPattern:foia-tracking-with-review-tool",
-      "description": "Sends what it finds to the review tool."
     },
     {
       "id": "rel:ediscovery-search-review-works-with-foia-request-processing",
       "from": "eb:implementationPattern:ediscovery-search-review",
       "predicate": "works_with",
       "to": "eb:implementationPattern:foia-request-processing",
-      "description": "Sends what it finds to the product’s review workspace."
+      "description": "Sends what it finds to the review workspace or tool."
     },
     {
       "id": "rel:national-portal-api-works-with-foia-request-processing",
@@ -1338,32 +1401,18 @@
       "to": "eb:implementationPattern:foia-request-processing"
     },
     {
-      "id": "rel:national-portal-api-works-with-foia-tracking-with-review-tool",
-      "from": "eb:implementationPattern:national-portal-api",
-      "predicate": "works_with",
-      "to": "eb:implementationPattern:foia-tracking-with-review-tool",
-      "description": "The connection is built on the shared platform’s side."
-    },
-    {
-      "id": "rel:foia-library-publishing-works-with-foia-tracking-with-review-tool",
+      "id": "rel:foia-library-publishing-works-with-foia-request-processing",
       "from": "eb:implementationPattern:foia-library-publishing",
       "predicate": "works_with",
-      "to": "eb:implementationPattern:foia-tracking-with-review-tool",
+      "to": "eb:implementationPattern:foia-request-processing",
       "description": "Releases come from the review tool with their request details."
-    },
-    {
-      "id": "rel:ai-review-suggestions-works-with-foia-tracking-with-review-tool",
-      "from": "eb:implementationPattern:ai-review-suggestions",
-      "predicate": "works_with",
-      "to": "eb:implementationPattern:foia-tracking-with-review-tool",
-      "description": "Runs inside the separate review tool."
     },
     {
       "id": "rel:ai-review-suggestions-works-with-foia-request-processing",
       "from": "eb:implementationPattern:ai-review-suggestions",
       "predicate": "works_with",
       "to": "eb:implementationPattern:foia-request-processing",
-      "description": "Runs in the product’s review workspace, where the product offers it."
+      "description": "Runs in the review workspace or tool, where it’s offered."
     },
     {
       "id": "rel:foia-workload-dashboard-works-with-foia-request-processing",
@@ -1372,10 +1421,82 @@
       "to": "eb:implementationPattern:foia-request-processing"
     },
     {
-      "id": "rel:foia-workload-dashboard-works-with-foia-tracking-with-review-tool",
-      "from": "eb:implementationPattern:foia-workload-dashboard",
-      "predicate": "works_with",
-      "to": "eb:implementationPattern:foia-tracking-with-review-tool"
+      "id": "rel:foia-north-star-includes-agency-sign-on",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:agency-sign-on",
+      "description": "Staff sign in through the agency, with roles the FOIA office administers."
+    },
+    {
+      "id": "rel:foia-north-star-includes-national-portal-api",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:national-portal-api",
+      "description": "Requests from FOIA.gov arrive in the FOIA system as records."
+    },
+    {
+      "id": "rel:foia-north-star-includes-foia-library-publishing",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:foia-library-publishing",
+      "description": "Releases go from the FOIA system to the online library, with records requested 3 or more times flagged."
+    },
+    {
+      "id": "rel:foia-north-star-includes-foia-request-processing",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:foia-request-processing",
+      "way": "product",
+      "description": "A product made for FOIA, so tracks, deadlines, fees, exemptions, and the annual report come built in."
+    },
+    {
+      "id": "rel:foia-north-star-includes-records-aware-collaboration",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-aware-collaboration",
+      "description": "Where staff and program offices draft and collaborate, with records and sensitivity labels applied."
+    },
+    {
+      "id": "rel:foia-north-star-includes-ediscovery-search-review",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:ediscovery-search-review",
+      "description": "Searches mailboxes and large collections, and sends what it finds to the FOIA system’s review workspace."
+    },
+    {
+      "id": "rel:foia-north-star-includes-records-in-business-systems",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:records-in-business-systems",
+      "way": "built-in",
+      "description": "The FOIA system keeps each request’s file on its records schedule."
+    },
+    {
+      "id": "rel:foia-north-star-includes-foia-workload-dashboard",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:foia-workload-dashboard",
+      "description": "Leaders see the backlog and the oldest requests from the same tracking data."
+    },
+    {
+      "id": "rel:foia-north-star-includes-ai-review-suggestions",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:ai-review-suggestions",
+      "description": "Suggestions in the review workspace, once exemption practice is settled and reviewers trust the tool."
+    },
+    {
+      "id": "rel:foia-north-star-includes-agency-security-monitoring",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "includes",
+      "to": "eb:implementationPattern:agency-security-monitoring",
+      "description": "The FOIA system sends its logs to the agency, since it holds unredacted records."
+    },
+    {
+      "id": "rel:foia-north-star-supports-public-access-to-agency-records",
+      "from": "eb:solution:foia-north-star",
+      "predicate": "supports",
+      "to": "eb:mission:public-access-to-agency-records"
     },
     {
       "id": "rel:case-management-contributes-to-requests-answered-on-time",
@@ -1699,7 +1820,7 @@
             },
             {
               "answerValue": "general-system",
-              "elementId": "eb:implementationPattern:foia-tracking-with-review-tool",
+              "elementId": "eb:implementationPattern:foia-request-processing",
               "interpretation": "A general system can track requests if FOIA’s deadlines are built in and review happens in a separate tool."
             }
           ]

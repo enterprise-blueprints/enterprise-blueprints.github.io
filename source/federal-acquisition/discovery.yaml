@@ -95,7 +95,7 @@
         - custom-system: A custom system built for the agency
       points:
         - when: [ documents, custom-system ]
-          to: [ implementationPattern:contract-writing-system, implementationPattern:acquisition-on-shared-platform, implementationPattern:assisted-acquisition-service ]
+          to: implementationPattern:acquisition-management
           why: These are example ways to bring each contract onto one record, from request to closeout.
     - id: acquisition-offers-received
       prompt: How do offers reach the office?

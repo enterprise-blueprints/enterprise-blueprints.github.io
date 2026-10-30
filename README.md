@@ -6,7 +6,8 @@ how it's going, and capabilities contribute to those outcomes. Four mission pack
 Offices of Inspector General, federal agencies' Freedom of Information Act programs, federal grants
 management, and federal acquisition in general terms. Each builds on Common Capabilities, a package of the
 capabilities many missions rely on, such as identity and access, data protection, records, logging, and case
-management. Example Solutions combines patterns across the missions.
+management. Each mission has one solution, its north star: the long-term architecture the library recommends
+for it, built from the patterns.
 
 ## Develop
 
@@ -40,8 +41,8 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
   published. These files are built, not edited by hand.
 - `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
   `dependencies`. 0.3.0 checks the attributes of patterns and solutions and adds `coverage` to candidate
-  patterns. 0.4.0 adds a pattern's `ways` to source it and north stars, with `way` on links. Every
-  version stays, and Solution Studio keeps identical copies.
+  patterns. 0.4.0 gives every pattern its `ways` to source it and every mission one solution, with `way` on
+  links. Every version stays, and Solution Studio keeps identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
 - `src/lib/compile.ts` builds a package from its source and decides its version; `scripts/content.ts` runs it.
@@ -118,12 +119,14 @@ choice or yes-or-no answer can point to elements through `points`, each group na
 elements (`to`), and why (`why`). Text and number answers are recorded as said and point nowhere. In the
 published package these become `assessments` and `candidateMappings`.
 
-**Implementation patterns** are examples, and each one describes itself in its `attributes` so patterns can be
-compared side by side and grouped: `approach` (`product`, `platform`, `combine`, or `build`), `role` (the part
-it plays: `public-facing`, `business-applications`, `worker-productivity`, `processing`, `ai-insights`, or
-`infrastructure`), and `parts`,
-`strengths`, `fitsWhen`, and `watchFor`, each a list of short statements. `src/lib/vocabulary.ts` defines them,
-and `vocabulary.json` publishes their labels; since schema 0.3.0 the schema checks them too. A
+**Implementation patterns** are examples of the logical parts of a solution, which a vendor or the agency could
+supply. Each one describes itself in its `attributes` so patterns can be compared side by side and grouped:
+`role` (the layer of a solution it belongs to: `public-facing`, `business-applications`, `worker-productivity`,
+`processing`, `ai-insights`, or `infrastructure`), `parts`, `strengths`, `fitsWhen`, and `watchFor`, each a list
+of short statements, and `ways`, its ways to source it. Each way has an `id`, an `approach` (`product`,
+`platform`, `combine`, or `build`), and a `title`, and optionally a `description` and its own `strengths`,
+`fitsWhen`, and `watchFor`. A pattern with one obvious way lists just that one. `src/lib/vocabulary.ts` defines
+the fields, and `vocabulary.json` publishes their labels; the schema checks them too. A
 `candidate_pattern` link's `note` says what the pattern means for that capability, such as a mission's caveat
 on a shared pattern. A pattern that covers only part of a capability says `coverage: partial`, with a note on
 which part:
@@ -137,21 +140,9 @@ which part:
 ```
 
 Patterns connect to each other too. `depends_on` (shown as **Needs**) is for a pattern that can't work
-without another, such as one built on the shared case platform. `works_with` (**Works well with**) is for a
-natural pairing, written once on either pattern.
-
-**Solutions** combine patterns across an agency. The `solutions` package builds on the mission packages and
-Common Capabilities. Each solution `includes` patterns, with a `note` saying why each one is there, and
-`supports` the missions it serves, with `fitsWhen` and `watchFor` in its attributes. The site works out what
-each solution covers for each mission from the patterns' capabilities, fully or only partly, and warns when
-a solution leaves out a pattern that one of its patterns needs.
-
-**Logical patterns and their ways.** Since schema 0.4.0, a pattern can describe a logical part of a solution,
-which a vendor or the agency could supply, and list its `ways` to source it instead of one `approach`. Each way
-has an `id`, an `approach`, a `title`, a `description`, and optionally `strengths`, `fitsWhen`, and `watchFor`.
-A `depends_on` link with a `way` is a need of that way only, such as case management on the agency's platform
-needing the platform. A pattern that became a way of another keeps its ID, with `status: deprecated` and
-`replacedBy`.
+without another. With a `way`, it's a need of that way only, such as case management on the agency's platform
+needing the platform. `works_with` (**Works well with**) is for a natural pairing, written once on either
+pattern. A pattern that became a way of another keeps its ID, with `status: deprecated` and `replacedBy`.
 
 ```yaml
   depends_on:
@@ -160,11 +151,12 @@ needing the platform. A pattern that became a way of another keeps its ID, with 
       note: The office's case types and steps are the shared platform, set up for oversight.
 ```
 
-**North stars.** A mission package can hold its north star: one long-term, opinionated solution for the
-mission, in its own `solutions.yaml`, with `kind: north-star` and `principles` in its attributes. It
-`supports` its one mission, and each logical pattern it `includes` names the `way` it prefers. Like any
-solution, it shows its patterns by role, and it must include everything its patterns need for the ways it
-chose.
+**Solutions.** Each mission package holds its mission's one solution, its north star, in `solutions.yaml`: the
+long-term, opinionated architecture the library recommends, with `principles` and `watchFor` in its attributes.
+It `supports` its mission and `includes` patterns, each with a `note` saying why it's there and, for a pattern
+with several ways, the `way` it chose. The site lays it out by layer, works out which of the mission's
+capabilities it covers, fully or only partly, and the validator refuses a solution that leaves out something
+its patterns need for the ways it chose.
 
 To add a package, create `source/<name>/package.yaml` with its own `packageId`, add its files, and run
 `pnpm content:build`; it joins the next release. Element IDs are unique across all packages: each element is defined

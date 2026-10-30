@@ -14,7 +14,7 @@ const rows = patterns.map((p) => {
   const field = (key: string) => details.fields.find((f) => f.key === key)?.items ?? [];
   return {
     pattern: p,
-    approach: details.approach,
+    approach: details.sourcing,
     fitsWhen: field('fitsWhen'),
     watchFor: field('watchFor'),
     note: relationNote(capability, 'candidate_pattern', p),

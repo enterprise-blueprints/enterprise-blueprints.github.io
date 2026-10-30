@@ -15,7 +15,6 @@
     - acknowledge-receipt
   candidate_pattern:
     - foia-request-processing
-    - foia-tracking-with-review-tool
     - to: national-portal-api
       coverage: partial
       note: Requests from FOIA.gov only. The agency’s own form, email, and mail come in another way.
@@ -53,7 +52,6 @@
     - protect-unredacted-records
   candidate_pattern:
     - foia-request-processing
-    - foia-tracking-with-review-tool
     - to: ediscovery-search-review
       coverage: partial
       note: Sets duplicates aside and threads email before review. Redaction and consultation happen in the review tool.
@@ -72,7 +70,6 @@
     - release-in-parts
   candidate_pattern:
     - foia-request-processing
-    - foia-tracking-with-review-tool
     - to: letters-from-case-data
       coverage: partial
       note: Determination letters with the exemptions used and the requester’s appeal rights filled in. Released records are delivered another way.
@@ -116,7 +113,6 @@
   satisfies: [ compile-annual-foia-report, post-reports-and-data, report-on-caseload ]
   candidate_pattern:
     - foia-request-processing
-    - foia-tracking-with-review-tool
     - to: foia-workload-dashboard
       coverage: partial
       note: Tracks the measures the reports use all year. The reports themselves are compiled and posted from the tracking system.
