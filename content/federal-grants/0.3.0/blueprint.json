@@ -2,7 +2,7 @@
   "schemaVersion": "0.3.0",
   "packageId": "org.enterprise-blueprints.federal-grants",
   "version": "0.3.0",
-  "title": "Federal Grants Management — Awarding and Overseeing Financial Assistance",
+  "title": "Grants Management — Awarding and Overseeing Financial Assistance",
   "description": "U.S. federal grants management blueprint: one mission with the outcomes it seeks and ways to measure them, eight capabilities from funding announcements through closeout with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for grants results and for grants operations. It follows the Uniform Guidance in 2 CFR 200, and builds on Common Capabilities for case management, records, identity and access, data protection, and security logging.",
   "publisher": {
     "name": "Enterprise Blueprints (independent reference project)",
@@ -130,14 +130,14 @@
     {
       "id": "eb:mission:awarding-overseeing-federal-grants",
       "type": "mission",
-      "title": "Federal Grants Management",
+      "title": "Grants Management",
       "description": "Award federal grants and cooperative agreements through fair, open competition to recipients able to manage them, pay them as their work needs funds, oversee how the money is used and what it achieves, resolve audit findings, close each award on time, and make the spending public.",
       "status": "reference",
       "sourceIds": [
         "src:uniform-guidance"
       ],
       "attributes": {
-        "tagline": "Awarding and overseeing federal grants",
+        "tagline": "Awarding and overseeing grants",
         "sector": "public-sector",
         "scope": "US-federal-grants"
       }

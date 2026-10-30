@@ -2,7 +2,7 @@
 
 schemaVersion: 0.3.0
 packageId: org.enterprise-blueprints.federal-grants
-title: Federal Grants Management — Awarding and Overseeing Financial Assistance
+title: Grants Management — Awarding and Overseeing Financial Assistance
 description: "U.S. federal grants management blueprint: one mission with the outcomes it seeks and ways to measure them, eight capabilities from funding announcements through closeout with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for grants results and for grants operations. It follows the Uniform Guidance in 2 CFR 200, and builds on Common Capabilities for case management, records, identity and access, data protection, and security logging."
 publisher:
   name: Enterprise Blueprints (independent reference project)

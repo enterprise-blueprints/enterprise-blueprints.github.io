@@ -3,7 +3,7 @@ import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import hero from '../assets/hero.png';
 import TypeBadge from '../components/TypeBadge.astro';
-import { dependents, elementsOfType, tagline, missionBlueprint, packages, shortTitle, solutionView, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
+import { dependents, elementsOfType, scopeLabel, tagline, missionBlueprint, packages, shortTitle, solutionView, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
 import { formatDate, plural } from '../lib/format';
 import { href } from '../lib/paths';
 
@@ -56,7 +56,7 @@ const shortMission = (mission: (typeof solutions)[number]['missions'][number]) =
       <div class="mission-grid">
         {missions.map((m) => (
           <article class={`card type-${m.type}`}>
-            <div class="card__meta"><TypeBadge type={m.type} /></div>
+            <div class="card__meta"><TypeBadge type={m.type} />{scopeLabel(m.package) && <span class="scope-badge">{scopeLabel(m.package)}</span>}</div>
             <h3 class="card__title"><a href={m.url}>{m.title}</a></h3>
             {tagline(m) && <p class="card__tagline">{tagline(m)}</p>}
             <p class="card__summary">{m.description}</p>

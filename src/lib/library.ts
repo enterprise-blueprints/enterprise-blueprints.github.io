@@ -330,6 +330,15 @@ export function solutionsFor(mission: LibraryElement): SolutionView[] {
 /** A mission's tagline, the phrase under its plain name, such as "Acquiring goods and services for the government". */
 export const tagline = (e: LibraryElement): string | undefined => (typeof e.attributes?.tagline === 'string' ? e.attributes.tagline : undefined);
 
+/**
+ * A short label for where a package applies, such as "U.S. federal", for a badge
+ * beside names that don't say it themselves.
+ */
+export function scopeLabel(pkg: BlueprintPackage): string | undefined {
+  const scopes = pkg.jurisdictions ?? [];
+  return scopes.length > 0 && scopes.every((j) => j.startsWith('United States — federal')) ? 'U.S. federal' : undefined;
+}
+
 /** "Common Capabilities" for "Common Capabilities — Shared Across Missions". */
 export const shortTitle = (pkg: BlueprintPackage) => pkg.title.split(' — ')[0];
 

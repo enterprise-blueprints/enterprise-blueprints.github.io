@@ -2,7 +2,7 @@
 
 schemaVersion: 0.3.0
 packageId: org.enterprise-blueprints.federal-acquisition
-title: Federal Acquisition — Buying Goods and Services for the Government
+title: Acquisition — Buying Goods and Services for the Government
 description: "U.S. federal acquisition blueprint: one mission with the outcomes it seeks and ways to measure them, ten capabilities from acquisition planning through closeout with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for acquisition results and for acquisition operations. It follows the statutes behind the Federal Acquisition Regulation, which is being rewritten in the Revolutionary FAR Overhaul, and builds on Common Capabilities for case management, records, identity and access, data protection, security logging, and checks of SAM.gov."
 publisher:
   name: Enterprise Blueprints (independent reference project)

@@ -2,7 +2,7 @@
 
 schemaVersion: 0.3.0
 packageId: org.enterprise-blueprints.federal-foia
-title: Federal FOIA Program — Public Access to Agency Records
+title: FOIA Program — Public Access to Agency Records
 description: "U.S. federal Freedom of Information Act program blueprint: one mission with the outcomes it seeks and ways to measure them, seven capabilities with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for FOIA results and for request processing. It builds on Common Capabilities for case management, records, identity and access, and data protection."
 publisher:
   name: Enterprise Blueprints (independent reference project)

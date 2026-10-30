@@ -17,6 +17,7 @@ import {
   relationGroups,
   solutionsFor,
   solutionView,
+  scopeLabel,
   sourcesOf,
   tagline,
   usedBy,
@@ -77,6 +78,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
       <div class="record-header__meta">
         <TypeBadge type={element.type} />
         <StatusBadge status={element.status} />
+        {element.type === 'mission' && scopeLabel(element.package) && <span class="scope-badge">{scopeLabel(element.package)}</span>}
         {pattern?.role && <span class="approach-badge">{patternRoles[pattern.role].label}</span>}
         {pattern?.approach && <span class="approach-badge">{pattern.approach}</span>}
       </div>

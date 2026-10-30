@@ -202,7 +202,7 @@ describe('the index pages', () => {
 
   it('group by mission, with the shared package last, and leave missions and solutions whole', () => {
     const caps = indexGroups('capability');
-    expect(caps.map((g) => g.label)).toEqual(['Federal Acquisition', 'Federal FOIA Program', 'Federal Grants Management', 'Federal Office of Inspector General', 'Shared across missions']);
+    expect(caps.map((g) => g.label)).toEqual(['Acquisition', 'FOIA Program', 'Grants Management', 'Office of Inspector General', 'Shared across missions']);
     expect(caps.slice(0, -1).every((g) => g.mission)).toBe(true);
     expect(caps.flatMap((g) => g.items)).toHaveLength(elementsOfType('capability').length);
     for (const type of ['mission', 'solution']) expect(indexGroups(type), type).toHaveLength(1);

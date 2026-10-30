@@ -2,7 +2,7 @@
 
 schemaVersion: 0.3.0
 packageId: org.enterprise-blueprints.federal-oig
-title: Federal Office of Inspector General — Independent Oversight
+title: Office of Inspector General — Independent Oversight
 description: "U.S. federal Office of Inspector General mission blueprint: one mission with the outcomes it seeks and ways to measure them, five capabilities with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for mission results and for intake and case handling. It builds on Common Capabilities for identity, access, data protection, and case management."
 publisher:
   name: Enterprise Blueprints (independent reference project)
