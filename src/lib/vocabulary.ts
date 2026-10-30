@@ -27,6 +27,7 @@ export const elementTypes: Record<string, ElementTypeInfo> = {
     section: 'outcomes',
     definition: 'A result a mission seeks: the change in the world that shows the work is paying off.',
   },
+  // Packages before schema 0.4.0 only. Since then, measures are part of their outcome.
   measure: {
     label: 'Measure',
     plural: 'Measures',

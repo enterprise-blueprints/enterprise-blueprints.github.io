@@ -186,8 +186,25 @@ export function coversPartly(capability: LibraryElement, pattern: LibraryElement
   return relations.some((r) => r.from === capability.id && r.predicate === 'candidate_pattern' && r.to === pattern.id && r.coverage === 'partial');
 }
 
+/** A way to tell how an outcome is going, listed on the outcome since schema 0.4.0. */
+export interface Measure {
+  id: string;
+  title: string;
+  description: string;
+  sourceIds?: string[];
+  outcome: LibraryElement;
+  /** Its place on the outcome's page. */
+  url: string;
+}
+
+/** An outcome's measures, in order. */
+export function measuresOf(outcome: LibraryElement): Measure[] {
+  const list = outcome.attributes?.measures;
+  return Array.isArray(list) ? (list as Omit<Measure, 'outcome' | 'url'>[]).map((m) => ({ ...m, outcome, url: `${outcome.url}#measure-${m.id}` })) : [];
+}
+
 export interface MissionBlueprint {
-  outcomes: { outcome: LibraryElement; measures: LibraryElement[]; capabilities: LibraryElement[] }[];
+  outcomes: { outcome: LibraryElement; measures: Measure[]; capabilities: LibraryElement[] }[];
   /** The mission's own capabilities first, then shared ones from packages it builds on. */
   capabilities: {
     capability: LibraryElement;
@@ -197,7 +214,7 @@ export interface MissionBlueprint {
     requirements: LibraryElement[];
     patterns: LibraryElement[];
   }[];
-  measures: LibraryElement[];
+  measures: Measure[];
   requirements: LibraryElement[];
   patterns: LibraryElement[];
 }
@@ -214,7 +231,7 @@ export function missionBlueprint(mission: LibraryElement): MissionBlueprint {
   const scope = scopeOf(mission.package);
   const outcomes = related(mission, 'seeks', 'outgoing', scope).map((outcome) => ({
     outcome,
-    measures: related(outcome, 'measured_by', 'outgoing', scope),
+    measures: measuresOf(outcome),
     capabilities: related(outcome, 'contributes_to', 'incoming', scope),
   }));
   const found = unique([...outcomes.flatMap((o) => o.capabilities), ...related(mission, 'supports_mission', 'incoming', scope)]);
@@ -232,7 +249,7 @@ export function missionBlueprint(mission: LibraryElement): MissionBlueprint {
   return {
     outcomes,
     capabilities,
-    measures: unique(outcomes.flatMap((o) => o.measures)),
+    measures: outcomes.flatMap((o) => o.measures),
     requirements: unique(capabilities.flatMap((c) => c.requirements)),
     patterns: unique(capabilities.flatMap((c) => c.patterns)).sort((a, b) => order(a) - order(b)),
   };
@@ -404,10 +421,10 @@ export interface IndexGroup {
   items: LibraryElement[];
 }
 
-/** The predicate that names each item's parent on an index page, such as the outcome a measure tells about. */
-const parentLinks: Record<string, string> = { measure: 'measured_by', requirement: 'satisfies' };
+/** The predicate that names each item's parent on an index page, such as the capability a requirement belongs to. */
+const parentLinks: Record<string, string> = { requirement: 'satisfies' };
 /** The index pages grouped by package. Missions and solutions are few enough to list whole. */
-const groupedTypes = new Set(['outcome', 'measure', 'capability', 'requirement']);
+const groupedTypes = new Set(['outcome', 'capability', 'requirement']);
 
 /**
  * An index page's items, grouped: patterns by the part they play, everything
@@ -461,9 +478,12 @@ export function usedBy(element: LibraryElement): BlueprintPackage[] {
   );
 }
 
+/** What an element cites, its outcome's measures included. */
+const citedIds = (element: LibraryElement) => [...new Set([...(element.sourceIds ?? []), ...measuresOf(element).flatMap((m) => m.sourceIds ?? [])])];
+
 export function sourcesOf(element: LibraryElement): Source[] {
   const sources = element.package.sources ?? [];
-  return (element.sourceIds ?? []).map((id) => sources.find((s) => s.id === id)!);
+  return citedIds(element).map((id) => sources.find((s) => s.id === id)!);
 }
 
 export interface LibrarySource extends Source {
@@ -475,7 +495,7 @@ export const sources: LibrarySource[] = packages.flatMap((pkg) =>
   (pkg.sources ?? []).map((s) => ({
     ...s,
     package: pkg,
-    citedBy: elements.filter((e) => e.package === pkg && e.sourceIds?.includes(s.id)),
+    citedBy: elements.filter((e) => e.package === pkg && citedIds(e).includes(s.id)),
   })),
 );
 

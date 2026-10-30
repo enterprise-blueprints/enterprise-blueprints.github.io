@@ -146,7 +146,29 @@
       "sourceIds": [
         "src:foia-statute",
         "src:doj-foia-guide"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "request-processing-time",
+            "title": "Time to process requests",
+            "description": "The median and average number of days to process simple, complex, and expedited requests, with the lowest and highest. Annual FOIA reports include these figures.",
+            "sourceIds": [
+              "src:foia-statute",
+              "src:oip-annual-report-handbook"
+            ]
+          },
+          {
+            "id": "requests-within-20-days",
+            "title": "Requests answered within 20 working days",
+            "description": "The share of processed requests answered within 20 working days. Annual FOIA reports group response times in 20-day bands.",
+            "sourceIds": [
+              "src:foia-statute",
+              "src:oip-annual-report-handbook"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:backlog-kept-small",
@@ -157,7 +179,29 @@
       "sourceIds": [
         "src:oip-annual-report-handbook",
         "src:oip-backlog-guidance"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "backlogged-requests",
+            "title": "Backlogged requests",
+            "description": "Requests still pending at the end of the fiscal year beyond the time the law allows, compared with the number received that year. The Department of Justice suggests keeping it below 10% of requests received.",
+            "sourceIds": [
+              "src:oip-annual-report-handbook",
+              "src:oip-backlog-guidance"
+            ]
+          },
+          {
+            "id": "oldest-pending-requests",
+            "title": "Age of the oldest pending requests",
+            "description": "How long the agency’s ten oldest pending requests and ten oldest pending appeals have been open. Annual FOIA reports list them.",
+            "sourceIds": [
+              "src:foia-statute",
+              "src:oip-annual-report-handbook"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:records-released-as-allowed",
@@ -168,7 +212,20 @@
       "sourceIds": [
         "src:foia-statute",
         "src:doj-foia-guide"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "request-dispositions",
+            "title": "How requests are resolved",
+            "description": "The number of requests granted in full, granted in part, and denied, with how often each exemption was used. Annual FOIA reports include these figures.",
+            "sourceIds": [
+              "src:foia-statute",
+              "src:oip-annual-report-handbook"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:frequently-requested-posted",
@@ -180,7 +237,20 @@
         "src:foia-statute",
         "src:doj-foia-guide",
         "src:oip-chief-foia-officer-guidelines"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "records-posted-proactively",
+            "title": "Records posted proactively",
+            "description": "The records made available online without a request, including frequently requested records. Annual FOIA reports count them, and Chief FOIA Officer reports describe them.",
+            "sourceIds": [
+              "src:foia-statute",
+              "src:oip-chief-foia-officer-guidelines"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:requesters-helped",
@@ -191,7 +261,20 @@
       "sourceIds": [
         "src:foia-statute",
         "src:ogis"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "appeal-processing-time",
+            "title": "Time to decide appeals",
+            "description": "The median and average number of days to decide administrative appeals, against the 20 working days the law allows, and how the appeals came out. Annual FOIA reports include these figures.",
+            "sourceIds": [
+              "src:foia-statute",
+              "src:oip-annual-report-handbook"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:foia-performance-public",
@@ -203,94 +286,19 @@
         "src:foia-statute",
         "src:oip-chief-foia-officer-guidelines",
         "src:foia-gov"
-      ]
-    },
-    {
-      "id": "eb:measure:request-processing-time",
-      "type": "measure",
-      "title": "Time to process requests",
-      "description": "The median and average number of days to process simple, complex, and expedited requests, with the lowest and highest. Annual FOIA reports include these figures.",
-      "status": "reference",
-      "sourceIds": [
-        "src:foia-statute",
-        "src:oip-annual-report-handbook"
-      ]
-    },
-    {
-      "id": "eb:measure:requests-within-20-days",
-      "type": "measure",
-      "title": "Requests answered within 20 working days",
-      "description": "The share of processed requests answered within 20 working days. Annual FOIA reports group response times in 20-day bands.",
-      "status": "reference",
-      "sourceIds": [
-        "src:foia-statute",
-        "src:oip-annual-report-handbook"
-      ]
-    },
-    {
-      "id": "eb:measure:backlogged-requests",
-      "type": "measure",
-      "title": "Backlogged requests",
-      "description": "Requests still pending at the end of the fiscal year beyond the time the law allows, compared with the number received that year. The Department of Justice suggests keeping it below 10% of requests received.",
-      "status": "reference",
-      "sourceIds": [
-        "src:oip-annual-report-handbook",
-        "src:oip-backlog-guidance"
-      ]
-    },
-    {
-      "id": "eb:measure:oldest-pending-requests",
-      "type": "measure",
-      "title": "Age of the oldest pending requests",
-      "description": "How long the agency’s ten oldest pending requests and ten oldest pending appeals have been open. Annual FOIA reports list them.",
-      "status": "reference",
-      "sourceIds": [
-        "src:foia-statute",
-        "src:oip-annual-report-handbook"
-      ]
-    },
-    {
-      "id": "eb:measure:request-dispositions",
-      "type": "measure",
-      "title": "How requests are resolved",
-      "description": "The number of requests granted in full, granted in part, and denied, with how often each exemption was used. Annual FOIA reports include these figures.",
-      "status": "reference",
-      "sourceIds": [
-        "src:foia-statute",
-        "src:oip-annual-report-handbook"
-      ]
-    },
-    {
-      "id": "eb:measure:records-posted-proactively",
-      "type": "measure",
-      "title": "Records posted proactively",
-      "description": "The records made available online without a request, including frequently requested records. Annual FOIA reports count them, and Chief FOIA Officer reports describe them.",
-      "status": "reference",
-      "sourceIds": [
-        "src:foia-statute",
-        "src:oip-chief-foia-officer-guidelines"
-      ]
-    },
-    {
-      "id": "eb:measure:appeal-processing-time",
-      "type": "measure",
-      "title": "Time to decide appeals",
-      "description": "The median and average number of days to decide administrative appeals, against the 20 working days the law allows, and how the appeals came out. Annual FOIA reports include these figures.",
-      "status": "reference",
-      "sourceIds": [
-        "src:foia-statute",
-        "src:oip-annual-report-handbook"
-      ]
-    },
-    {
-      "id": "eb:measure:annual-report-on-time",
-      "type": "measure",
-      "title": "Annual FOIA report on time",
-      "description": "Whether the annual FOIA report reaches the Attorney General and OGIS by February 1, and is posted online with its raw data.",
-      "status": "reference",
-      "sourceIds": [
-        "src:foia-statute"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "annual-report-on-time",
+            "title": "Annual FOIA report on time",
+            "description": "Whether the annual FOIA report reaches the Attorney General and OGIS by February 1, and is posted online with its raw data.",
+            "sourceIds": [
+              "src:foia-statute"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:capability:foia-request-intake",
@@ -983,54 +991,6 @@
       "to": "eb:outcome:foia-performance-public"
     },
     {
-      "id": "rel:requests-answered-on-time-measured-by-request-processing-time",
-      "from": "eb:outcome:requests-answered-on-time",
-      "predicate": "measured_by",
-      "to": "eb:measure:request-processing-time"
-    },
-    {
-      "id": "rel:requests-answered-on-time-measured-by-requests-within-20-days",
-      "from": "eb:outcome:requests-answered-on-time",
-      "predicate": "measured_by",
-      "to": "eb:measure:requests-within-20-days"
-    },
-    {
-      "id": "rel:backlog-kept-small-measured-by-backlogged-requests",
-      "from": "eb:outcome:backlog-kept-small",
-      "predicate": "measured_by",
-      "to": "eb:measure:backlogged-requests"
-    },
-    {
-      "id": "rel:backlog-kept-small-measured-by-oldest-pending-requests",
-      "from": "eb:outcome:backlog-kept-small",
-      "predicate": "measured_by",
-      "to": "eb:measure:oldest-pending-requests"
-    },
-    {
-      "id": "rel:records-released-as-allowed-measured-by-request-dispositions",
-      "from": "eb:outcome:records-released-as-allowed",
-      "predicate": "measured_by",
-      "to": "eb:measure:request-dispositions"
-    },
-    {
-      "id": "rel:frequently-requested-posted-measured-by-records-posted-proactively",
-      "from": "eb:outcome:frequently-requested-posted",
-      "predicate": "measured_by",
-      "to": "eb:measure:records-posted-proactively"
-    },
-    {
-      "id": "rel:requesters-helped-measured-by-appeal-processing-time",
-      "from": "eb:outcome:requesters-helped",
-      "predicate": "measured_by",
-      "to": "eb:measure:appeal-processing-time"
-    },
-    {
-      "id": "rel:foia-performance-public-measured-by-annual-report-on-time",
-      "from": "eb:outcome:foia-performance-public",
-      "predicate": "measured_by",
-      "to": "eb:measure:annual-report-on-time"
-    },
-    {
       "id": "rel:foia-request-intake-contributes-to-requests-answered-on-time",
       "from": "eb:capability:foia-request-intake",
       "predicate": "contributes_to",
@@ -1638,33 +1598,23 @@
           "candidateMappings": [
             {
               "answerValue": "processing-times",
-              "elementId": "eb:measure:request-processing-time",
-              "interpretation": "The office tracks this already, so there may be a value for today."
-            },
-            {
-              "answerValue": "processing-times",
-              "elementId": "eb:measure:requests-within-20-days",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:requests-answered-on-time",
+              "interpretation": "The office already tracks “Time to process requests” and “Requests answered within 20 working days”, so there may be a value for today."
             },
             {
               "answerValue": "backlog",
-              "elementId": "eb:measure:backlogged-requests",
-              "interpretation": "The office tracks this already, so there may be a value for today."
-            },
-            {
-              "answerValue": "backlog",
-              "elementId": "eb:measure:oldest-pending-requests",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:backlog-kept-small",
+              "interpretation": "The office already tracks “Backlogged requests” and “Age of the oldest pending requests”, so there may be a value for today."
             },
             {
               "answerValue": "dispositions",
-              "elementId": "eb:measure:request-dispositions",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:records-released-as-allowed",
+              "interpretation": "The office already tracks “How requests are resolved”, so there may be a value for today."
             },
             {
               "answerValue": "appeals",
-              "elementId": "eb:measure:appeal-processing-time",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:requesters-helped",
+              "interpretation": "The office already tracks “Time to decide appeals”, so there may be a value for today."
             }
           ]
         },

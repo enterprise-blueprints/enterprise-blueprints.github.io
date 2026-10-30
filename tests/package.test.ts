@@ -132,7 +132,7 @@ describe('validatePackage', () => {
     expect(new Set(counts.implementationPattern!.flatMap((p) => p.replacedBy ?? []))).toEqual(new Set(['eb:implementationPattern:grants-management']));
     expect(grants.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
     // Every outcome has a measure, and every capability contributes to an outcome and has a candidate pattern.
-    for (const o of ofType(grants, 'outcome')) expect(grants.relations.some((r) => r.from === o.id && r.predicate === 'measured_by'), o.id).toBe(true);
+    for (const o of ofType(grants, 'outcome')) expect((o.attributes?.measures as unknown[] | undefined)?.length, o.id).toBeGreaterThan(0);
     for (const c of ofType(grants, 'capability')) {
       expect(grants.relations.some((r) => r.from === c.id && r.predicate === 'contributes_to'), c.id).toBe(true);
       expect(grants.relations.some((r) => r.from === c.id && r.predicate === 'candidate_pattern'), c.id).toBe(true);
@@ -143,7 +143,8 @@ describe('validatePackage', () => {
     const counts = Object.groupBy(acquisition.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.outcome).toHaveLength(9);
-    expect(counts.measure).toHaveLength(11);
+    expect(counts.measure).toBeUndefined();
+    expect(counts.outcome!.flatMap((o) => o.attributes!.measures as unknown[])).toHaveLength(11);
     expect(counts.capability).toHaveLength(10);
     expect(counts.requirement).toHaveLength(22);
     expect(counts.implementationPattern).toHaveLength(10);
@@ -186,10 +187,12 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
     expect(pkg.relations.some((r) => r.predicate === 'supports_mission')).toBe(false);
   });
 
-  it('gives every outcome a measure, and every measure one outcome', () => {
-    const measuredBy = pkg.relations.filter((r) => r.predicate === 'measured_by');
-    for (const o of ofType(pkg, 'outcome')) expect(measuredBy.some((r) => r.from === o.id), o.id).toBe(true);
-    for (const m of ofType(pkg, 'measure')) expect(measuredBy.filter((r) => r.to === m.id), m.id).toHaveLength(1);
+  it('gives every outcome its measures', () => {
+    for (const o of ofType(pkg, 'outcome')) {
+      expect((o.attributes!.measures as unknown[]).length, o.id).toBeGreaterThan(0);
+    }
+    expect(ofType(pkg, 'measure')).toEqual([]);
+    expect(pkg.relations.filter((r) => r.predicate === 'measured_by')).toEqual([]);
   });
 
   it('points discovery answers only at its own elements and the common package’s', () => {
@@ -197,11 +200,13 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
     for (const a of pkg.assessments!) for (const q of a.questions) for (const m of q.candidateMappings ?? []) expect(ids.has(m.elementId), m.elementId).toBe(true);
   });
 
-  it('starts discovery with which outcomes matter and what the office measures', () => {
+  it('starts discovery with which outcomes matter and what the office measures, naming the measures', () => {
     const [first, second] = pkg.assessments![0].questions;
     const types = (q: typeof first) => new Set(q.candidateMappings!.map((m) => m.elementId.split(':')[1]));
     expect(types(first)).toEqual(new Set(['outcome']));
-    expect(types(second)).toEqual(new Set(['measure']));
+    expect(types(second)).toEqual(new Set(['outcome']));
+    const titles = ofType(pkg, 'outcome').flatMap((o) => (o.attributes!.measures as { title: string }[]).map((m) => m.title));
+    for (const m of second.candidateMappings!) expect(titles.some((t) => m.interpretation.includes(`“${t}”`)), m.answerValue).toBe(true);
   });
 
   it('describes each pattern as an example, with its ways to source it, layer, parts, strengths, fit, and what to watch for', () => {
@@ -444,6 +449,9 @@ describe('solutions and ways to source a pattern (schema 0.4.0)', () => {
       'has two solutions',
     ],
     ['a kind of solution', (p) => (p.elements.find((e) => e.id === star)!.attributes!.kind = 'north-star'), 'must NOT have additional properties'],
+    ['a measure as an element of its own', (p) => p.elements.push({ id: 'eb:measure:x', type: 'measure', title: 'X', description: 'X.' }), 'a measure is part of its outcome'],
+    ['a measure that cites an unknown source', (p) => ((p.elements.find((e) => e.type === 'outcome')!.attributes!.measures as { sourceIds: string[] }[])[0].sourceIds = ['src:missing']), 'cites unknown source src:missing'],
+    ['a measure without a title', (p) => delete (p.elements.find((e) => e.type === 'outcome')!.attributes!.measures as { title?: string }[])[0].title, "must have required property 'title'"],
     ['a way on something else', (p) => (p.relations.find((r) => r.predicate === 'satisfies')!.way = 'product'), 'only includes and depends_on name a way'],
   ])('reject %s', (_, change, message) => {
     expect(withStar(change)).toContain(message);

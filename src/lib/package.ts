@@ -181,6 +181,12 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
       errors.push(`element ${e.id} is replaced by unknown element ${e.replacedBy}`);
     }
     if (e.type === 'implementationPattern' || e.type === 'solution') errors.push(...patternProblems(e));
+    if (!BEFORE_040.has(pkg.schemaVersion)) {
+      if (e.type === 'measure') errors.push(`element ${e.id}: since schema 0.4.0, a measure is part of its outcome`);
+      const measures = (e.attributes?.measures ?? []) as { id: string; sourceIds?: string[] }[];
+      for (const id of duplicates(measures.map((m) => m.id))) errors.push(`outcome ${e.id} has two measures with the ID ${id}`);
+      for (const s of measures.flatMap((m) => m.sourceIds ?? [])) if (!sourceIds.has(s)) errors.push(`a measure of ${e.id} cites unknown source ${s}`);
+    }
   }
 
   const edges = new Set<string>();
@@ -203,6 +209,7 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
       if (!sourceIds.has(s)) errors.push(`relation ${r.id} cites unknown source ${s}`);
     }
     if (r.coverage && r.predicate !== 'candidate_pattern') errors.push(`relation ${r.id}: only a candidate pattern has coverage`);
+    if (r.predicate === 'measured_by' && !BEFORE_040.has(pkg.schemaVersion)) errors.push(`relation ${r.id}: since schema 0.4.0, an outcome lists its measures instead`);
     if (r.from === r.to) errors.push(`relation ${r.id} links ${r.from} to itself`);
     if (r.way !== undefined) {
       // The way names one of the pattern's ways: the one included, or the one that has the need.
@@ -221,15 +228,15 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
 }
 
 const waysOf = (e: Element) => (Array.isArray(e.attributes?.ways) ? (e.attributes.ways as { id: string }[]).map((w) => w.id) : []);
-/** Schema versions whose solutions are examples that can span missions. */
-const EXAMPLE_SOLUTIONS = new Set(['0.1.0', '0.2.0', '0.3.0']);
+/** Schema versions before 0.4.0, whose solutions are examples that can span missions and whose measures are elements of their own. */
+const BEFORE_040 = new Set(['0.1.0', '0.2.0', '0.3.0']);
 /**
  * Since schema 0.4.0, a solution is its mission's: it supports one mission of
  * its own package, which has no other solution. It includes everything its
  * patterns need, for the ways it chose.
  */
 function solutionProblems(pkg: BlueprintPackage, relations: Relation[]): string[] {
-  if (EXAMPLE_SOLUTIONS.has(pkg.schemaVersion)) return [];
+  if (BEFORE_040.has(pkg.schemaVersion)) return [];
   const errors: string[] = [];
   const missions = new Map<string, string>();
   for (const solution of pkg.elements.filter((e) => e.type === 'solution')) {

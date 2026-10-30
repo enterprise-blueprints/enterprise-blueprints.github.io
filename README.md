@@ -41,7 +41,7 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
   published. These files are built, not edited by hand.
 - `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
   `dependencies`. 0.3.0 checks the attributes of patterns and solutions and adds `coverage` to candidate
-  patterns. 0.4.0 gives every pattern its `ways` to source it and every mission one solution, with `way` on
+  patterns. 0.4.0 gives every pattern its `ways` to source it, every outcome its `measures`, and every mission one solution, with `way` on
   links. Every version stays, and Solution Studio keeps identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
@@ -79,7 +79,8 @@ its message names each problem and the file it's in. A new element type or predi
 | --- | --- |
 | `package.yaml` | The package's ID, title, description, and other details, and `dependencies`: the folder names of the packages it builds on. |
 | `sources.yaml` | The references it cites, each with an `id` that elements and links use. |
-| `missions.yaml`, `outcomes.yaml`, `measures.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml`, `solutions.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
+| `missions.yaml`, `outcomes.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml`, `solutions.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
+| `measures` on an outcome | The outcome's measures, each with an `id`, `title`, `description`, and optionally `sources`. They're published in the outcome's `attributes`; before schema 0.4.0, measures were elements of their own, linked by `measured_by`. |
 | `links.yaml` | Links from the elements of packages this one builds on, such as a shared capability that satisfies one of its requirements. |
 | `discovery.yaml` | Discovery question sets. |
 

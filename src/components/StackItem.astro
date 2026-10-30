@@ -10,7 +10,7 @@ interface Props {
   /** From a package the mission builds on. */
   shared?: boolean;
   /** What sits under it in the stack, such as an outcome's measures. */
-  below: { heading: string; elements: LibraryElement[] }[];
+  below: { heading: string; elements: { title: string; url: string; type: string }[] }[];
   'data-node': string;
   'data-links': string;
 }

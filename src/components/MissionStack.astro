@@ -88,7 +88,7 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
             <StackItem
               element={outcome}
               meta={measures.length ? measureCount(measures.length) : undefined}
-              below={[{ heading: 'Measures', elements: measures }]}
+              below={[{ heading: 'Measures', elements: measures.map((m) => ({ ...m, type: 'measure' })) }]}
               {...node(outcome.id)}
             />
           ))}

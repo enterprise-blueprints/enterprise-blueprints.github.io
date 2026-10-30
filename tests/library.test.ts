@@ -10,7 +10,8 @@ describe('missionBlueprint', () => {
     expect(blueprint.outcomes).toHaveLength(5);
     expect(blueprint.measures).toHaveLength(9);
     const safely = blueprint.outcomes.find((o) => o.outcome.id === 'eb:outcome:concerns-raised-safely')!;
-    expect(ids(safely.measures)).toEqual(['eb:measure:time-to-route', 'eb:measure:retaliation-found']);
+    expect(ids(safely.measures)).toEqual(['time-to-route', 'retaliation-found']);
+    expect(safely.measures[0].url).toBe(`${safely.outcome.url}#measure-time-to-route`);
   });
 
   it('lists the mission’s own capabilities first, then the shared ones, with what each serves', () => {

@@ -41,26 +41,20 @@
         - none: None of these regularly
       points:
         - when: semiannual-statistics
-          to: measure:questioned-costs
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:fraud-waste-abuse-prevented
+          why: The office already tracks “Questioned and unsupported costs” and “Investigative results”, so there may be a value for today.
         - when: semiannual-statistics
-          to: measure:funds-put-to-better-use
-          why: The office tracks this already, so there may be a value for today.
-        - when: semiannual-statistics
-          to: measure:investigative-results
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:effective-programs
+          why: The office already tracks “Funds recommended for better use”, so there may be a value for today.
         - when: recommendation-status
-          to: measure:open-recommendations
-          why: The office tracks this already, so there may be a value for today.
-        - when: recommendation-status
-          to: measure:reports-awaiting-decision
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:problems-corrected
+          why: The office already tracks “Open recommendations” and “Reports awaiting a management decision”, so there may be a value for today.
         - when: report-posting
-          to: measure:reports-posted-within-3-days
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:leaders-congress-informed
+          why: The office already tracks “Reports posted within 3 days”, so there may be a value for today.
         - when: intake-times
-          to: measure:time-to-route
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:concerns-raised-safely
+          why: The office already tracks “Time to review and route a matter”, so there may be a value for today.
     - id: measure-sources
       prompt: Where do those figures come from today, and who puts them together?
       kind: text

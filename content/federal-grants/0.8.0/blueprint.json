@@ -151,7 +151,20 @@
       "sourceIds": [
         "src:uniform-guidance",
         "src:grants-gov"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "opportunities-open-60-days",
+            "title": "Funding opportunities open at least 60 days",
+            "description": "The share of the year’s funding opportunities that stayed open for applications at least 60 calendar days, the period the Uniform Guidance generally expects.",
+            "sourceIds": [
+              "src:uniform-guidance",
+              "src:grants-gov"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:awards-to-capable-recipients",
@@ -163,7 +176,20 @@
         "src:uniform-guidance",
         "src:sam-gov",
         "src:do-not-pay"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "awards-with-risk-review",
+            "title": "Awards with a documented risk review",
+            "description": "The share of new awards whose file shows the eligibility, integrity, and risk checks done before the award, and any conditions they led to.",
+            "sourceIds": [
+              "src:uniform-guidance",
+              "src:sam-gov"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:funds-used-as-allowed",
@@ -175,7 +201,29 @@
         "src:uniform-guidance",
         "src:payment-integrity-31-usc-3352",
         "src:payment-accuracy"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "improper-payment-rate",
+            "title": "Improper payment rate",
+            "description": "For programs at risk of significant improper payments, the estimated share of payments that were improper or couldn’t be verified. Agencies report it each year, and PaymentAccuracy.gov publishes it.",
+            "sourceIds": [
+              "src:payment-integrity-31-usc-3352",
+              "src:payment-accuracy"
+            ]
+          },
+          {
+            "id": "improper-payments-recovered",
+            "title": "Improper payments recovered",
+            "description": "The amount of identified overpayments recovered, compared with the amount identified for recovery.",
+            "sourceIds": [
+              "src:payment-integrity-31-usc-3352",
+              "src:payment-accuracy"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:program-results-achieved",
@@ -185,7 +233,19 @@
       "status": "reference",
       "sourceIds": [
         "src:uniform-guidance"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "performance-reports-on-time",
+            "title": "Performance reports received on time",
+            "description": "The share of required performance reports received by their due date, which is 30 days after a quarterly or semiannual period, or 90 days after an annual one.",
+            "sourceIds": [
+              "src:uniform-guidance"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:audit-findings-resolved",
@@ -196,7 +256,20 @@
       "sourceIds": [
         "src:uniform-guidance",
         "src:federal-audit-clearinghouse"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "management-decisions-on-time",
+            "title": "Management decisions within six months",
+            "description": "The share of audit findings about the agency’s awards that got a management decision within six months of the Federal Audit Clearinghouse accepting the audit report.",
+            "sourceIds": [
+              "src:uniform-guidance",
+              "src:federal-audit-clearinghouse"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:awards-closed-on-time",
@@ -207,7 +280,27 @@
       "sourceIds": [
         "src:uniform-guidance",
         "src:gone-act"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "awards-closed-within-a-year",
+            "title": "Awards closed within a year",
+            "description": "The share of awards whose period of performance ended that were closed out within one year.",
+            "sourceIds": [
+              "src:uniform-guidance"
+            ]
+          },
+          {
+            "id": "expired-awards-open",
+            "title": "Expired awards not yet closed",
+            "description": "The number of awards whose period of performance ended 2 years ago or more that are still open, and their undisbursed balances.",
+            "sourceIds": [
+              "src:gone-act"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:spending-public",
@@ -218,102 +311,19 @@
       "sourceIds": [
         "src:usaspending",
         "src:award-reporting-2-cfr-170"
-      ]
-    },
-    {
-      "id": "eb:measure:opportunities-open-60-days",
-      "type": "measure",
-      "title": "Funding opportunities open at least 60 days",
-      "description": "The share of the year’s funding opportunities that stayed open for applications at least 60 calendar days, the period the Uniform Guidance generally expects.",
-      "status": "reference",
-      "sourceIds": [
-        "src:uniform-guidance",
-        "src:grants-gov"
-      ]
-    },
-    {
-      "id": "eb:measure:awards-with-risk-review",
-      "type": "measure",
-      "title": "Awards with a documented risk review",
-      "description": "The share of new awards whose file shows the eligibility, integrity, and risk checks done before the award, and any conditions they led to.",
-      "status": "reference",
-      "sourceIds": [
-        "src:uniform-guidance",
-        "src:sam-gov"
-      ]
-    },
-    {
-      "id": "eb:measure:improper-payment-rate",
-      "type": "measure",
-      "title": "Improper payment rate",
-      "description": "For programs at risk of significant improper payments, the estimated share of payments that were improper or couldn’t be verified. Agencies report it each year, and PaymentAccuracy.gov publishes it.",
-      "status": "reference",
-      "sourceIds": [
-        "src:payment-integrity-31-usc-3352",
-        "src:payment-accuracy"
-      ]
-    },
-    {
-      "id": "eb:measure:improper-payments-recovered",
-      "type": "measure",
-      "title": "Improper payments recovered",
-      "description": "The amount of identified overpayments recovered, compared with the amount identified for recovery.",
-      "status": "reference",
-      "sourceIds": [
-        "src:payment-integrity-31-usc-3352",
-        "src:payment-accuracy"
-      ]
-    },
-    {
-      "id": "eb:measure:performance-reports-on-time",
-      "type": "measure",
-      "title": "Performance reports received on time",
-      "description": "The share of required performance reports received by their due date, which is 30 days after a quarterly or semiannual period, or 90 days after an annual one.",
-      "status": "reference",
-      "sourceIds": [
-        "src:uniform-guidance"
-      ]
-    },
-    {
-      "id": "eb:measure:management-decisions-on-time",
-      "type": "measure",
-      "title": "Management decisions within six months",
-      "description": "The share of audit findings about the agency’s awards that got a management decision within six months of the Federal Audit Clearinghouse accepting the audit report.",
-      "status": "reference",
-      "sourceIds": [
-        "src:uniform-guidance",
-        "src:federal-audit-clearinghouse"
-      ]
-    },
-    {
-      "id": "eb:measure:awards-closed-within-a-year",
-      "type": "measure",
-      "title": "Awards closed within a year",
-      "description": "The share of awards whose period of performance ended that were closed out within one year.",
-      "status": "reference",
-      "sourceIds": [
-        "src:uniform-guidance"
-      ]
-    },
-    {
-      "id": "eb:measure:expired-awards-open",
-      "type": "measure",
-      "title": "Expired awards not yet closed",
-      "description": "The number of awards whose period of performance ended 2 years ago or more that are still open, and their undisbursed balances.",
-      "status": "reference",
-      "sourceIds": [
-        "src:gone-act"
-      ]
-    },
-    {
-      "id": "eb:measure:awards-published",
-      "type": "measure",
-      "title": "Awards published on USAspending.gov",
-      "description": "The share of the agency’s financial assistance awards that appear on USAspending.gov with complete, accurate data, and how soon after the award they appear.",
-      "status": "reference",
-      "sourceIds": [
-        "src:usaspending"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "awards-published",
+            "title": "Awards published on USAspending.gov",
+            "description": "The share of the agency’s financial assistance awards that appear on USAspending.gov with complete, accurate data, and how soon after the award they appear.",
+            "sourceIds": [
+              "src:usaspending"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:capability:funding-opportunities-applications",
@@ -1029,60 +1039,6 @@
       "to": "eb:outcome:spending-public"
     },
     {
-      "id": "rel:open-fair-competition-measured-by-opportunities-open-60-days",
-      "from": "eb:outcome:open-fair-competition",
-      "predicate": "measured_by",
-      "to": "eb:measure:opportunities-open-60-days"
-    },
-    {
-      "id": "rel:awards-to-capable-recipients-measured-by-awards-with-risk-review",
-      "from": "eb:outcome:awards-to-capable-recipients",
-      "predicate": "measured_by",
-      "to": "eb:measure:awards-with-risk-review"
-    },
-    {
-      "id": "rel:funds-used-as-allowed-measured-by-improper-payment-rate",
-      "from": "eb:outcome:funds-used-as-allowed",
-      "predicate": "measured_by",
-      "to": "eb:measure:improper-payment-rate"
-    },
-    {
-      "id": "rel:funds-used-as-allowed-measured-by-improper-payments-recovered",
-      "from": "eb:outcome:funds-used-as-allowed",
-      "predicate": "measured_by",
-      "to": "eb:measure:improper-payments-recovered"
-    },
-    {
-      "id": "rel:program-results-achieved-measured-by-performance-reports-on-time",
-      "from": "eb:outcome:program-results-achieved",
-      "predicate": "measured_by",
-      "to": "eb:measure:performance-reports-on-time"
-    },
-    {
-      "id": "rel:audit-findings-resolved-measured-by-management-decisions-on-time",
-      "from": "eb:outcome:audit-findings-resolved",
-      "predicate": "measured_by",
-      "to": "eb:measure:management-decisions-on-time"
-    },
-    {
-      "id": "rel:awards-closed-on-time-measured-by-awards-closed-within-a-year",
-      "from": "eb:outcome:awards-closed-on-time",
-      "predicate": "measured_by",
-      "to": "eb:measure:awards-closed-within-a-year"
-    },
-    {
-      "id": "rel:awards-closed-on-time-measured-by-expired-awards-open",
-      "from": "eb:outcome:awards-closed-on-time",
-      "predicate": "measured_by",
-      "to": "eb:measure:expired-awards-open"
-    },
-    {
-      "id": "rel:spending-public-measured-by-awards-published",
-      "from": "eb:outcome:spending-public",
-      "predicate": "measured_by",
-      "to": "eb:measure:awards-published"
-    },
-    {
       "id": "rel:funding-opportunities-applications-contributes-to-open-fair-competition",
       "from": "eb:capability:funding-opportunities-applications",
       "predicate": "contributes_to",
@@ -1643,28 +1599,23 @@
           "candidateMappings": [
             {
               "answerValue": "reports-on-time",
-              "elementId": "eb:measure:performance-reports-on-time",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:program-results-achieved",
+              "interpretation": "The office already tracks “Performance reports received on time”, so there may be a value for today."
             },
             {
               "answerValue": "management-decisions",
-              "elementId": "eb:measure:management-decisions-on-time",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:audit-findings-resolved",
+              "interpretation": "The office already tracks “Management decisions within six months”, so there may be a value for today."
             },
             {
               "answerValue": "closeout",
-              "elementId": "eb:measure:awards-closed-within-a-year",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:awards-closed-on-time",
+              "interpretation": "The office already tracks “Awards closed within a year”, so there may be a value for today."
             },
             {
               "answerValue": "improper-payments",
-              "elementId": "eb:measure:improper-payment-rate",
-              "interpretation": "The office tracks this already, so there may be a value for today."
-            },
-            {
-              "answerValue": "improper-payments",
-              "elementId": "eb:measure:improper-payments-recovered",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:funds-used-as-allowed",
+              "interpretation": "The office already tracks “Improper payment rate” and “Improper payments recovered”, so there may be a value for today."
             }
           ]
         },
@@ -1675,12 +1626,12 @@
           "candidateMappings": [
             {
               "answerValue": "true",
-              "elementId": "eb:measure:expired-awards-open",
-              "interpretation": "The office knows this number, so there may be a value for today."
+              "elementId": "eb:outcome:awards-closed-on-time",
+              "interpretation": "The office already tracks “Expired awards not yet closed”, so there may be a value for today."
             },
             {
               "answerValue": "false",
-              "elementId": "eb:measure:expired-awards-open",
+              "elementId": "eb:outcome:awards-closed-on-time",
               "interpretation": "Not knowing how many expired awards remain open often means closeout is falling behind."
             },
             {
@@ -1861,7 +1812,7 @@
             },
             {
               "answerValue": "false",
-              "elementId": "eb:measure:management-decisions-on-time",
+              "elementId": "eb:outcome:audit-findings-resolved",
               "interpretation": "Findings not tracked to a decision are where the six-month deadline slips."
             }
           ]

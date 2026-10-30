@@ -4,52 +4,96 @@
   title: The agency gets what it needs when it needs it
   description: Acquisitions start early enough, and move from request to award quickly enough, that the goods and services arrive when the program needs them.
   sources: [ far, palt-memo ]
-  measured_by: [ procurement-lead-time ]
+  measures:
+    - id: procurement-lead-time
+      title: Procurement administrative lead time (PALT)
+      description: The median number of days from the date an initial solicitation is issued to the date of award, for contracts and orders above the simplified acquisition threshold, as OFPP defines it. Many offices also track the time from a complete request package to award.
+      sources: [ palt-memo, sam-gov ]
 
 - id: full-open-competition
   title: Contracts are competed openly and fairly
   description: Opportunities are publicized so businesses can compete, offers are judged only on the criteria the solicitation stated, and any exception to full and open competition is one the law allows, justified in writing.
   sources: [ competition-41-usc-3301, competition-exceptions-41-usc-3304, procurement-integrity-41-usc-2102 ]
-  measured_by: [ competed-obligations-share, single-offer-awards ]
+  measures:
+    - id: competed-obligations-share
+      title: Share of obligations competed
+      description: The share of the year’s contract obligations that were made on competed contracts and orders, from the agency’s contract data in SAM.gov.
+      sources: [ competition-41-usc-3301, sam-gov ]
+    - id: single-offer-awards
+      title: Competitions with only one offer
+      description: The share of obligations on competed contracts and orders that received only one offer, which can mean the requirement or the notice kept other businesses out.
+      sources: [ sam-gov ]
 
 - id: responsible-contractors
   title: Contracts go to responsible contractors
   description: Before each award, the agency checks the contractor isn’t excluded, reviews its integrity and performance records, and determines it able to do the work.
   sources: [ far, integrity-records-41-usc-2313, sam-gov ]
-  measured_by: [ awards-with-responsibility-review ]
+  measures:
+    - id: awards-with-responsibility-review
+      title: Awards with a documented responsibility determination
+      description: The share of awards above the simplified acquisition threshold whose file shows the exclusion check, the review of integrity and performance records, and the responsibility determination.
+      sources: [ far, integrity-records-41-usc-2313 ]
 
 - id: small-business-participation
   title: Small businesses get a fair share of the work
   description: The agency finds small businesses able to do its work, sets work aside for them where the rules call for it, and meets the goals it agreed with the Small Business Administration.
   sources: [ small-business-goals-15-usc-644 ]
-  measured_by: [ small-business-share ]
+  measures:
+    - id: small-business-share
+      title: Small business share of prime contract dollars
+      description: The share of the agency’s eligible prime contract dollars awarded to small businesses, compared with the goal it agreed with the Small Business Administration. The government-wide goal is at least 23 percent.
+      sources: [ small-business-goals-15-usc-644 ]
 
 - id: contracts-perform-as-agreed
   title: Contractors deliver what the contract calls for
   description: Each contract is monitored against its terms, problems are raised while there’s time to fix them, and each contractor’s performance is evaluated and recorded for future source selections.
   sources: [ far, cpars ]
-  measured_by: [ performance-evaluations-on-time ]
+  measures:
+    - id: performance-evaluations-on-time
+      title: Performance evaluations completed on time
+      description: The share of required past performance evaluations completed in CPARS within 120 days after the end of the period of performance they cover.
+      sources: [ far, cpars ]
 
 - id: invoices-paid-on-time
   title: Contractors are paid correctly and on time
   description: Invoices are checked against the contract and what was accepted, improper ones go back within 7 days with the reasons, and proper ones are paid by the due date.
   sources: [ prompt-payment-31-usc-3903, invoice-processing-platform ]
-  measured_by: [ proper-invoices-paid-on-time, interest-penalties-paid ]
+  measures:
+    - id: proper-invoices-paid-on-time
+      title: Invoices paid on time
+      description: The share of proper invoices paid by their due date, which is 30 days after receipt unless the contract says otherwise.
+      sources: [ prompt-payment-31-usc-3903 ]
+    - id: interest-penalties-paid
+      title: Prompt Payment interest paid
+      description: The number of late payments that carried Prompt Payment interest, and the amount paid, by office.
+      sources: [ prompt-payment-31-usc-3903 ]
 
 - id: award-decisions-hold-up
   title: Award decisions stand up to challenge
   description: Each award decision is made and documented by the solicitation’s rules, so it holds up when an offeror protests, and protests are answered on time.
   sources: [ far, protest-decisions-31-usc-3554, gao-bid-protest-rules ]
-  measured_by: [ protests-sustained-or-corrected ]
+  measures:
+    - id: protests-sustained-or-corrected
+      title: Protests sustained or resolved by corrective action
+      description: The number of protests of the agency’s awards, and the share that GAO sustained or that the agency resolved by corrective action, such as reevaluating offers.
+      sources: [ protest-decisions-31-usc-3554, gao-bid-protest-rules ]
 
 - id: contract-data-public
   title: The contract spending is open to view
   description: Each contract action is reported accurately within three business days, so the public can see on USAspending.gov who the government buys from and for what.
   sources: [ far, sam-gov, usaspending ]
-  measured_by: [ contract-actions-reported-on-time ]
+  measures:
+    - id: contract-actions-reported-on-time
+      title: Contract actions reported within three business days
+      description: The share of contract action reports completed in SAM.gov within three business days after award, and how many had to be corrected later.
+      sources: [ far, sam-gov ]
 
 - id: contracts-closed-on-time
   title: Contracts are closed out on time
   description: Once the work is done, each contract is closed within the time standard for its type, and money no longer needed is released while it can still be used.
   sources: [ far ]
-  measured_by: [ contracts-overdue-for-closeout ]
+  measures:
+    - id: contracts-overdue-for-closeout
+      title: Contracts overdue for closeout
+      description: The number of physically completed contracts still open past their closeout standard, such as 6 months for firm-fixed-price contracts, and the funds still obligated on them.
+      sources: [ far ]

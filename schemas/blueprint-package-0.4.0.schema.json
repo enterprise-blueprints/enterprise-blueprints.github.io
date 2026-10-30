@@ -237,6 +237,25 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "outcome"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/outcomeAttributes"
+              }
+            }
+          }
         }
       ]
     },
@@ -620,6 +639,50 @@
         },
         "watchFor": {
           "$ref": "#/$defs/statements"
+        }
+      }
+    },
+    "outcomeAttributes": {
+      "description": "What an outcome holds: the measures that tell how it’s going.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "measures": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/measure"
+          }
+        }
+      }
+    },
+    "measure": {
+      "description": "A way to tell how an outcome is going, such as a figure an office already reports.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }

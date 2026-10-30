@@ -172,7 +172,19 @@
       "status": "reference",
       "sourceIds": [
         "src:ig-act-402"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "funds-put-to-better-use",
+            "title": "Funds recommended for better use",
+            "description": "The dollar value of recommendations that funds be put to better use, and how much of it management agreed to. Semiannual reports to Congress include these figures.",
+            "sourceIds": [
+              "src:ig-act-405"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:fraud-waste-abuse-prevented",
@@ -183,7 +195,27 @@
       "sourceIds": [
         "src:ig-act-402",
         "src:ig-act-405"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "questioned-costs",
+            "title": "Questioned and unsupported costs",
+            "description": "Costs that audit, inspection, and evaluation reports question, including unsupported costs, and how much of them management disallowed. Semiannual reports to Congress include these figures.",
+            "sourceIds": [
+              "src:ig-act-405"
+            ]
+          },
+          {
+            "id": "investigative-results",
+            "title": "Investigative results",
+            "description": "Investigative reports issued, people referred to the Department of Justice and to state and local prosecutors, and the indictments and criminal informations that followed. Semiannual reports to Congress include these counts and how they were counted.",
+            "sourceIds": [
+              "src:ig-act-405"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:leaders-congress-informed",
@@ -195,7 +227,27 @@
         "src:ig-act-402",
         "src:ig-act-405",
         "src:ig-act-420"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "semiannual-reports-on-time",
+            "title": "Semiannual reports on time",
+            "description": "Whether each semiannual report reaches the agency head by April 30 and October 31, for the six months ending March 31 and September 30.",
+            "sourceIds": [
+              "src:ig-act-405"
+            ]
+          },
+          {
+            "id": "reports-posted-within-3-days",
+            "title": "Reports posted within 3 days",
+            "description": "The share of final audit, inspection, and evaluation reports posted on the office’s website within 3 days of being submitted in final form.",
+            "sourceIds": [
+              "src:ig-act-420"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:problems-corrected",
@@ -206,7 +258,27 @@
       "sourceIds": [
         "src:ig-act-402",
         "src:ig-act-405"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "open-recommendations",
+            "title": "Open recommendations",
+            "description": "Significant recommendations from earlier reports whose corrective action isn’t complete yet, with how long they’ve been open and any potential cost savings. Semiannual reports to Congress list them.",
+            "sourceIds": [
+              "src:ig-act-405"
+            ]
+          },
+          {
+            "id": "reports-awaiting-decision",
+            "title": "Reports awaiting a management decision",
+            "description": "Reports from earlier periods with no management decision yet, with the reasons and a target date for one. Semiannual reports to Congress list them.",
+            "sourceIds": [
+              "src:ig-act-405"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:outcome:concerns-raised-safely",
@@ -218,94 +290,24 @@
         "src:ig-act-407",
         "src:ig-act-420",
         "src:oversight-hotline"
-      ]
-    },
-    {
-      "id": "eb:measure:funds-put-to-better-use",
-      "type": "measure",
-      "title": "Funds recommended for better use",
-      "description": "The dollar value of recommendations that funds be put to better use, and how much of it management agreed to. Semiannual reports to Congress include these figures.",
-      "status": "reference",
-      "sourceIds": [
-        "src:ig-act-405"
-      ]
-    },
-    {
-      "id": "eb:measure:questioned-costs",
-      "type": "measure",
-      "title": "Questioned and unsupported costs",
-      "description": "Costs that audit, inspection, and evaluation reports question, including unsupported costs, and how much of them management disallowed. Semiannual reports to Congress include these figures.",
-      "status": "reference",
-      "sourceIds": [
-        "src:ig-act-405"
-      ]
-    },
-    {
-      "id": "eb:measure:investigative-results",
-      "type": "measure",
-      "title": "Investigative results",
-      "description": "Investigative reports issued, people referred to the Department of Justice and to state and local prosecutors, and the indictments and criminal informations that followed. Semiannual reports to Congress include these counts and how they were counted.",
-      "status": "reference",
-      "sourceIds": [
-        "src:ig-act-405"
-      ]
-    },
-    {
-      "id": "eb:measure:semiannual-reports-on-time",
-      "type": "measure",
-      "title": "Semiannual reports on time",
-      "description": "Whether each semiannual report reaches the agency head by April 30 and October 31, for the six months ending March 31 and September 30.",
-      "status": "reference",
-      "sourceIds": [
-        "src:ig-act-405"
-      ]
-    },
-    {
-      "id": "eb:measure:reports-posted-within-3-days",
-      "type": "measure",
-      "title": "Reports posted within 3 days",
-      "description": "The share of final audit, inspection, and evaluation reports posted on the office’s website within 3 days of being submitted in final form.",
-      "status": "reference",
-      "sourceIds": [
-        "src:ig-act-420"
-      ]
-    },
-    {
-      "id": "eb:measure:open-recommendations",
-      "type": "measure",
-      "title": "Open recommendations",
-      "description": "Significant recommendations from earlier reports whose corrective action isn’t complete yet, with how long they’ve been open and any potential cost savings. Semiannual reports to Congress list them.",
-      "status": "reference",
-      "sourceIds": [
-        "src:ig-act-405"
-      ]
-    },
-    {
-      "id": "eb:measure:reports-awaiting-decision",
-      "type": "measure",
-      "title": "Reports awaiting a management decision",
-      "description": "Reports from earlier periods with no management decision yet, with the reasons and a target date for one. Semiannual reports to Congress list them.",
-      "status": "reference",
-      "sourceIds": [
-        "src:ig-act-405"
-      ]
-    },
-    {
-      "id": "eb:measure:time-to-route",
-      "type": "measure",
-      "title": "Time to review and route a matter",
-      "description": "How long it takes from when a complaint, allegation, or disclosure arrives until it’s reviewed and routed. The office sets its own target.",
-      "status": "reference"
-    },
-    {
-      "id": "eb:measure:retaliation-found",
-      "type": "measure",
-      "title": "Whistleblower retaliation found",
-      "description": "Cases of whistleblower retaliation the office establishes, with the consequences imposed. Semiannual reports to Congress include them.",
-      "status": "reference",
-      "sourceIds": [
-        "src:ig-act-405"
-      ]
+      ],
+      "attributes": {
+        "measures": [
+          {
+            "id": "time-to-route",
+            "title": "Time to review and route a matter",
+            "description": "How long it takes from when a complaint, allegation, or disclosure arrives until it’s reviewed and routed. The office sets its own target."
+          },
+          {
+            "id": "retaliation-found",
+            "title": "Whistleblower retaliation found",
+            "description": "Cases of whistleblower retaliation the office establishes, with the consequences imposed. Semiannual reports to Congress include them.",
+            "sourceIds": [
+              "src:ig-act-405"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "eb:capability:complaint-allegation-disclosure-intake",
@@ -954,60 +956,6 @@
       "to": "eb:outcome:concerns-raised-safely"
     },
     {
-      "id": "rel:effective-programs-measured-by-funds-put-to-better-use",
-      "from": "eb:outcome:effective-programs",
-      "predicate": "measured_by",
-      "to": "eb:measure:funds-put-to-better-use"
-    },
-    {
-      "id": "rel:fraud-waste-abuse-prevented-measured-by-questioned-costs",
-      "from": "eb:outcome:fraud-waste-abuse-prevented",
-      "predicate": "measured_by",
-      "to": "eb:measure:questioned-costs"
-    },
-    {
-      "id": "rel:fraud-waste-abuse-prevented-measured-by-investigative-results",
-      "from": "eb:outcome:fraud-waste-abuse-prevented",
-      "predicate": "measured_by",
-      "to": "eb:measure:investigative-results"
-    },
-    {
-      "id": "rel:leaders-congress-informed-measured-by-semiannual-reports-on-time",
-      "from": "eb:outcome:leaders-congress-informed",
-      "predicate": "measured_by",
-      "to": "eb:measure:semiannual-reports-on-time"
-    },
-    {
-      "id": "rel:leaders-congress-informed-measured-by-reports-posted-within-3-days",
-      "from": "eb:outcome:leaders-congress-informed",
-      "predicate": "measured_by",
-      "to": "eb:measure:reports-posted-within-3-days"
-    },
-    {
-      "id": "rel:problems-corrected-measured-by-open-recommendations",
-      "from": "eb:outcome:problems-corrected",
-      "predicate": "measured_by",
-      "to": "eb:measure:open-recommendations"
-    },
-    {
-      "id": "rel:problems-corrected-measured-by-reports-awaiting-decision",
-      "from": "eb:outcome:problems-corrected",
-      "predicate": "measured_by",
-      "to": "eb:measure:reports-awaiting-decision"
-    },
-    {
-      "id": "rel:concerns-raised-safely-measured-by-time-to-route",
-      "from": "eb:outcome:concerns-raised-safely",
-      "predicate": "measured_by",
-      "to": "eb:measure:time-to-route"
-    },
-    {
-      "id": "rel:concerns-raised-safely-measured-by-retaliation-found",
-      "from": "eb:outcome:concerns-raised-safely",
-      "predicate": "measured_by",
-      "to": "eb:measure:retaliation-found"
-    },
-    {
       "id": "rel:complaint-allegation-disclosure-intake-contributes-to-fraud-waste-abuse-prevented",
       "from": "eb:capability:complaint-allegation-disclosure-intake",
       "predicate": "contributes_to",
@@ -1553,38 +1501,28 @@
           "candidateMappings": [
             {
               "answerValue": "semiannual-statistics",
-              "elementId": "eb:measure:questioned-costs",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:fraud-waste-abuse-prevented",
+              "interpretation": "The office already tracks “Questioned and unsupported costs” and “Investigative results”, so there may be a value for today."
             },
             {
               "answerValue": "semiannual-statistics",
-              "elementId": "eb:measure:funds-put-to-better-use",
-              "interpretation": "The office tracks this already, so there may be a value for today."
-            },
-            {
-              "answerValue": "semiannual-statistics",
-              "elementId": "eb:measure:investigative-results",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:effective-programs",
+              "interpretation": "The office already tracks “Funds recommended for better use”, so there may be a value for today."
             },
             {
               "answerValue": "recommendation-status",
-              "elementId": "eb:measure:open-recommendations",
-              "interpretation": "The office tracks this already, so there may be a value for today."
-            },
-            {
-              "answerValue": "recommendation-status",
-              "elementId": "eb:measure:reports-awaiting-decision",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:problems-corrected",
+              "interpretation": "The office already tracks “Open recommendations” and “Reports awaiting a management decision”, so there may be a value for today."
             },
             {
               "answerValue": "report-posting",
-              "elementId": "eb:measure:reports-posted-within-3-days",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:leaders-congress-informed",
+              "interpretation": "The office already tracks “Reports posted within 3 days”, so there may be a value for today."
             },
             {
               "answerValue": "intake-times",
-              "elementId": "eb:measure:time-to-route",
-              "interpretation": "The office tracks this already, so there may be a value for today."
+              "elementId": "eb:outcome:concerns-raised-safely",
+              "interpretation": "The office already tracks “Time to review and route a matter”, so there may be a value for today."
             }
           ]
         },

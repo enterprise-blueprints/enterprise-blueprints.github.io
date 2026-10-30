@@ -58,26 +58,26 @@
         - none: None of these regularly
       points:
         - when: lead-time
-          to: measure:procurement-lead-time
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:needs-met-on-time
+          why: The office already tracks “Procurement administrative lead time (PALT)”, so there may be a value for today.
         - when: competition
-          to: [ measure:competed-obligations-share, measure:single-offer-awards ]
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:full-open-competition
+          why: The office already tracks “Share of obligations competed” and “Competitions with only one offer”, so there may be a value for today.
         - when: evaluations
-          to: measure:performance-evaluations-on-time
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:contracts-perform-as-agreed
+          why: The office already tracks “Performance evaluations completed on time”, so there may be a value for today.
         - when: prompt-payment
-          to: [ measure:proper-invoices-paid-on-time, measure:interest-penalties-paid ]
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:invoices-paid-on-time
+          why: The office already tracks “Invoices paid on time” and “Prompt Payment interest paid”, so there may be a value for today.
         - when: closeout
-          to: measure:contracts-overdue-for-closeout
-          why: The office tracks this already, so there may be a value for today.
+          to: outcome:contracts-closed-on-time
+          why: The office already tracks “Contracts overdue for closeout”, so there may be a value for today.
     - id: acquisition-lead-time-start
       prompt: Does the office know how long requests wait before a solicitation is issued?
       kind: boolean
       points:
         - when: false
-          to: [ capability:acquisition-planning-market-research, measure:procurement-lead-time ]
+          to: [ capability:acquisition-planning-market-research, outcome:needs-met-on-time ]
           why: The official lead time starts at the solicitation, so time spent before it, often the longest part, can go unseen.
 
 - id: acquisition-operations

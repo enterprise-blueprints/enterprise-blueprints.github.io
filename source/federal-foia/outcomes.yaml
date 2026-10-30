@@ -4,34 +4,66 @@
   title: Requests are answered within the time the law allows
   description: Requesters get a determination within 20 working days, or within the extension the law allows in unusual circumstances, and requests that qualify for expedited processing move faster.
   sources: [ foia-statute, doj-foia-guide ]
-  measured_by: [ request-processing-time, requests-within-20-days ]
+  measures:
+    - id: request-processing-time
+      title: Time to process requests
+      description: The median and average number of days to process simple, complex, and expedited requests, with the lowest and highest. Annual FOIA reports include these figures.
+      sources: [ foia-statute, oip-annual-report-handbook ]
+    - id: requests-within-20-days
+      title: Requests answered within 20 working days
+      description: The share of processed requests answered within 20 working days. Annual FOIA reports group response times in 20-day bands.
+      sources: [ foia-statute, oip-annual-report-handbook ]
 
 - id: backlog-kept-small
   title: Overdue requests don’t pile up
   description: Few requests and appeals are still open past their legal deadline, and the oldest ones get closed.
   sources: [ oip-annual-report-handbook, oip-backlog-guidance ]
-  measured_by: [ backlogged-requests, oldest-pending-requests ]
+  measures:
+    - id: backlogged-requests
+      title: Backlogged requests
+      description: Requests still pending at the end of the fiscal year beyond the time the law allows, compared with the number received that year. The Department of Justice suggests keeping it below 10% of requests received.
+      sources: [ oip-annual-report-handbook, oip-backlog-guidance ]
+    - id: oldest-pending-requests
+      title: Age of the oldest pending requests
+      description: How long the agency’s ten oldest pending requests and ten oldest pending appeals have been open. Annual FOIA reports list them.
+      sources: [ foia-statute, oip-annual-report-handbook ]
 
 - id: records-released-as-allowed
   title: Records are released unless the law calls for withholding
   description: Requesters get every record, and every reasonably segregable part of one, that the law allows. Information is withheld only under an exemption where release would foreseeably harm a protected interest, or where law prohibits release, and each withholding is marked.
   sources: [ foia-statute, doj-foia-guide ]
-  measured_by: [ request-dispositions ]
+  measures:
+    - id: request-dispositions
+      title: How requests are resolved
+      description: The number of requests granted in full, granted in part, and denied, with how often each exemption was used. Annual FOIA reports include these figures.
+      sources: [ foia-statute, oip-annual-report-handbook ]
 
 - id: frequently-requested-posted
   title: Records people often ask for are posted without a request
   description: The agency posts the records the law requires it to make available, including records released 3 or more times, so people can find them without filing a request.
   sources: [ foia-statute, doj-foia-guide, oip-chief-foia-officer-guidelines ]
-  measured_by: [ records-posted-proactively ]
+  measures:
+    - id: records-posted-proactively
+      title: Records posted proactively
+      description: The records made available online without a request, including frequently requested records. Annual FOIA reports count them, and Chief FOIA Officer reports describe them.
+      sources: [ foia-statute, oip-chief-foia-officer-guidelines ]
 
 - id: requesters-helped
   title: Requesters can get help and resolve disputes
   description: Requesters can reach a FOIA Public Liaison with concerns, appeal an adverse determination, and turn to OGIS mediation instead of going to court.
   sources: [ foia-statute, ogis ]
-  measured_by: [ appeal-processing-time ]
+  measures:
+    - id: appeal-processing-time
+      title: Time to decide appeals
+      description: The median and average number of days to decide administrative appeals, against the 20 working days the law allows, and how the appeals came out. Annual FOIA reports include these figures.
+      sources: [ foia-statute, oip-annual-report-handbook ]
 
 - id: foia-performance-public
   title: The program’s performance is open to view
   description: The Attorney General, OGIS, Congress, and the public can see how the agency’s FOIA program is doing through its annual, quarterly, and Chief FOIA Officer reports and their data.
   sources: [ foia-statute, oip-chief-foia-officer-guidelines, foia-gov ]
-  measured_by: [ annual-report-on-time ]
+  measures:
+    - id: annual-report-on-time
+      title: Annual FOIA report on time
+      description: Whether the annual FOIA report reaches the Attorney General and OGIS by February 1, and is posted online with its raw data.
+      sources: [ foia-statute ]

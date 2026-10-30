@@ -4,40 +4,76 @@
   title: Funding is open to everyone eligible and fairly reviewed
   description: Funding opportunities are posted on Grants.gov with enough time to apply, generally at least 60 days, and applications are reviewed on their merits against criteria the notice describes.
   sources: [ uniform-guidance, grants-gov ]
-  measured_by: [ opportunities-open-60-days ]
+  measures:
+    - id: opportunities-open-60-days
+      title: Funding opportunities open at least 60 days
+      description: The share of the year’s funding opportunities that stayed open for applications at least 60 calendar days, the period the Uniform Guidance generally expects.
+      sources: [ uniform-guidance, grants-gov ]
 
 - id: awards-to-capable-recipients
   title: Awards go to eligible recipients able to manage them
   description: Before each award, the agency checks the applicant’s eligibility and integrity records and the risk it poses, and sets conditions where the risk calls for them.
   sources: [ uniform-guidance, sam-gov, do-not-pay ]
-  measured_by: [ awards-with-risk-review ]
+  measures:
+    - id: awards-with-risk-review
+      title: Awards with a documented risk review
+      description: The share of new awards whose file shows the eligibility, integrity, and risk checks done before the award, and any conditions they led to.
+      sources: [ uniform-guidance, sam-gov ]
 
 - id: funds-used-as-allowed
   title: Funds are paid as needed and used as the award allows
   description: Recipients get funds when their work needs them, and payments that shouldn’t have been made are prevented, or found and recovered.
   sources: [ uniform-guidance, payment-integrity-31-usc-3352, payment-accuracy ]
-  measured_by: [ improper-payment-rate, improper-payments-recovered ]
+  measures:
+    - id: improper-payment-rate
+      title: Improper payment rate
+      description: For programs at risk of significant improper payments, the estimated share of payments that were improper or couldn’t be verified. Agencies report it each year, and PaymentAccuracy.gov publishes it.
+      sources: [ payment-integrity-31-usc-3352, payment-accuracy ]
+    - id: improper-payments-recovered
+      title: Improper payments recovered
+      description: The amount of identified overpayments recovered, compared with the amount identified for recovery.
+      sources: [ payment-integrity-31-usc-3352, payment-accuracy ]
 
 - id: program-results-achieved
   title: Awards achieve what they were made for
   description: Recipients report their progress on schedule, the agency reviews it against the award’s goals, and problems are caught while there’s time to fix them.
   sources: [ uniform-guidance ]
-  measured_by: [ performance-reports-on-time ]
+  measures:
+    - id: performance-reports-on-time
+      title: Performance reports received on time
+      description: The share of required performance reports received by their due date, which is 30 days after a quarterly or semiannual period, or 90 days after an annual one.
+      sources: [ uniform-guidance ]
 
 - id: audit-findings-resolved
   title: Audit findings are resolved promptly
   description: The agency decides what each audit finding about its awards requires within six months, and follows up until the recipient has corrected it.
   sources: [ uniform-guidance, federal-audit-clearinghouse ]
-  measured_by: [ management-decisions-on-time ]
+  measures:
+    - id: management-decisions-on-time
+      title: Management decisions within six months
+      description: The share of audit findings about the agency’s awards that got a management decision within six months of the Federal Audit Clearinghouse accepting the audit report.
+      sources: [ uniform-guidance, federal-audit-clearinghouse ]
 
 - id: awards-closed-on-time
   title: Awards are closed out on time
   description: Recipients send their final reports within 120 days after the period of performance ends, and the agency closes each award within a year, returning unspent funds.
   sources: [ uniform-guidance, gone-act ]
-  measured_by: [ awards-closed-within-a-year, expired-awards-open ]
+  measures:
+    - id: awards-closed-within-a-year
+      title: Awards closed within a year
+      description: The share of awards whose period of performance ended that were closed out within one year.
+      sources: [ uniform-guidance ]
+    - id: expired-awards-open
+      title: Expired awards not yet closed
+      description: The number of awards whose period of performance ended 2 years ago or more that are still open, and their undisbursed balances.
+      sources: [ gone-act ]
 
 - id: spending-public
   title: The spending is open to view
   description: Each award, and recipients’ first-tier subawards, are reported for publication on USAspending.gov, so the public can see who receives federal funds and for what.
   sources: [ usaspending, award-reporting-2-cfr-170 ]
-  measured_by: [ awards-published ]
+  measures:
+    - id: awards-published
+      title: Awards published on USAspending.gov
+      description: The share of the agency’s financial assistance awards that appear on USAspending.gov with complete, accurate data, and how soon after the award they appear.
+      sources: [ usaspending ]

@@ -35,7 +35,8 @@ export interface PackageSource {
 /** "capabilities" → "capability", for element files named after their type's section. */
 const typeOfSection = Object.fromEntries(Object.entries(elementTypes).map(([type, info]) => [info.section, type]));
 const PACKAGE_KEYS = ['schemaVersion', 'packageId', 'title', 'description', 'publisher', 'license', 'domain', 'jurisdictions', 'tags', 'dependencies'];
-const ELEMENT_KEYS = ['id', 'title', 'description', 'status', 'replacedBy', 'sources', 'tags', 'jurisdictions', 'applicabilityNotes', 'attributes'];
+const ELEMENT_KEYS = ['id', 'title', 'description', 'status', 'replacedBy', 'sources', 'tags', 'jurisdictions', 'applicabilityNotes', 'attributes', 'measures'];
+const MEASURE_KEYS = ['id', 'title', 'description', 'sources'];
 const LINK_KEYS = ['to', 'note', 'sources', 'id', 'coverage', 'way'];
 
 // Written out in full, since Node runs this file without compiling it.
@@ -159,6 +160,21 @@ export function compilePackage(src: PackageSource, deps: Record<string, Resolved
     if (raw.jurisdictions) e.jurisdictions = raw.jurisdictions as string[];
     if (raw.applicabilityNotes) e.applicabilityNotes = raw.applicabilityNotes as string;
     if (raw.attributes) e.attributes = raw.attributes as Record<string, unknown>;
+    // An outcome's measures are written under it and published in its attributes.
+    if (raw.measures !== undefined) {
+      if (type !== 'outcome') problems.push(`${where}: only an outcome has measures`);
+      const measures = (Array.isArray(raw.measures) ? raw.measures : []) as Raw[];
+      for (const m of measures) for (const key of Object.keys(m)) if (!MEASURE_KEYS.includes(key)) problems.push(`${where}: unknown field "${key}" in a measure`);
+      e.attributes = {
+        ...e.attributes,
+        measures: measures.map((m) => ({
+          id: m.id,
+          title: m.title,
+          description: m.description,
+          ...(m.sources ? { sourceIds: strings(m.sources).map((s) => `src:${s}`) } : {}),
+        })),
+      };
+    }
     return e;
   });
 
