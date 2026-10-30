@@ -4,10 +4,11 @@
 // Each package's source is a folder of YAML under source/<package>/:
 // package.yaml, sources.yaml, one file per element type (capabilities.yaml,
 // patterns.yaml, …) listing its elements in order with their links, links.yaml
-// for links from other packages' elements, and discovery.yaml. A package's
-// version is never written by hand: when its source no longer matches its
-// published version, it gets the next one, and so does every package that
-// builds on it. A version that isn't published yet is rebuilt in place.
+// for links from other packages' elements, and discovery.yaml. The library is
+// released as one version: every package in a release has its version and
+// builds on the others at that version. Versions are never written by hand:
+// when any source no longer matches the published release, every package
+// gets the next one. A release that isn't published yet is rebuilt in place.
 
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -298,9 +299,8 @@ export function describeChange(before: BlueprintPackage, after: BlueprintPackage
   const rb = rel(before), ra = rel(after);
   const linksChanged = [...ra].filter((r) => !rb.has(r)).length + [...rb].filter((r) => !ra.has(r)).length;
   if (linksChanged) parts.push('links changed');
-  const pins = (p: BlueprintPackage) => new Map((p.dependencies ?? []).map((d) => [d.packageId, d.version]));
-  const pb = pins(before);
-  for (const [id, v] of pins(after)) if (pb.get(id) !== v) parts.push(`builds on ${id.split('.').at(-1)} ${v}`);
+  const builds = (p: BlueprintPackage) => (p.dependencies ?? []).map((d) => d.packageId).join(' ');
+  if (builds(before) !== builds(after)) parts.push('builds on other packages');
   if (!equal(before.assessments, after.assessments)) parts.push('discovery questions changed');
   if (!equal(before.sources, after.sources)) parts.push('sources changed');
   const meta = (p: BlueprintPackage) => [p.title, p.description, p.tags, p.jurisdictions, p.domain, p.license, p.publisher, p.schemaVersion];
@@ -312,69 +312,78 @@ const nextMinor = (v: string) => {
   const [major, minor] = v.split('.').map(Number);
   return `${major}.${minor + 1}.0`;
 };
+const newest = (versions: string[]) => [...versions].sort(compareVersions).at(-1);
 
 export interface Step {
   name: string;
-  /** The version the pages will show. */
+  /** The version in the release: the release's own, or a retired package's last. */
   version: string;
   /** The package to write as content/<name>/<version>/blueprint.json, when it changed. */
   write?: BlueprintPackage;
   /** Unpublished versions that are no longer needed. */
   remove: string[];
+  /** No source any more, so it isn't in the release. Its published versions stay. */
+  retired?: boolean;
   reason: string;
 }
 
 /**
- * Decides each package's version, packages that others build on first. A
- * package whose source matches its latest published version stays on it. One
- * that doesn't gets a version after it: the unpublished one already there,
- * rebuilt, or the next minor version.
+ * Decides the release. When the sources match the newest published release,
+ * every package stays on it. Otherwise every package gets the next release:
+ * the unpublished one already there, rebuilt, or the minor version after the
+ * newest published one. A package in content/ with no source is retired.
  */
 export function plan(
   sources: PackageSource[],
-  versionsOf: (name: string) => Record<string, BlueprintPackage>,
+  content: Record<string, Record<string, BlueprintPackage>>,
   isPublished: (name: string, version: string) => boolean,
   today: string,
 ): Step[] {
-  const byName = new Map(sources.map((s) => [s.name, s]));
-  const order: PackageSource[] = [];
-  const visiting = new Set<string>();
-  const visit = (s: PackageSource) => {
-    if (order.includes(s)) return;
-    if (visiting.has(s.name)) throw new SourceError([`source/${s.name}: packages build on each other in a loop`]);
-    visiting.add(s.name);
+  const names = sources.map((s) => s.name);
+  for (const s of sources) {
     for (const d of s.dependencies) {
-      const dep = byName.get(d);
-      if (!dep) throw new SourceError([`source/${s.name}/package.yaml: builds on "${d}", which isn't a package under source/`]);
-      visit(dep);
+      if (!names.includes(d)) throw new SourceError([`source/${s.name}/package.yaml: builds on "${d}", which isn't a package under source/`]);
     }
-    order.push(s);
-  };
-  sources.forEach(visit);
+  }
+  const have = (name: string) => content[name] ?? {};
+  const all = Object.keys(content).flatMap((name) => Object.keys(have(name)).map((version) => ({ name, version })));
+  const release = newest(all.filter((v) => isPublished(v.name, v.version)).map((v) => v.version));
+  const drafts = (name: string) => Object.keys(have(name)).filter((v) => !isPublished(name, v));
+  const pins = (version: string) => Object.fromEntries(sources.map((s) => [s.name, { packageId: s.meta.packageId as string, version }]));
+  const build = (src: PackageSource, version: string, date: string) => compilePackage(src, pins(version), version, date);
+  const retired = Object.keys(content)
+    .filter((name) => !names.includes(name))
+    .map((name): Step => ({ name, version: newest(Object.keys(have(name))) ?? '', remove: drafts(name), retired: true, reason: 'retired, with its published versions kept' }));
 
-  const resolved: Record<string, Resolved> = {};
-  return order.map((src) => {
-    const have = versionsOf(src.name);
-    const sorted = Object.keys(have).sort(compareVersions);
-    const published = sorted.filter((v) => isPublished(src.name, v)).at(-1);
-    const drafts = sorted.filter((v) => !isPublished(src.name, v) && (!published || compareVersions(v, published) > 0));
-    const build = (version: string, date: string) => compilePackage(src, resolved, version, date);
-    const done = (step: Step): Step => {
-      resolved[src.name] = { packageId: src.meta.packageId as string, version: step.version };
-      return step;
-    };
+  const inRelease = release ? all.filter((v) => v.version === release && isPublished(v.name, v.version)).map((v) => v.name) : [];
+  const unchanged =
+    release &&
+    inRelease.length === names.length &&
+    sources.every((src) => inRelease.includes(src.name) && sameContent(build(src, release, have(src.name)[release].publishedAt), have(src.name)[release]));
+  if (unchanged) {
+    return [
+      ...sources.map((src): Step => {
+        const remove = drafts(src.name);
+        return { name: src.name, version: release, remove, reason: remove.length ? `back to ${release}, as published` : 'unchanged' };
+      }),
+      ...retired,
+    ];
+  }
 
-    if (published && sameContent(build(published, have[published].publishedAt), have[published])) {
-      return done({ name: src.name, version: published, remove: drafts, reason: drafts.length ? `back to ${published}, as published` : 'unchanged' });
-    }
-    const draft = drafts.at(-1);
-    const version = draft ?? (published ? nextMinor(published) : '0.1.0');
-    const others = drafts.filter((v) => v !== version);
-    if (draft && sameContent(build(draft, have[draft].publishedAt), have[draft])) {
-      return done({ name: src.name, version: draft, remove: others, reason: 'unpublished, up to date' });
-    }
-    const pkg = build(version, today);
-    const reason = published ? describeChange(have[published], pkg) : 'new package';
-    return done({ name: src.name, version, write: pkg, remove: others, reason });
-  });
+  const version = newest(all.filter((v) => !isPublished(v.name, v.version) && (!release || compareVersions(v.version, release) > 0)).map((v) => v.version)) ?? (release ? nextMinor(release) : '0.1.0');
+  return [
+    ...sources.map((src): Step => {
+      const remove = drafts(src.name).filter((v) => v !== version);
+      const draft = isPublished(src.name, version) ? undefined : have(src.name)[version];
+      if (draft && sameContent(build(src, version, draft.publishedAt), draft)) return { name: src.name, version, remove, reason: 'unpublished, up to date' };
+      const pkg = build(src, version, today);
+      const last = newest(Object.keys(have(src.name)).filter((v) => isPublished(src.name, v)));
+      const before = last && have(src.name)[last];
+      // Each release builds on its own packages, so the versions it builds on don't count as a change.
+      const own = before && sameContent({ ...before, dependencies: pkg.dependencies }, pkg);
+      const reason = !before ? 'new package' : own ? 'no changes of its own' : describeChange(before, pkg);
+      return { name: src.name, version, write: pkg, remove, reason };
+    }),
+    ...retired,
+  ];
 }

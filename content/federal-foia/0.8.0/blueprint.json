@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.3.0",
   "packageId": "org.enterprise-blueprints.federal-foia",
-  "version": "0.6.0",
+  "version": "0.8.0",
   "title": "FOIA Program — Public Access to Agency Records",
   "description": "U.S. federal Freedom of Information Act program blueprint: one mission with the outcomes it seeks and ways to measure them, seven capabilities with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for FOIA results and for request processing. It builds on Common Capabilities for case management, records, identity and access, and data protection.",
   "publisher": {
@@ -24,7 +24,7 @@
   "dependencies": [
     {
       "packageId": "org.enterprise-blueprints.common",
-      "version": "0.6.0"
+      "version": "0.8.0"
     }
   ],
   "sources": [

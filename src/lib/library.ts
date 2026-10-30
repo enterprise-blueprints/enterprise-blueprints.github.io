@@ -1,8 +1,10 @@
 // Loads every package version under content/<name>/<version>/, validates it,
-// and indexes the latest version of each package for the pages. Earlier
-// versions stay published exactly as they were. A package can build on
-// another, such as a mission package on the common one, and point at its
-// elements. Any validation problem stops the build.
+// and indexes the current release for the pages: the packages at the newest
+// version, which build on each other at that version. Earlier versions stay
+// published exactly as they were, and so do the versions of a package that
+// was retired. A package can build on another, such as a mission package on
+// the common one, and point at its elements. Any validation problem stops the
+// build.
 
 import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
 import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, type ElementTypeInfo } from './vocabulary';
@@ -30,7 +32,7 @@ export interface PackageFile {
   name: string;
   text: string;
   data: BlueprintPackage;
-  /** True for the newest version of its package, the one the pages show. */
+  /** True for a package in the current release, the version the pages show. */
   latest: boolean;
 }
 
@@ -69,19 +71,18 @@ function load(): PackageFile[] {
     list.sort((a, b) => compareVersions(a.data.version, b.data.version));
   }
 
-  // The pages show the latest version of everything, so a latest version builds on latest versions.
-  for (const list of versions.values()) {
-    const pkg = list.at(-1)!.data;
+  // The pages show the current release, whose packages build on each other at its version.
+  const release = loaded.map((f) => f.data.version).sort(compareVersions).at(-1);
+  const current = [...versions.values()].map((list) => list.at(-1)!.data).filter((pkg) => pkg.version === release);
+  for (const pkg of current) {
     for (const d of pkg.dependencies ?? []) {
-      const newest = [...versions.values()].find((l) => l[0].data.packageId === d.packageId)?.at(-1)?.data.version;
-      if (newest && newest !== d.version) errors.push(`${pkg.packageId} ${pkg.version} builds on ${d.packageId} ${d.version}, but the latest is ${newest}`);
+      if (d.version !== release) errors.push(`${pkg.packageId} ${pkg.version} builds on ${d.packageId} ${d.version}, not on the release`);
     }
   }
 
   // Element IDs are unique across the packages the pages show.
   const seen = new Map<string, string>();
-  for (const list of versions.values()) {
-    const pkg = list.at(-1)!.data;
+  for (const pkg of current) {
     for (const e of pkg.elements) {
       const other = seen.get(e.id);
       if (other) errors.push(`element ${e.id} is defined in both ${other} and ${pkg.packageId}`);
@@ -92,13 +93,15 @@ function load(): PackageFile[] {
   if (errors.length) {
     throw new Error(`Blueprint package validation failed:\n  ${errors.join('\n  ')}`);
   }
-  return [...versions.values()].flatMap((list) => list.map((f, i) => ({ ...f, latest: i === list.length - 1 })));
+  return [...versions.values()].flatMap((list) => list.map((f) => ({ ...f, latest: f.data.version === release })));
 }
 
 /** Every package version, oldest first within each package. */
 export const packageFiles = load();
-/** The latest version of each package. */
+/** The packages in the current release. */
 export const packages = packageFiles.filter((f) => f.latest).map((f) => f.data);
+/** The current release's version, which every package in it has. */
+export const release = packages[0]?.version;
 
 export const elements: LibraryElement[] = packages.flatMap((pkg) =>
   pkg.elements.map((e) => {

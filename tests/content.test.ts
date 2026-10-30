@@ -2,29 +2,29 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { compilePackage, parseSource, plan, readSources, sameContent, SourceError, type PackageSource } from '../src/lib/compile';
+import { compareVersions } from '../src/lib/format';
 import type { BlueprintPackage } from '../src/lib/package';
 
-const versionsOf = (name: string): Record<string, BlueprintPackage> => {
-  const dir = join('content', name);
-  if (!existsSync(dir)) return {};
-  return Object.fromEntries(readdirSync(dir).map((v) => [v, JSON.parse(readFileSync(join(dir, v, 'blueprint.json'), 'utf8'))]));
-};
+const content: Record<string, Record<string, BlueprintPackage>> = Object.fromEntries(
+  readdirSync('content').map((name) => [
+    name,
+    Object.fromEntries(readdirSync(join('content', name)).map((v) => [v, JSON.parse(readFileSync(join('content', name, v, 'blueprint.json'), 'utf8'))])),
+  ]),
+);
+const release = Object.values(content).flatMap((versions) => Object.keys(versions)).sort(compareVersions).at(-1);
 
 describe('the source files', () => {
-  it('compile to the latest version of every package, so content/ is up to date', () => {
-    const steps = plan(readSources('source'), versionsOf, () => true, '2026-10-29');
-    expect(steps.map((s) => [s.name, s.version, s.reason])).toEqual([
-      ['common', '0.6.0', 'unchanged'],
-      ['federal-acquisition', '0.3.0', 'unchanged'],
-      ['federal-foia', '0.6.0', 'unchanged'],
-      ['federal-grants', '0.4.0', 'unchanged'],
-      ['federal-oig', '0.8.0', 'unchanged'],
-      ['solutions', '0.5.0', 'unchanged'],
-    ]);
+  it('compile to the current release, so content/ is up to date', () => {
+    const steps = plan(readSources('source'), content, () => true, '2026-10-29');
+    const live = steps.filter((s) => !s.retired);
+    expect(live.map((s) => s.name)).toEqual(readdirSync('source'));
+    for (const s of live) expect([s.name, s.version, s.reason]).toEqual([s.name, release, 'unchanged']);
   });
 
-  it('cover every package in content/', () => {
-    expect(readdirSync('source').sort()).toEqual(readdirSync('content').sort());
+  it('leave packages without a source out of the release, as retired', () => {
+    for (const name of readdirSync('content').filter((n) => !existsSync(join('source', n)))) {
+      expect(Object.keys(content[name]), name).not.toContain(release);
+    }
   });
 });
 
@@ -115,32 +115,48 @@ describe('plan', () => {
     expect(sameContent(pkg, swapped)).toBe(false);
   });
 
-  it('gives a changed package its next version, and bumps the packages that build on it', () => {
-    const files: Record<string, Record<string, BlueprintPackage>> = {
-      shared: { '0.1.0': at(shared(), '0.1.0') },
-      mission: { '0.1.0': at(mission(), '0.1.0') },
-    };
+  it('releases every package at the next version when any one changes, each building on the others at it', () => {
+    const files = { shared: { '0.1.0': at(shared(), '0.1.0') }, mission: { '0.1.0': at(mission(), '0.1.0') } };
     const changed = shared({ 'capabilities.yaml': '- id: tracking\n  title: Tracking\n  description: Track work, now with deadlines.\n' });
-    const steps = plan([mission(), changed], (n) => files[n], published(['shared@0.1.0', 'mission@0.1.0']), '2026-10-29');
+    const steps = plan([changed, mission()], files, published(['shared@0.1.0', 'mission@0.1.0']), '2026-10-29');
     expect(steps.map((s) => [s.name, s.version, Boolean(s.write), s.reason])).toEqual([
       ['shared', '0.2.0', true, '1 element edited'],
-      ['mission', '0.2.0', true, 'builds on shared 0.2.0'],
+      ['mission', '0.2.0', true, 'no changes of its own'],
     ]);
     expect(steps[1].write!.dependencies).toEqual([{ packageId: 'eb.shared', version: '0.2.0' }]);
     expect(steps[0].write!.publishedAt).toBe('2026-10-29');
   });
 
-  it('rebuilds an unpublished version in place, and drops one that is no longer needed', () => {
+  it('stays on the published release when nothing changed', () => {
+    const v2 = { shared: { packageId: 'eb.shared', version: '0.2.0' } };
+    const files = { shared: { '0.2.0': at(shared(), '0.2.0') }, mission: { '0.2.0': at(mission(), '0.2.0', v2) } };
+    const steps = plan([shared(), mission()], files, () => true, '2026-10-29');
+    expect(steps.map((s) => [s.name, s.version, Boolean(s.write), s.reason])).toEqual([
+      ['shared', '0.2.0', false, 'unchanged'],
+      ['mission', '0.2.0', false, 'unchanged'],
+    ]);
+  });
+
+  it('rebuilds an unpublished release in place, and drops one that is no longer needed', () => {
     const files = { shared: { '0.1.0': at(shared(), '0.1.0'), '0.2.0': at(shared(), '0.2.0') } };
     const edited = shared({ 'capabilities.yaml': '- id: tracking\n  title: Tracking\n  description: Edited again.\n' });
-    const rebuilt = plan([edited], (n) => files[n as 'shared'], published(['shared@0.1.0']), '2026-10-29');
+    const rebuilt = plan([edited], files, published(['shared@0.1.0']), '2026-10-29');
     expect(rebuilt.map((s) => [s.version, Boolean(s.write), s.remove])).toEqual([['0.2.0', true, []]]);
     // Back as published: the unpublished 0.2.0 goes.
-    const back = plan([shared()], (n) => files[n as 'shared'], published(['shared@0.1.0']), '2026-10-29');
+    const back = plan([shared()], files, published(['shared@0.1.0']), '2026-10-29');
     expect(back.map((s) => [s.version, Boolean(s.write), s.remove, s.reason])).toEqual([['0.1.0', false, ['0.2.0'], 'back to 0.1.0, as published']]);
   });
 
-  it('starts a new package at 0.1.0', () => {
-    expect(plan([shared()], () => ({}), () => false, '2026-10-29').map((s) => [s.version, s.reason])).toEqual([['0.1.0', 'new package']]);
+  it('retires a package whose source is gone, keeping its published versions, in a new release', () => {
+    const files = { shared: { '0.1.0': at(shared(), '0.1.0') }, mission: { '0.1.0': at(mission(), '0.1.0'), '0.2.0': at(mission(), '0.2.0') } };
+    const steps = plan([shared()], files, published(['shared@0.1.0', 'mission@0.1.0']), '2026-10-29');
+    expect(steps.map((s) => [s.name, s.version, Boolean(s.write), s.remove, Boolean(s.retired)])).toEqual([
+      ['shared', '0.2.0', true, [], false],
+      ['mission', '0.2.0', false, ['0.2.0'], true],
+    ]);
+  });
+
+  it('starts a new library at 0.1.0', () => {
+    expect(plan([shared()], {}, () => false, '2026-10-29').map((s) => [s.version, s.reason])).toEqual([['0.1.0', 'new package']]);
   });
 });

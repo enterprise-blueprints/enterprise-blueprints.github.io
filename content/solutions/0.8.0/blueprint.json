@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.3.0",
   "packageId": "org.enterprise-blueprints.solutions",
-  "version": "0.5.0",
+  "version": "0.8.0",
   "title": "Example Solutions — Patterns Combined Across an Agency",
   "description": "Example solutions that combine implementation patterns from the mission packages and Common Capabilities to support an agency with an Office of Inspector General, a FOIA program, grant programs, and a contracting office: one built on the agency’s shared platform, one with purpose-built systems for each office, and one in between.",
   "publisher": {
@@ -22,7 +22,7 @@
   "dependencies": [
     {
       "packageId": "org.enterprise-blueprints.common",
-      "version": "0.6.0"
+      "version": "0.8.0"
     },
     {
       "packageId": "org.enterprise-blueprints.federal-oig",
@@ -30,15 +30,15 @@
     },
     {
       "packageId": "org.enterprise-blueprints.federal-foia",
-      "version": "0.6.0"
+      "version": "0.8.0"
     },
     {
       "packageId": "org.enterprise-blueprints.federal-grants",
-      "version": "0.4.0"
+      "version": "0.8.0"
     },
     {
       "packageId": "org.enterprise-blueprints.federal-acquisition",
-      "version": "0.3.0"
+      "version": "0.8.0"
     }
   ],
   "elements": [

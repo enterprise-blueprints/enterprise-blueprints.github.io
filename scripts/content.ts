@@ -3,8 +3,9 @@
 //   pnpm content:build   write each package whose source changed, at its next version
 //   pnpm content:check   fail if content/ is behind source/, writing nothing
 //
-// A version is published once it's on origin/main, and never changes after
-// that. A version built since then is rebuilt in place until it's pushed.
+// The library is released as one version. A release is published once it's
+// on origin/main, and never changes after that. A release built since then is
+// rebuilt in place until it's pushed.
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -18,15 +19,13 @@ if (mode !== 'build' && mode !== 'check') {
   process.exit(2);
 }
 
-const versionsOf = (name: string): Record<string, BlueprintPackage> => {
-  const dir = join('content', name);
-  if (!existsSync(dir)) return {};
-  return Object.fromEntries(
-    readdirSync(dir)
-      .filter((v) => existsSync(join(dir, v, 'blueprint.json')))
-      .map((v) => [v, JSON.parse(readFileSync(join(dir, v, 'blueprint.json'), 'utf8'))]),
-  );
-};
+const content: Record<string, Record<string, BlueprintPackage>> = Object.fromEntries(
+  readdirSync('content').map((name) => {
+    const dir = join('content', name);
+    const versions = readdirSync(dir).filter((v) => existsSync(join(dir, v, 'blueprint.json')));
+    return [name, Object.fromEntries(versions.map((v) => [v, JSON.parse(readFileSync(join(dir, v, 'blueprint.json'), 'utf8'))]))];
+  }),
+);
 
 // Checking reads every version in content/ as published; building asks Git which are.
 let isPublished = (_name: string, _version: string) => true;
@@ -45,7 +44,7 @@ if (mode === 'build') {
 const today = new Date().toLocaleDateString('en-CA');
 let steps;
 try {
-  steps = plan(readSources('source'), versionsOf, isPublished, today);
+  steps = plan(readSources('source'), content, isPublished, today);
 } catch (e) {
   if (e instanceof SourceError) {
     console.error(e.message);
@@ -56,11 +55,9 @@ try {
 
 const behind = steps.filter((s) => s.write || s.remove.length);
 for (const s of steps) {
-  const what = s.write ? (versionsOf(s.name)[s.version] ? 'rebuilt' : 'new') : 'stays on';
-  console.log(`${s.name.padEnd(14)} ${what.padEnd(8)} ${s.version.padEnd(7)} ${s.reason}`);
+  const what = s.retired ? 'retired' : s.write ? (content[s.name]?.[s.version] ? 'rebuilt' : 'new') : 'stays on';
+  console.log(`${s.name.padEnd(20)} ${what.padEnd(8)} ${s.version.padEnd(7)} ${s.reason}`);
 }
-const orphans = readdirSync('content').filter((name) => !steps.some((s) => s.name === name));
-for (const name of orphans) console.log(`${name.padEnd(14)} no source; content/${name}/ is left as it is`);
 
 if (mode === 'check') {
   if (behind.length) {

@@ -1,4 +1,6 @@
+import { readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { compareVersions } from '../src/lib/format';
 import { catalog, vocabulary } from '../src/lib/publish';
 import { packages } from '../src/lib/library';
 
@@ -26,42 +28,15 @@ describe('vocabulary', () => {
 });
 
 describe('catalog', () => {
-  it('lists every version and marks only the newest of each package as latest', () => {
-    const versions = catalog().packages.map((p) => [p.packageId.split('.').at(-1), p.version, p.latest]);
-    expect(versions).toEqual([
-      ['common', '0.1.0', false],
-      ['common', '0.2.0', false],
-      ['common', '0.3.0', false],
-      ['common', '0.4.0', false],
-      ['common', '0.5.0', false],
-      ['common', '0.6.0', true],
-      ['federal-acquisition', '0.1.0', false],
-      ['federal-acquisition', '0.2.0', false],
-      ['federal-acquisition', '0.3.0', true],
-      ['federal-foia', '0.1.0', false],
-      ['federal-foia', '0.2.0', false],
-      ['federal-foia', '0.3.0', false],
-      ['federal-foia', '0.4.0', false],
-      ['federal-foia', '0.5.0', false],
-      ['federal-foia', '0.6.0', true],
-      ['federal-grants', '0.1.0', false],
-      ['federal-grants', '0.2.0', false],
-      ['federal-grants', '0.3.0', false],
-      ['federal-grants', '0.4.0', true],
-      ['federal-oig', '0.1.0', false],
-      ['federal-oig', '0.2.0', false],
-      ['federal-oig', '0.3.0', false],
-      ['federal-oig', '0.4.0', false],
-      ['federal-oig', '0.5.0', false],
-      ['federal-oig', '0.6.0', false],
-      ['federal-oig', '0.7.0', false],
-      ['federal-oig', '0.8.0', true],
-      ['solutions', '0.1.0', false],
-      ['solutions', '0.2.0', false],
-      ['solutions', '0.3.0', false],
-      ['solutions', '0.4.0', false],
-      ['solutions', '0.5.0', true],
-    ]);
+  it('lists every version, and marks the packages in the current release as latest', () => {
+    const { packages: listed, release } = catalog();
+    expect(release).toMatch(/^\d+\.\d+\.\d+$/);
+    for (const id of new Set(listed.map((p) => p.packageId))) {
+      const versions = listed.filter((p) => p.packageId === id).map((p) => p.version);
+      expect(versions, id).toEqual([...versions].sort(compareVersions));
+      const latest = listed.filter((p) => p.packageId === id && p.latest).map((p) => p.version);
+      expect(latest, id).toEqual(versions.at(-1) === release ? [release] : []);
+    }
   });
 
   it('publishes every schema version, the newest as the current one', () => {
@@ -74,7 +49,8 @@ describe('catalog', () => {
     expect(catalog().schema).toBe('schemas/blueprint-package-0.4.0.schema.json');
   });
 
-  it('shows the latest version of each package on the pages', () => {
-    expect(packages.map((p) => `${p.packageId.split('.').at(-1)} ${p.version}`)).toEqual(['common 0.6.0', 'federal-acquisition 0.3.0', 'federal-foia 0.6.0', 'federal-grants 0.4.0', 'federal-oig 0.8.0', 'solutions 0.5.0']);
+  it('shows the current release on the pages, one package for each source folder', () => {
+    expect(packages.map((p) => p.packageId.split('.').at(-1))).toEqual(readdirSync('source'));
+    expect(new Set(packages.map((p) => p.version))).toEqual(new Set([catalog().release]));
   });
 });

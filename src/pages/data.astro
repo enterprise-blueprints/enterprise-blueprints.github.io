@@ -1,6 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import { published, schemaPath, schemas, vocabulary } from '../lib/publish';
+import { release } from '../lib/library';
+
+// The current release first, then every earlier version, newest first.
+const current = published.filter((p) => p.latest);
+const earlier = published.filter((p) => !p.latest).reverse();
 import { formatDate } from '../lib/format';
 import { href } from '../lib/paths';
 ---
@@ -10,10 +15,14 @@ import { href } from '../lib/paths';
       <h1>Data</h1>
       <p class="lede">
         Every page on this site is generated from versioned JSON packages. You can download them for your own
-        tools, and each one has a SHA-256 digest you can check.
+        tools, and each one has a SHA-256 digest you can check. The library is released as a whole, so every
+        package in a release has its version. This is release {release}.
       </p>
     </header>
 
+    {[current, earlier].map((list, i) => (
+    <>
+    {i === 1 && <h2 class="earlier">Earlier versions</h2>}
     <div class="table-wrap">
       <table class="stack-table">
         <thead>
@@ -26,7 +35,7 @@ import { href } from '../lib/paths';
           </tr>
         </thead>
         <tbody>
-          {published.map((p) => (
+          {list.map((p) => (
             <tr>
               <th scope="row">
                 {p.data.title}
@@ -47,12 +56,15 @@ import { href } from '../lib/paths';
         </tbody>
       </table>
     </div>
+    </>
+    ))}
 
     <div class="prose">
       <h2>Catalog</h2>
       <p>
         <a href={href('catalog.json')}><code>catalog.json</code></a> lists every published version of every
-        package, with its license and digest, and marks the latest. Its <code>href</code> values are relative to the catalog's own address, so tools
+        package, with its license and digest. Its <code>release</code> names the current release, whose packages it marks
+        <code>latest</code>. Its <code>href</code> values are relative to the catalog's own address, so tools
         can find each package from the catalog alone.
       </p>
       <h2>Vocabulary</h2>
@@ -93,6 +105,7 @@ import { href } from '../lib/paths';
 <style>
   th[scope='row'] { min-width: 16rem; }
   .prose { margin-top: 2.5rem; }
+  .earlier { margin: 2.5rem 0 1rem; font-size: 1.25rem; }
   .digest { margin: .3rem 0 0; font-size: .8125rem; font-weight: 400; color: var(--text-muted); }
   .digest code { font-size: .75rem; }
   .latest { margin-left: .4rem; padding: .05rem .45rem; border-radius: 999px; font-size: .75rem; background: var(--surface-muted); color: var(--text-muted); }

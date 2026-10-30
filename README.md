@@ -15,7 +15,7 @@ Requires Node 22.12 or newer and pnpm.
 ```bash
 pnpm install
 pnpm dev            # http://localhost:4321
-pnpm content:build  # build content/ from source/, giving changed packages their next version
+pnpm content:build  # build content/ from source/, as the next release when anything changed
 pnpm content:check  # fail if content/ is behind source/
 pnpm check          # type-check
 pnpm test           # validator and source tests
@@ -36,8 +36,8 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
 - `source/<package>/` is what people edit: YAML files that describe one package. `pnpm content:build`
   turns them into the published files below.
 - `content/<package>/<version>/blueprint.json` holds each package version as published: its sources,
-  elements, relations, and discovery questions. The pages show the latest version of each package; every
-  version stays published. These files are built, not edited by hand.
+  elements, relations, and discovery questions. The pages show the current release; every version stays
+  published. These files are built, not edited by hand.
 - `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
   `dependencies`. 0.3.0 checks the attributes of patterns and solutions and adds `coverage` to candidate
   patterns. 0.4.0 adds a pattern's `ways` to source it and north stars, with `way` on links. Every
@@ -58,7 +58,7 @@ Every build publishes these files next to the pages:
 
 | Path | What it is |
 | --- | --- |
-| `catalog.json` | Every published package version with its license and SHA-256 digest, the latest marked `latest: true`. Its `href` values are relative to the catalog. |
+| `catalog.json` | Every published package version with its license and SHA-256 digest. `release` names the current release, and its packages are marked `latest: true`. Its `href` values are relative to the catalog. |
 | `vocabulary.json` | The element types and relationships, with labels, definitions, and each type's page address. |
 | `packages/<name>/<version>/blueprint.json` | A package, byte for byte as stored in `content/`. |
 | `packages/<name>/<version>/blueprint.json.sha256` | The package digest, in `sha256sum -c` format. |
@@ -105,11 +105,13 @@ A bare key names an element of the type the link reaches. Write `type:key`, such
 anywhere else an element is named. A link's `note` becomes the relation's `description`. Relation IDs are
 generated; an `id` on a link keeps an older one.
 
-**Versions are automatic.** A version is published once it's on `origin/main`, and it never changes after
-that. When a package's source no longer matches its latest published version, `pnpm content:build` writes the
-next minor version, and the next version of every package that builds on it, pinned to the new one. Until that
-version is pushed, building again rewrites it in place, and undoing the change removes it. Tools that pinned an
-old digest keep working, and the deploy refuses a build that changes a live version.
+**One release, one version.** The library is released as a whole: every package in a release has the
+release's version and builds on the others at that version. A release is published once it's on `origin/main`,
+and it never changes after that. When any source no longer matches the published release, `pnpm content:build`
+writes the next minor version of every package. Until that release is pushed, building again rewrites it in
+place, and undoing the change removes it. Deleting a package's source folder retires it: it isn't in the next
+release, and its published versions stay. Tools that pinned an old digest keep working, and the deploy refuses
+a build that changes a live version.
 
 **Discovery questions** live in `discovery.yaml`, as sets of questions. Options are written `value: label`. A
 choice or yes-or-no answer can point to elements through `points`, each group naming the answers (`when`), the
@@ -165,14 +167,14 @@ solution, it shows its patterns by role, and it must include everything its patt
 chose.
 
 To add a package, create `source/<name>/package.yaml` with its own `packageId`, add its files, and run
-`pnpm content:build`; it starts at 0.1.0. Element IDs are unique across all packages: each element is defined
+`pnpm content:build`; it joins the next release. Element IDs are unique across all packages: each element is defined
 once.
 
 **Shared elements.** A package with `schemaVersion` 0.2.0 can list `dependencies`. Its links and discovery
 answers can then point at those packages' elements, so a mission package uses the common capabilities instead
-of repeating them. Every link still has at least one end in the package itself. The latest version of a package
-builds on the latest version of each dependency, since the pages show only the latest versions;
-`pnpm content:build` keeps the pins up to date. An element's page lists the other packages that use it.
+of repeating them. Every link still has at least one end in the package itself. A package builds on the others
+in its own release, and `pnpm content:build` writes the pins. An element's page lists the other packages that
+use it.
 
 ## Deploy
 

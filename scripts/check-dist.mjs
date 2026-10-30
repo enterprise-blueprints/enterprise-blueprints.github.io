@@ -64,10 +64,13 @@ for (const entry of catalog.packages) {
   const digestFile = readFileSync(`${file}.sha256`, 'utf8');
   if (digestFile !== `${entry.sha256}  blueprint.json\n`) errors.push(`${entry.href}.sha256 doesn't match the catalog`);
 }
+// The packages in the current release are marked latest, at its version. A retired package has none.
 for (const id of new Set(catalog.packages.map((p) => p.packageId))) {
   const latest = catalog.packages.filter((p) => p.packageId === id && p.latest);
-  if (latest.length !== 1) errors.push(`catalog: ${id} has ${latest.length} versions marked latest`);
+  if (latest.length > 1) errors.push(`catalog: ${id} has ${latest.length} versions marked latest`);
+  if (latest.some((p) => p.version !== catalog.release)) errors.push(`catalog: ${id} is marked latest at a version other than the release, ${catalog.release}`);
 }
+if (!catalog.packages.some((p) => p.latest)) errors.push('catalog: no package is in the current release');
 if (!(catalog.schemas ?? []).includes(catalog.schema)) errors.push(`catalog: schema ${catalog.schema} isn't in its list of schemas`);
 for (const schema of catalog.schemas ?? []) {
   const source = join('schemas', schema.split('/').at(-1));

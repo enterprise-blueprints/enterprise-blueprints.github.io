@@ -9,7 +9,7 @@ import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json?raw';
 import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json?raw';
 import schema030 from '../../schemas/blueprint-package-0.3.0.schema.json?raw';
 import schema040 from '../../schemas/blueprint-package-0.4.0.schema.json?raw';
-import { packageFiles, type PackageFile } from './library';
+import { packageFiles, release, type PackageFile } from './library';
 import type { BlueprintPackage } from './package';
 import { href } from './paths';
 import { elementTypes, patternApproaches, patternFields, patternRoles, solutionKinds, predicates, sourceKinds, statuses } from './vocabulary';
@@ -44,6 +44,8 @@ export function catalog() {
     // The newest package date, not the build time, so the same content
     // always produces the same catalog.
     generatedAt: published.map((p) => p.data.publishedAt).sort().at(-1),
+    // The library's current release: every package marked latest has this version.
+    release,
     schema: schemaPath,
     schemas: schemas.map((s) => s.path),
     vocabulary: 'vocabulary.json',
