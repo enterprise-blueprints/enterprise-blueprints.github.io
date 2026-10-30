@@ -724,7 +724,7 @@
         "src:doj-foia-guide"
       ],
       "attributes": {
-        "role": "processing",
+        "role": "data-records",
         "parts": [
           "Searches across mailboxes, chats, and shared files by person, terms, and date range",
           "Deduplication and email threading before review",
@@ -767,7 +767,7 @@
         "src:foia-gov"
       ],
       "attributes": {
-        "role": "public-facing",
+        "role": "connections",
         "parts": [
           "A connection in the agency’s FOIA system that implements the portal’s agency API",
           "A mapping from the portal’s fields to the agency’s request record",

@@ -205,7 +205,7 @@
   description: "An example architecture: the contract writing system sends each contract action report to SAM.gov through its system-to-system connection when the award is signed, flags reports still in draft or error, and lists contracts whose subcontract reports are missing."
   sources: [ far, sam-gov, usaspending ]
   attributes:
-    role: processing
+    role: connections
     parts:
       - A connection from the contract writing system to SAM.gov’s contract data reporting service
       - A report for each action, confirmed by the contracting officer before the award is released
@@ -232,7 +232,7 @@
   description: "An example architecture: vendors send invoices through Treasury’s Invoice Processing Platform, each invoice is matched to its order and routed for acceptance, and the agency’s financial system pays it by the due date, with status visible to the vendor throughout."
   sources: [ invoice-processing-platform, prompt-payment-31-usc-3903 ]
   attributes:
-    role: processing
+    role: connections
     parts:
       - Vendor enrollment in IPP, with orders sent from the agency’s financial or contract writing system
       - Invoices matched to the order and its line items
@@ -262,7 +262,7 @@
   description: "An example architecture: each contract that needs evaluations is registered in CPARS from the contract data, with its assessing officials and due dates, and reminders go to them and their managers until each evaluation is done."
   sources: [ cpars, far ]
   attributes:
-    role: business-applications
+    role: connections
     parts:
       - Registration of each contract that needs evaluations, from the contract writing system or SAM.gov data
       - Assessing officials and reviewing officials named for each contract

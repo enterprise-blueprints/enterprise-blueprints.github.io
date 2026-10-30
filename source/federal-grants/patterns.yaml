@@ -172,7 +172,7 @@
   description: "An example architecture: the agency’s grants system connects to Grants.gov’s system-to-system service, so funding opportunities are posted and applications arrive as records with their forms and attachments, instead of being downloaded by hand."
   sources: [ grants-gov, uniform-guidance ]
   attributes:
-    role: public-facing
+    role: connections
     parts:
       - A connection in the agency’s grants system to Grants.gov’s system-to-system service
       - Posting of funding opportunities from the grants system
@@ -200,7 +200,7 @@
   description: "An example architecture: the agency enrolls each recipient in ASAP.gov, funds an account for each award from its financial system, and recipients draw down funds as they need them, within the controls the agency sets."
   sources: [ asap-gov, uniform-guidance ]
   attributes:
-    role: processing
+    role: connections
     parts:
       - Recipient enrollment in ASAP.gov, with their banking details kept by Treasury
       - An account for each award, funded from the agency’s financial system as the award is obligated
@@ -261,7 +261,7 @@
   description: "An example architecture: the grants system produces the agency’s financial assistance award data on a schedule, checks it against the agency’s financial records, and submits it for publication on USAspending.gov, with errors sent back to the staff who can fix them."
   sources: [ usaspending, award-reporting-2-cfr-170 ]
   attributes:
-    role: processing
+    role: connections
     parts:
       - An extract of new awards and changes from the grants system, on a schedule
       - Checks against the agency’s financial records before each submission

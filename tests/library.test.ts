@@ -91,7 +91,7 @@ describe('solutions', () => {
   it('lay out their patterns by layer, follow their principles, and say why each pattern is there', () => {
     for (const m of missions) {
       const s = solutionFor(m)!;
-      expect(s.roles.map((g) => g.role), slug(m)).toEqual(expect.arrayContaining(['public-facing', 'business-applications', 'worker-productivity', 'infrastructure']));
+      expect(s.roles.map((g) => g.role), slug(m)).toEqual(expect.arrayContaining(['business-applications', 'worker-productivity', 'data-records', 'security-identity']));
       expect(s.principles.length, slug(m)).toBeGreaterThanOrEqual(5);
       for (const g of s.roles) for (const i of g.items) expect(i.note, slug(i.pattern)).toBeTruthy();
       expect(s.patterns.map(slug), slug(m)).toContain('agency-sign-on');
@@ -118,7 +118,7 @@ describe('solutions', () => {
 
   it('group a mission’s patterns by layer', () => {
     const groups = byRole(missionBlueprint(get('eb:mission:public-access-to-agency-records')).patterns, (p) => p);
-    expect(groups.map((g) => g.label)).toEqual(['Public facing', 'Business applications', 'Worker productivity', 'Processing service', 'AI and insights', 'Infrastructure']);
+    expect(groups.map((g) => g.label)).toEqual(['Public facing', 'AI and insights', 'Business applications', 'Worker productivity', 'Connections', 'Data and records', 'Security and identity']);
   });
 });
 
@@ -215,7 +215,7 @@ describe('the index pages', () => {
   });
 
   it('group patterns by role, and name each measure’s outcome and each requirement’s capability', () => {
-    expect(indexGroups('implementationPattern').map((g) => g.id)).toEqual(['public-facing', 'business-applications', 'worker-productivity', 'processing', 'ai-insights', 'infrastructure']);
+    expect(indexGroups('implementationPattern').map((g) => g.id)).toEqual(['public-facing', 'ai-insights', 'business-applications', 'worker-productivity', 'connections', 'data-records', 'security-identity']);
     for (const type of ['measure', 'requirement']) {
       const parents = indexParents(type)!;
       for (const e of elementsOfType(type)) expect(parents.get(e.id)?.package, e.id).toBe(e.package);

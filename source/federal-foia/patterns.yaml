@@ -87,7 +87,7 @@
   description: "An example architecture: the agency’s eDiscovery tools search mailboxes and other collections by people, terms, and dates, set aside duplicates and thread email conversations, and send what’s found to review, with each search recorded."
   sources: [ ogis-search-technology, doj-foia-guide ]
   attributes:
-    role: processing
+    role: data-records
     parts:
       - Searches across mailboxes, chats, and shared files by person, terms, and date range
       - Deduplication and email threading before review
@@ -118,7 +118,7 @@
   description: "An example architecture: the agency’s FOIA system receives requests submitted on FOIA.gov through the portal’s agency API, so each one arrives as a request record with its fields filled in, instead of as an email to retype."
   sources: [ foia-gov-developer, foia-statute, foia-gov ]
   attributes:
-    role: public-facing
+    role: connections
     parts:
       - A connection in the agency’s FOIA system that implements the portal’s agency API
       - A mapping from the portal’s fields to the agency’s request record

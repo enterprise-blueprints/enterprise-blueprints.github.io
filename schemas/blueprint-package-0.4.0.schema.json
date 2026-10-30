@@ -539,11 +539,12 @@
         "role": {
           "enum": [
             "public-facing",
+            "ai-insights",
             "business-applications",
             "worker-productivity",
-            "processing",
-            "ai-insights",
-            "infrastructure"
+            "connections",
+            "data-records",
+            "security-identity"
           ],
           "description": "The layer of a solution the pattern belongs to."
         },

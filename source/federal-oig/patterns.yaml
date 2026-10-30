@@ -283,7 +283,7 @@
   description: "An example architecture: secure storage for investigations’ digital evidence, such as forensic images, video, and large email collections, with each item linked to its case and a record of everyone who handled it."
   sources: [ cigie-investigation-standards ]
   attributes:
-    role: processing
+    role: data-records
     parts:
       - Storage for large files, such as forensic images and video, kept apart from everyday systems
       - Each item linked to its case, with where and when it was collected

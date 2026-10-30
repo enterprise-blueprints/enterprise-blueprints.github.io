@@ -1026,7 +1026,7 @@
         "src:usaspending"
       ],
       "attributes": {
-        "role": "processing",
+        "role": "connections",
         "parts": [
           "A connection from the contract writing system to SAM.gov’s contract data reporting service",
           "A report for each action, confirmed by the contracting officer before the award is released",
@@ -1065,7 +1065,7 @@
         "src:prompt-payment-31-usc-3903"
       ],
       "attributes": {
-        "role": "processing",
+        "role": "connections",
         "parts": [
           "Vendor enrollment in IPP, with orders sent from the agency’s financial or contract writing system",
           "Invoices matched to the order and its line items",
@@ -1106,7 +1106,7 @@
         "src:far"
       ],
       "attributes": {
-        "role": "business-applications",
+        "role": "connections",
         "parts": [
           "Registration of each contract that needs evaluations, from the contract writing system or SAM.gov data",
           "Assessing officials and reviewing officials named for each contract",

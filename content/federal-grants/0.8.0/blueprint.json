@@ -810,7 +810,7 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "role": "public-facing",
+        "role": "connections",
         "parts": [
           "A connection in the agency’s grants system to Grants.gov’s system-to-system service",
           "Posting of funding opportunities from the grants system",
@@ -850,7 +850,7 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "role": "processing",
+        "role": "connections",
         "parts": [
           "Recipient enrollment in ASAP.gov, with their banking details kept by Treasury",
           "An account for each award, funded from the agency’s financial system as the award is obligated",
@@ -935,7 +935,7 @@
         "src:award-reporting-2-cfr-170"
       ],
       "attributes": {
-        "role": "processing",
+        "role": "connections",
         "parts": [
           "An extract of new awards and changes from the grants system, on a schedule",
           "Checks against the agency’s financial records before each submission",
