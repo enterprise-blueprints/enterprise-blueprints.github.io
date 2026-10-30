@@ -62,14 +62,14 @@ describe('validatePackage', () => {
     for (const pkg of [common010, common020, common030, common040]) expect(validatePackage(pkg), pkg.version).toEqual([]);
   });
 
-  it('has one mission, five capabilities, eleven requirements, eight patterns (one replaced), and a solution in the OIG package', () => {
+  it('has one mission, five capabilities, eleven requirements, and eight patterns (one replaced) in the OIG package', () => {
     const counts = Object.groupBy(original.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.capability).toHaveLength(5);
     expect(counts.implementationPattern).toHaveLength(8);
     expect(counts.implementationPattern!.filter((p) => p.status === 'deprecated').map((p) => p.replacedBy)).toEqual(['eb:implementationPattern:audit-management-system']);
     expect(counts.requirement).toHaveLength(11);
-    expect(counts.solution!.map((s) => s.id)).toEqual(['eb:solution:oig-north-star']);
+    expect(counts.solution).toBeUndefined();
   });
 
   it('has one mission, six outcomes, seven capabilities, and seven patterns in the FOIA package', () => {
@@ -226,33 +226,17 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
   });
 });
 
-describe('solutions', () => {
+describe('missions', () => {
   const missions = [original, foia, grants, acquisition];
   const patterns = [original, common, foia, grants, acquisition].flatMap((p) => ofType(p, 'implementationPattern'));
   const roleOf = (id: string) => patterns.find((p) => p.id === id)!.attributes!.role;
 
-  it('are one in each mission package, supporting its own mission, with principles and what to watch for', () => {
-    for (const pkg of missions) {
-      const [s, ...others] = ofType(pkg, 'solution');
-      expect(others, pkg.packageId).toEqual([]);
-      expect(pkg.relations.filter((r) => r.from === s.id && r.predicate === 'supports').map((r) => r.to), s.id).toEqual(ofType(pkg, 'mission').map((m) => m.id));
-      expect(Object.keys(s.attributes!).sort(), s.id).toEqual(['principles', 'watchFor']);
-      const included = pkg.relations.filter((r) => r.from === s.id && r.predicate === 'includes');
-      expect(included.filter((r) => roleOf(r.to) === 'business-applications').length, s.id).toBeGreaterThanOrEqual(1);
-      for (const r of included) expect(r.description, r.id).toBeTruthy();
-    }
-    expect(ofType(common, 'solution')).toEqual([]);
+  it('list the principles their architecture follows', () => {
+    for (const pkg of missions) for (const m of ofType(pkg, 'mission')) expect((m.attributes!.principles as string[]).length, m.id).toBeGreaterThanOrEqual(5);
   });
 
   it('give every pattern in the library a layer', () => {
     for (const p of patterns) expect(roleOf(p.id), p.id).toBeTruthy();
-  });
-
-  it('reject a solution that includes something other than a pattern', () => {
-    const pkg = structuredClone(original);
-    const r = pkg.relations.find((r) => r.predicate === 'includes')!;
-    r.to = 'eb:capability:case-management';
-    expect(validatePackage(pkg, resolve).join('\n')).toContain(`"includes" can't link solution`);
   });
 });
 
@@ -416,51 +400,39 @@ describe('versions', () => {
   });
 });
 
-describe('solutions and ways to source a pattern (schema 0.4.0)', () => {
-  const star = 'eb:solution:oig-north-star';
+describe('missions, measures, and ways to source a pattern (schema 0.4.0)', () => {
   const caseSystem = 'eb:implementationPattern:oversight-intake-case-tracking';
-  const withStar = (change: (pkg: BlueprintPackage) => void) => {
+  const hotline = 'eb:implementationPattern:confidential-hotline-intake';
+  const check = (change: (pkg: BlueprintPackage) => void) => {
     const pkg = structuredClone(original);
     change(pkg);
     return validatePackage(pkg, resolve).join('\n');
   };
-  const include = (pkg: BlueprintPackage, to: string) => pkg.relations.find((r) => r.from === star && r.predicate === 'includes' && r.to === to)!;
 
-  it('accept the OIG solution, with a way chosen for its logical patterns', () => {
+  it('accept the OIG package, with a need of one way only', () => {
     expect(validatePackage(original, resolve)).toEqual([]);
-    expect(include(original, caseSystem)).toMatchObject({ way: 'product' });
+    expect(original.relations.find((r) => r.from === caseSystem && r.predicate === 'depends_on')).toMatchObject({ way: 'agency-platform' });
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
-    ['a way the pattern doesn’t have', (p) => (include(p, caseSystem).way = 'spreadsheets'), `${caseSystem} has no way "spreadsheets"`],
+    ['a solution', (p) => p.elements.push({ id: 'eb:solution:x', type: 'solution', title: 'X', description: 'X.' }), 'there are no solutions'],
     [
-      'a way whose need it leaves out',
-      (p) => (include(p, caseSystem).way = 'agency-platform'),
-      `includes ${caseSystem}, which needs eb:implementationPattern:shared-case-platform, but not`,
+      'a need none of the mission’s capabilities points to',
+      (p) => p.relations.push({ id: 'rel:x', from: hotline, predicate: 'depends_on', to: 'eb:implementationPattern:audit-workpapers-collaboration' }),
+      `${hotline} needs eb:implementationPattern:audit-workpapers-collaboration, but none of the mission's capabilities points to it`,
     ],
-    ['two missions', (p) => p.relations.push({ id: 'rel:x', from: star, predicate: 'supports', to: 'eb:mission:public-access-to-agency-records' }), 'supports 2 missions, not one'],
-    ['another package’s mission', (p) => (p.relations.find((r) => r.from === star && r.predicate === 'supports')!.to = 'eb:mission:public-access-to-agency-records'), "isn't a mission of this package"],
-    [
-      'a second solution for the mission',
-      (p) => {
-        p.elements.push({ ...p.elements.find((e) => e.id === star)!, id: 'eb:solution:another' });
-        p.relations.push({ id: 'rel:another', from: 'eb:solution:another', predicate: 'supports', to: 'eb:mission:independent-government-oversight' });
-      },
-      'has two solutions',
-    ],
-    ['a kind of solution', (p) => (p.elements.find((e) => e.id === star)!.attributes!.kind = 'north-star'), 'must NOT have additional properties'],
+    ['a need of a way the pattern doesn’t have', (p) => (p.relations.find((r) => r.from === caseSystem && r.predicate === 'depends_on')!.way = 'spreadsheets'), `${caseSystem} has no way "spreadsheets"`],
+    ['a way on something else', (p) => (p.relations.find((r) => r.predicate === 'satisfies')!.way = 'product'), 'only depends_on names a way'],
+    ['principles that aren’t statements', (p) => (p.elements.find((e) => e.type === 'mission')!.attributes!.principles = 'Be independent'), '/attributes/principles must be array'],
     ['a measure as an element of its own', (p) => p.elements.push({ id: 'eb:measure:x', type: 'measure', title: 'X', description: 'X.' }), 'a measure is part of its outcome'],
     ['a measure that cites an unknown source', (p) => ((p.elements.find((e) => e.type === 'outcome')!.attributes!.measures as { sourceIds: string[] }[])[0].sourceIds = ['src:missing']), 'cites unknown source src:missing'],
     ['a measure without a title', (p) => delete (p.elements.find((e) => e.type === 'outcome')!.attributes!.measures as { title?: string }[])[0].title, "must have required property 'title'"],
-    ['a way on something else', (p) => (p.relations.find((r) => r.predicate === 'satisfies')!.way = 'product'), 'only includes and depends_on name a way'],
   ])('reject %s', (_, change, message) => {
-    expect(withStar(change)).toContain(message);
+    expect(check(change)).toContain(message);
   });
 
   it('need every pattern to have at least one way', () => {
-    const hotline = 'eb:implementationPattern:confidential-hotline-intake';
-    expect(withStar((p) => delete (p.elements.find((e) => e.id === hotline)!.attributes as Record<string, unknown>).ways)).toContain("must have required property 'ways'");
-    expect(withStar((p) => (p.elements.find((e) => e.id === hotline)!.attributes!.ways = []))).toContain('/ways must NOT have fewer than 1 items');
+    expect(check((p) => delete (p.elements.find((e) => e.id === hotline)!.attributes as Record<string, unknown>).ways)).toContain("must have required property 'ways'");
+    expect(check((p) => (p.elements.find((e) => e.id === hotline)!.attributes!.ways = []))).toContain('/ways must NOT have fewer than 1 items');
   });
 });
-

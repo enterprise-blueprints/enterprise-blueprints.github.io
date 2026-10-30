@@ -8,6 +8,14 @@
     tagline: Public access to agency records
     sector: public-sector
     scope: US-federal-FOIA
+    principles:
+      - Each request is one record from receipt to final response, with every letter and decision in it
+      - The system keeps FOIA’s clock, with its tracks, working days, pauses, and extensions
+      - Requests from FOIA.gov arrive as records, without retyping
+      - Records are reviewed and redacted in one place, with each redaction marked with its exemption
+      - Records people ask for again and again are posted without waiting for the next request
+      - The annual report comes from the system of record, not from spreadsheets
+      - AI suggests redactions, and staff decide
   seeks:
     - to: requests-answered-on-time
       id: foia-public-access-to-agency-records-seeks-requests-answered-on-time

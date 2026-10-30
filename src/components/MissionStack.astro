@@ -7,17 +7,14 @@
 // up what it connects to in the other bands and shows it under the item; each
 // row links to its page.
 import StackItem from './StackItem.astro';
-import { byRole, patternDetails, shortTitle, type LibraryElement, type MissionBlueprint, type SolutionView } from '../lib/library';
+import { byRole, patternDetails, shortTitle, type LibraryElement, type MissionBlueprint } from '../lib/library';
 import { plural } from '../lib/format';
 
 interface Props {
   blueprint: MissionBlueprint;
-  /** The mission's solution, if it has one. */
-  solution?: SolutionView;
 }
 
-const { blueprint, solution } = Astro.props;
-const solutions = solution ? [solution] : [];
+const { blueprint } = Astro.props;
 const { outcomes, capabilities, measures, requirements, patterns } = blueprint;
 const own = capabilities.filter((c) => !c.sharedFrom);
 const shared = capabilities.filter((c) => c.sharedFrom);
@@ -36,14 +33,6 @@ for (const c of capabilities) {
   for (const r of c.requirements) link(c.capability.id, r.id);
   for (const p of c.patterns) link(c.capability.id, p.id);
 }
-// A solution, for this mission: the patterns it includes, and the capabilities they cover.
-const solutionRows = solutions.map((s) => {
-  const coverage = s.coverage.find((c) => c.mission.package === (outcomes[0]?.outcome.package ?? capabilities[0]?.capability.package));
-  const included = patterns.filter((p) => s.patterns.includes(p));
-  for (const p of included) link(s.solution.id, p.id);
-  for (const c of [...(coverage?.covered ?? []), ...(coverage?.partly ?? [])]) link(s.solution.id, c.id);
-  return { ...s, included, covered: [...(coverage?.covered ?? []), ...(coverage?.partly ?? [])], uncovered: coverage?.uncovered ?? [] };
-});
 // What each requirement and pattern belongs to.
 const satisfiedBy = (id: string) => capabilities.filter((c) => c.requirements.some((r) => r.id === id)).map((c) => c.capability);
 const candidateFor = (id: string) => capabilities.filter((c) => c.patterns.some((p) => p.id === id)).map((c) => c.capability);
@@ -197,33 +186,6 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
         );
       })}
 
-    {solutionRows.length > 0 && (
-      <li class="bp-band type-solution">
-        <details class="bp-band__details" open data-collapsible>
-          <summary class="bp-band__label">
-            <h3 class="bp-band__name">Solution</h3>
-            <span class="bp-band__count">North star</span>
-            <span class="bp-band__lit" data-lit-count hidden></span>
-          </summary>
-          <div class="bp-band__body">
-            <p class="bp-role__hint">The long-term architecture this library recommends. Select it to see its patterns and what it covers.</p>
-            <ul class="bp-items">
-              {solutionRows.map((s) => (
-                <StackItem
-                  element={s.solution}
-                  meta={`${plural(s.included.length, 'pattern', 'patterns')} here · covers ${s.covered.length} of ${s.covered.length + s.uncovered.length} capabilities`}
-                  below={[
-                    { heading: 'Patterns it includes', elements: s.included },
-                    { heading: 'No pattern in it yet for', elements: s.uncovered },
-                  ]}
-                  {...node(s.solution.id)}
-                />
-              ))}
-            </ul>
-          </div>
-        </details>
-      </li>
-    )}
   </ol>
 </section>
 

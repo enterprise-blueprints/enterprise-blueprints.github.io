@@ -181,7 +181,15 @@
       "attributes": {
         "tagline": "Acquiring goods and services for the government",
         "sector": "public-sector",
-        "scope": "US-federal-acquisition"
+        "scope": "US-federal-acquisition",
+        "principles": [
+          "Each acquisition is one record from the program office’s request to closeout",
+          "Clauses come from rules the contracting office keeps current as the FAR changes",
+          "Contract data reaches SAM.gov, CPARS, and the financial system without retyping",
+          "Vendors submit offers through one secure portal, and offers open only after the deadline",
+          "Every offeror gets the same SAM.gov checks the agency uses for grants applicants",
+          "AI drafts and analytics inform, and contracting officers decide"
+        ]
       }
     },
     {
@@ -1231,27 +1239,6 @@
           }
         ]
       }
-    },
-    {
-      "id": "eb:solution:acquisition-north-star",
-      "type": "solution",
-      "title": "Acquisition North Star",
-      "description": "The long-term architecture this library recommends for a contracting office: one acquisition system that carries each acquisition from the program office’s request to closeout, with a secure proposal portal, contract data that reaches SAM.gov, CPARS, and the financial system without retyping, invoices through Treasury, and analytics and AI drafting on top.",
-      "status": "reference",
-      "attributes": {
-        "principles": [
-          "Each acquisition is one record from the program office’s request to closeout",
-          "Clauses come from rules the contracting office keeps current as the FAR changes",
-          "Contract data reaches SAM.gov, CPARS, and the financial system without retyping",
-          "Vendors submit offers through one secure portal, and offers open only after the deadline",
-          "Every offeror gets the same SAM.gov checks the agency uses for grants applicants",
-          "AI drafts and analytics inform, and contracting officers decide"
-        ],
-        "watchFor": [
-          "Clause rules need an owner while the FAR overhaul is under way",
-          "For buys the agency rarely makes, another agency’s contracting office can still be the better way"
-        ]
-      }
     }
   ],
   "relations": [
@@ -1767,98 +1754,6 @@
       "from": "eb:implementationPattern:contract-spend-analytics",
       "predicate": "works_with",
       "to": "eb:implementationPattern:acquisition-management"
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-agency-sign-on",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:agency-sign-on",
-      "description": "Staff sign in through the agency, with roles the contracting office administers."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-vendor-proposal-portal",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:vendor-proposal-portal",
-      "description": "Offers and questions land with the solicitation they answer in the acquisition system."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-acquisition-management",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:acquisition-management",
-      "way": "product",
-      "description": "A contract writing product, so clause logic, approvals, and SAM.gov reporting come built in."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-records-aware-collaboration",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:records-aware-collaboration",
-      "description": "Where program offices and contracting staff draft and collaborate, with records and sensitivity labels applied."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-acquisition-ai-drafting",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:acquisition-ai-drafting",
-      "description": "Drafts that program offices and contracting staff start from, using the agency’s templates."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-sam-gov-entity-checks",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:sam-gov-entity-checks",
-      "description": "The acquisition system checks each offeror’s registration, exclusions, and responsibility records before award."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-contract-data-to-sam",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:contract-data-to-sam",
-      "description": "The acquisition system sends each contract action report to SAM.gov when the award is signed."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-invoices-through-ipp",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:invoices-through-ipp",
-      "description": "Vendors invoice against the awards in the acquisition system, and acceptance is routed to the program office."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-cpars-from-contract-data",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:cpars-from-contract-data",
-      "description": "Contracts registered in CPARS from the acquisition system’s records, with their evaluation dates."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-records-in-business-systems",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:records-in-business-systems",
-      "way": "built-in",
-      "description": "The acquisition system keeps each contract file on its records schedule."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-contract-spend-analytics",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:contract-spend-analytics",
-      "description": "Brings the acquisition system’s data together with spending, invoices, and evaluations."
-    },
-    {
-      "id": "rel:acquisition-north-star-includes-agency-security-monitoring",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:agency-security-monitoring",
-      "description": "The acquisition system and proposal portal send their logs to the agency."
-    },
-    {
-      "id": "rel:acquisition-north-star-supports-acquiring-goods-and-services",
-      "from": "eb:solution:acquisition-north-star",
-      "predicate": "supports",
-      "to": "eb:mission:acquiring-goods-and-services"
     },
     {
       "id": "rel:case-management-contributes-to-needs-met-on-time",

@@ -56,12 +56,13 @@ export const elementTypes: Record<string, ElementTypeInfo> = {
     section: 'patterns',
     definition: 'An example approach that might realize a capability.',
   },
+  // Packages before schema 0.4.0 only. Since then, a mission's own patterns are its architecture.
   solution: {
     label: 'Solution',
     plural: 'Solutions',
     navLabel: 'Solutions',
     section: 'solutions',
-    definition: 'The long-term architecture the library recommends for a mission: its patterns by layer, with a way chosen to source each one.',
+    definition: 'An example of how several patterns could fit together to support an agency’s missions.',
   },
 };
 
@@ -122,8 +123,8 @@ export const predicates: Record<string, PredicateInfo> = {
   supports: {
     from: ['solution'],
     to: ['mission'],
-    outgoing: 'Mission it supports',
-    incoming: 'Solution',
+    outgoing: 'Missions it supports',
+    incoming: 'Example solutions',
   },
   // How patterns fit together, since schema 0.3.0: one can't work without
   // the other, or the two are often used together.

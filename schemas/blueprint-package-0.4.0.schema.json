@@ -223,25 +223,6 @@
           "if": {
             "properties": {
               "type": {
-                "const": "solution"
-              }
-            },
-            "required": [
-              "type"
-            ]
-          },
-          "then": {
-            "properties": {
-              "attributes": {
-                "$ref": "#/$defs/solutionAttributes"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "type": {
                 "const": "outcome"
               }
             },
@@ -253,6 +234,25 @@
             "properties": {
               "attributes": {
                 "$ref": "#/$defs/outcomeAttributes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "mission"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "$ref": "#/$defs/missionAttributes"
               }
             }
           }
@@ -347,7 +347,7 @@
         "way": {
           "type": "string",
           "pattern": "^[a-z0-9][a-z0-9-]*$",
-          "description": "For includes: the way of sourcing the pattern that the solution chooses. For depends_on: the way of sourcing that needs the other pattern. Without it, any way."
+          "description": "For depends_on: the way of sourcing the pattern that needs the other one. Without it, any way does."
         }
       }
     },
@@ -588,19 +588,6 @@
         }
       }
     },
-    "solutionAttributes": {
-      "description": "A mission’s solution: the principles it follows, and what to watch for.",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "watchFor": {
-          "$ref": "#/$defs/statements"
-        },
-        "principles": {
-          "$ref": "#/$defs/statements"
-        }
-      }
-    },
     "way": {
       "description": "One way to source a pattern, such as configuring a product or extending a platform the agency has. A way's own strengths, fit, and what to watch for add to the pattern's.",
       "type": "object",
@@ -683,6 +670,20 @@
           "items": {
             "type": "string"
           }
+        }
+      }
+    },
+    "missionAttributes": {
+      "description": "What a mission says about itself: its tagline, and the principles its architecture follows.",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "tagline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "principles": {
+          "$ref": "#/$defs/statements"
         }
       }
     }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byRole, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, solutionFor, tagline } from '../src/lib/library';
+import { byRole, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, tagline } from '../src/lib/library';
 
 describe('missionBlueprint', () => {
   const mission = elements.find((e) => e.id === 'eb:mission:independent-government-oversight')!;
@@ -68,56 +68,33 @@ describe('the FOIA mission', () => {
   });
 });
 
-describe('solutions', () => {
+describe('a mission’s architecture', () => {
   const get = (id: string) => elements.find((e) => e.id === id)!;
   const slug = (e: { id: string }) => e.id.split(':')[2];
   const missions = elementsOfType('mission');
 
-  it('give every mission one, its north star', () => {
-    expect(missions.map((m) => slug(solutionFor(m)!.solution)).sort()).toEqual(['acquisition-north-star', 'foia-north-star', 'grants-north-star', 'oig-north-star']);
-    expect(elementsOfType('solution')).toHaveLength(missions.length);
-    for (const m of missions) expect(solutionFor(m)!.solution.package, slug(m)).toBe(m.package);
-  });
-
-  it('cover every capability of their mission, and include everything their patterns need', () => {
+  it('is its own patterns, by layer, with no solutions in the library', () => {
+    expect(elementsOfType('solution')).toEqual([]);
     for (const m of missions) {
-      const s = solutionFor(m)!;
-      expect(s.coverage.map((c) => slug(c.mission)), slug(m)).toEqual([slug(m)]);
-      expect(s.coverage[0].uncovered.map(slug), slug(m)).toEqual([]);
-      expect(s.coverage[0].covered.length + s.coverage[0].partly.length, slug(m)).toBe(missionBlueprint(m).capabilities.length);
-      expect(s.missing, slug(m)).toEqual([]);
+      const layers = byRole(missionBlueprint(m).patterns, (p) => p).map((g) => g.role);
+      expect(layers, slug(m)).toEqual(expect.arrayContaining(['business-applications', 'worker-productivity', 'data-records', 'security-identity']));
     }
   });
 
-  it('lay out their patterns by layer, follow their principles, and say why each pattern is there', () => {
-    for (const m of missions) {
-      const s = solutionFor(m)!;
-      expect(s.roles.map((g) => g.role), slug(m)).toEqual(expect.arrayContaining(['business-applications', 'worker-productivity', 'data-records', 'security-identity']));
-      expect(s.principles.length, slug(m)).toBeGreaterThanOrEqual(5);
-      for (const g of s.roles) for (const i of g.items) expect(i.note, slug(i.pattern)).toBeTruthy();
-      expect(s.patterns.map(slug), slug(m)).toContain('agency-sign-on');
-      expect(s.patterns.filter((p) => p.status === 'deprecated'), slug(m)).toEqual([]);
-    }
+  it('follows the principles the mission lists', () => {
+    for (const m of missions) expect(principlesOf(m).length, slug(m)).toBeGreaterThanOrEqual(5);
   });
 
-  it('choose a way for the patterns they need one for', () => {
-    const items = (id: string) => solutionFor(get(id))!.roles.flatMap((g) => g.items);
-    const way = (id: string, pattern: string) => items(id).find((i) => slug(i.pattern) === pattern)?.way?.id;
-    expect(way('eb:mission:independent-government-oversight', 'oversight-intake-case-tracking')).toBe('product');
-    expect(way('eb:mission:public-access-to-agency-records', 'foia-request-processing')).toBe('product');
-    expect(way('eb:mission:awarding-overseeing-federal-grants', 'grants-management')).toBe('product');
-    expect(way('eb:mission:acquiring-goods-and-services', 'acquisition-management')).toBe('product');
-    // The OIG leaves the evidence store's way open, since it depends on how much digital evidence it handles.
-    expect(way('eb:mission:independent-government-oversight', 'digital-evidence-store')).toBeUndefined();
+  it('has a pattern for every capability of the mission', () => {
+    for (const m of missions) for (const c of missionBlueprint(m).capabilities) expect(c.patterns.length, `${slug(m)}: ${slug(c.capability)}`).toBeGreaterThan(0);
   });
 
-  it('are listed whole on their index page, and leave replaced patterns off theirs', () => {
-    expect(indexGroups('solution').map((g) => g.id)).toEqual(['all']);
+  it('leaves replaced patterns off the patterns index', () => {
     const listed = indexGroups('implementationPattern').flatMap((g) => g.items).map(slug);
     for (const id of ['audit-workpapers-collaboration', 'grants-management-product', 'contract-writing-system', 'foia-tracking-with-review-tool']) expect(listed).not.toContain(id);
   });
 
-  it('group a mission’s patterns by layer', () => {
+  it('groups a mission’s patterns by layer', () => {
     const groups = byRole(missionBlueprint(get('eb:mission:public-access-to-agency-records')).patterns, (p) => p);
     expect(groups.map((g) => g.label)).toEqual(['Public facing', 'AI and insights', 'Business applications', 'Worker productivity', 'Connections', 'Data and records', 'Security and identity']);
   });

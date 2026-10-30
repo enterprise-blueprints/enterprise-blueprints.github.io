@@ -212,47 +212,44 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
     if (r.predicate === 'measured_by' && !BEFORE_040.has(pkg.schemaVersion)) errors.push(`relation ${r.id}: since schema 0.4.0, an outcome lists its measures instead`);
     if (r.from === r.to) errors.push(`relation ${r.id} links ${r.from} to itself`);
     if (r.way !== undefined) {
-      // The way names one of the pattern's ways: the one included, or the one that has the need.
-      const pattern = r.predicate === 'includes' ? to : r.predicate === 'depends_on' ? from : undefined;
-      if (!pattern) errors.push(`relation ${r.id}: only includes and depends_on name a way`);
-      else if (!waysOf(pattern).includes(r.way)) errors.push(`relation ${r.id}: ${pattern.id} has no way "${r.way}"`);
+      // The way names the one of the pattern's ways that has the need.
+      if (r.predicate !== 'depends_on') errors.push(`relation ${r.id}: only depends_on names a way`);
+      else if (from && !waysOf(from).includes(r.way)) errors.push(`relation ${r.id}: ${from.id} has no way "${r.way}"`);
     }
     const edge = `${r.from} ${r.predicate} ${r.to}`;
     if (edges.has(edge)) errors.push(`relation ${r.id} repeats ${edge}`);
     edges.add(edge);
   }
 
-  errors.push(...solutionProblems(pkg, [...dependencyRelations, ...pkg.relations]));
+  errors.push(...missionProblems(pkg, [...dependencyRelations, ...pkg.relations]));
   errors.push(...assessmentProblems(pkg.assessments ?? [], reachable));
   return errors;
 }
 
 const waysOf = (e: Element) => (Array.isArray(e.attributes?.ways) ? (e.attributes.ways as { id: string }[]).map((w) => w.id) : []);
-/** Schema versions before 0.4.0, whose solutions are examples that can span missions and whose measures are elements of their own. */
+/** Schema versions before 0.4.0, which have example solutions, and measures as elements of their own. */
 const BEFORE_040 = new Set(['0.1.0', '0.2.0', '0.3.0']);
 /**
- * Since schema 0.4.0, a solution is its mission's: it supports one mission of
- * its own package, which has no other solution. It includes everything its
- * patterns need, for the ways it chose.
+ * Since schema 0.4.0, a mission's own patterns are its architecture, so a
+ * package has no solutions. The patterns a mission's capabilities point to
+ * include whatever they need, whichever way they're sourced.
  */
-function solutionProblems(pkg: BlueprintPackage, relations: Relation[]): string[] {
+function missionProblems(pkg: BlueprintPackage, relations: Relation[]): string[] {
   if (BEFORE_040.has(pkg.schemaVersion)) return [];
   const errors: string[] = [];
-  const missions = new Map<string, string>();
-  for (const solution of pkg.elements.filter((e) => e.type === 'solution')) {
-    const own = pkg.relations.filter((r) => r.from === solution.id);
-    const supports = own.filter((r) => r.predicate === 'supports');
-    if (supports.length !== 1) errors.push(`solution ${solution.id} supports ${supports.length} missions, not one`);
-    for (const r of supports) {
-      if (!pkg.elements.some((e) => e.id === r.to)) errors.push(`solution ${solution.id} supports ${r.to}, which isn't a mission of this package`);
-      if (missions.has(r.to)) errors.push(`${r.to} has two solutions, ${missions.get(r.to)} and ${solution.id}`);
-      missions.set(r.to, solution.id);
-    }
-    const included = new Map(own.filter((r) => r.predicate === 'includes').map((r) => [r.to, r]));
-    for (const [pattern, r] of included) {
-      const needs = relations.filter((d) => d.predicate === 'depends_on' && d.from === pattern && (!d.way || d.way === r.way));
-      for (const need of needs) {
-        if (!included.has(need.to)) errors.push(`solution ${solution.id} includes ${pattern}, which needs ${need.to}, but not ${need.to}`);
+  for (const e of pkg.elements) if (e.type === 'solution') errors.push(`element ${e.id}: since schema 0.4.0, a mission's patterns are its architecture, so there are no solutions`);
+  for (const r of pkg.relations) {
+    if (r.predicate === 'includes' || r.predicate === 'supports') errors.push(`relation ${r.id}: since schema 0.4.0, there are no solutions to link`);
+  }
+  const from = (predicate: string, ids: Set<string>, end: 'from' | 'to') =>
+    new Set(relations.filter((r) => r.predicate === predicate && ids.has(end === 'from' ? r.from : r.to)).map((r) => (end === 'from' ? r.to : r.from)));
+  for (const mission of pkg.elements.filter((e) => e.type === 'mission')) {
+    const outcomes = from('seeks', new Set([mission.id]), 'from');
+    const capabilities = from('contributes_to', outcomes, 'to');
+    const patterns = from('candidate_pattern', capabilities, 'from');
+    for (const pattern of patterns) {
+      for (const need of relations.filter((r) => r.predicate === 'depends_on' && r.from === pattern && !r.way)) {
+        if (!patterns.has(need.to)) errors.push(`mission ${mission.id}: ${pattern} needs ${need.to}, but none of the mission's capabilities points to it`);
       }
     }
   }

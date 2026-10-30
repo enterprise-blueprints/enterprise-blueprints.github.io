@@ -8,6 +8,13 @@
     tagline: Awarding and overseeing grants
     sector: public-sector
     scope: US-federal-grants
+    principles:
+      - Each award is one record from the funding announcement to closeout
+      - Applications arrive from Grants.gov, and award data goes to USAspending.gov, without retyping
+      - Recipients have one place to apply, report, and ask for changes
+      - Every applicant gets the same SAM.gov checks, recorded with the award decision
+      - Payments go through Treasury, against accounts set up from each award
+      - Analytics point monitoring at the highest risks, and staff decide
   seeks:
     - open-fair-competition
     - awards-to-capable-recipients

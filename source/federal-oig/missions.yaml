@@ -8,6 +8,13 @@
     tagline: Independent oversight of government programs and operations
     sector: public-sector
     scope: US-federal-OIG
+    principles:
+      - The office runs its own systems, administering them and deciding who sees its work, as its independence requires
+      - Each matter is one record from intake to closure, and each engagement one record from plan to its last recommendation
+      - The identity of people who report is kept apart from the allegation from the first contact
+      - Statistics for the semiannual report come from the systems of record, not from spreadsheets
+      - Agency officials send corrective action updates into the office’s tracker through their own access
+      - Analytics and AI suggest, and staff decide
   seeks:
     - to: effective-programs
       id: oig-mission-seeks-effective-programs

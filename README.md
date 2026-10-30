@@ -6,8 +6,8 @@ how it's going, and capabilities contribute to those outcomes. Four mission pack
 Offices of Inspector General, federal agencies' Freedom of Information Act programs, federal grants
 management, and federal acquisition in general terms. Each builds on Common Capabilities, a package of the
 capabilities many missions rely on, such as identity and access, data protection, records, logging, and case
-management. Each mission has one solution, its north star: the long-term architecture the library recommends
-for it, built from the patterns.
+management. A mission's patterns, by layer, are its logical architecture, and the mission lists the principles
+the library recommends that architecture follow.
 
 ## Develop
 
@@ -41,8 +41,9 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
   published. These files are built, not edited by hand.
 - `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
   `dependencies`. 0.3.0 checks the attributes of patterns and solutions and adds `coverage` to candidate
-  patterns. 0.4.0 gives every pattern its `ways` to source it, every outcome its `measures`, and every mission one solution, with `way` on
-  links. Every version stays, and Solution Studio keeps identical copies.
+  patterns. 0.4.0 gives every pattern its `ways` to source it, every outcome its `measures`, and every mission
+  its `principles`, and leaves solutions to the tools that use the library. Every version stays, and Solution
+  Studio keeps identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
 - `src/lib/compile.ts` builds a package from its source and decides its version; `scripts/content.ts` runs it.
@@ -79,7 +80,7 @@ its message names each problem and the file it's in. A new element type or predi
 | --- | --- |
 | `package.yaml` | The package's ID, title, description, and other details, and `dependencies`: the folder names of the packages it builds on. |
 | `sources.yaml` | The references it cites, each with an `id` that elements and links use. |
-| `missions.yaml`, `outcomes.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml`, `solutions.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
+| `missions.yaml`, `outcomes.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
 | `measures` on an outcome | The outcome's measures, each with an `id`, `title`, `description`, and optionally `sources`. They're published in the outcome's `attributes`; before schema 0.4.0, measures were elements of their own, linked by `measured_by`. |
 | `links.yaml` | Links from the elements of packages this one builds on, such as a shared capability that satisfies one of its requirements. |
 | `discovery.yaml` | Discovery question sets. |
@@ -120,9 +121,9 @@ choice or yes-or-no answer can point to elements through `points`, each group na
 elements (`to`), and why (`why`). Text and number answers are recorded as said and point nowhere. In the
 published package these become `assessments` and `candidateMappings`.
 
-**Implementation patterns** are examples of the logical parts of a solution, which a vendor or the agency could
+**Implementation patterns** are examples of the logical parts of a mission's architecture, which a vendor or the agency could
 supply. Each one describes itself in its `attributes` so patterns can be compared side by side and grouped:
-`role` (the layer of a solution it belongs to: `public-facing`, `ai-insights`, `business-applications`,
+`role` (the layer of the architecture it belongs to: `public-facing`, `ai-insights`, `business-applications`,
 `worker-productivity`, `connections`, `data-records`, or `security-identity`; packages before schema 0.4.0 also
 use `processing` and `infrastructure`), `parts`, `strengths`, `fitsWhen`, and `watchFor`, each a list
 of short statements, and `ways`, its ways to source it. Each way has an `id`, an `approach` (`product`,
@@ -153,12 +154,12 @@ pattern. A pattern that became a way of another keeps its ID, with `status: depr
       note: The office's case types and steps are the shared platform, set up for oversight.
 ```
 
-**Solutions.** Each mission package holds its mission's one solution, its north star, in `solutions.yaml`: the
-long-term, opinionated architecture the library recommends, with `principles` and `watchFor` in its attributes.
-It `supports` its mission and `includes` patterns, each with a `note` saying why it's there and, for a pattern
-with several ways, the `way` it chose. The site lays it out by layer, works out which of the mission's
-capabilities it covers, fully or only partly, and the validator refuses a solution that leaves out something
-its patterns need for the ways it chose.
+**A mission's architecture** is its own patterns, the ones its capabilities point to, laid out by layer on the
+mission's page. The mission lists the `principles` that architecture follows in its `attributes`, as short
+statements. Choosing a way to source each pattern is a decision for one agency, so it belongs to the tools that
+use the library, such as Solution Studio. The validator refuses a mission whose patterns need one that none of
+its capabilities points to. Packages before schema 0.4.0 have example solutions, which `include` patterns and
+`support` missions; since 0.4.0 a package has none.
 
 To add a package, create `source/<name>/package.yaml` with its own `packageId`, add its files, and run
 `pnpm content:build`; it joins the next release. Element IDs are unique across all packages: each element is defined

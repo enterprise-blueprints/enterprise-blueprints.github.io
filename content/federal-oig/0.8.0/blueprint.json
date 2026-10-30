@@ -161,7 +161,15 @@
       "attributes": {
         "tagline": "Independent oversight of government programs and operations",
         "sector": "public-sector",
-        "scope": "US-federal-OIG"
+        "scope": "US-federal-OIG",
+        "principles": [
+          "The office runs its own systems, administering them and deciding who sees its work, as its independence requires",
+          "Each matter is one record from intake to closure, and each engagement one record from plan to its last recommendation",
+          "The identity of people who report is kept apart from the allegation from the first contact",
+          "Statistics for the semiannual report come from the systems of record, not from spreadsheets",
+          "Agency officials send corrective action updates into the office’s tracker through their own access",
+          "Analytics and AI suggest, and staff decide"
+        ]
       }
     },
     {
@@ -901,27 +909,6 @@
           }
         ]
       }
-    },
-    {
-      "id": "eb:solution:oig-north-star",
-      "type": "solution",
-      "title": "Office of Inspector General North Star",
-      "description": "The long-term architecture this library recommends for an Office of Inspector General: one case system and one audit system that the office runs itself, with a confidential hotline, a digital evidence store, and a recommendation tracker the agency works in, all reporting from the source, and analytics and AI on top.",
-      "status": "reference",
-      "attributes": {
-        "principles": [
-          "The office runs its own systems, administering them and deciding who sees its work, as its independence requires",
-          "Each matter is one record from intake to closure, and each engagement one record from plan to its last recommendation",
-          "The identity of people who report is kept apart from the allegation from the first contact",
-          "Statistics for the semiannual report come from the systems of record, not from spreadsheets",
-          "Agency officials send corrective action updates into the office’s tracker through their own access",
-          "Analytics and AI suggest, and staff decide"
-        ],
-        "watchFor": [
-          "The office needs administrators for its own systems, or a contract for them",
-          "Running its own systems costs more than sharing the agency’s, and the office has to budget for it"
-        ]
-      }
     }
   ],
   "relations": [
@@ -1250,107 +1237,6 @@
       "predicate": "works_with",
       "to": "eb:implementationPattern:audit-management-system",
       "description": "Risks it finds feed the plan of oversight work."
-    },
-    {
-      "id": "rel:oig-north-star-includes-agency-sign-on",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:agency-sign-on",
-      "description": "Every system signs in through the agency, with roles the office administers."
-    },
-    {
-      "id": "rel:oig-north-star-includes-oversight-intake-case-tracking",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:oversight-intake-case-tracking",
-      "way": "product",
-      "description": "A product the office administers, for its independence and its evidence handling."
-    },
-    {
-      "id": "rel:oig-north-star-includes-confidential-hotline-intake",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:confidential-hotline-intake",
-      "description": "Feeds the case system’s intake queue, with the reporter’s identity kept apart."
-    },
-    {
-      "id": "rel:oig-north-star-includes-agency-security-monitoring",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:agency-security-monitoring",
-      "description": "The office’s systems send their logs to the agency, searchable only by staff the office agrees to."
-    },
-    {
-      "id": "rel:oig-north-star-includes-records-aware-collaboration",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:records-aware-collaboration",
-      "description": "Where staff draft and collaborate, with records and sensitivity labels applied."
-    },
-    {
-      "id": "rel:oig-north-star-includes-records-in-business-systems",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:records-in-business-systems",
-      "way": "built-in",
-      "description": "Each of the office’s systems keeps its own records on schedule, so holds stay in the office’s hands."
-    },
-    {
-      "id": "rel:oig-north-star-includes-audit-management-system",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:audit-management-system",
-      "way": "product",
-      "description": "A product for audits, inspections, and evaluations, so work papers meet the standards and peer reviewers can trace each finding."
-    },
-    {
-      "id": "rel:oig-north-star-includes-shared-recommendation-tracker",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:shared-recommendation-tracker",
-      "way": "audit-module",
-      "description": "The audit product’s module, so each recommendation starts and is tracked in one place, with agency officials working on their own."
-    },
-    {
-      "id": "rel:oig-north-star-includes-digital-evidence-store",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:digital-evidence-store",
-      "description": "Either a product or secure storage with a custody log, depending on how much digital evidence the office handles."
-    },
-    {
-      "id": "rel:oig-north-star-includes-oversight-reporting-from-source-data",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:oversight-reporting-from-source-data",
-      "description": "The semiannual report’s statistics come from the case, audit, and recommendation systems, and reports are posted within 3 days."
-    },
-    {
-      "id": "rel:oig-north-star-includes-letters-from-case-data",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:letters-from-case-data",
-      "description": "Routine notices and report sections drafted from the case and audit data."
-    },
-    {
-      "id": "rel:oig-north-star-includes-oversight-data-analytics",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:oversight-data-analytics",
-      "description": "Agency data points audits and investigations at the highest risks."
-    },
-    {
-      "id": "rel:oig-north-star-includes-ai-assisted-intake-sorting",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:ai-assisted-intake-sorting",
-      "description": "Suggestions in the intake queue, once intake runs on the case system and its categories are settled."
-    },
-    {
-      "id": "rel:oig-north-star-supports-independent-government-oversight",
-      "from": "eb:solution:oig-north-star",
-      "predicate": "supports",
-      "to": "eb:mission:independent-government-oversight"
     },
     {
       "id": "rel:identity-access-management-contributes-to-concerns-raised-safely",

@@ -8,6 +8,13 @@
     tagline: Acquiring goods and services for the government
     sector: public-sector
     scope: US-federal-acquisition
+    principles:
+      - Each acquisition is one record from the program office’s request to closeout
+      - Clauses come from rules the contracting office keeps current as the FAR changes
+      - Contract data reaches SAM.gov, CPARS, and the financial system without retyping
+      - Vendors submit offers through one secure portal, and offers open only after the deadline
+      - Every offeror gets the same SAM.gov checks the agency uses for grants applicants
+      - AI drafts and analytics inform, and contracting officers decide
   seeks:
     - needs-met-on-time
     - full-open-competition

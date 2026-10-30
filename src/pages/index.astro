@@ -3,7 +3,7 @@ import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import hero from '../assets/hero.png';
 import TypeBadge from '../components/TypeBadge.astro';
-import { dependents, elementsOfType, solutionFor, scopeLabel, tagline, missionBlueprint, packages, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
+import { dependents, elementsOfType, scopeLabel, tagline, missionBlueprint, packages, sourcesOf, lastReviewed, typesInUse } from '../lib/library';
 import { formatDate, plural } from '../lib/format';
 import { href } from '../lib/paths';
 
@@ -12,10 +12,10 @@ const missions = elementsOfType('mission')
   .map((m) => {
     const { outcomes, capabilities, patterns } = missionBlueprint(m);
     const reviewed = lastReviewed(sourcesOf(m));
-    return { ...m, outcomes, capabilities, patterns, reviewed, star: solutionFor(m) };
+    return { ...m, outcomes, capabilities, patterns, reviewed };
   });
 const first = missions[0];
-// Packages that missions build on, with what they offer. Mission packages, which solutions build on, aren't these.
+// Packages that missions build on, with what they offer. Mission packages aren't these.
 const hasMission = (pkg: (typeof packages)[number]) => pkg.elements.some((e) => e.type === 'mission');
 const shared = packages
   .filter((pkg) => !hasMission(pkg))
@@ -61,7 +61,6 @@ const shared = packages
               {m.outcomes.length > 0 && <li><strong>{m.outcomes.length}</strong> {m.outcomes.length === 1 ? 'outcome' : 'outcomes'}</li>}
               <li><strong>{m.capabilities.length}</strong> {m.capabilities.length === 1 ? 'capability' : 'capabilities'}</li>
               <li><strong>{m.patterns.length}</strong> candidate {m.patterns.length === 1 ? 'pattern' : 'patterns'}</li>
-              {m.star && <li><a href={m.star.solution.url}>North star</a> of {m.star.patterns.length} patterns</li>}
               {m.reviewed && <li>Sources reviewed {formatDate(m.reviewed)}</li>}
             </ul>
           </article>

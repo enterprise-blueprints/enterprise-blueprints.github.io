@@ -13,11 +13,11 @@ import {
   lastReviewed,
   measuresOf,
   missionBlueprint,
+  byRole,
+  principlesOf,
   patternDetails,
   questionsAbout,
   relationGroups,
-  solutionFor,
-  solutionView,
   scopeLabel,
   sourcesOf,
   tagline,
@@ -41,31 +41,24 @@ const sources = sourcesOf(element);
 const reviewed = lastReviewed(sources);
 const scope = element.jurisdictions ?? pkg.jurisdictions ?? [];
 const isPattern = element.type === 'implementationPattern';
-// A pattern and a solution describe themselves with fields of their own, which get sections.
-const pattern = isPattern || element.type === 'solution' ? patternDetails(element) : null;
-const ownFields = ['approach', 'role', 'ways', 'principles', ...Object.keys(patternFields)];
-// A mission's tagline shows under its name, not with the other attributes.
-// A mission's tagline and an outcome's measures have places of their own too.
-const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => (!pattern || !ownFields.includes(key)) && key !== 'tagline' && key !== 'measures');
+// A pattern describes itself with fields of its own, which get sections.
+const pattern = isPattern ? patternDetails(element) : null;
+const ownFields = ['approach', 'role', 'ways', ...Object.keys(patternFields)];
+// A mission's tagline and principles, and an outcome's measures, have places of their own.
+const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => (!pattern || !ownFields.includes(key)) && !['tagline', 'principles', 'measures'].includes(key));
 const line = tagline(element);
 const questions = questionsAbout(element);
 const users = usedBy(element);
 // A mission shows everything under it, band by band, and which capabilities serve which outcomes.
 const blueprint = element.type === 'mission' ? missionBlueprint(element) : null;
-const star = element.type === 'mission' ? solutionFor(element) : undefined;
+// A mission's patterns, by layer, are its architecture.
+const layers = blueprint ? byRole(blueprint.patterns, (p) => p) : [];
+const principles = element.type === 'mission' ? principlesOf(element) : [];
 const measures = element.type === 'outcome' ? measuresOf(element) : [];
 const stacked = Boolean(blueprint?.capabilities.length);
-// A solution shows its principles, its patterns by layer, and what it covers for its mission.
-const solution = element.type === 'solution' ? solutionView(element) : null;
 const replacement = element.replacedBy ? elements.find((e) => e.id === element.replacedBy) : undefined;
-const chosen = (items: { pattern: { id: string }; way?: { title: string } }[]) => new Map(items.flatMap((i) => (i.way ? [[i.pattern.id, i.way.title] as const] : [])));
-const notesOf = (items: { pattern: { id: string }; note?: string }[]) => new Map(items.flatMap((i) => (i.note ? [[i.pattern.id, i.note] as const] : [])));
-// The stack already shows the mission's outcomes, capabilities, and solution, a capability compares its
-// patterns, and a solution lays out its own.
-const covered = [
-  ...(stacked ? [predicates.seeks.outgoing, predicates.supports_mission.incoming, predicates.supports.incoming] : []),
-  ...(solution ? [predicates.includes.outgoing, predicates.supports.outgoing] : []),
-];
+// The stack already shows the mission's outcomes and capabilities, and a capability compares its patterns.
+const covered = stacked ? [predicates.seeks.outgoing, predicates.supports_mission.incoming] : [];
 const patternGroup = groups.find((g) => g.heading === predicates.candidate_pattern.outgoing);
 const perLink = [predicates.candidate_pattern.incoming, predicates.depends_on.outgoing, predicates.depends_on.incoming, predicates.works_with.outgoing];
 const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes(g.heading));
@@ -101,7 +94,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           </div>
         )}
 
-        {stacked && <MissionStack blueprint={blueprint!} solution={star} />}
+        {stacked && <MissionStack blueprint={blueprint!} />}
 
         {measures.length > 0 && (
           <section class="section">
@@ -118,107 +111,30 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           </section>
         )}
 
-        {star && (
+        {principles.length > 0 && (
           <section class="section">
-            <h2>North star</h2>
-            <p class="section-note">
-              <a href={star.solution.url}>{star.solution.title}</a> is the long-term architecture this library recommends for the mission, with
-              {' '}{star.patterns.length} patterns by layer.
-            </p>
+            <h2>Principles</h2>
+            <p class="section-note">What this library recommends the mission’s architecture follow, whichever way each part is sourced.</p>
+            <ol class="principles">{principles.map((s) => <li>{s}</li>)}</ol>
+          </section>
+        )}
+
+        {layers.length > 0 && (
+          <section class="section">
+            <h2>Architecture by layer</h2>
+            <p class="section-note">The mission’s patterns, the logical parts of its architecture, by the layer each one belongs to. Each pattern’s page lists its ways to source it.</p>
             <div class="table-wrap">
               <table class="stack-table layer-table">
                 <thead><tr><th scope="col">Layer</th><th scope="col">Patterns</th></tr></thead>
                 <tbody>
-                  {star.roles.map((g) => (
+                  {layers.map((g) => (
                     <tr>
-                      <th scope="row">{g.label}</th>
-                      <td><ul class="element-links">{g.items.map((i) => <li><a class={`element-link type-${i.pattern.type}`} href={i.pattern.url}>{i.pattern.title}</a></li>)}</ul></td>
+                      <th scope="row">{g.label}<span class="muted layer-table__hint">{g.hint}</span></th>
+                      <td><ul class="element-links">{g.items.map((p) => <li><a class={`element-link type-${p.type}`} href={p.url}>{p.title}</a></li>)}</ul></td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-          </section>
-        )}
-
-        {solution && solution.principles.length > 0 && (
-          <section class="section">
-            <h2>Principles</h2>
-            <ol class="principles">{solution.principles.map((s) => <li>{s}</li>)}</ol>
-          </section>
-        )}
-
-        {solution && pattern && (
-          <div class="pattern-fields pattern-fields--solution">
-            {pattern.fields.map((f) => (
-              <section class={`pattern-field pattern-field--${f.key}`}>
-                <h2>{f.label}</h2>
-                <ul>{f.items.map((s) => <li>{s}</li>)}</ul>
-              </section>
-            ))}
-          </div>
-        )}
-
-        {solution && (
-          <section class="section">
-            <h2>How it fits together</h2>
-            <p class="section-note">
-              The patterns it combines for {new Intl.ListFormat('en').format(solution.missions.map((m) => m.title))}, by layer, with the way it chose to source each one.
-            </p>
-            {solution.roles.map((g) => (
-              <div class="solution-role">
-                <h3>{g.label}</h3>
-                {g.hint && <p class="section-note">{g.hint}</p>}
-                <ElementTable elements={g.items.map((i) => i.pattern)} notes={notesOf(g.items)} chosen={chosen(g.items)} />
-              </div>
-            ))}
-          </section>
-        )}
-
-        {solution && (
-          <section class="section">
-            <h2>What it covers</h2>
-            <p class="section-note">
-              The mission’s capabilities that one of its patterns might help realize, the ones its patterns cover only part of, and the ones it has
-              no pattern for yet.
-            </p>
-            {solution.missing.length > 0 && (
-              <div class="notice">
-                {solution.missing.map((m) => (
-                  <p>
-                    <a href={m.pattern.url}>{m.pattern.title}</a> isn’t included, but {m.neededBy.map((p) => p.title).join(' and ')} {m.neededBy.length === 1 ? 'needs' : 'need'} it.
-                  </p>
-                ))}
-              </div>
-            )}
-            <div class="coverage">
-              {solution.coverage.map((c) => (
-                <article class="coverage__mission">
-                  <h3><a href={c.mission.url}>{c.mission.title}</a></h3>
-                  <p class="coverage__count">
-                    Covers <strong>{c.covered.length + c.partly.length}</strong> of {c.covered.length + c.partly.length + c.uncovered.length} capabilities{c.partly.length > 0 && <>, <strong>{c.partly.length}</strong> of them only partly</>}
-                  </p>
-                  <ul class="element-links">
-                    {c.covered.map((cap) => <li><a class="element-link type-capability" href={cap.url}>{cap.title}</a></li>)}
-                  </ul>
-                  {c.partly.length > 0 && (
-                    <>
-                      <p class="coverage__gap">Partly covered</p>
-                      <ul class="element-links">
-                        {c.partly.map((cap) => <li><a class="element-link type-capability" href={cap.url}>{cap.title}</a></li>)}
-                      </ul>
-                    </>
-                  )}
-                  {c.uncovered.length > 0 && (
-                    <>
-                      <p class="coverage__gap">No pattern yet for</p>
-                      <ul class="element-links">
-                        {c.uncovered.map((cap) => <li><a class="element-link type-capability coverage__uncovered" href={cap.url}>{cap.title}</a></li>)}
-                      </ul>
-                    </>
-                  )}
-                </article>
-              ))}
             </div>
           </section>
         )}
@@ -237,7 +153,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           </div>
         )}
 
-        {pattern && !solution && pattern.fields.length > 0 && (
+        {pattern && pattern.fields.length > 0 && (
           <div class="pattern-fields">
             {pattern.fields.map((f) => (
               <section class={`pattern-field pattern-field--${f.key}`}>
@@ -248,7 +164,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           </div>
         )}
 
-        {pattern && !solution && pattern.ways.length > 1 && (
+        {pattern && pattern.ways.length > 1 && (
           <section class="section">
             <h2>Ways to source it</h2>
             <p class="section-note">Any of these can supply the parts above. Each has its own tradeoffs, and some need another pattern.</p>
@@ -365,24 +281,9 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
   @media (min-width: 46rem) { .pattern-fields { grid-template-columns: 1fr 1fr; } }
   .pattern-field { padding: 1rem 1.15rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
   .pattern-field--parts, .pattern-field--watchFor { grid-column: 1 / -1; }
-  /* A solution has only these two, side by side. */
-  .pattern-fields--solution .pattern-field--watchFor { grid-column: auto; }
-  .section + .pattern-fields--solution { margin-top: 1.5rem; }
   .pattern-field h2 { margin: 0 0 .5rem; font-size: 1rem; }
   .pattern-field ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; }
   .measures { display: grid; gap: .9rem; margin: 0; max-width: 54rem; }
   .measures dt { font-weight: 650; }
   .measures dd { margin: .15rem 0 0; color: var(--text-muted); }
-  .solution-role { margin-top: 1.5rem; }
-  .solution-role h3 { margin-bottom: .2rem; }
-  .solution-role .section-note { margin: 0; }
-  .coverage { display: grid; gap: 1rem; }
-  @media (min-width: 46rem) { .coverage { grid-template-columns: 1fr 1fr; } }
-  .coverage__mission { padding: 1rem 1.15rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
-  .coverage__mission h3 { font-size: 1rem; margin-bottom: .2rem; }
-  .coverage__count { margin: 0 0 .6rem; font-size: .9375rem; color: var(--text-muted); }
-  .coverage__mission .element-links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; }
-  .coverage__mission .element-link { font-size: .875rem; }
-  .coverage__gap { margin: .9rem 0 .35rem; font-size: .75rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; color: var(--text-muted); }
-  .coverage__uncovered { border-style: dashed; opacity: .8; }
 </style>

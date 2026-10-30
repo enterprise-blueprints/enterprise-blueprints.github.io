@@ -305,12 +305,6 @@ export function patternDetails(pattern: LibraryElement): PatternDetails {
   };
 }
 
-/** What a pattern needs whichever way it's sourced, or for the way named. Without a way, needs of particular ways don't count. */
-function needsOf(pattern: LibraryElement, way?: string): LibraryElement[] {
-  return relationsOf(pattern, 'depends_on', 'outgoing')
-    .filter((r) => !r.way || r.way === way)
-    .map((r) => byId.get(r.to)!);
-}
 
 
 export interface RoleGroup<T> {
@@ -333,67 +327,10 @@ export function byRole<T>(items: T[], patternOf: (item: T) => LibraryElement): R
     .filter((g) => g.items.length);
 }
 
-export interface SolutionItem {
-  pattern: LibraryElement;
-  note?: string;
-  /** The way of sourcing it the solution chooses, when it chooses one. */
-  way?: PatternWay;
-}
-
-export interface SolutionView {
-  solution: LibraryElement;
-  principles: string[];
-  missions: LibraryElement[];
-  /** Its patterns by layer, each with what the solution says about it. */
-  roles: RoleGroup<SolutionItem>[];
-  patterns: LibraryElement[];
-  /**
-   * For each mission it supports, which of the mission's capabilities its
-   * patterns cover: fully, only partly, or not at all.
-   */
-  coverage: { mission: LibraryElement; covered: LibraryElement[]; partly: LibraryElement[]; uncovered: LibraryElement[] }[];
-  /** Patterns its patterns need that it doesn't include. */
-  missing: { pattern: LibraryElement; neededBy: LibraryElement[] }[];
-}
-
-/** A solution: its patterns by layer, the missions it supports, and what it covers for each. */
-export function solutionView(solution: LibraryElement): SolutionView {
-  const includes = relationsOf(solution, 'includes', 'outgoing');
-  const items: SolutionItem[] = includes.map((r) => {
-    const pattern = byId.get(r.to)!;
-    return { pattern, note: r.description, way: patternDetails(pattern).ways.find((w) => w.id === r.way) };
-  });
-  const patterns = items.map((i) => i.pattern);
-  const missions = related(solution, 'supports', 'outgoing');
-  const principles = solution.attributes?.principles;
-  return {
-    solution,
-    principles: Array.isArray(principles) ? (principles as string[]) : [],
-    missions,
-    patterns,
-    roles: byRole(items, (i) => i.pattern),
-    coverage: missions.map((mission) => {
-      const caps = missionBlueprint(mission).capabilities;
-      const used = (c: (typeof caps)[number]) => c.patterns.filter((p) => patterns.includes(p));
-      const full = (c: (typeof caps)[number]) => used(c).some((p) => !coversPartly(c.capability, p));
-      return {
-        mission,
-        covered: caps.filter(full).map((c) => c.capability),
-        partly: caps.filter((c) => !full(c) && used(c).length).map((c) => c.capability),
-        uncovered: caps.filter((c) => !used(c).length).map((c) => c.capability),
-      };
-    }),
-    // A need of one way counts only when the solution chose that way.
-    missing: [...new Set(items.flatMap((i) => needsOf(i.pattern, i.way?.id)))]
-      .filter((p) => !patterns.includes(p))
-      .map((pattern) => ({ pattern, neededBy: items.filter((i) => needsOf(i.pattern, i.way?.id).includes(pattern)).map((i) => i.pattern) })),
-  };
-}
-
-/** The mission's solution, its north star, if it has one. */
-export function solutionFor(mission: LibraryElement): SolutionView | undefined {
-  const solution = related(mission, 'supports', 'incoming')[0];
-  return solution && solutionView(solution);
+/** The principles a mission's architecture follows. */
+export function principlesOf(mission: LibraryElement): string[] {
+  const list = mission.attributes?.principles;
+  return Array.isArray(list) ? (list as string[]) : [];
 }
 
 /** A mission's tagline, the phrase under its plain name, such as "Acquiring goods and services for the government". */

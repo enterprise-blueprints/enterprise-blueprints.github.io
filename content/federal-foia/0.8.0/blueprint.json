@@ -134,7 +134,16 @@
       "attributes": {
         "tagline": "Public access to agency records",
         "sector": "public-sector",
-        "scope": "US-federal-FOIA"
+        "scope": "US-federal-FOIA",
+        "principles": [
+          "Each request is one record from receipt to final response, with every letter and decision in it",
+          "The system keeps FOIA’s clock, with its tracks, working days, pauses, and extensions",
+          "Requests from FOIA.gov arrive as records, without retyping",
+          "Records are reviewed and redacted in one place, with each redaction marked with its exemption",
+          "Records people ask for again and again are posted without waiting for the next request",
+          "The annual report comes from the system of record, not from spreadsheets",
+          "AI suggests redactions, and staff decide"
+        ]
       }
     },
     {
@@ -929,28 +938,6 @@
           }
         ]
       }
-    },
-    {
-      "id": "eb:solution:foia-north-star",
-      "type": "solution",
-      "title": "FOIA Program North Star",
-      "description": "The long-term architecture this library recommends for a FOIA program: one FOIA system that carries each request from receipt to release, fed by the national portal, with eDiscovery for large email collections, a FOIA library for proactive releases, and reporting and AI from the same records.",
-      "status": "reference",
-      "attributes": {
-        "principles": [
-          "Each request is one record from receipt to final response, with every letter and decision in it",
-          "The system keeps FOIA’s clock, with its tracks, working days, pauses, and extensions",
-          "Requests from FOIA.gov arrive as records, without retyping",
-          "Records are reviewed and redacted in one place, with each redaction marked with its exemption",
-          "Records people ask for again and again are posted without waiting for the next request",
-          "The annual report comes from the system of record, not from spreadsheets",
-          "AI suggests redactions, and staff decide"
-        ],
-        "watchFor": [
-          "Very large email collections still need the agency’s eDiscovery tools alongside the FOIA system",
-          "Moving open requests from an old system mid-year can disturb the annual report’s counts"
-        ]
-      }
     }
   ],
   "relations": [
@@ -1379,84 +1366,6 @@
       "from": "eb:implementationPattern:foia-workload-dashboard",
       "predicate": "works_with",
       "to": "eb:implementationPattern:foia-request-processing"
-    },
-    {
-      "id": "rel:foia-north-star-includes-agency-sign-on",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:agency-sign-on",
-      "description": "Staff sign in through the agency, with roles the FOIA office administers."
-    },
-    {
-      "id": "rel:foia-north-star-includes-national-portal-api",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:national-portal-api",
-      "description": "Requests from FOIA.gov arrive in the FOIA system as records."
-    },
-    {
-      "id": "rel:foia-north-star-includes-foia-library-publishing",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:foia-library-publishing",
-      "description": "Releases go from the FOIA system to the online library, with records requested 3 or more times flagged."
-    },
-    {
-      "id": "rel:foia-north-star-includes-foia-request-processing",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:foia-request-processing",
-      "way": "product",
-      "description": "A product made for FOIA, so tracks, deadlines, fees, exemptions, and the annual report come built in."
-    },
-    {
-      "id": "rel:foia-north-star-includes-records-aware-collaboration",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:records-aware-collaboration",
-      "description": "Where staff and program offices draft and collaborate, with records and sensitivity labels applied."
-    },
-    {
-      "id": "rel:foia-north-star-includes-ediscovery-search-review",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:ediscovery-search-review",
-      "description": "Searches mailboxes and large collections, and sends what it finds to the FOIA system’s review workspace."
-    },
-    {
-      "id": "rel:foia-north-star-includes-records-in-business-systems",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:records-in-business-systems",
-      "way": "built-in",
-      "description": "The FOIA system keeps each request’s file on its records schedule."
-    },
-    {
-      "id": "rel:foia-north-star-includes-foia-workload-dashboard",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:foia-workload-dashboard",
-      "description": "Leaders see the backlog and the oldest requests from the same tracking data."
-    },
-    {
-      "id": "rel:foia-north-star-includes-ai-review-suggestions",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:ai-review-suggestions",
-      "description": "Suggestions in the review workspace, once exemption practice is settled and reviewers trust the tool."
-    },
-    {
-      "id": "rel:foia-north-star-includes-agency-security-monitoring",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "includes",
-      "to": "eb:implementationPattern:agency-security-monitoring",
-      "description": "The FOIA system sends its logs to the agency, since it holds unredacted records."
-    },
-    {
-      "id": "rel:foia-north-star-supports-public-access-to-agency-records",
-      "from": "eb:solution:foia-north-star",
-      "predicate": "supports",
-      "to": "eb:mission:public-access-to-agency-records"
     },
     {
       "id": "rel:case-management-contributes-to-requests-answered-on-time",
