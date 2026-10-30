@@ -32,6 +32,9 @@
     - to: records-aware-collaboration
       coverage: partial
       note: Retention labels keep documents and messages on schedule. Records in case and other business systems need their schedules applied there.
+    - to: records-in-business-systems
+      coverage: partial
+      note: Applies schedules in the business systems. Documents and messages in the office suite need retention labels too.
 
 - id: security-logging-monitoring
   title: Security Logging & Monitoring

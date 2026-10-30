@@ -64,6 +64,14 @@
   lastReviewedAt: 2026-10-28
   note: The overall standards for OIGs, including independence in fact and in appearance, confidentiality, and following the professional standards for audits, investigations, inspections, and evaluations.
 
+- id: cigie-investigation-standards
+  title: Council of the Inspectors General on Integrity and Efficiency — Quality Standards for Investigations (July 2025)
+  url: https://www.ignet.gov/sites/default/files/files/Quality%20Standards%20for%20Investigations%20July-2025.pdf
+  kind: official-reference
+  publicationDate: 2025-07-15
+  lastReviewedAt: 2026-10-30
+  note: Standards for investigations in OIGs, replacing the 2011 edition. Among them, investigative information is to be stored securely so it can be retrieved effectively, with personal and other sensitive information protected.
+
 - id: cigie-blue-book
   title: Council of the Inspectors General on Integrity and Efficiency — Quality Standards for Inspection and Evaluation (Blue Book)
   url: https://www.ignet.gov/sites/default/files/files/QualityStandardsforInspectionandEvaluation-2020.pdf

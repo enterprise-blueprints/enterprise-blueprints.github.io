@@ -9,6 +9,12 @@
   contributes_to: [ concerns-raised-safely ]
   satisfies: [ protect-reporter-identity ]
 
+- from: capability:records-management
+  contributes_to: [ fraud-waste-abuse-prevented, leaders-congress-informed ]
+
+- from: capability:security-logging-monitoring
+  contributes_to: [ concerns-raised-safely ]
+
 - from: capability:case-management
   contributes_to: [ fraud-waste-abuse-prevented, concerns-raised-safely ]
   candidate_pattern: [ oversight-intake-case-tracking ]

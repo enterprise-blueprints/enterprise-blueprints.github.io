@@ -1,11 +1,10 @@
 # Implementation patterns, in the order the pages show them, each with the links it holds.
 
 - id: oversight-intake-case-tracking
-  title: Oversight Intake & Case Tracking
-  description: "An example architecture: a case management product made for oversight and investigative work, configured for the office, that covers authorized intake, assignment, referral, status tracking, appropriate access controls, evidence linkage, audit trails, and records retention."
+  title: Oversight Case Management
+  description: "An example architecture: one case system for the office’s oversight and investigative work, administered by the office, that carries each matter from intake through triage, referral, investigation, and closure, with access limited by assignment and the statistics oversight reporting needs."
   sources: [ oversight-hotline, cigie-faq, cigie-silver-book ]
   attributes:
-    approach: product
     role: business-applications
     parts:
       - Intake forms for the hotline and for staff, feeding one intake queue
@@ -15,17 +14,46 @@
       - Access limited by case assignment, with the identities of people who report restricted further
       - Statistics for the semiannual report
     strengths:
-      - Built around investigative work, such as evidence handling and referrals
+      - Each matter is one record, from intake to closure
       - The office controls who administers it and who sees what
-      - Comes with reports shaped for oversight reporting
+      - Statistics for oversight reporting come from the records themselves
     fitsWhen:
       - The office runs investigations with evidence and referrals for prosecution
       - Independence from the agency’s own systems matters
-      - There’s budget for licenses and an administrator in the office
     watchFor:
       - Early configuration choices, such as case types, are hard to change later
       - Data from older systems needs moving and cleaning up
-      - A hosted product needs a security authorization before it can hold case information
+      - A hosted system needs a security authorization before it can hold case information
+    ways:
+      - id: product
+        approach: product
+        title: An oversight case product
+        description: A case management product made for oversight and investigative work, configured for the office and administered by it.
+        strengths:
+          - Built around investigative work, such as evidence handling and referrals
+          - Comes with reports shaped for oversight reporting
+        fitsWhen:
+          - There’s budget for licenses and an administrator in the office
+        watchFor:
+          - Another product to buy, secure, and keep up
+      - id: agency-platform
+        approach: platform
+        title: The agency’s shared case platform
+        description: The office’s own case types on the agency’s shared case platform, with administration and access the office controls.
+        strengths:
+          - Uses licenses, skills, and security approvals the agency already has
+        fitsWhen:
+          - The agency runs a case platform, and the office can control who administers its part
+        watchFor:
+          - The office’s independence depends on keeping its administration and access apart from the agency’s
+          - Evidence handling, such as chain of custody, usually needs building
+  depends_on:
+    - to: shared-case-platform
+      way: agency-platform
+      note: The office’s case types and steps are the shared platform, set up for oversight.
+  works_with:
+    - to: digital-evidence-store
+      note: Each item of digital evidence is linked to its case.
 
 - id: confidential-hotline-intake
   title: Confidential Online Hotline
@@ -58,11 +86,10 @@
       note: Each report lands in the office’s intake queue on the platform, kept apart from other offices.
 
 - id: audit-management-system
-  title: Audit Management with Electronic Work Papers
-  description: "An example architecture: an audit management product that holds the plan of audits, inspections, and evaluations, the electronic work papers and evidence behind each finding, supervisors’ review sign-offs, and the recommendations each report makes."
+  title: Audit Management & Work Papers
+  description: "An example architecture: one place for the office’s plan of audits, inspections, and evaluations, the work papers and evidence behind each finding, supervisors’ review sign-offs, and the recommendations each report makes."
   sources: [ gao-yellow-book, cigie-blue-book, cigie-silver-book ]
   attributes:
-    approach: product
     role: business-applications
     parts:
       - A plan of oversight work with each engagement’s scope, schedule, and status
@@ -81,13 +108,40 @@
       - Teams need time to adopt a new way of documenting their work
       - Evidence with sensitive personal information needs the same protection it has elsewhere
       - Older engagements usually stay where they are, so there are two places to look for a while
+    ways:
+      - id: product
+        approach: product
+        title: An audit management product
+        description: A product made for audit work, with electronic work papers, review sign-offs, and recommendations built in.
+        strengths:
+          - The documentation and supervision steps come built in
+          - Reporting across engagements, such as on open recommendations, is part of it
+        fitsWhen:
+          - The office has many engagements at a time
+        watchFor:
+          - Another product to buy, secure, and keep up
+      - id: workspace
+        approach: combine
+        title: Work papers in the collaboration workspace
+        description: A workspace for each engagement in the agency’s collaboration suite, with work paper templates, and supervisors’ sign-offs recorded through document approvals.
+        strengths:
+          - Uses tools the office already has and knows
+          - Costs little to start, and is easy to change
+        fitsWhen:
+          - The office is small, with a few engagements at a time
+        watchFor:
+          - Cross-references and review sign-offs depend on discipline, which peer reviews will test
+          - Reporting across engagements, such as on open recommendations, takes manual work
+  depends_on:
+    - to: records-aware-collaboration
+      way: workspace
+      note: The workspaces, approvals, and retention labels are the agency’s collaboration suite.
 
 - id: shared-recommendation-tracker
   title: Shared Recommendation Tracker
   description: "An example architecture: a recommendation tracker the office owns, where agency officials submit corrective action plans, updates, and evidence through their own access, and the office decides when each recommendation is closed."
   sources: [ ig-act-405, gao-ig-act ]
   attributes:
-    approach: platform
     role: business-applications
     parts:
       - One record per recommendation, with its report, owner, agreed action, target date, and status
@@ -106,6 +160,23 @@
       - Agency users need accounts and guidance, which takes coordination
       - Giving agency officials access must not expose anything else the office holds
       - What it takes to close a recommendation needs agreeing with the agency up front
+    ways:
+      - id: audit-module
+        approach: product
+        title: A module of the audit product
+        description: The audit product’s recommendation module, opened to agency officials for their own recommendations.
+        fitsWhen:
+          - The office’s audit product has a module like this
+        watchFor:
+          - Agency officials need access to the office’s product, limited to their own recommendations
+      - id: owned-app
+        approach: platform
+        title: An app the office owns on a platform
+        description: A tracker the office builds and administers on a platform, kept apart from the agency’s other apps.
+        fitsWhen:
+          - The office’s audit tools have no module agency officials can use
+        watchFor:
+          - The office keeps the app working, and in step with its audit tools
   works_with:
     - to: audit-management-system
       note: Recommendations start in the audit reports and are tracked to closure here.
@@ -149,7 +220,7 @@
     approach: build
     role: ai-insights
     parts:
-      - Regular feeds of agency data the office has access to, such as payments, contracts, and grants
+      - Agreements and regular feeds for the agency data the office has a right to, such as payments, contracts, and grants
       - Rules and models that flag risks, each with the reason it was flagged
       - A review step where auditors or investigators decide what to look into
       - A record of what was flagged, what was decided, and what came of it
@@ -170,6 +241,8 @@
       note: Risks it finds feed the plan of oversight work.
 
 - id: audit-workpapers-collaboration
+  status: deprecated
+  replacedBy: audit-management-system
   title: Audit Work Papers in the Collaboration Workspace
   description: "An example architecture: each engagement gets a workspace in the agency’s collaboration suite, with folders and templates for work papers, cross-references to the report, and supervisors’ review recorded through document approvals."
   sources: [ gao-yellow-book, cigie-blue-book ]
@@ -195,3 +268,44 @@
   depends_on:
     - to: records-aware-collaboration
       note: The workspaces, approvals, and retention labels are the agency’s collaboration suite.
+
+- id: digital-evidence-store
+  title: Digital Evidence Store
+  description: "An example architecture: secure storage for investigations’ digital evidence, such as forensic images, video, and large email collections, with each item linked to its case and a record of everyone who handled it."
+  sources: [ cigie-investigation-standards ]
+  attributes:
+    role: processing
+    parts:
+      - Storage for large files, such as forensic images and video, kept apart from everyday systems
+      - Each item linked to its case, with where and when it was collected
+      - A custody log of every access, copy, and transfer
+      - Hashes that show an item hasn’t changed since it was collected
+      - Retention and disposal by the case’s records schedule, with holds during litigation
+    strengths:
+      - Shows that evidence hasn’t been altered
+      - Handles files too large for the case system
+      - Evidence can go to prosecutors as a controlled copy
+    fitsWhen:
+      - The office collects digital evidence, such as devices or email
+      - Evidence sits on drives or in shared folders today
+    watchFor:
+      - Storage costs grow with forensic images and video
+      - Access needs to be as tightly limited as the cases themselves
+      - Sharing with prosecutors and courts needs a defined process
+    ways:
+      - id: product
+        approach: product
+        title: A digital evidence management product
+        description: A product made for managing digital evidence, with custody logs and hashing built in.
+        fitsWhen:
+          - The office handles large amounts of digital evidence
+        watchFor:
+          - Another product to buy, secure, and keep up
+      - id: secure-storage
+        approach: build
+        title: Secure storage with a custody log
+        description: Encrypted storage in the agency’s cloud or data center, kept apart for the office, with a custody log the office builds and links to its case system.
+        fitsWhen:
+          - The office handles digital evidence now and then
+        watchFor:
+          - The custody log and hashing carry the evidence’s weight, so they must be built and checked with care

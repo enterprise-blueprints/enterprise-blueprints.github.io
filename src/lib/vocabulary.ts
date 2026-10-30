@@ -177,6 +177,18 @@ export const patternApproaches: Record<string, string> = {
   build: 'Build to fit',
 };
 
+// A north star, since schema 0.4.0, builds its patterns in these phases, in this order.
+export const solutionPhases: Record<string, { label: string; hint: string }> = {
+  foundation: { label: 'Foundation', hint: 'The systems of record and the shared services everything else needs.' },
+  core: { label: 'Core', hint: 'The rest of the mission’s main work.' },
+  connect: { label: 'Connect', hint: 'Connections to the public, other agencies, and government-wide systems, and reporting out.' },
+  insight: { label: 'Insight', hint: 'Analytics and AI on top of the records the other phases keep.' },
+};
+
+export const solutionKinds: Record<string, string> = {
+  'north-star': 'North star',
+};
+
 export const patternFields: Record<string, { label: string; definition: string }> = {
   parts: { label: 'What it’s made of', definition: 'The main pieces of the pattern.' },
   strengths: { label: 'Strengths', definition: 'What the pattern does well.' },

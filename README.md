@@ -40,7 +40,8 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
   version stays published. These files are built, not edited by hand.
 - `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
   `dependencies`. 0.3.0 checks the attributes of patterns and solutions and adds `coverage` to candidate
-  patterns. Every version stays, and Solution Studio keeps identical copies.
+  patterns. 0.4.0 adds a pattern's `ways` to source it and north stars, with `way` and `phase` on links. Every
+  version stays, and Solution Studio keeps identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
 - `src/lib/compile.ts` builds a package from its source and decides its version; `scripts/content.ts` runs it.
@@ -142,6 +143,26 @@ Common Capabilities. Each solution `includes` patterns, with a `note` saying why
 `supports` the missions it serves, with `fitsWhen` and `watchFor` in its attributes. The site works out what
 each solution covers for each mission from the patterns' capabilities, fully or only partly, and warns when
 a solution leaves out a pattern that one of its patterns needs.
+
+**Logical patterns and their ways.** Since schema 0.4.0, a pattern can describe a logical part of a solution,
+which a vendor or the agency could supply, and list its `ways` to source it instead of one `approach`. Each way
+has an `id`, an `approach`, a `title`, a `description`, and optionally `strengths`, `fitsWhen`, and `watchFor`.
+A `depends_on` link with a `way` is a need of that way only, such as case management on the agency's platform
+needing the platform. A pattern that became a way of another keeps its ID, with `status: deprecated` and
+`replacedBy`.
+
+```yaml
+  depends_on:
+    - to: shared-case-platform
+      way: agency-platform
+      note: The office's case types and steps are the shared platform, set up for oversight.
+```
+
+**North stars.** A mission package can hold its north star: one long-term, opinionated solution for the
+mission, in its own `solutions.yaml`, with `kind: north-star` and `principles` in its attributes. It
+`supports` its one mission, and each pattern it `includes` names the `phase` that adds it (`foundation`,
+`core`, `connect`, or `insight`) and, for a logical pattern, the `way` it prefers. A need comes in the same
+phase as the pattern or an earlier one, so an office can start from any pattern and add its needs first.
 
 To add a package, create `source/<name>/package.yaml` with its own `packageId`, add its files, and run
 `pnpm content:build`; it starts at 0.1.0. Element IDs are unique across all packages: each element is defined

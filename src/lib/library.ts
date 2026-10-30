@@ -5,7 +5,7 @@
 // elements. Any validation problem stops the build.
 
 import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
-import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, type ElementTypeInfo } from './vocabulary';
+import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, solutionPhases, type ElementTypeInfo } from './vocabulary';
 import { href } from './paths';
 import { compareVersions } from './format';
 
@@ -156,7 +156,7 @@ export function relationGroups(element: LibraryElement): RelationGroup[] {
   const groups: RelationGroup[] = [];
   for (const [name, info] of Object.entries(predicates)) {
     for (const direction of ['outgoing', 'incoming'] as const) {
-      const rels = relationsOf(element, name, direction);
+      const rels = relationsOf(element, name, direction).filter((r) => !(r.way && name === 'depends_on' && direction === 'outgoing'));
       if (!rels.length) continue;
       const others = related(element, name, direction);
       const links = new Map(rels.map((r, i) => [others[i].id, { ...(r.description && { note: r.description }), partial: r.coverage === 'partial' }]));
@@ -246,17 +246,53 @@ export interface PatternDetails {
   /** The part it plays, such as "business-applications". */
   role?: string;
   fields: { key: string; label: string; items: string[] }[];
+  /** A logical pattern's ways to source it, each with what it needs. */
+  ways: PatternWay[];
+}
+
+export interface PatternWay {
+  id: string;
+  /** The approach's label, such as "Configure a product". */
+  approach: string;
+  title: string;
+  description: string;
+  fields: { key: string; label: string; items: string[] }[];
+  /** Patterns this way can't work without. */
+  needs: { pattern: LibraryElement; note?: string }[];
 }
 
 /** An implementation pattern's or solution's own fields, in vocabulary order. */
 export function patternDetails(pattern: LibraryElement): PatternDetails {
   const a = pattern.attributes ?? {};
+  const fieldsOf = (o: Record<string, unknown>) =>
+    Object.entries(patternFields).flatMap(([key, f]) => (Array.isArray(o[key]) ? [{ key, label: f.label, items: o[key] as string[] }] : []));
+  const ways = Array.isArray(a.ways) ? (a.ways as Record<string, unknown>[]) : [];
   return {
     approach: typeof a.approach === 'string' ? patternApproaches[a.approach] : undefined,
     role: typeof a.role === 'string' && patternRoles[a.role] ? a.role : undefined,
-    fields: Object.entries(patternFields).flatMap(([key, f]) => (Array.isArray(a[key]) ? [{ key, label: f.label, items: a[key] as string[] }] : [])),
+    fields: fieldsOf(a),
+    ways: ways.map((w) => ({
+      id: String(w.id),
+      approach: patternApproaches[String(w.approach)] ?? String(w.approach),
+      title: String(w.title),
+      description: String(w.description),
+      fields: fieldsOf(w),
+      needs: relationsOf(pattern, 'depends_on', 'outgoing')
+        .filter((r) => r.way === w.id)
+        .map((r) => ({ pattern: byId.get(r.to)!, note: r.description })),
+    })),
   };
 }
+
+/** What a pattern needs whichever way it's sourced, or for the way named. Without a way, needs of particular ways don't count. */
+function needsOf(pattern: LibraryElement, way?: string): LibraryElement[] {
+  return relationsOf(pattern, 'depends_on', 'outgoing')
+    .filter((r) => !r.way || r.way === way)
+    .map((r) => byId.get(r.to)!);
+}
+
+/** A north star: one mission's long-term solution, built in phases. */
+export const isNorthStar = (e: LibraryElement) => e.type === 'solution' && e.attributes?.kind === 'north-star';
 
 export interface RoleGroup<T> {
   role: string | undefined;
@@ -278,11 +314,23 @@ export function byRole<T>(items: T[], patternOf: (item: T) => LibraryElement): R
     .filter((g) => g.items.length);
 }
 
+export interface SolutionItem {
+  pattern: LibraryElement;
+  note?: string;
+  /** The way of sourcing it the solution chooses, when it chooses one. */
+  way?: PatternWay;
+  phase?: string;
+}
+
 export interface SolutionView {
   solution: LibraryElement;
+  northStar: boolean;
+  principles: string[];
   missions: LibraryElement[];
   /** Its patterns by role, each with what the solution says about it. */
-  roles: RoleGroup<{ pattern: LibraryElement; note?: string }>[];
+  roles: RoleGroup<SolutionItem>[];
+  /** A north star's patterns by the phase that adds them, in order. */
+  phases: { phase: string; label: string; hint: string; items: SolutionItem[] }[];
   patterns: LibraryElement[];
   /**
    * For each mission it supports, which of the mission's capabilities its
@@ -295,16 +343,24 @@ export interface SolutionView {
 
 /** A solution: its patterns by role, the missions it supports, and what it covers for each. */
 export function solutionView(solution: LibraryElement): SolutionView {
-  const patterns = related(solution, 'includes', 'outgoing');
+  const includes = relationsOf(solution, 'includes', 'outgoing');
+  const items: SolutionItem[] = includes.map((r) => {
+    const pattern = byId.get(r.to)!;
+    return { pattern, note: r.description, way: patternDetails(pattern).ways.find((w) => w.id === r.way), phase: r.phase };
+  });
+  const patterns = items.map((i) => i.pattern);
   const missions = related(solution, 'supports', 'outgoing');
+  const principles = solution.attributes?.principles;
   return {
     solution,
+    northStar: isNorthStar(solution),
+    principles: Array.isArray(principles) ? (principles as string[]) : [],
     missions,
     patterns,
-    roles: byRole(
-      patterns.map((pattern) => ({ pattern, note: relationNote(solution, 'includes', pattern) })),
-      (i) => i.pattern,
-    ),
+    roles: byRole(items, (i) => i.pattern),
+    phases: Object.entries(solutionPhases)
+      .map(([phase, p]) => ({ phase, label: p.label, hint: p.hint, items: items.filter((i) => i.phase === phase) }))
+      .filter((p) => p.items.length),
     coverage: missions.map((mission) => {
       const caps = missionBlueprint(mission).capabilities;
       const used = (c: (typeof caps)[number]) => c.patterns.filter((p) => patterns.includes(p));
@@ -316,15 +372,22 @@ export function solutionView(solution: LibraryElement): SolutionView {
         uncovered: caps.filter((c) => !used(c).length).map((c) => c.capability),
       };
     }),
-    missing: [...new Set(patterns.flatMap((p) => related(p, 'depends_on', 'outgoing')))]
+    // A need of one way counts only when the solution chose that way.
+    missing: [...new Set(items.flatMap((i) => needsOf(i.pattern, i.way?.id)))]
       .filter((p) => !patterns.includes(p))
-      .map((pattern) => ({ pattern, neededBy: patterns.filter((p) => related(p, 'depends_on', 'outgoing').includes(pattern)) })),
+      .map((pattern) => ({ pattern, neededBy: items.filter((i) => needsOf(i.pattern, i.way?.id).includes(pattern)).map((i) => i.pattern) })),
   };
 }
 
-/** The example solutions that support a mission. */
+/** The example solutions that support a mission, not counting its north star. */
 export function solutionsFor(mission: LibraryElement): SolutionView[] {
-  return related(mission, 'supports', 'incoming').map(solutionView);
+  return related(mission, 'supports', 'incoming').filter((s) => !isNorthStar(s)).map(solutionView);
+}
+
+/** The mission's north star, if it has one. */
+export function northStarFor(mission: LibraryElement): SolutionView | undefined {
+  const star = related(mission, 'supports', 'incoming').find(isNorthStar);
+  return star && solutionView(star);
 }
 
 /** A mission's tagline, the phrase under its plain name, such as "Acquiring goods and services for the government". */
@@ -363,7 +426,15 @@ const groupedTypes = new Set(['outcome', 'measure', 'capability', 'requirement']
  * One group means no grouping.
  */
 export function indexGroups(type: string): IndexGroup[] {
-  const items = elementsOfType(type);
+  const items = elementsOfType(type).filter((e) => e.status !== 'deprecated');
+  if (type === 'solution') {
+    const stars = items.filter(isNorthStar);
+    if (!stars.length) return [{ id: 'all', label: '', items }];
+    return [
+      { id: 'north-stars', label: 'North stars', hint: 'One long-term architecture for each mission, built in phases.', items: stars },
+      { id: 'examples', label: 'Example solutions', hint: 'Ways an agency could combine patterns across its missions.', items: items.filter((e) => !isNorthStar(e)) },
+    ];
+  }
   // A role's hint is written for one office's patterns; its first sentence fits the whole library.
   if (type === 'implementationPattern') return byRole(items, (p) => p).map((g) => ({ id: g.role ?? 'other', label: g.label, hint: g.hint?.split(/(?<=\.) /)[0], items: g.items }));
   if (!groupedTypes.has(type)) return [{ id: 'all', label: '', items }];

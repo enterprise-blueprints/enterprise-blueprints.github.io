@@ -80,6 +80,12 @@ import { href } from '../lib/paths';
         covers only part of the capability; without it, the pattern covers it fully. Patterns can also say they
         need another (<code>depends_on</code>) or work well with one (<code>works_with</code>).
       </p>
+      <p>
+        Since schema 0.4.0, a logical pattern lists its <code>ways</code> to source it, and a <code>depends_on</code>
+        relation with a <code>way</code> is a need of that way only. A solution with <code>"kind": "north-star"</code>
+        is one mission's long-term architecture, with <code>principles</code>; each of its <code>includes</code>
+        relations names the <code>phase</code> that adds the pattern, and the <code>way</code> it prefers.
+      </p>
     </div>
   </div>
 </Base>

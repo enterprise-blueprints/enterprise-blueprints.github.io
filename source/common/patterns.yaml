@@ -210,3 +210,47 @@
       - A check only shows the records, and the award decision, such as a responsibility determination, is still a person’s
       - SAM.gov’s services and keys change, and someone has to keep the connection working
       - Some records need a federal user’s access, so how the system signs in to SAM.gov needs approval
+
+- id: records-in-business-systems
+  title: Records Schedules in Each Business System
+  description: "An example architecture: each business system, such as a case or audit system, applies the agency’s records schedules to what it holds, keeping each record for its retention period, holding records during litigation or an investigation, and disposing of or transferring them when the schedule says."
+  sources: [ records-44-usc-3101, nara-grs ]
+  attributes:
+    role: infrastructure
+    parts:
+      - Each kind of record in the system mapped to its records schedule item
+      - Retention periods that start from the right event, such as a case’s closure
+      - Holds that stop disposal during litigation, audits, or investigations
+      - Disposal with the records officer’s approval, or transfer of permanent records to the National Archives
+      - A report of what was disposed of or transferred, and when
+    strengths:
+      - Records are kept as long as required, and not much longer
+      - A cleanup can’t remove records under a hold
+      - Permanent records reach the National Archives in a form it accepts
+    fitsWhen:
+      - Business systems keep records with no retention rules today
+      - The agency is moving to fully electronic records
+    watchFor:
+      - Mapping each kind of record to a schedule item takes records officers’ time
+      - Older systems may not support holds or disposal, so records pile up
+      - Disposal needs the records officer’s approval, and a record of it
+    ways:
+      - id: built-in
+        approach: product
+        title: Each system’s own retention features
+        description: Retention rules, holds, and disposal set up in each system that supports them.
+        fitsWhen:
+          - The office’s systems have good retention features
+        watchFor:
+          - Each system is set up and checked on its own
+      - id: records-service
+        approach: platform
+        title: An agency records service
+        description: An agency records management service that applies schedules and holds across the systems connected to it.
+        fitsWhen:
+          - The agency runs a records service its systems can connect to
+        watchFor:
+          - Each system needs a connection, and offices must agree who can place and see holds on their records
+  works_with:
+    - to: records-aware-collaboration
+      note: Business systems keep their records on schedule, and the collaboration workspace keeps documents and messages on schedule.

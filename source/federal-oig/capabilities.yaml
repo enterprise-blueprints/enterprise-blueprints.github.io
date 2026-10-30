@@ -34,10 +34,9 @@
   attributes:
     scope: US-federal-OIG
   contributes_to: [ effective-programs, fraud-waste-abuse-prevented ]
-  satisfies: [ plan-oversight-work, document-findings ]
+  satisfies: [ plan-oversight-work, document-findings, quality-assurance-peer-review ]
   candidate_pattern:
     - audit-management-system
-    - audit-workpapers-collaboration
     - to: oversight-data-analytics
       coverage: partial
       note: Helps choose and scope audits, inspections, and evaluations. Doing and documenting them happens elsewhere.
@@ -61,6 +60,9 @@
     - to: oversight-data-analytics
       coverage: partial
       note: Finds leads. Each one is assessed and investigated in the case system.
+    - to: digital-evidence-store
+      coverage: partial
+      note: Keeps digital evidence and its custody. The case itself is managed in the case system.
 
 - id: recommendations-corrective-action-monitoring
   title: Recommendations & Corrective Action Monitoring

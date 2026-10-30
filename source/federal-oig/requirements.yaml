@@ -24,6 +24,11 @@
   title: Document work and findings
   description: Keep the work papers and evidence behind each finding, so a reviewer can trace how it was reached.
 
+- id: quality-assurance-peer-review
+  title: Keep a quality program, with external peer reviews
+  description: Check the quality of audits, inspections, and evaluations against the standards they follow, and for audits under the Yellow Book, have an external peer review at least once every 3 years.
+  sources: [ gao-yellow-book, cigie-silver-book ]
+
 - id: track-recommendations
   title: Track each recommendation until it’s closed
   description: Record each recommendation with its owner, the response, target dates, and status, until it’s closed.

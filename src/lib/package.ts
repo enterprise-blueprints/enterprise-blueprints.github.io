@@ -2,15 +2,18 @@
 // first, then the reference checks a schema can't do. Schema 0.2.0 adds
 // dependencies, so a package can build on another one's elements. Schema
 // 0.3.0 gives patterns and solutions typed attributes, and lets a candidate
-// pattern say it only partly covers a capability. Packages stay valid under
-// the schema they were published with.
+// pattern say it only partly covers a capability. Schema 0.4.0 lets a logical
+// pattern list its ways to source it, and adds north stars: one mission's
+// long-term solution, built in phases. Packages stay valid under the schema
+// they were published with.
 
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json';
 import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json';
 import schema030 from '../../schemas/blueprint-package-0.3.0.schema.json';
-import { elementTypes, patternApproaches, patternFields, patternRoles, predicates } from './vocabulary';
+import schema040 from '../../schemas/blueprint-package-0.4.0.schema.json';
+import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, solutionPhases } from './vocabulary';
 
 export interface Source {
   id: string;
@@ -43,6 +46,10 @@ export interface Relation {
   to: string;
   /** For candidate_pattern, since schema 0.3.0: "partial" when the pattern covers only part of the capability. */
   coverage?: 'full' | 'partial';
+  /** Since schema 0.4.0. For includes, the way of sourcing the pattern the solution chooses; for depends_on, the way that needs the other pattern. */
+  way?: string;
+  /** Since schema 0.4.0, for a north star's includes: the phase that adds the pattern. */
+  phase?: 'foundation' | 'core' | 'connect' | 'insight';
   description?: string;
   sourceIds?: string[];
 }
@@ -82,7 +89,7 @@ export interface Dependency {
 }
 
 export interface BlueprintPackage {
-  schemaVersion: '0.1.0' | '0.2.0' | '0.3.0';
+  schemaVersion: '0.1.0' | '0.2.0' | '0.3.0' | '0.4.0';
   packageId: string;
   version: string;
   title: string;
@@ -106,6 +113,7 @@ const schemas = {
   '0.1.0': ajv.compile<BlueprintPackage>(schema010),
   '0.2.0': ajv.compile<BlueprintPackage>(schema020),
   '0.3.0': ajv.compile<BlueprintPackage>(schema030),
+  '0.4.0': ajv.compile<BlueprintPackage>(schema040),
 };
 export const schemaVersions = Object.keys(schemas) as (keyof typeof schemas)[];
 
@@ -139,6 +147,7 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
 
   // Elements this package can point at: its own, then its dependencies'.
   const reachable = new Map<string, Element>();
+  const dependencyRelations: Relation[] = [];
   const dependencies = pkg.dependencies ?? [];
   for (const id of duplicates(dependencies.map((d) => d.packageId))) errors.push(`depends on ${id} more than once`);
   for (const d of dependencies) {
@@ -149,6 +158,7 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
     const dependency = resolve(d.packageId, d.version);
     if (!dependency) errors.push(`depends on ${d.packageId} ${d.version}, which isn't in the library`);
     for (const e of dependency?.elements ?? []) reachable.set(e.id, e);
+    dependencyRelations.push(...(dependency?.relations ?? []));
   }
 
   for (const id of duplicates(pkg.elements.map((e) => e.id))) errors.push(`duplicate element ID ${id}`);
@@ -196,12 +206,62 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
     }
     if (r.coverage && r.predicate !== 'candidate_pattern') errors.push(`relation ${r.id}: only a candidate pattern has coverage`);
     if (r.from === r.to) errors.push(`relation ${r.id} links ${r.from} to itself`);
+    if (r.way !== undefined) {
+      // The way names one of the pattern's ways: the one included, or the one that has the need.
+      const pattern = r.predicate === 'includes' ? to : r.predicate === 'depends_on' ? from : undefined;
+      if (!pattern) errors.push(`relation ${r.id}: only includes and depends_on name a way`);
+      else if (!waysOf(pattern).includes(r.way)) errors.push(`relation ${r.id}: ${pattern.id} has no way "${r.way}"`);
+    }
+    if (r.phase !== undefined && !(r.predicate === 'includes' && from && isNorthStar(from))) {
+      errors.push(`relation ${r.id}: only a north star's includes have a phase`);
+    }
     const edge = `${r.from} ${r.predicate} ${r.to}`;
     if (edges.has(edge)) errors.push(`relation ${r.id} repeats ${edge}`);
     edges.add(edge);
   }
 
+  errors.push(...northStarProblems(pkg, [...dependencyRelations, ...pkg.relations]));
   errors.push(...assessmentProblems(pkg.assessments ?? [], reachable));
+  return errors;
+}
+
+const isNorthStar = (e: Element) => e.type === 'solution' && e.attributes?.kind === 'north-star';
+const waysOf = (e: Element) => (Array.isArray(e.attributes?.ways) ? (e.attributes.ways as { id: string }[]).map((w) => w.id) : []);
+const phaseOrder = Object.keys(solutionPhases);
+
+/**
+ * A north star supports one mission, and only one north star in a package
+ * supports each mission. Every pattern it includes comes in a phase, and
+ * what a pattern needs, for the way the north star chose, comes in that
+ * phase or before.
+ */
+function northStarProblems(pkg: BlueprintPackage, relations: Relation[]): string[] {
+  const errors: string[] = [];
+  const missions = new Map<string, string>();
+  for (const star of pkg.elements.filter(isNorthStar)) {
+    const own = pkg.relations.filter((r) => r.from === star.id);
+    const supports = own.filter((r) => r.predicate === 'supports');
+    if (supports.length !== 1) errors.push(`north star ${star.id} supports ${supports.length} missions, not one`);
+    for (const r of supports) {
+      if (missions.has(r.to)) errors.push(`${r.to} has two north stars, ${missions.get(r.to)} and ${star.id}`);
+      missions.set(r.to, star.id);
+    }
+    const included = new Map(own.filter((r) => r.predicate === 'includes').map((r) => [r.to, r]));
+    for (const [pattern, r] of included) {
+      if (!r.phase) {
+        errors.push(`north star ${star.id} includes ${pattern} without a phase`);
+        continue;
+      }
+      const needs = relations.filter((d) => d.predicate === 'depends_on' && d.from === pattern && (!d.way || d.way === r.way));
+      for (const need of needs) {
+        const at = included.get(need.to)?.phase;
+        if (!at) errors.push(`north star ${star.id} includes ${pattern}, which needs ${need.to}, but not ${need.to}`);
+        else if (phaseOrder.indexOf(at) > phaseOrder.indexOf(r.phase)) {
+          errors.push(`north star ${star.id} adds ${pattern} in ${r.phase}, before ${need.to}, which it needs, in ${at}`);
+        }
+      }
+    }
+  }
   return errors;
 }
 
@@ -220,6 +280,8 @@ function patternProblems(e: Element): string[] {
   if ('role' in a && !(typeof a.role === 'string' && patternRoles[a.role])) {
     errors.push(`${what} ${e.id} has unknown role ${JSON.stringify(a.role)}`);
   }
+  const ways = waysOf(e);
+  if (new Set(ways).size !== ways.length) errors.push(`${what} ${e.id} has two ways with the same ID`);
   for (const field of Object.keys(patternFields)) {
     if (!(field in a)) continue;
     const list = a[field];
