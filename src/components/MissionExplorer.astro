@@ -165,7 +165,7 @@ const node = (id: string) => ({ 'data-node': id, 'data-links': neighbors(id).joi
           {c.requirements.length > 0 && (
             <>
               <h4>Requirements</h4>
-              <ul class="ex__list">{c.requirements.map((r) => <li><a href={r.url}>{r.title}</a></li>)}</ul>
+              <div class="ex__chips type-requirement">{c.requirements.map((r) => <a class="ex-chip" href={r.url}>{r.title}</a>)}</div>
             </>
           )}
           <p class="ex__open"><a href={c.capability.url}>Open the capability’s page →</a></p>
@@ -351,10 +351,10 @@ const node = (id: string) => ({ 'data-node': id, 'data-links': neighbors(id).joi
   .ex__list li { margin-bottom: .3rem; }
   .ex__muted { color: var(--text-muted); font-size: .875rem; }
   .ex__counts { color: var(--text-muted); font-size: .875rem; }
-  .ex__chips { display: flex; flex-wrap: wrap; gap: .35rem; }
-  .ex-chip { display: inline-flex; align-items: center; gap: .35rem; padding: .25rem .55rem; border: 1px solid color-mix(in srgb, var(--tc) 35%, transparent); border-radius: var(--radius-sm); background: var(--tc-bg); color: var(--tc); font: inherit; font-size: .8125rem; font-weight: 600; text-align: left; cursor: pointer; }
+  .ex__chips { display: grid; gap: .35rem; }
+  .ex-chip { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; width: 100%; padding: .35rem .6rem; border: 1px solid color-mix(in srgb, var(--tc) 35%, transparent); border-radius: var(--radius-sm); background: var(--tc-bg); color: var(--tc); font: inherit; font-size: .8125rem; font-weight: 600; text-align: left; text-decoration: none; cursor: pointer; }
   .ex-chip:hover { border-color: var(--tc); }
-  .ex-chip__note { font-weight: 500; font-size: .75rem; opacity: .8; }
+  .ex-chip__note { flex: none; font-weight: 500; font-size: .75rem; opacity: .8; }
   .ex__open { margin-top: 1rem !important; font-weight: 600; }
 
   /* Narrower: the panel opens as a sheet over the bottom of the screen. */
