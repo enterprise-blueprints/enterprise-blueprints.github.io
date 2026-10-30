@@ -1,10 +1,10 @@
 ---
-// A mission's blueprint: tabs for the outcomes it seeks, the capabilities
-// that contribute to them, and their requirements, one item per row, with the
-// mission's patterns under the tabs, always in view and grouped by layer, as
-// its architecture. Selecting an item lights up what it connects to, in every
-// tab and in the patterns, and shows it under the item; a tab says how much of
-// it the selection reaches. Each row links to its page.
+// A mission at a glance, in tabs: the outcomes it seeks, the capabilities
+// that contribute to them, their requirements, and the blueprint, the
+// mission's patterns by layer, which together are its architecture. One item
+// per row. Selecting an item lights up what it connects to in every tab and
+// shows it under the item; a tab says how much of it the selection reaches.
+// Each row links to its page.
 import StackItem from './StackItem.astro';
 import { byLayer, patternDetails, shortTitle, type LibraryElement, type MissionBlueprint } from '../lib/library';
 import { plural } from '../lib/format';
@@ -52,6 +52,8 @@ const tabs = [
   { id: 'outcomes', type: 'outcome', name: 'Outcomes', count: `${outcomes.length} · ${measureCount(measures.length)}` },
   { id: 'capabilities', type: 'capability', name: 'Capabilities', count: `${own.length}${shared.length ? ` + ${shared.length} shared` : ''}` },
   ...(requirements.length ? [{ id: 'requirements', type: 'requirement', name: 'Requirements', count: String(requirements.length) }] : []),
+  // The patterns together are the mission's blueprint.
+  ...(patterns.length ? [{ id: 'blueprint', type: 'implementationPattern', name: 'Blueprint', count: `${plural(patterns.length, 'pattern', 'patterns')}, by layer` }] : []),
 ];
 const capabilityItem = (c: (typeof capabilities)[number]) => ({
   element: c.capability,
@@ -66,7 +68,7 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
 ---
 <section class="bp-stack" aria-labelledby="stack-heading" data-stack>
   <div class="bp-stack__intro">
-    <h2 id="stack-heading">The blueprint at a glance</h2>
+    <h2 id="stack-heading">The mission at a glance</h2>
     <p class="section-note">
       <span data-idle>Select an outcome, capability, requirement, or pattern to see what it connects to.</span>
       <span data-active hidden>Showing what <strong data-selected-name></strong> connects to. <button type="button" class="bp-clear" data-clear>Clear</button></span>
@@ -140,13 +142,10 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
     </div>
   )}
 
-  {/* The patterns, always in view: the mission's architecture, by layer. */}
+  {/* The blueprint: the mission's patterns, which together are its architecture, by layer. */}
   {patterns.length > 0 && (
-    <div class="bp-band type-implementationPattern">
-      <div class="bp-band__label">
-        <h3 class="bp-band__name">Patterns</h3>
-        <span class="bp-band__count">{patterns.length}, by layer of the mission’s architecture</span>
-      </div>
+    <div class="bp-panel type-implementationPattern" role="tabpanel" id="bp-panel-blueprint" aria-labelledby="bp-tab-blueprint" data-panel hidden>
+      <p class="bp-panel__note">The mission’s patterns, the logical parts of its architecture, by layer. Each pattern’s page lists its ways to source it.</p>
       {byLayer(patterns, (e) => e).map((g) => (
         <div class="bp-role">
           <h4 class="bp-role__name">{g.label}</h4>
@@ -237,7 +236,7 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
   /* One row of tabs; on a very narrow screen it scrolls rather than wraps. */
   .bp-tabs { display: flex; gap: 1.25rem; margin-top: 1.25rem; border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
   .bp-tab { flex: none; }
-  .bp-tab { display: grid; justify-items: start; gap: .05rem; padding: .5rem .1rem .55rem; margin-bottom: -1px; border: 0; border-bottom: 3px solid transparent; background: none; color: var(--text-muted); font: inherit; text-align: left; cursor: pointer; }
+  .bp-tab { display: grid; justify-items: start; align-content: start; gap: .05rem; padding: .5rem .1rem .55rem; margin-bottom: -1px; border: 0; border-bottom: 3px solid transparent; background: none; color: var(--text-muted); font: inherit; text-align: left; cursor: pointer; }
   .bp-tab__name { font-size: 1.0625rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--tc); opacity: .7; }
   .bp-tab__count { font-size: .875rem; }
   .bp-tab__lit { font-size: .8125rem; font-weight: 650; color: var(--text); }
@@ -247,16 +246,11 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
   .bp-tab:focus-visible { outline: 2px solid var(--tc); outline-offset: 2px; }
   .bp-panel { padding-top: .6rem; }
   @media (max-width: 30rem) {
-    .bp-tabs { gap: .9rem; }
+    .bp-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0 .9rem; overflow: visible; }
     .bp-tab__name { font-size: .875rem; letter-spacing: .02em; }
     .bp-tab__count, .bp-tab__lit { font-size: .75rem; }
   }
-
-  /* The patterns under the tabs: a name and count on one row, the layers full width under it. */
-  .bp-band { margin-top: 2.25rem; }
-  .bp-band__label { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .6rem; padding-bottom: .45rem; margin-bottom: .35rem; border-bottom: 2px solid var(--tc); }
-  .bp-band__name { margin: 0; font-size: 1.25rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--tc); }
-  .bp-band__count { font-size: .9375rem; color: var(--text-muted); }
+  .bp-panel__note { margin: 0 0 .4rem; font-size: .9375rem; color: var(--text-muted); }
 
   /* One item per row: the chip that selects it, then its description and its page link. */
   .bp-items { list-style: none; margin: 0; padding: 0; display: grid; }
