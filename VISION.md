@@ -78,12 +78,11 @@ the library.
 ## Where it's going
 
 Built so far, each step pairing library content with the Studio feature that uses it: capture, starting from
-a blueprint, discovery, requirements and gaps, and options. Next:
+a blueprint, discovery, requirements and gaps, options, and deliverables, starting with an architecture
+summary made from a fixed revision of the model, grouped by the library's stages and kinds. Next:
 
-1. **Deliverables.** An architecture summary an architect can hand over, built from a fixed revision of the
-   model, so it can be traced back and reproduced.
-2. **Assist.** AI suggestions from notes and findings, through the same review as discovery's.
-3. **Roadmaps.** Which parts of the architecture to build first, from wherever an agency starts.
-4. **More missions.** Mission names leave out "Federal" so state and local versions can reuse them.
-5. **Explainers.** Videos and articles that link to the library's items by ID, once both products have a
+1. **Assist.** AI suggestions from notes and findings, through the same review as discovery's.
+2. **Roadmaps.** Which parts of the architecture to build first, from wherever an agency starts.
+3. **More missions.** Mission names leave out "Federal" so state and local versions can reuse them.
+4. **Explainers.** Videos and articles that link to the library's items by ID, once both products have a
    solid foundation.
