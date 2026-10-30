@@ -4,8 +4,8 @@
   title: 5 U.S.C. § 404 — Duties and responsibilities of Inspectors General
   url: https://www.govinfo.gov/link/uscode/5/404?link-type=html
   kind: official-reference
-  lastReviewedAt: 2026-10-26
-  note: Principal statutory duties of federal Inspectors General.
+  lastReviewedAt: 2026-10-30
+  note: Principal statutory duties of federal Inspectors General, among them following the Comptroller General’s standards for audits (§ 404(b)(1)(A)) and reporting expeditiously to the Attorney General whenever there are reasonable grounds to believe federal criminal law was violated (§ 404(d)).
 
 - id: oversight-mission
   title: Oversight.gov — Mission of Inspectors General
@@ -28,6 +28,49 @@
   lastReviewedAt: 2026-10-26
   note: Official routing information for reports of fraud, waste, abuse, or retaliation.
 
+- id: ig-act-403
+  title: 5 U.S.C. § 403 — Appointment of Inspectors General
+  url: https://www.govinfo.gov/link/uscode/5/403?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-30
+  note: "Among other things, each Inspector General designates a Whistleblower Protection Coordinator (§ 403(d)(1)(C)), who educates agency employees about the prohibitions on retaliation for protected disclosures, and about their rights and remedies, including the roles of the Office of Inspector General, the Office of Special Counsel, and the Merit Systems Protection Board. The coordinator doesn’t act as the employee’s representative or advocate."
+
+- id: ig-act-406
+  title: 5 U.S.C. § 406 — Authority of Inspector General
+  url: https://www.govinfo.gov/link/uscode/5/406?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-10-30
+  note: Timely access to all records, reports, audits, reviews, documents, and other material of the agency (§ 406(a)(1)); subpoenas for information and documents (§ 406(a)(4)); and, when information or assistance is unreasonably refused, a report of the circumstances to the agency head without delay (§ 406(c)(2)).
+
+- id: contractor-whistleblower-41-usc-4712
+  title: 41 U.S.C. § 4712 — Enhancement of contractor protection from reprisal for disclosure of certain information
+  url: https://www.law.cornell.edu/uscode/text/41/4712
+  kind: official-reference
+  lastReviewedAt: 2026-10-30
+  note: Employees of contractors, subcontractors, grantees, and subgrantees may complain of reprisal to the agency’s Inspector General, within three years of it. Within 180 days the Inspector General either determines the complaint doesn’t need investigating or reports its findings to the complainant, the employer, and the agency head, with up to 180 more days if the complainant agrees.
+
+- id: reports-consolidation-31-usc-3516
+  title: 31 U.S.C. § 3516 — Reports consolidation
+  url: https://www.law.cornell.edu/uscode/text/31/3516
+  kind: official-reference
+  lastReviewedAt: 2026-10-30
+  note: An agency’s annual consolidated report includes a statement by its Inspector General summarizing what the Inspector General considers the most serious management and performance challenges facing the agency, and the agency’s progress on them (§ 3516(d)).
+
+- id: omb-a-50
+  title: OMB Circular A-50 — Audit Followup
+  url: https://obamawhitehouse.archives.gov/omb/circulars_a050/
+  kind: official-reference
+  publicationDate: 1982-09-29
+  lastReviewedAt: 2026-10-30
+  note: Agencies resolve audit recommendations within six months of the final report, and carry out corrective action as quickly as possible, with an audit followup official responsible for timely responses and for seeing that corrective actions are taken.
+
+- id: cigie-qar-investigations
+  title: Council of the Inspectors General on Integrity and Efficiency — Quality Assurance Review Guidelines for Offices of Investigations (July 2025)
+  url: https://www.ignet.gov/sites/default/files/files/QAR%20Guide%20July-2025.pdf
+  kind: official-reference
+  lastReviewedAt: 2026-10-30
+  note: The peer review of investigative operations for Offices of Inspector General with statutory law enforcement authority, which checks that CIGIE’s Quality Standards for Investigations and the Attorney General’s guidelines are followed. CIGIE keeps the schedule of reviews.
+
 - id: ig-act-402
   title: 5 U.S.C. § 402 — Establishment and purpose of Offices of Inspector General
   url: https://www.govinfo.gov/link/uscode/5/402?link-type=html
@@ -39,14 +82,14 @@
   title: 5 U.S.C. § 405 — Reports
   url: https://www.govinfo.gov/link/uscode/5/405?link-type=html
   kind: official-reference
-  lastReviewedAt: 2026-10-28
-  note: What each semiannual report must include, such as questioned costs, funds put to better use, open recommendations, and investigative statistics, with its deadlines.
+  lastReviewedAt: 2026-10-30
+  note: What each semiannual report must include, such as questioned costs, funds put to better use, open recommendations, investigative statistics, and peer review results, with its deadlines, and the report of particularly serious or flagrant problems, which goes to Congress within 7 calendar days (§ 405(e)).
 
 - id: ig-act-407
   title: 5 U.S.C. § 407 — Complaints by employees
   url: https://www.govinfo.gov/link/uscode/5/407?link-type=html
   kind: official-reference
-  lastReviewedAt: 2026-10-28
+  lastReviewedAt: 2026-10-30
   note: Receiving employee complaints, keeping a complainant’s identity confidential, and protection from reprisal.
 
 - id: ig-act-420

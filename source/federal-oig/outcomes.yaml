@@ -69,3 +69,14 @@
       title: Whistleblower retaliation found
       description: Cases of whistleblower retaliation the office establishes, with the consequences imposed. Semiannual reports to Congress include them.
       sources: [ ig-act-405 ]
+
+- id: work-meets-standards
+  title: The office’s work is independent and meets professional standards
+  theme: accountable
+  description: Audits, inspections, evaluations, and investigations follow the professional standards that apply to them, free of impairments to the office’s independence, and external peer reviews confirm it.
+  sources: [ cigie-silver-book, gao-yellow-book, cigie-qar-investigations ]
+  measures:
+    - id: peer-review-results
+      title: Peer review results
+      description: The rating of the latest external peer review of the office’s audit work, the results of its investigations peer review, and any peer review recommendations still open. Semiannual reports to Congress include them.
+      sources: [ ig-act-405, gao-yellow-book ]

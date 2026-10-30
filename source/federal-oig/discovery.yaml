@@ -14,6 +14,7 @@
         - leaders-congress-informed: Agency leaders and Congress are fully and currently informed
         - problems-corrected: Problems that are found get corrected
         - concerns-raised-safely: People can raise concerns safely
+        - work-meets-standards: The office’s work is independent and meets professional standards
       points:
         - when: effective-programs
           to: outcome:effective-programs
@@ -30,6 +31,9 @@
         - when: concerns-raised-safely
           to: outcome:concerns-raised-safely
           why: This effort is meant to advance this result.
+        - when: work-meets-standards
+          to: outcome:work-meets-standards
+          why: This effort is meant to advance this result.
     - id: tracked-measures
       prompt: Which of these does the office track today?
       kind: multiple-choice
@@ -38,6 +42,7 @@
         - recommendation-status: Open recommendations and how long they’ve been open
         - report-posting: How soon reports are posted publicly
         - intake-times: How long new matters take to review and route
+        - peer-reviews: Peer review ratings and their open recommendations
         - none: None of these regularly
       points:
         - when: semiannual-statistics
@@ -60,6 +65,9 @@
           why: The office tracks this already, so there may be a value for today.
         - when: intake-times
           to: measure:time-to-route
+          why: The office tracks this already, so there may be a value for today.
+        - when: peer-reviews
+          to: measure:peer-review-results
           why: The office tracks this already, so there may be a value for today.
     - id: measure-sources
       prompt: Where do those figures come from today, and who puts them together?
@@ -272,6 +280,72 @@
         - when: semiannual
           to: implementationPattern:oversight-reporting-from-source-data
           why: Reporting from source data cuts the gathering before each semiannual report.
+    - id: work-planning
+      prompt: How does the office decide what to audit, inspect, and evaluate?
+      kind: single-choice
+      options:
+        - risk-based: From a written risk assessment and the agency’s top challenges
+        - requests: Mostly from what the law requires and what’s requested
+        - informal: Informally, without a written plan
+      points:
+        - when: risk-based
+          to: capability:oversight-planning
+          why: The office plans its work from risk.
+        - when: requests
+          to: capability:oversight-planning
+          why: The plan is mostly set by mandates and requests, which leaves little room to choose by risk.
+        - when: informal
+          to: capability:oversight-planning
+          why: Work is chosen without a written plan, which suggests a gap in planning.
+        - when: informal
+          to: requirement:plan-oversight-work
+          why: A written plan, with each project’s scope, schedule, and status, is a need.
+        - when: requests
+          to: implementationPattern:oversight-data-analytics
+          why: The agency’s own data can show where the risk is, to weigh against the mandates.
+    - id: reprisal-complaints
+      prompt: Does the office receive complaints of reprisal, from agency employees or from employees of contractors and grantees?
+      kind: multiple-choice
+      options:
+        - agency-employees: From agency employees
+        - contractor-employees: From employees of contractors or grantees
+        - neither: Neither, or not that we know of
+      points:
+        - when: agency-employees
+          to: capability:whistleblower-protection
+          why: The office handles reprisal complaints from employees.
+        - when: contractor-employees
+          to: capability:whistleblower-protection
+          why: The office handles reprisal complaints from contractor and grantee employees.
+        - when: contractor-employees
+          to: requirement:decide-contractor-reprisal-complaints
+          why: These complaints have a 180-day clock.
+        - when: agency-employees
+          to: requirement:educate-about-retaliation-protections
+          why: Employees need to know their protections and where to seek review.
+    - id: peer-review-readiness
+      prompt: How does the office get ready for its external peer reviews?
+      kind: single-choice
+      options:
+        - ongoing: Its own quality reviews run all year
+        - gathered: It gathers what reviewers need when a review comes up
+        - not-yet: It hasn’t had one yet
+      points:
+        - when: ongoing
+          to: capability:quality-assurance
+          why: The office reviews the quality of its own work.
+        - when: gathered
+          to: capability:quality-assurance
+          why: Gathering for each review suggests quality assurance isn’t part of the everyday work.
+        - when: not-yet
+          to: capability:quality-assurance
+          why: A first peer review is ahead.
+        - when: gathered
+          to: requirement:quality-assurance-peer-review
+          why: An ongoing quality program makes each peer review easier.
+        - when: gathered
+          to: implementationPattern:audit-management-system
+          why: Work papers in one system are ready for reviewers to sample.
     - id: monthly-volume
       prompt: About how many new matters does the office receive in a typical month?
       kind: number

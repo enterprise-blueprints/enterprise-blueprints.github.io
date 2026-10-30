@@ -62,13 +62,14 @@ describe('validatePackage', () => {
     for (const pkg of [common010, common020, common030, common040]) expect(validatePackage(pkg), pkg.version).toEqual([]);
   });
 
-  it('has one mission, five capabilities, eleven requirements, and eight patterns (one replaced) in the OIG package', () => {
+  it('has one mission, six outcomes, eight capabilities, twenty-one requirements, and eight patterns (one replaced) in the OIG package', () => {
     const counts = Object.groupBy(original.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
-    expect(counts.capability).toHaveLength(5);
+    expect(counts.outcome).toHaveLength(6);
+    expect(counts.capability).toHaveLength(8);
     expect(counts.implementationPattern).toHaveLength(8);
     expect(counts.implementationPattern!.filter((p) => p.status === 'deprecated').map((p) => p.replacedBy)).toEqual(['eb:implementationPattern:audit-management-system']);
-    expect(counts.requirement).toHaveLength(11);
+    expect(counts.requirement).toHaveLength(21);
     expect(counts.solution).toBeUndefined();
   });
 
@@ -467,6 +468,6 @@ describe('groups across missions (schema 0.5.0)', () => {
   });
 
   it('keep a capability’s other attributes, such as its scope', () => {
-    expect(first(original, 'capability').attributes).toEqual({ scope: 'US-federal-OIG', stage: 'reach-take-in' });
+    expect(original.elements.find((e) => e.id === 'eb:capability:complaint-allegation-disclosure-intake')!.attributes).toEqual({ scope: 'US-federal-OIG', stage: 'reach-take-in' });
   });
 });

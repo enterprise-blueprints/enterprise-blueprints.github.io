@@ -1,5 +1,21 @@
 # Capabilities, in the order the pages show them, each with the links it holds.
 
+- id: oversight-planning
+  title: Oversight Planning
+  stage: plan-prepare
+  description: Ability to decide what the office will audit, inspect, evaluate, and look into, from the agency’s risks, its most serious management and performance challenges, the work the law requires, and requests from Congress and agency leaders, and to keep a plan with each project’s scope, schedule, and status.
+  sources: [ cigie-silver-book, reports-consolidation-31-usc-3516 ]
+  applicabilityNotes: Offices plan for a year or several, and change the plan as new risks and requests arrive. Some work, such as financial statement audits and reviews the law requires, is in every plan.
+  contributes_to: [ effective-programs, fraud-waste-abuse-prevented ]
+  satisfies: [ plan-oversight-work, summarize-management-challenges ]
+  candidate_pattern:
+    - to: audit-management-system
+      coverage: partial
+      note: Holds the plan, with each project’s scope, schedule, and status. Choosing the work is the office’s judgment.
+    - to: oversight-data-analytics
+      coverage: partial
+      note: Shows where the risk is in the agency’s own data, to inform what goes in the plan.
+
 - id: complaint-allegation-disclosure-intake
   title: Complaint, Allegation & Disclosure Intake
   stage: reach-take-in
@@ -33,7 +49,7 @@
   attributes:
     scope: US-federal-OIG
   contributes_to: [ effective-programs, fraud-waste-abuse-prevented ]
-  satisfies: [ plan-oversight-work, document-findings, quality-assurance-peer-review ]
+  satisfies: [ follow-professional-standards, document-findings, get-timely-access-to-records ]
   candidate_pattern:
     - audit-management-system
     - to: oversight-data-analytics
@@ -49,7 +65,7 @@
   attributes:
     scope: US-federal-OIG
   contributes_to: [ fraud-waste-abuse-prevented ]
-  satisfies: [ track-case-status, link-evidence, restrict-case-access ]
+  satisfies: [ track-case-status, link-evidence, restrict-case-access, refer-possible-crimes ]
   candidate_pattern:
     - to: oversight-intake-case-tracking
       id: oig-candidate-pattern-2
@@ -60,6 +76,22 @@
       coverage: partial
       note: Keeps digital evidence and its custody. The case itself is managed in the case system.
 
+- id: whistleblower-protection
+  title: Whistleblower Protection
+  stage: assess-decide
+  description: Ability to educate agency employees about the protections against retaliation for protected disclosures and the ways to seek review, and to receive, investigate, and decide complaints of reprisal, including those from employees of contractors and grantees, within the time the law allows.
+  sources: [ ig-act-403, ig-act-407, contractor-whistleblower-41-usc-4712 ]
+  applicabilityNotes: Federal employees can also take reprisal complaints to the Office of Special Counsel, and some go on to the Merit Systems Protection Board. The Whistleblower Protection Coordinator explains the routes but doesn’t represent the employee. Intelligence community elements follow their own provisions.
+  contributes_to: [ concerns-raised-safely ]
+  satisfies: [ educate-about-retaliation-protections, decide-contractor-reprisal-complaints ]
+  candidate_pattern:
+    - to: oversight-intake-case-tracking
+      coverage: partial
+      note: Reprisal complaints as a case type of their own, with the 180-day clock. Educating employees happens elsewhere.
+    - to: confidential-hotline-intake
+      coverage: partial
+      note: Takes reprisal complaints, and links to the rights and routes employees need to know.
+
 - id: recommendations-corrective-action-monitoring
   title: Recommendations & Corrective Action Monitoring
   stage: monitor-correct
@@ -69,8 +101,24 @@
   attributes:
     scope: US-federal-OIG
   contributes_to: [ effective-programs, problems-corrected ]
-  satisfies: [ track-recommendations, report-open-recommendations ]
+  satisfies: [ track-recommendations, follow-to-management-decision, report-open-recommendations ]
   candidate_pattern: [ audit-management-system, shared-recommendation-tracker ]
+
+- id: quality-assurance
+  title: Quality Assurance & Peer Review
+  stage: monitor-correct
+  description: Ability to check the office’s own audits, inspections, evaluations, and investigations against the standards they follow, to take part in external peer reviews of the office and by it, and to act on what the reviews find.
+  sources: [ cigie-silver-book, gao-yellow-book, cigie-qar-investigations ]
+  applicabilityNotes: Audit work under the Yellow Book has an external peer review at least once every 3 years. Investigations peer reviews apply to offices with statutory law enforcement authority, on the schedule CIGIE sets.
+  contributes_to: [ work-meets-standards ]
+  satisfies: [ quality-assurance-peer-review, investigations-peer-review, report-peer-review-results ]
+  candidate_pattern:
+    - to: audit-management-system
+      coverage: partial
+      note: Keeps quality control reviews and their results with the engagements they cover, and gives peer reviewers the work papers they sample.
+    - to: oversight-intake-case-tracking
+      coverage: partial
+      note: Gives investigations peer reviewers the case files they sample, with each case’s history.
 
 - id: oversight-reporting-communication
   title: Oversight Reporting & Communication
@@ -81,7 +129,7 @@
   attributes:
     scope: US-federal-OIG
   contributes_to: [ leaders-congress-informed ]
-  satisfies: [ periodic-reporting, publish-reports ]
+  satisfies: [ periodic-reporting, report-serious-problems, publish-reports ]
   candidate_pattern:
     - to: shared-recommendation-tracker
       coverage: partial

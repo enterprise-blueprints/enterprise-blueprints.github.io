@@ -8,8 +8,8 @@ describe('missionBlueprint', () => {
   const ids = (list: { id: string }[]) => list.map((e) => e.id);
 
   it('gathers the outcomes the mission seeks, with their measures', () => {
-    expect(blueprint.outcomes).toHaveLength(5);
-    expect(blueprint.measures).toHaveLength(9);
+    expect(blueprint.outcomes).toHaveLength(6);
+    expect(blueprint.measures).toHaveLength(10);
     const safely = blueprint.outcomes.find((o) => o.outcome.id === 'eb:outcome:concerns-raised-safely')!;
     expect(ids(safely.measures)).toEqual(['time-to-route', 'retaliation-found']);
     expect(safely.measures[0].url).toBe(`${safely.outcome.url}#measure-time-to-route`);
@@ -18,10 +18,13 @@ describe('missionBlueprint', () => {
   it('lists the mission’s own capabilities first, then the shared ones, with what each serves', () => {
     const order = blueprint.capabilities.map((c) => [c.capability.id.split(':')[2], c.sharedFrom?.packageId ?? null]);
     expect(order).toEqual([
+      ['oversight-planning', null],
       ['complaint-allegation-disclosure-intake', null],
       ['audit-inspection-evaluation', null],
       ['investigation-management', null],
+      ['whistleblower-protection', null],
       ['recommendations-corrective-action-monitoring', null],
+      ['quality-assurance', null],
       ['oversight-reporting-communication', null],
       ['identity-access-management', 'org.enterprise-blueprints.common'],
       ['data-protection-privacy', 'org.enterprise-blueprints.common'],

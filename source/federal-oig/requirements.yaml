@@ -4,31 +4,61 @@
   title: Review and route each matter
   kind: decisions-on-record
   description: Review each matter for jurisdiction and priority, and route it to the right team or to another authority, recording the decision and the reason.
+  sources: [ cigie-silver-book ]
 
 - id: protect-reporter-identity
   title: Protect the identity of people who report
   kind: privacy-security
-  description: Limit who can see the identity of a person who reports to the people who need it, consistent with applicable law.
+  description: Limit who can see the identity of a person who reports to the people who need it. The Inspector General doesn’t disclose an employee complainant’s identity without consent, unless it becomes unavoidable during the investigation.
+  sources: [ ig-act-407, cigie-silver-book ]
 
 - id: link-evidence
   title: Keep evidence linked to its case
   kind: decisions-on-record
   description: Link evidence and records to the case they belong to, with a record of who handled them and when.
+  sources: [ cigie-investigation-standards ]
 
 - id: restrict-case-access
   title: Restrict access to case information
   kind: privacy-security
   description: Limit access to case information to the people assigned to the case or otherwise authorized, and keep a record of access.
+  sources: [ cigie-investigation-standards ]
+
+- id: refer-possible-crimes
+  title: Report possible federal crimes to the Attorney General promptly
+  kind: timeliness
+  description: When there are reasonable grounds to believe federal criminal law was violated, report it to the Attorney General expeditiously, and record the referral and what came of it.
+  sources: [ ig-act-404, cigie-investigation-standards ]
+
+- id: get-timely-access-to-records
+  title: Get timely access to the records the work needs
+  kind: checks-controls
+  description: Request the agency records, documents, and information an audit, inspection, evaluation, or investigation needs, and when they’re unreasonably refused or not provided, report it to the agency head without delay.
+  sources: [ ig-act-406 ]
 
 - id: plan-oversight-work
   title: Plan oversight work
   kind: timeliness
   description: Keep a plan of audits, inspections, and evaluations, with each one’s scope, schedule, and status.
+  sources: [ cigie-silver-book ]
+
+- id: summarize-management-challenges
+  title: Summarize the agency’s most serious challenges each year
+  kind: transparency-reporting
+  description: Each year, write the statement of what the office considers the most serious management and performance challenges facing the agency, and the agency’s progress on them, for the agency’s annual report.
+  sources: [ reports-consolidation-31-usc-3516 ]
+
+- id: follow-professional-standards
+  title: Follow the professional standards for each kind of work
+  kind: checks-controls
+  description: Conduct audits under the Comptroller General’s Government Auditing Standards, and inspections and evaluations under CIGIE’s Quality Standards for Inspection and Evaluation, and document which standards each engagement followed.
+  sources: [ ig-act-404, gao-yellow-book, cigie-blue-book ]
 
 - id: document-findings
   title: Document work and findings
   kind: decisions-on-record
   description: Keep the work papers and evidence behind each finding, so a reviewer can trace how it was reached.
+  sources: [ gao-yellow-book, cigie-blue-book ]
 
 - id: quality-assurance-peer-review
   title: Keep a quality program, with external peer reviews
@@ -36,22 +66,62 @@
   description: Check the quality of audits, inspections, and evaluations against the standards they follow, and for audits under the Yellow Book, have an external peer review at least once every 3 years.
   sources: [ gao-yellow-book, cigie-silver-book ]
 
+- id: investigations-peer-review
+  title: Have investigative operations peer reviewed
+  kind: checks-controls
+  description: For an office with statutory law enforcement authority, take part in CIGIE’s peer reviews of investigative operations on the schedule CIGIE sets, with case files and policies ready for the reviewers.
+  sources: [ cigie-qar-investigations ]
+
+- id: report-peer-review-results
+  title: Report peer review results and what’s still open
+  kind: transparency-reporting
+  description: Include the results of peer reviews of the office, and of those it conducted of other offices, in its semiannual reports, with any peer review recommendations not yet carried out.
+  sources: [ ig-act-405 ]
+
+- id: educate-about-retaliation-protections
+  title: Teach employees about protections against retaliation
+  kind: service-access
+  description: Through the Whistleblower Protection Coordinator, explain to agency employees the prohibitions on retaliation for protected disclosures, and to those who have made or are thinking of making one, their rights and remedies and where to seek review.
+  sources: [ ig-act-403 ]
+
+- id: decide-contractor-reprisal-complaints
+  title: Decide contractor and grantee reprisal complaints within 180 days
+  kind: timeliness
+  description: For each reprisal complaint from an employee of a contractor, subcontractor, grantee, or subgrantee, report the findings to the complainant, the employer, and the agency head within 180 days, or within the extension the complainant agrees to, unless the complaint doesn’t need investigating.
+  sources: [ contractor-whistleblower-41-usc-4712 ]
+
 - id: track-recommendations
   title: Track each recommendation until it’s closed
   kind: checks-controls
   description: Record each recommendation with its owner, the response, target dates, and status, until it’s closed.
+  sources: [ ig-act-405, omb-a-50 ]
+
+- id: follow-to-management-decision
+  title: Follow each report to a management decision within six months
+  kind: timeliness
+  description: Track whether agency management has decided what to do about each report’s recommendations within six months of the final report, and list in the semiannual report any that haven’t, with the reasons.
+  sources: [ omb-a-50, ig-act-405 ]
 
 - id: report-open-recommendations
   title: Report on open recommendations
   kind: transparency-reporting
-  description: Produce a current list of open recommendations and their status whenever it’s needed.
+  description: Produce a current list of open recommendations and their status whenever it’s needed, for the semiannual report, for the agency’s budget justification, and for the public.
+  sources: [ ig-act-405, gao-ig-act ]
 
 - id: periodic-reporting
   title: Compile periodic reports
   kind: transparency-reporting
-  description: Gather the results of the period’s work for periodic reports to agency leadership and Congress.
+  description: Gather the results of each six months’ work, with the statistics the law lists, into the semiannual report the agency head receives by April 30 and October 31.
+  sources: [ ig-act-405 ]
+
+- id: report-serious-problems
+  title: Report particularly serious problems right away
+  kind: timeliness
+  description: Report particularly serious or flagrant problems, abuses, or deficiencies to the agency head immediately, for transmittal to Congress within 7 calendar days.
+  sources: [ ig-act-405 ]
 
 - id: publish-reports
   title: Publish reports
   kind: transparency-reporting
-  description: Publish reports and summaries to the public where appropriate, in accessible formats.
+  description: Post each final audit, inspection, and evaluation report on the office’s website within 3 days of its submission in final form, in accessible formats, except what the law keeps from public release.
+  sources: [ ig-act-420 ]
