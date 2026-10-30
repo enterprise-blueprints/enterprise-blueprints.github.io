@@ -551,11 +551,11 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "role",
+        "layer",
         "ways"
       ],
       "properties": {
-        "role": {
+        "layer": {
           "enum": [
             "public-facing",
             "ai-insights",

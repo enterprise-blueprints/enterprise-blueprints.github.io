@@ -6,7 +6,7 @@
 // tab and in the patterns, and shows it under the item; a tab says how much of
 // it the selection reaches. Each row links to its page.
 import StackItem from './StackItem.astro';
-import { byRole, patternDetails, shortTitle, type LibraryElement, type MissionBlueprint } from '../lib/library';
+import { byLayer, patternDetails, shortTitle, type LibraryElement, type MissionBlueprint } from '../lib/library';
 import { plural } from '../lib/format';
 
 interface Props {
@@ -147,7 +147,7 @@ const capabilityItem = (c: (typeof capabilities)[number]) => ({
         <h3 class="bp-band__name">Patterns</h3>
         <span class="bp-band__count">{patterns.length}, by layer of the mission’s architecture</span>
       </div>
-      {byRole(patterns, (e) => e).map((g) => (
+      {byLayer(patterns, (e) => e).map((g) => (
         <div class="bp-role">
           <h4 class="bp-role__name">{g.label}</h4>
           {g.hint && <p class="bp-role__hint">{g.hint}</p>}

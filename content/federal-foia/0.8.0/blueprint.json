@@ -628,7 +628,7 @@
         "src:foia-statute"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "Request intake from the national portal and the agency’s own form",
           "Request tracking with FOIA’s tracks, working-day deadlines, fee categories, and correspondence",
@@ -699,7 +699,7 @@
         "src:foia-statute"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "FOIA request tracking set up on the agency’s shared case platform",
           "A deadline calculator for working days, extensions, and pauses for clarification or fees",
@@ -741,7 +741,7 @@
         "src:doj-foia-guide"
       ],
       "attributes": {
-        "role": "data-records",
+        "layer": "data-records",
         "parts": [
           "Searches across mailboxes, chats, and shared files by person, terms, and date range",
           "Deduplication and email threading before review",
@@ -784,7 +784,7 @@
         "src:foia-gov"
       ],
       "attributes": {
-        "role": "connections",
+        "layer": "connections",
         "parts": [
           "A connection in the agency’s FOIA system that implements the portal’s agency API",
           "A mapping from the portal’s fields to the agency’s request record",
@@ -826,7 +826,7 @@
         "src:section-508"
       ],
       "attributes": {
-        "role": "public-facing",
+        "layer": "public-facing",
         "parts": [
           "A FOIA library section of the agency’s website, with search",
           "A publishing step from the review tool that carries each release’s details",
@@ -867,7 +867,7 @@
         "src:doj-foia-guide"
       ],
       "attributes": {
-        "role": "ai-insights",
+        "layer": "ai-insights",
         "parts": [
           "Suggested redactions for patterns such as Social Security numbers, phone numbers, and names",
           "Passages that may fall under an exemption, each with the reason it was suggested",
@@ -909,7 +909,7 @@
         "src:oip-backlog-guidance"
       ],
       "attributes": {
-        "role": "ai-insights",
+        "layer": "ai-insights",
         "parts": [
           "A daily copy of the tracking data in a reporting store",
           "Measures defined the way the annual report counts them, such as backlogged requests",

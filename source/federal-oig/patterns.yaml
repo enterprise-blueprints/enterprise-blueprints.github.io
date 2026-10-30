@@ -5,7 +5,7 @@
   description: "An example architecture: one case system for the office’s oversight and investigative work, administered by the office, that carries each matter from intake through triage, referral, investigation, and closure, with access limited by assignment and the statistics oversight reporting needs."
   sources: [ oversight-hotline, cigie-faq, cigie-silver-book ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - Intake forms for the hotline and for staff, feeding one intake queue
       - Triage with recorded decisions, and referrals to other authorities
@@ -60,7 +60,7 @@
   description: "An example architecture: a public web form and phone line for reporting fraud, waste, and abuse that can take anonymous reports, keeps the identity of the person reporting apart from the allegation, and gives them a code to check back or add information."
   sources: [ ig-act-420, ig-act-407, oversight-hotline ]
   attributes:
-    role: public-facing
+    layer: public-facing
     parts:
       - A public web form linked directly from the office’s home page, and a phone line
       - A choice to report anonymously, or to ask that one’s identity be kept confidential
@@ -93,7 +93,7 @@
   description: "An example architecture: one place for the office’s plan of audits, inspections, and evaluations, the work papers and evidence behind each finding, supervisors’ review sign-offs, and the recommendations each report makes."
   sources: [ gao-yellow-book, cigie-blue-book, cigie-silver-book ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - A plan of oversight work with each engagement’s scope, schedule, and status
       - Electronic work papers with evidence attached, cross-referenced to the report
@@ -145,7 +145,7 @@
   description: "An example architecture: a recommendation tracker the office owns, where agency officials submit corrective action plans, updates, and evidence through their own access, and the office decides when each recommendation is closed."
   sources: [ ig-act-405, gao-ig-act ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - One record per recommendation, with its report, owner, agreed action, target date, and status
       - Agency access limited to their own recommendations, for submitting plans, updates, and evidence
@@ -189,7 +189,7 @@
   description: "An example architecture: a reporting store fed by the case, audit, and recommendation systems that produces the semiannual report’s statistics, with a publishing step that posts final reports to the office’s website and Oversight.gov within 3 days."
   sources: [ ig-act-405, ig-act-420, oversight-mission ]
   attributes:
-    role: ai-insights
+    layer: ai-insights
     parts:
       - Feeds from the case, audit, and recommendation systems into one reporting store
       - A definition of each statistic the semiannual report needs, kept with the data
@@ -223,7 +223,7 @@
   description: "An example architecture: the office’s data team brings agency financial, payment, and program data into an analytics workspace, where rules and models point to risks, such as unusual payments or duplicate vendors, that help plan audits and open investigations."
   sources: [ ig-act-404, nist-ai-rmf, gao-yellow-book ]
   attributes:
-    role: ai-insights
+    layer: ai-insights
     parts:
       - Agreements and regular feeds for the agency data the office has a right to, such as payments, contracts, and grants
       - Rules and models that flag risks, each with the reason it was flagged
@@ -256,7 +256,7 @@
   description: "An example architecture: each engagement gets a workspace in the agency’s collaboration suite, with folders and templates for work papers, cross-references to the report, and supervisors’ review recorded through document approvals."
   sources: [ gao-yellow-book, cigie-blue-book ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - A workspace for each engagement, made from a template with standard folders
       - Work paper templates with fields for purpose, source, conclusion, and cross-references
@@ -283,7 +283,7 @@
   description: "An example architecture: secure storage for investigations’ digital evidence, such as forensic images, video, and large email collections, with each item linked to its case and a record of everyone who handled it."
   sources: [ cigie-investigation-standards ]
   attributes:
-    role: data-records
+    layer: data-records
     parts:
       - Storage for large files, such as forensic images and video, kept apart from everyday systems
       - Each item linked to its case, with where and when it was collected

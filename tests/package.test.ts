@@ -101,9 +101,10 @@ describe('validatePackage', () => {
     ['a pattern with an approach of its own, under schema 0.4.0', (p) => (patternOf(p).attributes!.approach = 'product'), 'must NOT have additional properties'],
     ['a pattern with an empty list', (p) => (patternOf(p).attributes!.watchFor = []), '/attributes/watchFor must NOT have fewer than 1 items'],
     ['a pattern with a list that isn’t statements', (p) => (patternOf(p).attributes!.parts = 'a database'), '/attributes/parts must be array'],
-    ['a pattern with an unknown role', (p) => (patternOf(p).attributes!.role = 'middleware'), '/attributes/role must be equal to one of the allowed values'],
-    ['a pattern without a role, under schema 0.3.0', (p) => delete patternOf(p).attributes!.role, "must have required property 'role'"],
-    ['a pattern with a field of its own, under schema 0.3.0', (p) => (patternOf(p).attributes!.vendor = 'Acme'), 'must NOT have additional properties'],
+    ['a pattern with an unknown layer', (p) => (patternOf(p).attributes!.layer = 'middleware'), '/attributes/layer must be equal to one of the allowed values'],
+    ['a pattern without a layer', (p) => delete patternOf(p).attributes!.layer, "must have required property 'layer'"],
+    ['a pattern with a role, which schema 0.4.0 calls its layer', (p) => (patternOf(p).attributes!.role = 'processing'), 'must NOT have additional properties'],
+    ['a pattern with a field of its own', (p) => (patternOf(p).attributes!.vendor = 'Acme'), 'must NOT have additional properties'],
     ['coverage on a link that isn’t a candidate pattern', (p) => (p.relations[0].coverage = 'partial'), 'only a candidate pattern has coverage'],
     ['coverage that isn’t full or partial', (p) => ((p.relations[0] as { coverage?: string }).coverage = 'most'), 'must be equal to one of the allowed values'],
     ['a pattern that works with itself', (p) => p.relations.push({ id: 'rel:self', from: pattern, predicate: 'works_with', to: pattern }), `links ${pattern} to itself`],
@@ -213,7 +214,7 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
     expect(patterns.length).toBeGreaterThanOrEqual(5);
     for (const p of patterns) {
       expect(p.description, p.id).toMatch(/^An example architecture/);
-      expect(Object.keys(p.attributes!).sort(), p.id).toEqual(['fitsWhen', 'parts', 'role', 'strengths', 'watchFor', 'ways']);
+      expect(Object.keys(p.attributes!).sort(), p.id).toEqual(['fitsWhen', 'layer', 'parts', 'strengths', 'watchFor', 'ways']);
       expect(p.sourceIds?.length, p.id).toBeGreaterThan(0);
     }
   });
@@ -228,14 +229,14 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
 describe('missions', () => {
   const missions = [original, foia, grants, acquisition];
   const patterns = [original, common, foia, grants, acquisition].flatMap((p) => ofType(p, 'implementationPattern'));
-  const roleOf = (id: string) => patterns.find((p) => p.id === id)!.attributes!.role;
+  const layerOf = (id: string) => patterns.find((p) => p.id === id)!.attributes!.layer;
 
   it('list the principles their architecture follows', () => {
     for (const pkg of missions) for (const m of ofType(pkg, 'mission')) expect((m.attributes!.principles as string[]).length, m.id).toBeGreaterThanOrEqual(5);
   });
 
   it('give every pattern in the library a layer', () => {
-    for (const p of patterns) expect(roleOf(p.id), p.id).toBeTruthy();
+    for (const p of patterns) expect(layerOf(p.id), p.id).toBeTruthy();
   });
 });
 

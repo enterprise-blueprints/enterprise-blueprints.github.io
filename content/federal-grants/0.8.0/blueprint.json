@@ -609,7 +609,7 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "Funding announcements prepared in the system and posted to Grants.gov",
           "Applications received from Grants.gov, with eligibility and completeness checks",
@@ -701,7 +701,7 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "Funding announcements prepared in the product and posted to Grants.gov",
           "Applications received from Grants.gov, with eligibility and completeness checks",
@@ -745,7 +745,7 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "The provider’s grants system, with the agency’s programs, forms, and workflows set up in it",
           "An agreement that sets the service, its costs, and who does what",
@@ -786,7 +786,7 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "Application and award records, with their status, dates, amounts, and documents",
           "Steps and approvals for review, risk checks, award, and closeout",
@@ -828,7 +828,7 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "role": "connections",
+        "layer": "connections",
         "parts": [
           "A connection in the agency’s grants system to Grants.gov’s system-to-system service",
           "Posting of funding opportunities from the grants system",
@@ -868,7 +868,7 @@
         "src:uniform-guidance"
       ],
       "attributes": {
-        "role": "connections",
+        "layer": "connections",
         "parts": [
           "Recipient enrollment in ASAP.gov, with their banking details kept by Treasury",
           "An account for each award, funded from the agency’s financial system as the award is obligated",
@@ -911,7 +911,7 @@
         "src:federal-audit-clearinghouse"
       ],
       "attributes": {
-        "role": "ai-insights",
+        "layer": "ai-insights",
         "parts": [
           "Regular feeds from SAM.gov, Do Not Pay, the Federal Audit Clearinghouse, and the agency’s grants and payment systems",
           "A risk profile for each applicant and recipient, with the facts behind it",
@@ -953,7 +953,7 @@
         "src:award-reporting-2-cfr-170"
       ],
       "attributes": {
-        "role": "connections",
+        "layer": "connections",
         "parts": [
           "An extract of new awards and changes from the grants system, on a schedule",
           "Checks against the agency’s financial records before each submission",

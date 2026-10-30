@@ -5,7 +5,7 @@
   description: "An example architecture: case management built on a low-code or CRM platform the agency already runs, with each office getting its own case types, forms, queues, and permissions on the shared foundation."
   sources: [ nist-sp-800-53 ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - A case record with status, assignment, due dates, and linked documents, set up for each case type
       - Intake forms and an email channel that create cases
@@ -38,7 +38,7 @@
   description: "An example architecture: every system signs staff in through the agency’s identity provider, with phishing-resistant authenticators such as PIV cards or FIDO2 security keys, and grants access through role groups that are reviewed on a schedule."
   sources: [ nist-sp-800-63-4, nist-sp-800-53 ]
   attributes:
-    role: security-identity
+    layer: security-identity
     parts:
       - The agency’s identity provider, with single sign-on to each system
       - Phishing-resistant authenticators for staff, such as PIV cards or FIDO2 security keys
@@ -67,7 +67,7 @@
   description: "An example architecture: the agency’s office suite and collaboration workspace, for documents, chat, and meetings, with retention labels that keep work on approved records schedules and sensitivity labels that limit who can open, share, or copy sensitive information."
   sources: [ records-44-usc-3101, nara-grs, nist-sp-800-53 ]
   attributes:
-    role: worker-productivity
+    layer: worker-productivity
     parts:
       - Shared documents, chat, and meetings for each team, signed in through the agency
       - Retention labels that apply an approved records schedule to files and messages
@@ -96,7 +96,7 @@
   description: "An example architecture: letters, notices, and report sections drafted from approved templates filled in with a case’s data, reviewed and signed by staff, then saved back to the case file."
   sources: [ records-44-usc-3101 ]
   attributes:
-    role: worker-productivity
+    layer: worker-productivity
     parts:
       - A library of approved templates, each with an owner
       - Fields filled in from the case, such as names, dates, and decisions
@@ -125,7 +125,7 @@
   description: "An example architecture: each of the office’s systems sends its sign-in, access, and change logs to the agency’s security monitoring, where the security operations team watches for threats, and the office adds alerts for what matters to it, such as someone opening a restricted case."
   sources: [ nist-sp-800-53 ]
   attributes:
-    role: security-identity
+    layer: security-identity
     parts:
       - Log forwarding from each system to the agency’s security monitoring
       - Sign-in, access, and change events that say who did what, and when
@@ -156,7 +156,7 @@
   description: "An example architecture: each product’s built-in audit trail records who viewed or changed what, and the office’s system owners run its reports on a schedule and look into anything unusual."
   sources: [ nist-sp-800-53 ]
   attributes:
-    role: security-identity
+    layer: security-identity
     parts:
       - The audit trail each product keeps of views, changes, and exports
       - Reports run on a schedule, such as access to restricted records or changes to permissions
@@ -181,7 +181,7 @@
   description: "An example architecture: as each new matter arrives, such as a request or a complaint, an AI model suggests its category, how urgent it looks, and where it should go, with its reasons, and the person doing intake accepts or changes each suggestion before anything moves."
   sources: [ nist-ai-rmf ]
   attributes:
-    role: ai-insights
+    layer: ai-insights
     parts:
       - A model that reads each new matter and suggests a category, an urgency, and where to route it
       - The reasons for each suggestion, shown beside it
@@ -212,7 +212,7 @@
   description: "An example architecture: the agency’s award systems check each applicant’s or offeror’s SAM.gov registration, exclusions, and responsibility and qualification records through SAM.gov’s APIs, before an award and on a schedule while it’s open, and show the results, with their dates, where staff make the decision."
   sources: [ sam-gov ]
   attributes:
-    role: connections
+    layer: connections
     parts:
       - Calls to SAM.gov’s entity and exclusions services by Unique Entity Identifier
       - A check before each award, with the results and their date saved to the award file
@@ -240,7 +240,7 @@
   description: "An example architecture: each business system, such as a case or audit system, applies the agency’s records schedules to what it holds, keeping each record for its retention period, holding records during litigation or an investigation, and disposing of or transferring them when the schedule says."
   sources: [ records-44-usc-3101, nara-grs ]
   attributes:
-    role: data-records
+    layer: data-records
     parts:
       - Each kind of record in the system mapped to its records schedule item
       - Retention periods that start from the right event, such as a case’s closure

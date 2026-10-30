@@ -13,7 +13,7 @@ import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json';
 import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json';
 import schema030 from '../../schemas/blueprint-package-0.3.0.schema.json';
 import schema040 from '../../schemas/blueprint-package-0.4.0.schema.json';
-import { earlierRoles, elementTypes, patternApproaches, patternFields, patternRoles, predicates } from './vocabulary';
+import { earlierLayers, elementTypes, patternApproaches, patternFields, patternLayers, predicates } from './vocabulary';
 
 export interface Source {
   id: string;
@@ -273,8 +273,12 @@ function patternProblems(e: Element): string[] {
   if ('approach' in a && !(typeof a.approach === 'string' && patternApproaches[a.approach])) {
     errors.push(`${what} ${e.id} has unknown approach ${JSON.stringify(a.approach)}`);
   }
-  if ('role' in a && !(typeof a.role === 'string' && (patternRoles[a.role] || earlierRoles[a.role]))) {
-    errors.push(`${what} ${e.id} has unknown role ${JSON.stringify(a.role)}`);
+  // A pattern's layer, called its role before schema 0.4.0.
+  for (const key of ['layer', 'role']) {
+    const value = a[key];
+    if (key in a && !(typeof value === 'string' && (patternLayers[value] || earlierLayers[value]))) {
+      errors.push(`${what} ${e.id} has unknown ${key} ${JSON.stringify(value)}`);
+    }
   }
   const ways = waysOf(e);
   if (new Set(ways).size !== ways.length) errors.push(`${what} ${e.id} has two ways with the same ID`);

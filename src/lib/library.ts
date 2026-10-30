@@ -7,7 +7,7 @@
 // build.
 
 import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
-import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, type ElementTypeInfo } from './vocabulary';
+import { elementTypes, patternApproaches, patternFields, patternLayers, predicates, type ElementTypeInfo } from './vocabulary';
 import { href } from './paths';
 import { compareVersions } from './format';
 
@@ -278,8 +278,8 @@ export function relationNote(from: LibraryElement, predicate: string, to: Librar
 export interface PatternDetails {
   /** How it's sourced, in a few words: its one way's approach, such as "Configure a product", or how many ways it has. */
   sourcing?: string;
-  /** The layer of a solution it belongs to, such as "business-applications". */
-  role?: string;
+  /** The layer of the architecture it belongs to, such as "business-applications". */
+  layer?: string;
   fields: { key: string; label: string; items: string[] }[];
   /** Its ways to source it, each with what it needs. */
   ways: PatternWay[];
@@ -305,7 +305,8 @@ export function patternDetails(pattern: LibraryElement): PatternDetails {
   const approach = (value: unknown) => patternApproaches[String(value)] ?? String(value);
   return {
     sourcing: ways.length === 1 ? approach(ways[0].approach) : ways.length ? `${ways.length} ways to source it` : undefined,
-    role: typeof a.role === 'string' && patternRoles[a.role] ? a.role : undefined,
+    // Called its role before schema 0.4.0.
+    layer: [a.layer, a.role].find((l): l is string => typeof l === 'string' && Boolean(patternLayers[l])),
     fields: fieldsOf(a),
     ways: ways.map((w) => ({
       id: String(w.id),
@@ -322,22 +323,22 @@ export function patternDetails(pattern: LibraryElement): PatternDetails {
 
 
 
-export interface RoleGroup<T> {
-  role: string | undefined;
+export interface LayerGroup<T> {
+  layer: string | undefined;
   label: string;
   hint?: string;
   items: T[];
 }
 
 /** Patterns grouped by the part they play, in vocabulary order, with any that have no role last. */
-export function byRole<T>(items: T[], patternOf: (item: T) => LibraryElement): RoleGroup<T>[] {
-  const roles: (string | undefined)[] = [...Object.keys(patternRoles), undefined];
-  return roles
-    .map((role) => ({
-      role,
-      label: role ? patternRoles[role].label : 'Other patterns',
-      hint: role ? patternRoles[role].hint : undefined,
-      items: items.filter((i) => patternDetails(patternOf(i)).role === role),
+export function byLayer<T>(items: T[], patternOf: (item: T) => LibraryElement): LayerGroup<T>[] {
+  const layers: (string | undefined)[] = [...Object.keys(patternLayers), undefined];
+  return layers
+    .map((layer) => ({
+      layer,
+      label: layer ? patternLayers[layer].label : 'Other patterns',
+      hint: layer ? patternLayers[layer].hint : undefined,
+      items: items.filter((i) => patternDetails(patternOf(i)).layer === layer),
     }))
     .filter((g) => g.items.length);
 }
@@ -386,7 +387,7 @@ const groupedTypes = new Set(['outcome', 'capability', 'requirement']);
 export function indexGroups(type: string): IndexGroup[] {
   const items = elementsOfType(type).filter((e) => e.status !== 'deprecated');
   // A role's hint is written for one office's patterns; its first sentence fits the whole library.
-  if (type === 'implementationPattern') return byRole(items, (p) => p).map((g) => ({ id: g.role ?? 'other', label: g.label, hint: g.hint?.split(/(?<=\.) /)[0], items: g.items }));
+  if (type === 'implementationPattern') return byLayer(items, (p) => p).map((g) => ({ id: g.layer ?? 'other', label: g.label, hint: g.hint?.split(/(?<=\.) /)[0], items: g.items }));
   if (!groupedTypes.has(type)) return [{ id: 'all', label: '', items }];
   const missionOf = (pkg: BlueprintPackage) => elements.find((e) => e.package === pkg && e.type === 'mission');
   const groups = packages

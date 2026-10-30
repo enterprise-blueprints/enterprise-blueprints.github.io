@@ -5,7 +5,7 @@
   description: "An example architecture: one grants system that carries each award from the funding announcement through applications, merit review, risk checks, award, payments, monitoring, and closeout, with a portal where recipients apply, report, and ask for changes."
   sources: [ uniform-guidance ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - Funding announcements prepared in the system and posted to Grants.gov
       - Applications received from Grants.gov, with eligibility and completeness checks
@@ -83,7 +83,7 @@
   description: "An example architecture: a grants management product, configured for the agency’s programs, that carries each award from the funding announcement through applications, review, risk checks, award, payments, monitoring, and closeout, with a portal where recipients apply and report."
   sources: [ uniform-guidance ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - Funding announcements prepared in the product and posted to Grants.gov
       - Applications received from Grants.gov, with eligibility and completeness checks
@@ -115,7 +115,7 @@
   description: "An example architecture: the agency uses a grants management system another federal agency runs as a shared service, configured for its programs, instead of running its own."
   sources: [ uniform-guidance ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - The provider’s grants system, with the agency’s programs, forms, and workflows set up in it
       - An agreement that sets the service, its costs, and who does what
@@ -144,7 +144,7 @@
   description: "An example architecture: grants management built on the agency’s shared case platform, with each application and award as a record that moves through review, award, monitoring, and closeout, and a portal for recipients."
   sources: [ uniform-guidance ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - Application and award records, with their status, dates, amounts, and documents
       - Steps and approvals for review, risk checks, award, and closeout
@@ -172,7 +172,7 @@
   description: "An example architecture: the agency’s grants system connects to Grants.gov’s system-to-system service, so funding opportunities are posted and applications arrive as records with their forms and attachments, instead of being downloaded by hand."
   sources: [ grants-gov, uniform-guidance ]
   attributes:
-    role: connections
+    layer: connections
     parts:
       - A connection in the agency’s grants system to Grants.gov’s system-to-system service
       - Posting of funding opportunities from the grants system
@@ -200,7 +200,7 @@
   description: "An example architecture: the agency enrolls each recipient in ASAP.gov, funds an account for each award from its financial system, and recipients draw down funds as they need them, within the controls the agency sets."
   sources: [ asap-gov, uniform-guidance ]
   attributes:
-    role: connections
+    layer: connections
     parts:
       - Recipient enrollment in ASAP.gov, with their banking details kept by Treasury
       - An account for each award, funded from the agency’s financial system as the award is obligated
@@ -230,7 +230,7 @@
   description: "An example architecture: an analytics workspace that brings together SAM.gov and Do Not Pay results, single audit findings, past performance, and drawdown patterns for each applicant and recipient, and suggests where risk reviews and monitoring should look first, with the reasons."
   sources: [ uniform-guidance, sam-gov, do-not-pay, federal-audit-clearinghouse ]
   attributes:
-    role: ai-insights
+    layer: ai-insights
     parts:
       - Regular feeds from SAM.gov, Do Not Pay, the Federal Audit Clearinghouse, and the agency’s grants and payment systems
       - A risk profile for each applicant and recipient, with the facts behind it
@@ -261,7 +261,7 @@
   description: "An example architecture: the grants system produces the agency’s financial assistance award data on a schedule, checks it against the agency’s financial records, and submits it for publication on USAspending.gov, with errors sent back to the staff who can fix them."
   sources: [ usaspending, award-reporting-2-cfr-170 ]
   attributes:
-    role: connections
+    layer: connections
     parts:
       - An extract of new awards and changes from the grants system, on a schedule
       - Checks against the agency’s financial records before each submission

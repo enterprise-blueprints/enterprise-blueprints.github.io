@@ -5,7 +5,7 @@
   description: "An example architecture: one place to handle a FOIA request from start to finish. It takes requests from the national portal and the agency’s own form, tracks them on FOIA’s tracks and deadlines, collects records and sets duplicates aside, applies marked redactions, publishes releases to the FOIA library, and produces the annual report from the same data."
   sources: [ foia-gov, doj-foia-guide, foia-statute ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - Request intake from the national portal and the agency’s own form
       - Request tracking with FOIA’s tracks, working-day deadlines, fee categories, and correspondence
@@ -59,7 +59,7 @@
   description: "An example architecture: requests tracked on the agency’s shared case platform, set up for FOIA’s tracks and deadlines, with a separate document review tool for collecting, deduplicating, and redacting records, and a handoff between the two."
   sources: [ doj-foia-guide, foia-statute ]
   attributes:
-    role: business-applications
+    layer: business-applications
     parts:
       - FOIA request tracking set up on the agency’s shared case platform
       - A deadline calculator for working days, extensions, and pauses for clarification or fees
@@ -87,7 +87,7 @@
   description: "An example architecture: the agency’s eDiscovery tools search mailboxes and other collections by people, terms, and dates, set aside duplicates and thread email conversations, and send what’s found to review, with each search recorded."
   sources: [ ogis-search-technology, doj-foia-guide ]
   attributes:
-    role: data-records
+    layer: data-records
     parts:
       - Searches across mailboxes, chats, and shared files by person, terms, and date range
       - Deduplication and email threading before review
@@ -118,7 +118,7 @@
   description: "An example architecture: the agency’s FOIA system receives requests submitted on FOIA.gov through the portal’s agency API, so each one arrives as a request record with its fields filled in, instead of as an email to retype."
   sources: [ foia-gov-developer, foia-statute, foia-gov ]
   attributes:
-    role: connections
+    layer: connections
     parts:
       - A connection in the agency’s FOIA system that implements the portal’s agency API
       - A mapping from the portal’s fields to the agency’s request record
@@ -147,7 +147,7 @@
   description: "An example architecture: released records go from the review tool to the agency’s online FOIA library with a title, date, and request number, in accessible formats, and records requested 3 or more times are flagged for posting."
   sources: [ foia-statute, doj-foia-guide, section-508 ]
   attributes:
-    role: public-facing
+    layer: public-facing
     parts:
       - A FOIA library section of the agency’s website, with search
       - A publishing step from the review tool that carries each release’s details
@@ -177,7 +177,7 @@
   description: "An example architecture: the review tool suggests passages that may fall under an exemption, groups near-duplicate records, and flags personal information, and the reviewer decides every redaction and records the exemption that applies."
   sources: [ nist-ai-rmf, doj-foia-guide ]
   attributes:
-    role: ai-insights
+    layer: ai-insights
     parts:
       - Suggested redactions for patterns such as Social Security numbers, phone numbers, and names
       - Passages that may fall under an exemption, each with the reason it was suggested
@@ -208,7 +208,7 @@
   description: "An example architecture: a dashboard built on the request tracking data that shows the backlog, the oldest open requests, time to respond on each track, and work by team, refreshed daily, so leaders can act long before the annual report."
   sources: [ oip-annual-report-handbook, oip-backlog-guidance ]
   attributes:
-    role: ai-insights
+    layer: ai-insights
     parts:
       - A daily copy of the tracking data in a reporting store
       - Measures defined the way the annual report counts them, such as backlogged requests

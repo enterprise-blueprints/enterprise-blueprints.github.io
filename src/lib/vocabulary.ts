@@ -143,11 +143,12 @@ export const predicates: Record<string, PredicateInfo> = {
 };
 
 // An implementation pattern describes itself in `attributes`, with these
-// fields, so patterns can be compared side by side and grouped by the layer
-// of a solution they belong to, which the `role` field names. A solution uses
-// watchFor too. The layers are in the order a solution shows them, and each
-// hint says what belongs in it.
-export const patternRoles: Record<string, { label: string; hint: string }> = {
+// fields, so patterns can be compared side by side and grouped by the layer of
+// a mission's architecture they belong to, which the `layer` field names
+// (`role` before schema 0.4.0). A solution in an older package uses watchFor
+// too. The layers are in the order the pages show them, and each hint says
+// what belongs in it.
+export const patternLayers: Record<string, { label: string; hint: string }> = {
   'public-facing': {
     label: 'Public facing',
     hint: 'How the public, applicants, vendors, and other agencies reach the office or find what it publishes.',
@@ -178,8 +179,8 @@ export const patternRoles: Record<string, { label: string; hint: string }> = {
   },
 };
 
-/** Layers that packages before schema 0.4.0 use. Their patterns moved to the layers above. */
-export const earlierRoles: Record<string, { label: string; hint: string }> = {
+/** Layers that packages before schema 0.4.0 use too. Their patterns moved to the layers above. */
+export const earlierLayers: Record<string, { label: string; hint: string }> = {
   processing: {
     label: 'Processing service',
     hint: 'Specialized processing on the records, such as search and review.',

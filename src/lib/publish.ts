@@ -12,7 +12,7 @@ import schema040 from '../../schemas/blueprint-package-0.4.0.schema.json?raw';
 import { packageFiles, release, type PackageFile } from './library';
 import type { BlueprintPackage } from './package';
 import { href } from './paths';
-import { earlierRoles, elementTypes, patternApproaches, patternFields, patternRoles, predicates, sourceKinds, statuses } from './vocabulary';
+import { earlierLayers, elementTypes, patternApproaches, patternFields, patternLayers, predicates, sourceKinds, statuses } from './vocabulary';
 
 /** Every schema version stays published, so packages that use an older one still validate. Newest last. */
 export const schemas = [schema010, schema020, schema030, schema040].map((text) => {
@@ -76,8 +76,8 @@ export function vocabulary() {
     ),
     predicates,
     // What an implementation pattern's attributes hold.
-    // Its layers, in order, and the ones packages before schema 0.4.0 use.
-    pattern: { roles: patternRoles, earlierRoles, approaches: patternApproaches, fields: patternFields },
+    // Its layers, in order, and the ones packages before schema 0.4.0 also use.
+    pattern: { layers: patternLayers, earlierLayers, approaches: patternApproaches, fields: patternFields },
     sourceKinds,
     statuses,
   };

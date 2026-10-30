@@ -785,7 +785,7 @@
         "src:sam-gov"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "Requests from program offices, with funding checked in the financial system",
           "Solicitations, awards, and modifications assembled from templates, with clauses chosen by rules",
@@ -877,7 +877,7 @@
         "src:sam-gov"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "Requests from program offices, with funding checked in the financial system",
           "Solicitations, awards, and modifications assembled from templates, with clauses chosen by rules",
@@ -921,7 +921,7 @@
         "src:far"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "Request records from program offices, with the need, funding, and timing",
           "Acquisition plans, milestones, and approvals for each request",
@@ -964,7 +964,7 @@
         "src:far"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "An interagency agreement that sets the services, fees, and who does what",
           "The provider’s contracting officers, and its contract writing and reporting systems",
@@ -1006,7 +1006,7 @@
         "src:procurement-integrity-41-usc-2102"
       ],
       "attributes": {
-        "role": "public-facing",
+        "layer": "public-facing",
         "parts": [
           "Vendor accounts tied to their SAM.gov registration",
           "Question and answer exchange for each solicitation, with answers shared with everyone",
@@ -1048,7 +1048,7 @@
         "src:usaspending"
       ],
       "attributes": {
-        "role": "connections",
+        "layer": "connections",
         "parts": [
           "A connection from the contract writing system to SAM.gov’s contract data reporting service",
           "A report for each action, confirmed by the contracting officer before the award is released",
@@ -1087,7 +1087,7 @@
         "src:prompt-payment-31-usc-3903"
       ],
       "attributes": {
-        "role": "connections",
+        "layer": "connections",
         "parts": [
           "Vendor enrollment in IPP, with orders sent from the agency’s financial or contract writing system",
           "Invoices matched to the order and its line items",
@@ -1128,7 +1128,7 @@
         "src:far"
       ],
       "attributes": {
-        "role": "connections",
+        "layer": "connections",
         "parts": [
           "Registration of each contract that needs evaluations, from the contract writing system or SAM.gov data",
           "Assessing officials and reviewing officials named for each contract",
@@ -1168,7 +1168,7 @@
         "src:procurement-integrity-41-usc-2102"
       ],
       "attributes": {
-        "role": "ai-insights",
+        "layer": "ai-insights",
         "parts": [
           "An AI model in an environment the agency has approved for acquisition information",
           "The agency’s templates, guidance, and current deviations as reference material",
@@ -1210,7 +1210,7 @@
         "src:far"
       ],
       "attributes": {
-        "role": "ai-insights",
+        "layer": "ai-insights",
         "parts": [
           "Regular feeds from SAM.gov contract data, the contract writing system, the financial system, and invoicing",
           "Views of spending by category, vendor, office, and contract",

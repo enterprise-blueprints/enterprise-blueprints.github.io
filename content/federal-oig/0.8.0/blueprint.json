@@ -489,7 +489,7 @@
         "src:cigie-silver-book"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "Intake forms for the hotline and for staff, feeding one intake queue",
           "Triage with recorded decisions, and referrals to other authorities",
@@ -560,7 +560,7 @@
         "src:oversight-hotline"
       ],
       "attributes": {
-        "role": "public-facing",
+        "layer": "public-facing",
         "parts": [
           "A public web form linked directly from the office’s home page, and a phone line",
           "A choice to report anonymously, or to ask that one’s identity be kept confidential",
@@ -603,7 +603,7 @@
         "src:cigie-silver-book"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "A plan of oversight work with each engagement’s scope, schedule, and status",
           "Electronic work papers with evidence attached, cross-referenced to the report",
@@ -673,7 +673,7 @@
         "src:gao-ig-act"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "One record per recommendation, with its report, owner, agreed action, target date, and status",
           "Agency access limited to their own recommendations, for submitting plans, updates, and evidence",
@@ -735,7 +735,7 @@
         "src:oversight-mission"
       ],
       "attributes": {
-        "role": "ai-insights",
+        "layer": "ai-insights",
         "parts": [
           "Feeds from the case, audit, and recommendation systems into one reporting store",
           "A definition of each statistic the semiannual report needs, kept with the data",
@@ -777,7 +777,7 @@
         "src:gao-yellow-book"
       ],
       "attributes": {
-        "role": "ai-insights",
+        "layer": "ai-insights",
         "parts": [
           "Agreements and regular feeds for the agency data the office has a right to, such as payments, contracts, and grants",
           "Rules and models that flag risks, each with the reason it was flagged",
@@ -820,7 +820,7 @@
         "src:cigie-blue-book"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "A workspace for each engagement, made from a template with standard folders",
           "Work paper templates with fields for purpose, source, conclusion, and cross-references",
@@ -860,7 +860,7 @@
         "src:cigie-investigation-standards"
       ],
       "attributes": {
-        "role": "data-records",
+        "layer": "data-records",
         "parts": [
           "Storage for large files, such as forensic images and video, kept apart from everyday systems",
           "Each item linked to its case, with where and when it was collected",

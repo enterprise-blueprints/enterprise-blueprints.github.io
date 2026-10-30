@@ -123,9 +123,9 @@ published package these become `assessments` and `candidateMappings`.
 
 **Implementation patterns** are examples of the logical parts of a mission's architecture, which a vendor or the agency could
 supply. Each one describes itself in its `attributes` so patterns can be compared side by side and grouped:
-`role` (the layer of the architecture it belongs to: `public-facing`, `ai-insights`, `business-applications`,
-`worker-productivity`, `connections`, `data-records`, or `security-identity`; packages before schema 0.4.0 also
-use `processing` and `infrastructure`), `parts`, `strengths`, `fitsWhen`, and `watchFor`, each a list
+`layer` (the layer of the architecture it belongs to: `public-facing`, `ai-insights`, `business-applications`,
+`worker-productivity`, `connections`, `data-records`, or `security-identity`; packages before schema 0.4.0 call
+it `role`, and also use `processing` and `infrastructure`), `parts`, `strengths`, `fitsWhen`, and `watchFor`, each a list
 of short statements, and `ways`, its ways to source it. Each way has an `id`, an `approach` (`product`,
 `platform`, `combine`, or `build`), and a `title`, and optionally a `description` and its own `strengths`,
 `fitsWhen`, and `watchFor`. A pattern with one obvious way lists just that one. `src/lib/vocabulary.ts` defines

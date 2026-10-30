@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byRole, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, tagline } from '../src/lib/library';
+import { byLayer, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, tagline } from '../src/lib/library';
 
 describe('missionBlueprint', () => {
   const mission = elements.find((e) => e.id === 'eb:mission:independent-government-oversight')!;
@@ -76,7 +76,7 @@ describe('a mission’s architecture', () => {
   it('is its own patterns, by layer, with no solutions in the library', () => {
     expect(elementsOfType('solution')).toEqual([]);
     for (const m of missions) {
-      const layers = byRole(missionBlueprint(m).patterns, (p) => p).map((g) => g.role);
+      const layers = byLayer(missionBlueprint(m).patterns, (p) => p).map((g) => g.layer);
       expect(layers, slug(m)).toEqual(expect.arrayContaining(['business-applications', 'worker-productivity', 'data-records', 'security-identity']));
     }
   });
@@ -95,7 +95,7 @@ describe('a mission’s architecture', () => {
   });
 
   it('groups a mission’s patterns by layer', () => {
-    const groups = byRole(missionBlueprint(get('eb:mission:public-access-to-agency-records')).patterns, (p) => p);
+    const groups = byLayer(missionBlueprint(get('eb:mission:public-access-to-agency-records')).patterns, (p) => p);
     expect(groups.map((g) => g.label)).toEqual(['Public facing', 'AI and insights', 'Business applications', 'Worker productivity', 'Connections', 'Data and records', 'Security and identity']);
   });
 });
@@ -192,7 +192,7 @@ describe('the index pages', () => {
     expect(indexGroups('mission')).toHaveLength(1);
   });
 
-  it('group patterns by role, and name each measure’s outcome and each requirement’s capability', () => {
+  it('group patterns by layer, and name each measure’s outcome and each requirement’s capability', () => {
     expect(indexGroups('implementationPattern').map((g) => g.id)).toEqual(['public-facing', 'ai-insights', 'business-applications', 'worker-productivity', 'connections', 'data-records', 'security-identity']);
     for (const type of ['measure', 'requirement']) {
       const parents = indexParents(type)!;

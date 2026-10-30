@@ -303,7 +303,7 @@
         "src:nist-sp-800-53"
       ],
       "attributes": {
-        "role": "business-applications",
+        "layer": "business-applications",
         "parts": [
           "A case record with status, assignment, due dates, and linked documents, set up for each case type",
           "Intake forms and an email channel that create cases",
@@ -347,7 +347,7 @@
         "src:nist-sp-800-53"
       ],
       "attributes": {
-        "role": "security-identity",
+        "layer": "security-identity",
         "parts": [
           "The agency’s identity provider, with single sign-on to each system",
           "Phishing-resistant authenticators for staff, such as PIV cards or FIDO2 security keys",
@@ -391,7 +391,7 @@
         "src:nist-sp-800-53"
       ],
       "attributes": {
-        "role": "worker-productivity",
+        "layer": "worker-productivity",
         "parts": [
           "Shared documents, chat, and meetings for each team, signed in through the agency",
           "Retention labels that apply an approved records schedule to files and messages",
@@ -432,7 +432,7 @@
         "src:records-44-usc-3101"
       ],
       "attributes": {
-        "role": "worker-productivity",
+        "layer": "worker-productivity",
         "parts": [
           "A library of approved templates, each with an owner",
           "Fields filled in from the case, such as names, dates, and decisions",
@@ -471,7 +471,7 @@
         "src:nist-sp-800-53"
       ],
       "attributes": {
-        "role": "security-identity",
+        "layer": "security-identity",
         "parts": [
           "Log forwarding from each system to the agency’s security monitoring",
           "Sign-in, access, and change events that say who did what, and when",
@@ -512,7 +512,7 @@
         "src:nist-sp-800-53"
       ],
       "attributes": {
-        "role": "security-identity",
+        "layer": "security-identity",
         "parts": [
           "The audit trail each product keeps of views, changes, and exports",
           "Reports run on a schedule, such as access to restricted records or changes to permissions",
@@ -550,7 +550,7 @@
         "src:nist-ai-rmf"
       ],
       "attributes": {
-        "role": "ai-insights",
+        "layer": "ai-insights",
         "parts": [
           "A model that reads each new matter and suggests a category, an urgency, and where to route it",
           "The reasons for each suggestion, shown beside it",
@@ -591,7 +591,7 @@
         "src:sam-gov"
       ],
       "attributes": {
-        "role": "connections",
+        "layer": "connections",
         "parts": [
           "Calls to SAM.gov’s entity and exclusions services by Unique Entity Identifier",
           "A check before each award, with the results and their date saved to the award file",
@@ -633,7 +633,7 @@
         "src:nara-grs"
       ],
       "attributes": {
-        "role": "data-records",
+        "layer": "data-records",
         "parts": [
           "Each kind of record in the system mapped to its records schedule item",
           "Retention periods that start from the right event, such as a case’s closure",
