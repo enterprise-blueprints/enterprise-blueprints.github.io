@@ -13,7 +13,6 @@ import {
   lastReviewed,
   measuresOf,
   missionBlueprint,
-  byRole,
   principlesOf,
   patternDetails,
   questionsAbout,
@@ -51,8 +50,6 @@ const questions = questionsAbout(element);
 const users = usedBy(element);
 // A mission shows everything under it, band by band, and which capabilities serve which outcomes.
 const blueprint = element.type === 'mission' ? missionBlueprint(element) : null;
-// A mission's patterns, by layer, are its architecture.
-const layers = blueprint ? byRole(blueprint.patterns, (p) => p) : [];
 const principles = element.type === 'mission' ? principlesOf(element) : [];
 const measures = element.type === 'outcome' ? measuresOf(element) : [];
 const stacked = Boolean(blueprint?.capabilities.length);
@@ -116,26 +113,6 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
             <h2>Principles</h2>
             <p class="section-note">What this library recommends the mission’s architecture follow, whichever way each part is sourced.</p>
             <ol class="principles">{principles.map((s) => <li>{s}</li>)}</ol>
-          </section>
-        )}
-
-        {layers.length > 0 && (
-          <section class="section">
-            <h2>Architecture by layer</h2>
-            <p class="section-note">The mission’s patterns, the logical parts of its architecture, by the layer each one belongs to. Each pattern’s page lists its ways to source it.</p>
-            <div class="table-wrap">
-              <table class="stack-table layer-table">
-                <thead><tr><th scope="col">Layer</th><th scope="col">Patterns</th></tr></thead>
-                <tbody>
-                  {layers.map((g) => (
-                    <tr>
-                      <th scope="row">{g.label}<span class="muted layer-table__hint">{g.hint}</span></th>
-                      <td><ul class="element-links">{g.items.map((p) => <li><a class={`element-link type-${p.type}`} href={p.url}>{p.title}</a></li>)}</ul></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
           </section>
         )}
 

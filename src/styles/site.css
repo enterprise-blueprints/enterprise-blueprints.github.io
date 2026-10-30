@@ -197,8 +197,6 @@ code {
 .way__field h4 { margin: .6rem 0 .2rem; font-size: .8125rem; color: var(--text-muted); }
 .way__field ul { margin: 0; padding-left: 1.1rem; font-size: .9375rem; }
 .way__needs { margin: .75rem 0 0 !important; font-size: .9375rem; }
-.layer-table th[scope='row'] { width: 30%; }
-.layer-table__hint { display: block; margin-top: .2rem; font-weight: 400; font-size: .875rem; }
 .card__tagline { margin: -.25rem 0 .5rem; font-weight: 600; color: var(--accent); }
 
 /* Index pages: a row of links to each group, then a heading and table per group. */
