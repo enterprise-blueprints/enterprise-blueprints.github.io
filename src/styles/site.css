@@ -116,7 +116,7 @@ code {
 }
 .skip-link:focus { top: 1rem; color: #fff; }
 
-.container { width: 100%; max-width: 90rem; margin: 0 auto; padding: 0 1.25rem; }
+.container { width: 100%; max-width: 85rem; margin: 0 auto; padding: 0 1.25rem; }
 .container--narrow { max-width: 58rem; }
 
 .muted { color: var(--text-muted); }
@@ -172,6 +172,32 @@ code {
 }
 .site-nav a:hover { color: var(--text); background: var(--surface-muted); }
 .site-nav a[aria-current="page"], .site-nav a.is-active { color: var(--accent); background: var(--accent-soft); }
+
+/* On a phone the nav folds behind a Menu button and opens as two columns of links. */
+.site-nav__toggle { display: none; }
+@media (max-width: 45.99rem) {
+  .has-menu .site-header__inner { padding-top: .6rem; padding-bottom: .6rem; }
+  .has-menu .site-nav__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    min-height: 2.5rem;
+    padding: .35rem .75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-weight: 600;
+    font-size: .9375rem;
+    cursor: pointer;
+  }
+  .has-menu .site-nav__toggle:hover { background: var(--surface-muted); }
+  .has-menu .site-nav { display: none; width: 100%; }
+  .has-menu.is-open .site-nav { display: block; padding-bottom: .25rem; }
+  .has-menu .site-nav ul { display: grid; grid-template-columns: 1fr 1fr; gap: .15rem; }
+  .has-menu .site-nav a { padding: .55rem .75rem; }
+}
 
 .site-footer { border-top: 1px solid var(--border); background: var(--surface-muted); font-size: .9375rem; color: var(--text-muted); }
 .site-footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem 3rem; padding-top: 2.5rem; padding-bottom: 2.5rem; }
@@ -385,7 +411,7 @@ td.muted { color: var(--text-muted); }
 .record-header__meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .6rem; }
 /* A record's title and description are compact, and the description uses the page's width. */
 .record-header h1 { margin-bottom: .35rem; font-size: clamp(1.75rem, 1.45rem + 1.1vw, 2.25rem); }
-.record-header .lede { margin-bottom: 0; font-size: 1.0625rem; max-width: 72rem; }
+.record-header .lede { margin-bottom: 0; font-size: 1.0625rem; max-width: 66rem; }
 
 .record-layout { display: grid; gap: 2.5rem; }
 @media (min-width: 62rem) {
