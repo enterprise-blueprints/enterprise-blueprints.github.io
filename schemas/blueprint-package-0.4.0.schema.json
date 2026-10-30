@@ -329,15 +329,6 @@
           "type": "string",
           "pattern": "^[a-z0-9][a-z0-9-]*$",
           "description": "For includes: the way of sourcing the pattern that the solution chooses. For depends_on: the way of sourcing that needs the other pattern. Without it, any way."
-        },
-        "phase": {
-          "description": "For a north star’s includes: the phase of its roadmap that adds the pattern.",
-          "enum": [
-            "foundation",
-            "core",
-            "connect",
-            "insight"
-          ]
         }
       }
     },

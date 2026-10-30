@@ -230,10 +230,12 @@ describe('the OIG north star', () => {
     expect(star.missing).toEqual([]);
   });
 
-  it('builds in the four phases, in order, and follows its principles', () => {
-    expect(star.phases.map((p) => p.phase)).toEqual(['foundation', 'core', 'connect', 'insight']);
+  it('lays out its patterns by role, follows its principles, and chooses a way for its logical patterns', () => {
+    expect(star.roles.map((g) => g.role)).toEqual(['public-facing', 'business-applications', 'worker-productivity', 'processing', 'ai-insights', 'infrastructure']);
     expect(star.principles.length).toBeGreaterThanOrEqual(5);
-    expect(star.phases[0].items.find((i) => slug(i.pattern) === 'oversight-intake-case-tracking')?.way?.id).toBe('product');
+    const items = star.roles.flatMap((g) => g.items);
+    expect(items.find((i) => slug(i.pattern) === 'oversight-intake-case-tracking')?.way?.id).toBe('product');
+    expect(items.find((i) => slug(i.pattern) === 'digital-evidence-store')?.way).toBeUndefined();
   });
 
   it('stays apart from the example solutions', () => {

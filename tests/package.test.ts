@@ -430,27 +430,17 @@ describe('north stars and ways to source a pattern (schema 0.4.0)', () => {
 
   it('accept the OIG north star, with a way chosen for its logical patterns', () => {
     expect(validatePackage(original, resolve)).toEqual([]);
-    expect(include(original, caseSystem)).toMatchObject({ phase: 'foundation', way: 'product' });
+    expect(include(original, caseSystem)).toMatchObject({ way: 'product' });
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
-    ['a pattern without a phase', (p) => delete include(p, caseSystem).phase, `north star ${star} includes ${caseSystem} without a phase`],
     ['a way the pattern doesn’t have', (p) => (include(p, caseSystem).way = 'spreadsheets'), `${caseSystem} has no way "spreadsheets"`],
     [
       'a way whose need it leaves out',
       (p) => (include(p, caseSystem).way = 'agency-platform'),
       `includes ${caseSystem}, which needs eb:implementationPattern:shared-case-platform, but not`,
     ],
-    [
-      'a need that comes in a later phase',
-      (p) => {
-        include(p, 'eb:implementationPattern:audit-management-system').way = 'workspace';
-        include(p, 'eb:implementationPattern:records-aware-collaboration').phase = 'insight';
-      },
-      'adds eb:implementationPattern:audit-management-system in core, before eb:implementationPattern:records-aware-collaboration, which it needs, in insight',
-    ],
     ['two missions', (p) => p.relations.push({ id: 'rel:x', from: star, predicate: 'supports', to: 'eb:mission:public-access-to-agency-records' }), 'supports 2 missions, not one'],
-    ['a phase on something else', (p) => (p.relations.find((r) => r.predicate === 'satisfies')!.phase = 'core'), "only a north star's includes have a phase"],
     ['a way on something else', (p) => (p.relations.find((r) => r.predicate === 'satisfies')!.way = 'product'), 'only includes and depends_on name a way'],
   ])('reject %s', (_, change, message) => {
     expect(withStar(change)).toContain(message);

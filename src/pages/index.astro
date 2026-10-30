@@ -64,7 +64,7 @@ const shortMission = (mission: (typeof solutions)[number]['missions'][number]) =
               {m.outcomes.length > 0 && <li><strong>{m.outcomes.length}</strong> {m.outcomes.length === 1 ? 'outcome' : 'outcomes'}</li>}
               <li><strong>{m.capabilities.length}</strong> {m.capabilities.length === 1 ? 'capability' : 'capabilities'}</li>
               <li><strong>{m.patterns.length}</strong> candidate {m.patterns.length === 1 ? 'pattern' : 'patterns'}</li>
-              {m.star && <li><a href={m.star.solution.url}>North star</a> in {m.star.phases.length} phases</li>}
+              {m.star && <li><a href={m.star.solution.url}>North star</a> of {m.star.patterns.length} patterns</li>}
               {m.reviewed && <li>Sources reviewed {formatDate(m.reviewed)}</li>}
             </ul>
           </article>

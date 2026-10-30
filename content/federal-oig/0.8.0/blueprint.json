@@ -880,7 +880,7 @@
       "id": "eb:solution:oig-north-star",
       "type": "solution",
       "title": "Office of Inspector General North Star",
-      "description": "The long-term architecture this library recommends for an Office of Inspector General: one case system and one audit system that the office runs itself, with a confidential hotline, a digital evidence store, and a recommendation tracker the agency works in, all reporting from the source, and analytics and AI on top. It’s built in four phases, and an office can start from any pattern.",
+      "description": "The long-term architecture this library recommends for an Office of Inspector General: one case system and one audit system that the office runs itself, with a confidential hotline, a digital evidence store, and a recommendation tracker the agency works in, all reporting from the source, and analytics and AI on top.",
       "status": "reference",
       "attributes": {
         "kind": "north-star",
@@ -894,7 +894,7 @@
         ],
         "watchFor": [
           "The office needs administrators for its own systems, or a contract for them",
-          "Each phase needs the one before it to be in use, not just installed"
+          "Running its own systems costs more than sharing the agency’s, and the office has to budget for it"
         ]
       }
     }
@@ -1313,7 +1313,6 @@
       "from": "eb:solution:oig-north-star",
       "predicate": "includes",
       "to": "eb:implementationPattern:agency-sign-on",
-      "phase": "foundation",
       "description": "Every system signs in through the agency, with roles the office administers."
     },
     {
@@ -1322,7 +1321,6 @@
       "predicate": "includes",
       "to": "eb:implementationPattern:oversight-intake-case-tracking",
       "way": "product",
-      "phase": "foundation",
       "description": "A product the office administers, for its independence and its evidence handling."
     },
     {
@@ -1330,7 +1328,6 @@
       "from": "eb:solution:oig-north-star",
       "predicate": "includes",
       "to": "eb:implementationPattern:confidential-hotline-intake",
-      "phase": "foundation",
       "description": "Feeds the case system’s intake queue, with the reporter’s identity kept apart."
     },
     {
@@ -1338,7 +1335,6 @@
       "from": "eb:solution:oig-north-star",
       "predicate": "includes",
       "to": "eb:implementationPattern:agency-security-monitoring",
-      "phase": "foundation",
       "description": "The office’s systems send their logs to the agency, searchable only by staff the office agrees to."
     },
     {
@@ -1346,7 +1342,6 @@
       "from": "eb:solution:oig-north-star",
       "predicate": "includes",
       "to": "eb:implementationPattern:records-aware-collaboration",
-      "phase": "foundation",
       "description": "Where staff draft and collaborate, with records and sensitivity labels applied."
     },
     {
@@ -1355,7 +1350,6 @@
       "predicate": "includes",
       "to": "eb:implementationPattern:records-in-business-systems",
       "way": "built-in",
-      "phase": "foundation",
       "description": "Each of the office’s systems keeps its own records on schedule, so holds stay in the office’s hands."
     },
     {
@@ -1364,7 +1358,6 @@
       "predicate": "includes",
       "to": "eb:implementationPattern:audit-management-system",
       "way": "product",
-      "phase": "core",
       "description": "A product for audits, inspections, and evaluations, so work papers meet the standards and peer reviewers can trace each finding."
     },
     {
@@ -1373,7 +1366,6 @@
       "predicate": "includes",
       "to": "eb:implementationPattern:shared-recommendation-tracker",
       "way": "audit-module",
-      "phase": "core",
       "description": "The audit product’s module, so each recommendation starts and is tracked in one place, with agency officials working on their own."
     },
     {
@@ -1381,7 +1373,6 @@
       "from": "eb:solution:oig-north-star",
       "predicate": "includes",
       "to": "eb:implementationPattern:digital-evidence-store",
-      "phase": "core",
       "description": "Either a product or secure storage with a custody log, depending on how much digital evidence the office handles."
     },
     {
@@ -1389,7 +1380,6 @@
       "from": "eb:solution:oig-north-star",
       "predicate": "includes",
       "to": "eb:implementationPattern:oversight-reporting-from-source-data",
-      "phase": "connect",
       "description": "The semiannual report’s statistics come from the case, audit, and recommendation systems, and reports are posted within 3 days."
     },
     {
@@ -1397,7 +1387,6 @@
       "from": "eb:solution:oig-north-star",
       "predicate": "includes",
       "to": "eb:implementationPattern:letters-from-case-data",
-      "phase": "connect",
       "description": "Routine notices and report sections drafted from the case and audit data."
     },
     {
@@ -1405,7 +1394,6 @@
       "from": "eb:solution:oig-north-star",
       "predicate": "includes",
       "to": "eb:implementationPattern:oversight-data-analytics",
-      "phase": "insight",
       "description": "Agency data points audits and investigations at the highest risks."
     },
     {
@@ -1413,7 +1401,6 @@
       "from": "eb:solution:oig-north-star",
       "predicate": "includes",
       "to": "eb:implementationPattern:ai-assisted-intake-sorting",
-      "phase": "insight",
       "description": "Suggestions in the intake queue, once intake runs on the case system and its categories are settled."
     },
     {

@@ -35,7 +35,7 @@ export interface PackageSource {
 const typeOfSection = Object.fromEntries(Object.entries(elementTypes).map(([type, info]) => [info.section, type]));
 const PACKAGE_KEYS = ['schemaVersion', 'packageId', 'title', 'description', 'publisher', 'license', 'domain', 'jurisdictions', 'tags', 'dependencies'];
 const ELEMENT_KEYS = ['id', 'title', 'description', 'status', 'replacedBy', 'sources', 'tags', 'jurisdictions', 'applicabilityNotes', 'attributes'];
-const LINK_KEYS = ['to', 'note', 'sources', 'id', 'coverage', 'way', 'phase'];
+const LINK_KEYS = ['to', 'note', 'sources', 'id', 'coverage', 'way'];
 
 // Written out in full, since Node runs this file without compiling it.
 export class SourceError extends Error {
@@ -185,7 +185,6 @@ export function compilePackage(src: PackageSource, deps: Record<string, Resolved
         };
         if (link.coverage !== undefined) r.coverage = link.coverage as Relation['coverage'];
         if (link.way !== undefined) r.way = String(link.way);
-        if (link.phase !== undefined) r.phase = link.phase as Relation['phase'];
         if (link.note) r.description = link.note as string;
         if (link.sources) r.sourceIds = strings(link.sources).map((s) => `src:${s}`);
         relations.push(r);

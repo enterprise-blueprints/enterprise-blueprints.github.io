@@ -5,7 +5,7 @@
 // elements. Any validation problem stops the build.
 
 import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
-import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, solutionPhases, type ElementTypeInfo } from './vocabulary';
+import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, type ElementTypeInfo } from './vocabulary';
 import { href } from './paths';
 import { compareVersions } from './format';
 
@@ -291,7 +291,7 @@ function needsOf(pattern: LibraryElement, way?: string): LibraryElement[] {
     .map((r) => byId.get(r.to)!);
 }
 
-/** A north star: one mission's long-term solution, built in phases. */
+/** A north star: one mission's long-term solution. */
 export const isNorthStar = (e: LibraryElement) => e.type === 'solution' && e.attributes?.kind === 'north-star';
 
 export interface RoleGroup<T> {
@@ -319,7 +319,6 @@ export interface SolutionItem {
   note?: string;
   /** The way of sourcing it the solution chooses, when it chooses one. */
   way?: PatternWay;
-  phase?: string;
 }
 
 export interface SolutionView {
@@ -329,8 +328,6 @@ export interface SolutionView {
   missions: LibraryElement[];
   /** Its patterns by role, each with what the solution says about it. */
   roles: RoleGroup<SolutionItem>[];
-  /** A north star's patterns by the phase that adds them, in order. */
-  phases: { phase: string; label: string; hint: string; items: SolutionItem[] }[];
   patterns: LibraryElement[];
   /**
    * For each mission it supports, which of the mission's capabilities its
@@ -346,7 +343,7 @@ export function solutionView(solution: LibraryElement): SolutionView {
   const includes = relationsOf(solution, 'includes', 'outgoing');
   const items: SolutionItem[] = includes.map((r) => {
     const pattern = byId.get(r.to)!;
-    return { pattern, note: r.description, way: patternDetails(pattern).ways.find((w) => w.id === r.way), phase: r.phase };
+    return { pattern, note: r.description, way: patternDetails(pattern).ways.find((w) => w.id === r.way) };
   });
   const patterns = items.map((i) => i.pattern);
   const missions = related(solution, 'supports', 'outgoing');
@@ -358,9 +355,6 @@ export function solutionView(solution: LibraryElement): SolutionView {
     missions,
     patterns,
     roles: byRole(items, (i) => i.pattern),
-    phases: Object.entries(solutionPhases)
-      .map(([phase, p]) => ({ phase, label: p.label, hint: p.hint, items: items.filter((i) => i.phase === phase) }))
-      .filter((p) => p.items.length),
     coverage: missions.map((mission) => {
       const caps = missionBlueprint(mission).capabilities;
       const used = (c: (typeof caps)[number]) => c.patterns.filter((p) => patterns.includes(p));
@@ -431,7 +425,7 @@ export function indexGroups(type: string): IndexGroup[] {
     const stars = items.filter(isNorthStar);
     if (!stars.length) return [{ id: 'all', label: '', items }];
     return [
-      { id: 'north-stars', label: 'North stars', hint: 'One long-term architecture for each mission, built in phases.', items: stars },
+      { id: 'north-stars', label: 'North stars', hint: 'One long-term architecture for each mission.', items: stars },
       { id: 'examples', label: 'Example solutions', hint: 'Ways an agency could combine patterns across its missions.', items: items.filter((e) => !isNorthStar(e)) },
     ];
   }

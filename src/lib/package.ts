@@ -4,8 +4,8 @@
 // 0.3.0 gives patterns and solutions typed attributes, and lets a candidate
 // pattern say it only partly covers a capability. Schema 0.4.0 lets a logical
 // pattern list its ways to source it, and adds north stars: one mission's
-// long-term solution, built in phases. Packages stay valid under the schema
-// they were published with.
+// long-term solution. Packages stay valid under the schema they were
+// published with.
 
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
@@ -13,7 +13,7 @@ import schema010 from '../../schemas/blueprint-package-0.1.0.schema.json';
 import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json';
 import schema030 from '../../schemas/blueprint-package-0.3.0.schema.json';
 import schema040 from '../../schemas/blueprint-package-0.4.0.schema.json';
-import { elementTypes, patternApproaches, patternFields, patternRoles, predicates, solutionPhases } from './vocabulary';
+import { elementTypes, patternApproaches, patternFields, patternRoles, predicates } from './vocabulary';
 
 export interface Source {
   id: string;
@@ -48,8 +48,6 @@ export interface Relation {
   coverage?: 'full' | 'partial';
   /** Since schema 0.4.0. For includes, the way of sourcing the pattern the solution chooses; for depends_on, the way that needs the other pattern. */
   way?: string;
-  /** Since schema 0.4.0, for a north star's includes: the phase that adds the pattern. */
-  phase?: 'foundation' | 'core' | 'connect' | 'insight';
   description?: string;
   sourceIds?: string[];
 }
@@ -212,9 +210,6 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
       if (!pattern) errors.push(`relation ${r.id}: only includes and depends_on name a way`);
       else if (!waysOf(pattern).includes(r.way)) errors.push(`relation ${r.id}: ${pattern.id} has no way "${r.way}"`);
     }
-    if (r.phase !== undefined && !(r.predicate === 'includes' && from && isNorthStar(from))) {
-      errors.push(`relation ${r.id}: only a north star's includes have a phase`);
-    }
     const edge = `${r.from} ${r.predicate} ${r.to}`;
     if (edges.has(edge)) errors.push(`relation ${r.id} repeats ${edge}`);
     edges.add(edge);
@@ -227,13 +222,10 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
 
 const isNorthStar = (e: Element) => e.type === 'solution' && e.attributes?.kind === 'north-star';
 const waysOf = (e: Element) => (Array.isArray(e.attributes?.ways) ? (e.attributes.ways as { id: string }[]).map((w) => w.id) : []);
-const phaseOrder = Object.keys(solutionPhases);
-
 /**
  * A north star supports one mission, and only one north star in a package
- * supports each mission. Every pattern it includes comes in a phase, and
- * what a pattern needs, for the way the north star chose, comes in that
- * phase or before.
+ * supports each mission. It includes everything its patterns need, for the
+ * ways it chose.
  */
 function northStarProblems(pkg: BlueprintPackage, relations: Relation[]): string[] {
   const errors: string[] = [];
@@ -248,17 +240,9 @@ function northStarProblems(pkg: BlueprintPackage, relations: Relation[]): string
     }
     const included = new Map(own.filter((r) => r.predicate === 'includes').map((r) => [r.to, r]));
     for (const [pattern, r] of included) {
-      if (!r.phase) {
-        errors.push(`north star ${star.id} includes ${pattern} without a phase`);
-        continue;
-      }
       const needs = relations.filter((d) => d.predicate === 'depends_on' && d.from === pattern && (!d.way || d.way === r.way));
       for (const need of needs) {
-        const at = included.get(need.to)?.phase;
-        if (!at) errors.push(`north star ${star.id} includes ${pattern}, which needs ${need.to}, but not ${need.to}`);
-        else if (phaseOrder.indexOf(at) > phaseOrder.indexOf(r.phase)) {
-          errors.push(`north star ${star.id} adds ${pattern} in ${r.phase}, before ${need.to}, which it needs, in ${at}`);
-        }
+        if (!included.has(need.to)) errors.push(`north star ${star.id} includes ${pattern}, which needs ${need.to}, but not ${need.to}`);
       }
     }
   }

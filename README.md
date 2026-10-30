@@ -40,7 +40,7 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
   version stays published. These files are built, not edited by hand.
 - `schemas/blueprint-package-<version>.schema.json` holds each version of the package format. 0.2.0 adds
   `dependencies`. 0.3.0 checks the attributes of patterns and solutions and adds `coverage` to candidate
-  patterns. 0.4.0 adds a pattern's `ways` to source it and north stars, with `way` and `phase` on links. Every
+  patterns. 0.4.0 adds a pattern's `ways` to source it and north stars, with `way` on links. Every
   version stays, and Solution Studio keeps identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
@@ -160,9 +160,9 @@ needing the platform. A pattern that became a way of another keeps its ID, with 
 
 **North stars.** A mission package can hold its north star: one long-term, opinionated solution for the
 mission, in its own `solutions.yaml`, with `kind: north-star` and `principles` in its attributes. It
-`supports` its one mission, and each pattern it `includes` names the `phase` that adds it (`foundation`,
-`core`, `connect`, or `insight`) and, for a logical pattern, the `way` it prefers. A need comes in the same
-phase as the pattern or an earlier one, so an office can start from any pattern and add its needs first.
+`supports` its one mission, and each logical pattern it `includes` names the `way` it prefers. Like any
+solution, it shows its patterns by role, and it must include everything its patterns need for the ways it
+chose.
 
 To add a package, create `source/<name>/package.yaml` with its own `packageId`, add its files, and run
 `pnpm content:build`; it starts at 0.1.0. Element IDs are unique across all packages: each element is defined

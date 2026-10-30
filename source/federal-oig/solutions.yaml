@@ -2,7 +2,7 @@
 
 - id: oig-north-star
   title: Office of Inspector General North Star
-  description: "The long-term architecture this library recommends for an Office of Inspector General: one case system and one audit system that the office runs itself, with a confidential hotline, a digital evidence store, and a recommendation tracker the agency works in, all reporting from the source, and analytics and AI on top. It’s built in four phases, and an office can start from any pattern."
+  description: "The long-term architecture this library recommends for an Office of Inspector General: one case system and one audit system that the office runs itself, with a confidential hotline, a digital evidence store, and a recommendation tracker the agency works in, all reporting from the source, and analytics and AI on top."
   attributes:
     kind: north-star
     principles:
@@ -14,49 +14,36 @@
       - Analytics and AI suggest, and staff decide
     watchFor:
       - The office needs administrators for its own systems, or a contract for them
-      - Each phase needs the one before it to be in use, not just installed
+      - Running its own systems costs more than sharing the agency’s, and the office has to budget for it
   includes:
     - to: agency-sign-on
-      phase: foundation
       note: Every system signs in through the agency, with roles the office administers.
     - to: oversight-intake-case-tracking
-      phase: foundation
       way: product
       note: A product the office administers, for its independence and its evidence handling.
     - to: confidential-hotline-intake
-      phase: foundation
       note: Feeds the case system’s intake queue, with the reporter’s identity kept apart.
     - to: agency-security-monitoring
-      phase: foundation
       note: The office’s systems send their logs to the agency, searchable only by staff the office agrees to.
     - to: records-aware-collaboration
-      phase: foundation
       note: Where staff draft and collaborate, with records and sensitivity labels applied.
     - to: records-in-business-systems
-      phase: foundation
       way: built-in
       note: Each of the office’s systems keeps its own records on schedule, so holds stay in the office’s hands.
     - to: audit-management-system
-      phase: core
       way: product
       note: A product for audits, inspections, and evaluations, so work papers meet the standards and peer reviewers can trace each finding.
     - to: shared-recommendation-tracker
-      phase: core
       way: audit-module
       note: The audit product’s module, so each recommendation starts and is tracked in one place, with agency officials working on their own.
     - to: digital-evidence-store
-      phase: core
       note: Either a product or secure storage with a custody log, depending on how much digital evidence the office handles.
     - to: oversight-reporting-from-source-data
-      phase: connect
       note: The semiannual report’s statistics come from the case, audit, and recommendation systems, and reports are posted within 3 days.
     - to: letters-from-case-data
-      phase: connect
       note: Routine notices and report sections drafted from the case and audit data.
     - to: oversight-data-analytics
-      phase: insight
       note: Agency data points audits and investigations at the highest risks.
     - to: ai-assisted-intake-sorting
-      phase: insight
       note: Suggestions in the intake queue, once intake runs on the case system and its categories are settled.
   supports: [ independent-government-oversight ]
