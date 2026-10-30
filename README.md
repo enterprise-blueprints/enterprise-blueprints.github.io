@@ -81,6 +81,10 @@ its message names each problem and the file it's in. A new element type or predi
 | `links.yaml` | Links from the elements of packages this one builds on, such as a shared capability that satisfies one of its requirements. |
 | `discovery.yaml` | Discovery question sets. |
 
+A mission's `title` is its plain name, such as Federal Acquisition, the same as its package's short title, and
+`attributes.tagline` says what it is in a few words, such as "Acquiring goods and services for the government". Pages show
+the tagline under the name.
+
 **Links** sit on the element that holds them, named for the predicate, with the keys of their targets:
 
 ```yaml

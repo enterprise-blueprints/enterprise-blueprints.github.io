@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byRole, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, solutionsFor, solutionView } from '../src/lib/library';
+import { byRole, coversPartly, elements, elementsOfType, indexGroups, indexParents, missionBlueprint, relationGroups, solutionsFor, solutionView, tagline } from '../src/lib/library';
 
 describe('missionBlueprint', () => {
   const mission = elements.find((e) => e.id === 'eb:mission:independent-government-oversight')!;
@@ -193,6 +193,13 @@ describe('the acquisition mission', () => {
 });
 
 describe('the index pages', () => {
+  it('give each mission a plain name with its tagline', () => {
+    for (const m of elementsOfType('mission')) {
+      expect(m.title, m.id).toBe(m.package.title.split(' — ')[0]);
+      expect(tagline(m), m.id).toMatch(/^[A-Z][a-z]/);
+    }
+  });
+
   it('group by mission, with the shared package last, and leave missions and solutions whole', () => {
     const caps = indexGroups('capability');
     expect(caps.map((g) => g.label)).toEqual(['Federal Acquisition', 'Federal FOIA Program', 'Federal Grants Management', 'Federal Office of Inspector General', 'Shared across missions']);

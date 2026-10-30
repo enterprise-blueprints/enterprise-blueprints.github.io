@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import Base from '../../layouts/Base.astro';
 import ElementTable from '../../components/ElementTable.astro';
-import { indexGroups, indexParents, typesInUse } from '../../lib/library';
+import { indexGroups, indexParents, tagline, typesInUse } from '../../lib/library';
 import { plural } from '../../lib/format';
 
 export const getStaticPaths = (() =>
@@ -13,6 +13,11 @@ const groups = indexGroups(type);
 const parents = indexParents(type);
 const grouped = groups.length > 1;
 const count = (n: number) => plural(n, info.label.toLowerCase(), info.plural.toLowerCase());
+// "acquiring goods and services for the government", to finish "10 capabilities for …".
+const purpose = (m: NonNullable<(typeof groups)[number]['mission']>) => {
+  const t = tagline(m) ?? m.title;
+  return t[0].toLowerCase() + t.slice(1);
+};
 ---
 <Base title={info.plural} description={info.definition}>
   <div class="container">
@@ -30,7 +35,7 @@ const count = (n: number) => plural(n, info.label.toLowerCase(), info.plural.toL
         {grouped && (
           <header class="index-group__header">
             <h2 id={`${g.id}-heading`}>{g.label}</h2>
-            <p class="muted">{count(g.items.length)}{g.mission && <> for <a href={g.mission.url}>{g.mission.title}</a></>}{g.hint && <>. {g.hint}</>}</p>
+            <p class="muted">{count(g.items.length)}{g.mission && <> for <a href={g.mission.url}>{purpose(g.mission)}</a></>}{g.hint && <>. {g.hint}</>}</p>
           </header>
         )}
         <ElementTable elements={g.items} parents={parents} showPackage={type === 'implementationPattern'} />

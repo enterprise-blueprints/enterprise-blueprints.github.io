@@ -327,6 +327,9 @@ export function solutionsFor(mission: LibraryElement): SolutionView[] {
   return related(mission, 'supports', 'incoming').map(solutionView);
 }
 
+/** A mission's tagline, the phrase under its plain name, such as "Acquiring goods and services for the government". */
+export const tagline = (e: LibraryElement): string | undefined => (typeof e.attributes?.tagline === 'string' ? e.attributes.tagline : undefined);
+
 /** "Common Capabilities" for "Common Capabilities — Shared Across Missions". */
 export const shortTitle = (pkg: BlueprintPackage) => pkg.title.split(' — ')[0];
 

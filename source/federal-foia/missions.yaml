@@ -1,10 +1,11 @@
 # Missions, in the order the pages show them, each with the links it holds.
 
 - id: public-access-to-agency-records
-  title: Public Access to Agency Records
+  title: Federal FOIA Program
   description: "Give the public access to agency records: post what the law requires without waiting to be asked, answer requests promptly, and release everything the law allows, withholding only what an exemption protects and release would foreseeably harm."
   sources: [ foia-statute, doj-foia-guide ]
   attributes:
+    tagline: Public access to agency records
     sector: public-sector
     scope: US-federal-FOIA
   seeks:

@@ -1,10 +1,11 @@
 # Missions, in the order the pages show them, each with the links it holds.
 
 - id: independent-government-oversight
-  title: Independent Oversight of Government Programs and Operations
+  title: Federal Office of Inspector General
   description: Provide independent and objective oversight to prevent and detect fraud, waste, and abuse; promote economy, efficiency, and effectiveness; and communicate findings and recommendations concerning federal programs and operations.
   sources: [ ig-act-404, oversight-mission, cigie-faq ]
   attributes:
+    tagline: Independent oversight of government programs and operations
     sector: public-sector
     scope: US-federal-OIG
   seeks:

@@ -18,6 +18,7 @@ import {
   solutionsFor,
   solutionView,
   sourcesOf,
+  tagline,
   usedBy,
 } from '../../lib/library';
 import { patternFields, patternRoles, predicates, statuses } from '../../lib/vocabulary';
@@ -41,7 +42,9 @@ const isPattern = element.type === 'implementationPattern';
 // A pattern and a solution describe themselves with fields of their own, which get sections.
 const pattern = isPattern || element.type === 'solution' ? patternDetails(element) : null;
 const ownFields = ['approach', 'role', ...Object.keys(patternFields)];
-const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => !pattern || !ownFields.includes(key));
+// A mission's tagline shows under its name, not with the other attributes.
+const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => (!pattern || !ownFields.includes(key)) && key !== 'tagline');
+const line = tagline(element);
 const questions = questionsAbout(element);
 const users = usedBy(element);
 // A mission shows everything under it, band by band, and which capabilities serve which outcomes.
@@ -78,6 +81,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
         {pattern?.approach && <span class="approach-badge">{pattern.approach}</span>}
       </div>
       <h1>{element.title}</h1>
+      {line && <p class="record-tagline">{line}</p>}
       <p class="lede">{element.description}</p>
     </header>
 
