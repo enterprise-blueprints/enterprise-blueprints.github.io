@@ -4,10 +4,6 @@ dist-*/
 .astro/
 .DS_Store
 
-# Python tooling in .agent-handoff
-__pycache__/
-*.pyc
-.venv/
 
 # Build output from the earlier Jekyll site
 _site/

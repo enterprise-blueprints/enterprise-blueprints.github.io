@@ -180,7 +180,8 @@ the site, and checks links and published data, both at the real base path and un
 Pushes to `main` then deploy to GitHub Pages. The repository's Pages source must be set to
 **GitHub Actions** (Settings → Pages).
 
-`.agent-handoff/` holds the original planning notes. They're background, not a spec.
+[VISION.md](VISION.md), the same in both repos, says what Enterprise Blueprints and Solution Studio are for, how
+they fit, and where they're going.
 
 ## License
 
