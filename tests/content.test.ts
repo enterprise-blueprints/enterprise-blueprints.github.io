@@ -130,6 +130,14 @@ describe('another publisher’s package (schema 0.6.0)', () => {
     expect(run).toThrow('could be in more than one of the packages this one builds on, so it needs a prefix, such as eb:capability:tracking');
   });
 
+  it('plans its own release on the library’s published packages', () => {
+    const external = { shared: { packageId: 'eb.shared', version: '0.12.0', idPrefix: 'eb' } };
+    const [step] = plan([vendor(demo('[capability:tracking]'))], {}, () => false, '2026-10-30', external);
+    expect([step.version, step.reason]).toEqual(['0.1.0', 'new package']);
+    expect(step.write!.dependencies).toEqual([{ packageId: 'eb.shared', version: '0.12.0' }]);
+    expect(step.write!.relations[0].to).toBe('eb:capability:tracking');
+  });
+
   it('keeps resource fields to resources', () => {
     const run = () => compilePackage(parseSource('m', { 'package.yaml': 'packageId: m\n', 'capabilities.yaml': '- id: x\n  title: X\n  description: X.\n  kind: video\n  url: https://example.com\n' }), {}, '0.1.0', 'd');
     expect(run).toThrow(/only a requirement or a resource has a kind[\s\S]*only a resource has a url/);

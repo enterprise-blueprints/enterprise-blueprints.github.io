@@ -380,25 +380,30 @@ export interface Step {
  * every package stays on it. Otherwise every package gets the next release:
  * the unpublished one already there, rebuilt, or the minor version after the
  * newest published one. A package in content/ with no source is retired.
+ * Another publisher's packages can build on the library's published ones,
+ * given in `external` by folder name at the version they build on.
  */
 export function plan(
   sources: PackageSource[],
   content: Record<string, Record<string, BlueprintPackage>>,
   isPublished: (name: string, version: string) => boolean,
   today: string,
+  external: Record<string, Resolved> = {},
 ): Step[] {
   const names = sources.map((s) => s.name);
   for (const s of sources) {
     for (const d of s.dependencies) {
-      if (!names.includes(d)) throw new SourceError([`source/${s.name}/package.yaml: builds on "${d}", which isn't a package under source/`]);
+      if (!names.includes(d) && !external[d]) throw new SourceError([`source/${s.name}/package.yaml: builds on "${d}", which isn't a package under source/`]);
     }
   }
   const have = (name: string) => content[name] ?? {};
   const all = Object.keys(content).flatMap((name) => Object.keys(have(name)).map((version) => ({ name, version })));
   const release = newest(all.filter((v) => isPublished(v.name, v.version)).map((v) => v.version));
   const drafts = (name: string) => Object.keys(have(name)).filter((v) => !isPublished(name, v));
-  const pins = (version: string) =>
-    Object.fromEntries(sources.map((s) => [s.name, { packageId: s.meta.packageId as string, version, ...(s.meta.idPrefix ? { idPrefix: s.meta.idPrefix as string } : {}) }]));
+  const pins = (version: string): Record<string, Resolved> => ({
+    ...external,
+    ...Object.fromEntries(sources.map((s) => [s.name, { packageId: s.meta.packageId as string, version, ...(s.meta.idPrefix ? { idPrefix: s.meta.idPrefix as string } : {}) }])),
+  });
   const build = (src: PackageSource, version: string, date: string) => compilePackage(src, pins(version), version, date);
   const retired = Object.keys(content)
     .filter((name) => !names.includes(name))
