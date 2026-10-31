@@ -3,6 +3,9 @@
 //   pnpm content:build   write each package whose source changed, at its next version
 //   pnpm content:check   fail if content/ is behind source/, writing nothing
 //
+// Both check the release as it will be published, the way the site does:
+// each package against its schema and the packages it builds on. A problem
+// stops the build before anything is written.
 // The library is released as one version. A release is published once it's
 // on origin/main, and never changes after that. A release built since then is
 // rebuilt in place until it's pushed.
@@ -11,7 +14,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { plan, readSources, SourceError } from '../src/lib/compile.ts';
-import type { BlueprintPackage } from '../src/lib/package.ts';
+import { validatePackage, type BlueprintPackage } from '../src/lib/package.ts';
 
 const mode = process.argv[2];
 if (mode !== 'build' && mode !== 'check') {
@@ -51,6 +54,18 @@ try {
     process.exit(1);
   }
   throw e;
+}
+
+// The release as it will be: what's written, and what stays.
+const published = Object.values(content).flatMap((versions) => Object.values(versions));
+const written = steps.flatMap((s) => (s.write ? [s.write] : []));
+const resolve = (packageId: string, version: string) => [...written, ...published].find((p) => p.packageId === packageId && p.version === version);
+const problems = steps
+  .filter((s) => !s.retired)
+  .flatMap((s) => validatePackage(s.write ?? content[s.name][s.version], resolve).map((p) => `${s.name} ${s.version}: ${p}`));
+if (problems.length) {
+  console.error(`The release has problems, so nothing was written:\n  ${problems.join('\n  ')}`);
+  process.exit(1);
 }
 
 const behind = steps.filter((s) => s.write || s.remove.length);

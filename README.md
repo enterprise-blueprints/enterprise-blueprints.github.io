@@ -75,8 +75,19 @@ byte for byte.
 ## Edit content
 
 Edit the files under `source/<package>/`, then run `pnpm content:build` and `pnpm verify`. If either fails,
-its message names each problem and the file it's in. A new element type or predicate needs an entry in
-`src/lib/vocabulary.ts` first.
+its message names each problem and the file it's in. `content:build` checks the release the way the site
+does, against the schema and every package it builds on, before it writes anything. A new element type or
+predicate needs an entry in `src/lib/vocabulary.ts` first.
+
+To look things up in the current release, for yourself or a coding agent:
+
+- `pnpm content:show <id or words>` shows an element with every link to and from it across the packages,
+  the resources that help with it, and the discovery answers that point at it. With words, it lists what
+  matches.
+- `pnpm content:report` counts what each package holds and lists gaps worth a look, such as requirements
+  without sources and sources not reviewed in a year.
+
+Add `--json` to either for the same answer as data.
 
 | File | What it holds |
 | --- | --- |
