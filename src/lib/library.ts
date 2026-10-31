@@ -6,8 +6,8 @@
 // the common one, and point at its elements. Any validation problem stops the
 // build.
 
-import { validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
-import { elementTypes, groupings, patternApproaches, patternFields, patternLayers, predicates, type ElementTypeInfo } from './vocabulary';
+import { measureId, validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
+import { elementTypes, groupings, patternApproaches, patternFields, patternLayers, predicates, resourceKinds, type ElementTypeInfo } from './vocabulary';
 import { href } from './paths';
 import { compareVersions } from './format';
 
@@ -83,7 +83,7 @@ function load(): PackageFile[] {
   // Element IDs are unique across the packages the pages show.
   const seen = new Map<string, string>();
   for (const pkg of current) {
-    const measureIds = pkg.elements.flatMap((e) => (Array.isArray(e.attributes?.measures) ? (e.attributes.measures as { id: string }[]).map((m) => `eb:measure:${m.id}`) : []));
+    const measureIds = pkg.elements.flatMap((e) => (Array.isArray(e.attributes?.measures) ? (e.attributes.measures as { id: string }[]).map((m) => measureId(e, m.id)) : []));
     for (const id of [...pkg.elements.map((e) => e.id), ...measureIds]) {
       const other = seen.get(id);
       if (other) errors.push(`element ${id} is defined in both ${other} and ${pkg.packageId}`);
@@ -190,7 +190,7 @@ export function coversPartly(capability: LibraryElement, pattern: LibraryElement
 /** A way to tell how an outcome is going, listed on the outcome since schema 0.4.0. */
 export interface Measure {
   id: string;
-  /** The ID discovery answers and tools name it by: eb:measure:<id>. */
+  /** The ID discovery answers and tools name it by, such as eb:measure:<id>. */
   elementId: string;
   title: string;
   description: string;
@@ -204,7 +204,7 @@ export interface Measure {
 export function measuresOf(outcome: LibraryElement): Measure[] {
   const list = outcome.attributes?.measures;
   return Array.isArray(list)
-    ? (list as Omit<Measure, 'outcome' | 'url' | 'elementId'>[]).map((m) => ({ ...m, elementId: `eb:measure:${m.id}`, outcome, url: `${outcome.url}#measure-${m.id}` }))
+    ? (list as Omit<Measure, 'outcome' | 'url' | 'elementId'>[]).map((m) => ({ ...m, elementId: measureId(outcome, m.id), outcome, url: `${outcome.url}#measure-${m.id}` }))
     : [];
 }
 
@@ -268,6 +268,48 @@ export function missionBlueprint(mission: LibraryElement): MissionBlueprint {
     requirements: unique(capabilities.flatMap((c) => c.requirements)),
     patterns: unique(capabilities.flatMap((c) => c.patterns)).sort((a, b) => order(a) - order(b)),
   };
+}
+
+/** A resource's own fields, since schema 0.6.0. */
+export interface ResourceDetails {
+  /** Its kind's label, such as "Video". */
+  kind: string;
+  url: string;
+  /** Who made it, when that isn't the package's publisher. */
+  by?: string;
+  lastReviewedAt?: string;
+}
+
+export function resourceDetails(resource: LibraryElement): ResourceDetails {
+  const a = resource.attributes ?? {};
+  const text = (value: unknown) => (typeof value === 'string' ? value : undefined);
+  return {
+    kind: resourceKinds.groups[String(a.kind)]?.label ?? String(a.kind),
+    url: String(a.url),
+    by: text(a.by),
+    lastReviewedAt: text(a.lastReviewedAt),
+  };
+}
+
+export interface ElementResource {
+  resource: LibraryElement;
+  details: ResourceDetails;
+  /** The pattern's way it's about, when it's about one. */
+  way?: { id: string; title: string };
+  note?: string;
+}
+
+/** The resources that help with an element, in the order their packages list them, kind by kind. */
+export function resourcesFor(element: LibraryElement): ElementResource[] {
+  const ways = Array.isArray(element.attributes?.ways) ? (element.attributes.ways as { id: string; title: string }[]) : [];
+  const kinds = Object.keys(resourceKinds.groups);
+  return relationsOf(element, 'helps_with', 'incoming')
+    .map((r) => {
+      const resource = byId.get(r.from)!;
+      const way = r.way ? ways.find((w) => w.id === r.way) : undefined;
+      return { resource, details: resourceDetails(resource), ...(way && { way: { id: way.id, title: way.title } }), ...(r.description && { note: r.description }) };
+    })
+    .sort((a, b) => kinds.indexOf(String(a.resource.attributes?.kind)) - kinds.indexOf(String(b.resource.attributes?.kind)));
 }
 
 /** What a relation between two elements says about itself, such as a mission's caveat on a shared pattern. */

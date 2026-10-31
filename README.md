@@ -43,8 +43,9 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
   `dependencies`. 0.3.0 checks the attributes of patterns and solutions and adds `coverage` to candidate
   patterns. 0.4.0 gives every pattern its `ways` to source it, every outcome its `measures`, and every mission
   its `principles`, and leaves solutions to the tools that use the library. 0.5.0 lets outcomes, capabilities,
-  and requirements name a group that holds across missions. Every version stays, and Solution Studio keeps
-  identical copies.
+  and requirements name a group that holds across missions. 0.6.0 adds resources and what they help with, and
+  gives every package an `idPrefix` for its element IDs, so other publishers' packages can build on the
+  library's. Every version stays, and Solution Studio keeps identical copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
 - `src/lib/compile.ts` builds a package from its source and decides its version; `scripts/content.ts` runs it.
@@ -79,13 +80,18 @@ its message names each problem and the file it's in. A new element type or predi
 
 | File | What it holds |
 | --- | --- |
-| `package.yaml` | The package's ID, title, description, and other details, and `dependencies`: the folder names of the packages it builds on. |
+| `package.yaml` | The package's ID, its `idPrefix` (`eb` for the library's own), title, description, and other details, and `dependencies`: the folder names of the packages it builds on. |
 | `sources.yaml` | The references it cites, each with an `id` that elements and links use. |
 | `missions.yaml`, `outcomes.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
-| `measures` on an outcome | The outcome's measures, each with an `id`, `title`, `description`, and optionally `sources`. They're published in the outcome's `attributes`; before schema 0.4.0, measures were elements of their own, linked by `measured_by`. A measure's `id` is unique in its package, and a discovery answer points at one as `measure:<id>`, published as `eb:measure:<id>`, the ID measures always had. |
+| `measures` on an outcome | The outcome's measures, each with an `id`, `title`, `description`, and optionally `sources`. They're published in the outcome's `attributes`; before schema 0.4.0, measures were elements of their own, linked by `measured_by`. A measure's `id` is unique in its package, and a discovery answer points at one as `measure:<id>`, published with its package's prefix, as in `eb:measure:<id>`, the ID measures always had. |
 | `theme`, `stage`, `kind` | The group an outcome, capability, or requirement belongs to, across missions, published in its `attributes` since schema 0.5.0. An outcome's `theme` is what the public gets from it, a capability's `stage` is the part of the work it belongs to, and a requirement's `kind` is the kind of obligation it is. The lists are in `src/lib/vocabulary.ts`, each group with a hint saying what belongs, and the index pages group by them. A new mission's items fit the groups there are; add a group only when none fits. |
+| `resources.yaml` | Resources, since schema 0.6.0: each with a `kind` (a video, course, guide, site, community, dataset, tool, template, demo, service, product, or case study), its `url`, `by` (who made it), `lastReviewedAt`, and `helps_with`, the missions, outcomes, capabilities, requirements, or patterns it helps with. A link to a pattern can name one of its ways, as `{ to: implementationPattern:<key>, way: <way> }`. The library links only to free resources from government, standards bodies, nonprofits, and universities, so it doesn't use the `service` or `product` kinds; those belong in their publishers' own packages. |
 | `links.yaml` | Links from the elements of packages this one builds on, such as a shared capability that satisfies one of its requirements. |
 | `discovery.yaml` | Discovery question sets. |
+
+A reference such as `capability:case-management` means the package's own element when it has one, and
+otherwise one from the packages it builds on. When those packages have different prefixes, the reference
+says which, as in `eb:capability:case-management`.
 
 A mission's `title` is its plain name, such as Federal Acquisition, the same as its package's short title, and
 `attributes.tagline` says what it is in a few words, such as "Acquiring goods and services for the government". Pages show

@@ -48,10 +48,25 @@ agency and what it chooses.
 - Outcomes, capabilities, and requirements each belong to a group that holds across missions: an outcome's
   **theme** (what the public gets), a capability's **stage** of the work, and a requirement's **kind** of
   obligation. A new mission fits the groups there are; a group is added only when nothing fits.
+- **Resources** help someone learn about an item or act on it: a video, a course, a guide, a dataset, and
+  so on. Each **helps with** missions, outcomes, capabilities, requirements, or patterns, or one way of
+  sourcing a pattern. A source backs up what an item says; a resource helps a reader go further. The
+  library links only to free resources from government, standards bodies, nonprofits, and universities.
 - **Discovery questions** ask about how an office works today, and each answer can point at what it suggests.
 
 Choosing one way for each pattern is an agency's decision, so it belongs in Studio's **scenarios**, not in
 the library.
+
+## Other publishers
+
+A firm can publish packages of its own that build on the library's, the way each mission builds on Common.
+Every element ID starts with its package's prefix, such as `eb` for the library's own, so a firm's IDs
+never collide with the library's. A firm's package can add resources, such as its services, products,
+demos, and case studies, linked to the library's items, and missions, outcomes, capabilities, and patterns
+of its own, all in the library's types. A product is a resource that helps with one of the library's
+ways, not a new way, so the library's patterns stay examples. Extra details, such as a service's contract
+vehicle, go in a resource's attributes; a detail many firms add becomes a field or a kind in a later
+schema.
 
 ## Words
 
@@ -79,10 +94,14 @@ the library.
 
 Built so far, each step pairing library content with the Studio feature that uses it: capture, starting from
 a blueprint, discovery, requirements and gaps, options, and deliverables, starting with an architecture
-summary made from a fixed revision of the model, grouped by the library's stages and kinds. Next:
+summary made from a fixed revision of the model, grouped by the library's stages and kinds. Then resources,
+and ID prefixes for other publishers. Next:
 
-1. **Assist.** AI suggestions from notes and findings, through the same review as discovery's.
-2. **Roadmaps.** Which parts of the architecture to build first, from wherever an agency starts.
-3. **More missions.** Mission names leave out "Federal" so state and local versions can reuse them.
-4. **Explainers.** Videos and articles that link to the library's items by ID, once both products have a
+1. **Publisher kit.** A small repo a firm copies to write, check, and publish its own packages on the
+   library's current release, with a slim site for them. Studio reads more than one catalog, or a folder,
+   so a firm's packages become blueprints next to the library's.
+2. **Assist.** AI suggestions from notes and findings, through the same review as discovery's.
+3. **Roadmaps.** Which parts of the architecture to build first, from wherever an agency starts.
+4. **More missions.** Mission names leave out "Federal" so state and local versions can reuse them.
+5. **Explainers.** Videos and articles that link to the library's items by ID, once both products have a
    solid foundation.

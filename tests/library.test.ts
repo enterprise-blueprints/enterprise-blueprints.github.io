@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byLayer, coversPartly, elements, elementsOfType, groupOf, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, tagline } from '../src/lib/library';
+import { byLayer, coversPartly, elements, elementsOfType, groupOf, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, resourceDetails, resourcesFor, tagline } from '../src/lib/library';
 import { groupings } from '../src/lib/vocabulary';
 
 describe('missionBlueprint', () => {
@@ -211,6 +211,20 @@ describe('the index pages', () => {
       const parents = indexParents(type)!;
       for (const e of elementsOfType(type)) expect(parents.get(e.id)?.package, e.id).toBe(e.package);
     }
+  });
+});
+
+describe('resources', () => {
+  const get = (id: string) => elements.find((e) => e.id === id)!;
+  it('list what helps with an item, kind by kind, and the way of a pattern each is about', () => {
+    const records = resourcesFor(get('eb:capability:records-management'));
+    expect(records.map((r) => [r.resource.slug, r.details.kind])).toEqual([['nara-records-management-training', 'Course'], ['universal-erm-requirements', 'Template']]);
+    expect(resourcesFor(get('eb:implementationPattern:records-in-business-systems'))[0].way).toEqual({ id: 'built-in', title: expect.any(String) });
+    expect(resourceDetails(get('eb:resource:what-is-login-gov'))).toEqual({ kind: 'Video', url: 'https://www.youtube.com/watch?v=ayDtFd5Ugyk', by: 'Login.gov, General Services Administration', lastReviewedAt: '2026-10-30' });
+  });
+
+  it('group the resources index by kind', () => {
+    expect(indexGroups('resource').map((g) => g.id)).toEqual(['video', 'course', 'guide', 'site', 'community', 'dataset', 'tool', 'template']);
   });
 });
 

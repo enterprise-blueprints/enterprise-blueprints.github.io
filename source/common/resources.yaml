@@ -1,0 +1,51 @@
+# Resources, in the order the pages show them, each with what it helps with.
+# The library links only to free resources from government, standards bodies,
+# nonprofits, and universities.
+
+- id: what-is-login-gov
+  title: What is Login.gov?
+  kind: video
+  by: Login.gov, General Services Administration
+  url: https://www.youtube.com/watch?v=ayDtFd5Ugyk
+  lastReviewedAt: 2026-10-30
+  description: A short introduction to Login.gov, the government’s shared sign-in and identity verification service for the public, and how people use one account across agencies. Login.gov suggests partner agencies use it in their own onboarding and outreach.
+  helps_with: [ capability:identity-access-management ]
+
+- id: login-gov-developer-docs
+  title: Login.gov developer documentation
+  kind: guide
+  by: Login.gov, General Services Administration
+  url: https://developers.login.gov/
+  lastReviewedAt: 2026-10-30
+  description: How to connect a system the public signs in to with Login.gov, over OpenID Connect or SAML, including identity verification, testing in the sandbox, and going live.
+  helps_with: [ capability:identity-access-management ]
+
+- id: nara-records-management-training
+  title: Records Management Training Program
+  kind: course
+  by: National Archives and Records Administration
+  url: https://www.archives.gov/records-mgmt/training
+  lastReviewedAt: 2026-10-30
+  description: Free, self-paced records management training for federal employees, with lessons, short videos, webinars for records managers, and job aids. Designated agency records officers earn their required credential here.
+  helps_with: [ capability:records-management ]
+
+- id: universal-erm-requirements
+  title: Universal Electronic Records Management Requirements
+  kind: template
+  by: National Archives and Records Administration
+  url: https://www.archives.gov/records-mgmt/policy/universalermrequirements
+  lastReviewedAt: 2026-10-30
+  description: A spreadsheet of baseline requirements for managing electronic records, from capture through disposal, transfer, metadata, and reporting, each marked must-have or should-have. Agencies tailor it into the records requirements for a system they build or buy.
+  helps_with:
+    - capability:records-management
+    - to: implementationPattern:records-in-business-systems
+      way: built-in
+
+- id: event-logging-best-practices
+  title: Best Practices for Event Logging and Threat Detection
+  kind: guide
+  by: Australian Signals Directorate and partners, including CISA, the FBI, and NSA
+  url: https://www.cisa.gov/resources-tools/resources/best-practices-event-logging-and-threat-detection
+  lastReviewedAt: 2026-10-30
+  description: International guidance on what to log, how to protect and keep logs, and how to use them to detect threats, as a baseline an organization can meet within its resources.
+  helps_with: [ capability:security-logging-monitoring, implementationPattern:agency-security-monitoring ]

@@ -14,7 +14,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
 import { compareVersions } from './format.ts';
-import { elementTypes, groupings, predicates } from './vocabulary.ts';
+import { elementTypes, groupings, libraryPrefix, predicates, resourceFields } from './vocabulary.ts';
 import type { Assessment, BlueprintPackage, Element, Question, Relation, Source } from './package.ts';
 
 type Raw = Record<string, unknown>;
@@ -34,8 +34,8 @@ export interface PackageSource {
 
 /** "capabilities" → "capability", for element files named after their type's section. */
 const typeOfSection = Object.fromEntries(Object.entries(elementTypes).map(([type, info]) => [info.section, type]));
-const PACKAGE_KEYS = ['schemaVersion', 'packageId', 'title', 'description', 'publisher', 'license', 'domain', 'jurisdictions', 'tags', 'dependencies'];
-const ELEMENT_KEYS = ['id', 'title', 'description', 'status', 'replacedBy', 'sources', 'tags', 'jurisdictions', 'applicabilityNotes', 'attributes', 'measures', ...Object.values(groupings).map((g) => g.field)];
+const PACKAGE_KEYS = ['schemaVersion', 'packageId', 'idPrefix', 'title', 'description', 'publisher', 'license', 'domain', 'jurisdictions', 'tags', 'dependencies'];
+const ELEMENT_KEYS = ['id', 'title', 'description', 'status', 'replacedBy', 'sources', 'tags', 'jurisdictions', 'applicabilityNotes', 'attributes', 'measures', ...resourceFields, ...new Set(Object.values(groupings).map((g) => g.field))];
 const MEASURE_KEYS = ['id', 'title', 'description', 'sources'];
 const LINK_KEYS = ['to', 'note', 'sources', 'id', 'coverage', 'way'];
 
@@ -114,6 +114,8 @@ export function parseSource(name: string, files: Record<string, string>): Packag
 export interface Resolved {
   packageId: string;
   version: string;
+  /** The prefix of its element IDs, when it isn't the library's own. */
+  idPrefix?: string;
 }
 
 const strings = (value: unknown): string[] => (value == null ? [] : Array.isArray(value) ? value.map(String) : [String(value)]);
@@ -128,15 +130,28 @@ export function compilePackage(src: PackageSource, deps: Record<string, Resolved
   const m = src.meta;
   const at = (file: string, what?: string) => `source/${src.name}/${file}${what ? ` (${what})` : ''}`;
 
-  /** "capability:case-management" → "eb:capability:case-management". */
+  // Every element ID starts with the package's prefix, such as eb:capability:case-management.
+  const prefix = (m.idPrefix as string | undefined) ?? libraryPrefix;
+  const own = new Set(src.elements.flatMap(({ type, raw }) => [`${type}:${raw.id}`, ...(Array.isArray(raw.measures) ? (raw.measures as Raw[]).map((x) => `measure:${x.id}`) : [])]));
+  const dependencyPrefixes = [...new Set(src.dependencies.map((name) => deps[name]?.idPrefix ?? libraryPrefix))];
+
+  /**
+   * "capability:case-management" → "eb:capability:case-management": the
+   * package's own element, or else one from the packages it builds on, when
+   * they share a prefix. Otherwise the reference says its prefix.
+   */
   const ref = (text: string, where: string): string => {
-    if (text.startsWith('eb:')) return text;
-    const [type, key, extra] = text.split(':');
-    if (!key || extra !== undefined || !elementTypes[type]) {
+    const parts = text.split(':');
+    const [type, key] = parts.length === 3 ? parts.slice(1) : parts;
+    if (!key || parts.length > 3 || !elementTypes[type]) {
       problems.push(`${where}: "${text}" should name a type and a key, such as capability:case-management`);
       return text;
     }
-    return `eb:${type}:${key}`;
+    if (parts.length === 3) return text;
+    if (own.has(text) || !dependencyPrefixes.length) return `${prefix}:${text}`;
+    if (dependencyPrefixes.length === 1) return `${dependencyPrefixes[0]}:${text}`;
+    problems.push(`${where}: "${text}" could be in more than one of the packages this one builds on, so it needs a prefix, such as ${dependencyPrefixes[0]}:${text}`);
+    return text;
   };
 
   const sources: Source[] = src.sources.map((s) => ({ ...s, id: `src:${s.id}` }) as Source);
@@ -148,13 +163,13 @@ export function compilePackage(src: PackageSource, deps: Record<string, Resolved
     }
     if (!raw.id) problems.push(`${where}: needs an id`);
     const e: Element = {
-      id: `eb:${type}:${raw.id}`,
+      id: `${prefix}:${type}:${raw.id}`,
       type,
       title: raw.title as string,
       description: raw.description as string,
       status: (raw.status as Element['status']) ?? 'reference',
     };
-    if (raw.replacedBy) e.replacedBy = `eb:${type}:${raw.replacedBy}`;
+    if (raw.replacedBy) e.replacedBy = `${prefix}:${type}:${raw.replacedBy}`;
     if (raw.sources) e.sourceIds = strings(raw.sources).map((s) => `src:${s}`);
     if (raw.tags) e.tags = raw.tags as string[];
     if (raw.jurisdictions) e.jurisdictions = raw.jurisdictions as string[];
@@ -175,12 +190,21 @@ export function compilePackage(src: PackageSource, deps: Record<string, Resolved
         })),
       };
     }
-    // An outcome's theme, a capability's stage, or a requirement's kind is written on it and published in its attributes.
-    for (const [groupType, g] of Object.entries(groupings)) {
-      if (raw[g.field] === undefined) continue;
-      if (type !== groupType) problems.push(`${where}: only a ${groupType} has a ${g.field}`);
-      else if (!g.groups[raw[g.field] as string]) problems.push(`${where}: unknown ${g.field} "${raw[g.field]}", which should be one of ${Object.keys(g.groups).join(', ')}`);
-      e.attributes = { ...e.attributes, [g.field]: raw[g.field] };
+    // An outcome's theme, a capability's stage, or a requirement's or resource's kind is written on it and published in its attributes.
+    for (const field of new Set(Object.values(groupings).map((g) => g.field))) {
+      if (raw[field] === undefined) continue;
+      const g = groupings[type];
+      if (g?.field !== field) {
+        const types = Object.entries(groupings).filter(([, x]) => x.field === field).map(([t]) => `a ${t}`);
+        problems.push(`${where}: only ${new Intl.ListFormat('en', { type: 'disjunction' }).format(types)} has a ${field}`);
+      } else if (!g.groups[raw[field] as string]) problems.push(`${where}: unknown ${field} "${raw[field]}", which should be one of ${Object.keys(g.groups).join(', ')}`);
+      e.attributes = { ...e.attributes, [field]: raw[field] };
+    }
+    // A resource's link, who made it, and when it was checked, likewise.
+    for (const field of resourceFields) {
+      if (raw[field] === undefined) continue;
+      if (type !== 'resource') problems.push(`${where}: only a resource has a ${field}`);
+      e.attributes = { ...e.attributes, [field]: String(raw[field]) };
     }
     return e;
   });
@@ -199,7 +223,7 @@ export function compilePackage(src: PackageSource, deps: Record<string, Resolved
         const to = target.includes(':')
           ? ref(target, where)
           : info.to.length === 1
-            ? `eb:${info.to[0]}:${target}`
+            ? ref(`${info.to[0]}:${target}`, where)
             : (problems.push(`${where}: "${predicate}" can reach more than one type, so "${target}" needs its type`), target);
         const r: Relation = {
           id: link.id ? `rel:${link.id}` : `rel:${slugOf(from)}-${predicate.replace(/_/g, '-')}-${slugOf(to)}`,
@@ -258,6 +282,7 @@ export function compilePackage(src: PackageSource, deps: Record<string, Resolved
   return {
     schemaVersion: m.schemaVersion as BlueprintPackage['schemaVersion'],
     packageId: m.packageId as string,
+    ...(m.idPrefix ? { idPrefix: prefix } : {}),
     version,
     title: m.title as string,
     description: m.description as string,
@@ -372,7 +397,8 @@ export function plan(
   const all = Object.keys(content).flatMap((name) => Object.keys(have(name)).map((version) => ({ name, version })));
   const release = newest(all.filter((v) => isPublished(v.name, v.version)).map((v) => v.version));
   const drafts = (name: string) => Object.keys(have(name)).filter((v) => !isPublished(name, v));
-  const pins = (version: string) => Object.fromEntries(sources.map((s) => [s.name, { packageId: s.meta.packageId as string, version }]));
+  const pins = (version: string) =>
+    Object.fromEntries(sources.map((s) => [s.name, { packageId: s.meta.packageId as string, version, ...(s.meta.idPrefix ? { idPrefix: s.meta.idPrefix as string } : {}) }]));
   const build = (src: PackageSource, version: string, date: string) => compilePackage(src, pins(version), version, date);
   const retired = Object.keys(content)
     .filter((name) => !names.includes(name))

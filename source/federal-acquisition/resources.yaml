@@ -1,0 +1,39 @@
+# Resources, in the order the pages show them, each with what it helps with.
+# The library links only to free resources from government, standards bodies,
+# nonprofits, and universities.
+
+- id: federal-acquisition-institute
+  title: Federal Acquisition Institute
+  kind: course
+  by: Federal Acquisition Institute, General Services Administration
+  url: https://www.fai.gov/
+  lastReviewedAt: 2026-10-30
+  description: Training, certification, and career development for the civilian acquisition workforce, with courses, videos, and podcasts on the work from planning through closeout.
+  helps_with: [ mission:acquiring-goods-and-services ]
+
+- id: market-research-techniques
+  title: Market research techniques
+  kind: guide
+  by: Federal Acquisition Institute, General Services Administration
+  url: https://www.fai.gov/periodic-table-categories/market-research
+  lastReviewedAt: 2026-10-30
+  description: Ways to do market research beyond the basics, such as facilitated requirements workshops, reverse industry days, and one-on-ones with vendors, each with when to use it, from the Periodic Table of Acquisition Innovations.
+  helps_with: [ capability:acquisition-planning-market-research ]
+
+- id: acquisition-gateway
+  title: Acquisition Gateway
+  kind: site
+  by: General Services Administration
+  url: https://acquisitiongateway.gov/
+  lastReviewedAt: 2026-10-30
+  description: The government-wide site for acquisition professionals, with sample and template documents from every stage of an acquisition, prices other agencies paid, solutions to compare, and experts to contact.
+  helps_with: [ capability:acquisition-planning-market-research, capability:solicitation-publicizing ]
+
+- id: techfar-hub
+  title: TechFAR Hub
+  kind: guide
+  by: U.S. Digital Service
+  url: https://techfarhub.usds.gov/
+  lastReviewedAt: 2026-10-30
+  description: How to buy digital services and agile software development under the FAR, stage by stage from before the solicitation through evaluation and administration, with case studies, templates, and the Digital IT Acquisition Professional training.
+  helps_with: [ capability:acquisition-planning-market-research, capability:evaluation-source-selection, capability:contract-administration ]

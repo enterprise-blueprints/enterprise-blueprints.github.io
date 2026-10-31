@@ -26,6 +26,7 @@
   --t-pattern:     #3d4f6b;  --t-pattern-bg:     #e9edf3;
   --t-requirement: #6b3fb5;  --t-requirement-bg: #f1ebfb;
   --t-solution:    #a1306b;  --t-solution-bg:    #fbe9f2;
+  --t-resource:    #a3402a;  --t-resource-bg:    #fbebe6;
 
   --radius: 10px;
   --radius-sm: 6px;
@@ -57,6 +58,7 @@
     --t-pattern:     #b4c2d8;  --t-pattern-bg:     #222b38;
     --t-requirement: #c6a8f5;  --t-requirement-bg: #2a2140;
     --t-solution:    #f29cc8;  --t-solution-bg:    #3a1a2b;
+    --t-resource:    #f2a28f;  --t-resource-bg:    #3a1d16;
   }
 }
 
@@ -307,6 +309,7 @@ td.muted { color: var(--text-muted); }
 .type-implementationPattern { --tc: var(--t-pattern);    --tc-bg: var(--t-pattern-bg); }
 .type-solution              { --tc: var(--t-solution);   --tc-bg: var(--t-solution-bg); }
 .type-requirement           { --tc: var(--t-requirement); --tc-bg: var(--t-requirement-bg); }
+.type-resource              { --tc: var(--t-resource);   --tc-bg: var(--t-resource-bg); }
 
 /* A link to an element's page, as a button tinted with its type color. A long
    name wraps inside the button. */

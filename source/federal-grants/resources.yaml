@@ -1,0 +1,48 @@
+# Resources, in the order the pages show them, each with what it helps with.
+# The library links only to free resources from government, standards bodies,
+# nonprofits, and universities.
+
+- id: applying-on-grants-gov
+  title: Intro to Grants.gov — Applying for a Federal Grant
+  kind: video
+  by: Grants.gov
+  url: https://www.youtube.com/watch?v=fIZZH74021I
+  lastReviewedAt: 2026-10-30
+  description: A few minutes on how an organization applies for a federal grant through a Grants.gov workspace, from finding the opportunity to submitting. Some screens have changed since it was recorded in 2018.
+  helps_with: [ capability:funding-opportunities-applications, outcome:applying-is-straightforward ]
+
+- id: grants-gov-applicant-training
+  title: Grants.gov applicant training
+  kind: course
+  by: Grants.gov
+  url: https://grants.gov/applicants/applicant-training
+  lastReviewedAt: 2026-10-30
+  description: Grants.gov’s videos and guides for applicants, step by step through registering, creating a workspace, adding participants, and completing forms. Useful to point applicants to, and to see what they go through.
+  helps_with: [ capability:funding-opportunities-applications ]
+
+- id: simpler-grants-gov
+  title: Simpler.Grants.gov
+  kind: tool
+  by: U.S. Department of Health and Human Services
+  url: https://simpler.grants.gov/
+  lastReviewedAt: 2026-10-30
+  description: Where the next generation of Grants.gov is being built in the open, with open-source code, a simpler search of opportunities, and ways for applicants and agencies to give feedback and vote on features.
+  helps_with: [ capability:funding-opportunities-applications, outcome:applying-is-straightforward ]
+
+- id: fac-audit-search
+  title: Federal Audit Clearinghouse search
+  kind: dataset
+  by: General Services Administration
+  url: https://app.fac.gov/dissemination/search/
+  lastReviewedAt: 2026-10-30
+  description: Single audits of grant recipients, searchable by recipient, year, state, program, and findings. Reviewers check an applicant’s audit history here before an award, and follow findings after one.
+  helps_with: [ capability:risk-review-award, capability:audit-resolution-remedies ]
+
+- id: usaspending-api
+  title: USAspending API
+  kind: tool
+  by: Bureau of the Fiscal Service, U.S. Department of the Treasury
+  url: https://api.usaspending.gov/
+  lastReviewedAt: 2026-10-30
+  description: The free, documented API behind USAspending.gov, to check what the public sees about an office’s awards against its own records, or to build reports from award data.
+  helps_with: [ capability:award-transparency-reporting, implementationPattern:award-data-to-usaspending ]

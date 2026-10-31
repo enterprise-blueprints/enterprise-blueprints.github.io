@@ -1,0 +1,30 @@
+# Resources, in the order the pages show them, each with what it helps with.
+# The library links only to free resources from government, standards bodies,
+# nonprofits, and universities.
+
+- id: cigie-training-institute
+  title: CIGIE Training Institute
+  kind: course
+  by: Council of the Inspectors General on Integrity and Efficiency
+  url: https://www.ignet.gov/content/cigie-training-institute
+  lastReviewedAt: 2026-10-30
+  description: Training for Inspector General staff from three academies, for audit, inspection, and evaluation, for criminal investigation, including hotline operators, and for leadership and mission support. Agencies outside CIGIE can register as space allows.
+  helps_with: [ mission:independent-government-oversight, capability:audit-inspection-evaluation, capability:investigation-management ]
+
+- id: open-ig-recommendations
+  title: Inspector General open recommendations
+  kind: dataset
+  by: Council of the Inspectors General on Integrity and Efficiency
+  url: https://www.oversight.gov/reports/recommendations
+  lastReviewedAt: 2026-10-30
+  description: Open recommendations from Inspectors General across government, searchable by agency and report, with how long each has been open. A view of how one office’s follow-up compares with others’.
+  helps_with: [ capability:recommendations-corrective-action-monitoring, outcome:problems-corrected ]
+
+- id: osc-2302c-certification
+  title: 2302(c) Certification Program
+  kind: guide
+  by: U.S. Office of Special Counsel
+  url: https://osc.gov/services/outreach/2302cert-process/
+  lastReviewedAt: 2026-10-30
+  description: How an agency meets its duty to tell employees about whistleblower protections and to train supervisors on them, through the Office of Special Counsel’s certification steps, renewed every three years.
+  helps_with: [ capability:whistleblower-protection, requirement:educate-about-retaliation-protections ]

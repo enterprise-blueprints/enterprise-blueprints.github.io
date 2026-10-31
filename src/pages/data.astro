@@ -106,6 +106,14 @@ import { href } from '../lib/paths';
         is what the public gets from it, a capability's stage is the part of the work it belongs to, and a
         requirement's kind is the kind of obligation it is.
       </p>
+      <p>
+        Schema 0.6.0 adds <code>resource</code> elements, each with its <code>kind</code>, <code>url</code>, who
+        made it, and when it was last checked, linked by <code>helps_with</code> to what it helps with, or to one
+        way of sourcing a pattern. Every package names its <code>idPrefix</code>, the first part of its element
+        IDs, which is <code>eb</code> for the library's own. Another publisher's package can build on the
+        library's with a prefix of its own, adding resources such as its services, products, and demos, or
+        missions and capabilities of its own, without changing the library.
+      </p>
     </div>
   </div>
 </Base>

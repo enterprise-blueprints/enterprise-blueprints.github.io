@@ -99,10 +99,40 @@ describe('compilePackage', () => {
     ],
     ['a package it builds on that has no source', () => compilePackage(mission(), {}, '0.1.0', 'd'), 'builds on "shared", which isn\'t a package'],
     ['a stage that isn’t in the vocabulary', () => compilePackage(mission('- id: c\n  title: C\n  description: D.\n  stage: someday\n'), pins, '0.1.0', 'd'), 'unknown stage "someday", which should be one of plan-prepare'],
-    ['a group on the wrong type', () => compilePackage(mission('- id: c\n  title: C\n  description: D.\n  kind: timeliness\n'), pins, '0.1.0', 'd'), 'only a requirement has a kind'],
+    ['a group on the wrong type', () => compilePackage(mission('- id: c\n  title: C\n  description: D.\n  kind: timeliness\n'), pins, '0.1.0', 'd'), 'only a requirement or a resource has a kind'],
   ])('reports %s', (_, run, message) => {
     expect(run).toThrow(SourceError);
     expect(run).toThrow(message);
+  });
+});
+
+describe('another publisher’s package (schema 0.6.0)', () => {
+  // Builds on the library's shared package, with its own prefix, its own capability, and a resource.
+  const vendor = (resources: string, dependencies = '[shared]') =>
+    parseSource('vendor', {
+      'package.yaml': `schemaVersion: 0.6.0\npackageId: com.example.offerings\nidPrefix: contoso\ntitle: Offerings\ndescription: What we offer.\npublisher: { name: Contoso }\nlicense: MIT\ndomain: public-sector\ndependencies: ${dependencies}\n`,
+      'capabilities.yaml': '- id: intake\n  title: Intake\n  description: Take things in.\n',
+      'resources.yaml': resources,
+    });
+  const demo = (helps: string) => `- id: demo\n  title: Demo\n  description: See it work.\n  kind: demo\n  url: https://example.com/demo\n  by: Contoso\n  lastReviewedAt: 2026-10-30\n  helps_with: ${helps}\n`;
+
+  it('names its own elements with its prefix, and the library’s with theirs', () => {
+    const pkg = compilePackage(vendor(demo('[capability:intake, capability:tracking, eb:capability:tracking]')), pins, '1.0.0', 'd');
+    expect(pkg.idPrefix).toBe('contoso');
+    expect(pkg.elements.map((e) => e.id)).toEqual(['contoso:capability:intake', 'contoso:resource:demo']);
+    expect(pkg.relations.map((r) => r.to)).toEqual(['contoso:capability:intake', 'eb:capability:tracking', 'eb:capability:tracking']);
+    expect(pkg.elements[1].attributes).toEqual({ kind: 'demo', url: 'https://example.com/demo', by: 'Contoso', lastReviewedAt: '2026-10-30' });
+  });
+
+  it('asks for the prefix when the packages it builds on have different ones', () => {
+    const two = { ...pins, other: { packageId: 'org.other', version: '1.0.0', idPrefix: 'other' } };
+    const run = () => compilePackage(vendor(demo('[capability:tracking]'), '[shared, other]'), two, '1.0.0', 'd');
+    expect(run).toThrow('could be in more than one of the packages this one builds on, so it needs a prefix, such as eb:capability:tracking');
+  });
+
+  it('keeps resource fields to resources', () => {
+    const run = () => compilePackage(parseSource('m', { 'package.yaml': 'packageId: m\n', 'capabilities.yaml': '- id: x\n  title: X\n  description: X.\n  kind: video\n  url: https://example.com\n' }), {}, '0.1.0', 'd');
+    expect(run).toThrow(/only a requirement or a resource has a kind[\s\S]*only a resource has a url/);
   });
 });
 

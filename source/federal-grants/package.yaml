@@ -1,7 +1,8 @@
 # The package itself. Its version and date are set when it is built (pnpm content:build).
 
-schemaVersion: 0.5.0
+schemaVersion: 0.6.0
 packageId: org.enterprise-blueprints.federal-grants
+idPrefix: eb
 title: Grants Management — Awarding and Overseeing Financial Assistance
 description: "U.S. federal grants management blueprint: one mission with the outcomes it seeks and ways to measure them, nine capabilities from program planning through closeout with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for grants results and for grants operations. It follows the Uniform Guidance in 2 CFR 200, and builds on Common Capabilities for case management, records, identity and access, data protection, and security logging."
 publisher:

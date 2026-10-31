@@ -1,6 +1,8 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { validatePackage, type BlueprintPackage, type Resolve } from '../src/lib/package';
+import schema060 from '../schemas/blueprint-package-0.6.0.schema.json';
+import { resourceKinds, soldKinds } from '../src/lib/vocabulary';
 
 const read = (path: string): BlueprintPackage => JSON.parse(readFileSync(path, 'utf8'));
 const byVersion = (a: string, b: string) => {
@@ -423,7 +425,7 @@ describe('missions, measures, and ways to source a pattern (schema 0.4.0)', () =
       `${hotline} needs eb:implementationPattern:audit-workpapers-collaboration, but none of the mission's capabilities points to it`,
     ],
     ['a need of a way the pattern doesn’t have', (p) => (p.relations.find((r) => r.from === caseSystem && r.predicate === 'depends_on')!.way = 'spreadsheets'), `${caseSystem} has no way "spreadsheets"`],
-    ['a way on something else', (p) => (p.relations.find((r) => r.predicate === 'satisfies')!.way = 'product'), 'only depends_on names a way'],
+    ['a way on something else', (p) => (p.relations.find((r) => r.predicate === 'satisfies')!.way = 'product'), 'only depends_on and helps_with name a way'],
     ['principles that aren’t statements', (p) => (p.elements.find((e) => e.type === 'mission')!.attributes!.principles = 'Be independent'), '/attributes/principles must be array'],
     ['a measure as an element of its own', (p) => p.elements.push({ id: 'eb:measure:x', type: 'measure', title: 'X', description: 'X.' }), 'a measure is part of its outcome'],
     ['a measure that cites an unknown source', (p) => ((p.elements.find((e) => e.type === 'outcome')!.attributes!.measures as { sourceIds: string[] }[])[0].sourceIds = ['src:missing']), 'cites unknown source src:missing'],
@@ -450,7 +452,7 @@ describe('groups across missions (schema 0.5.0)', () => {
 
   it('accept every package, with each outcome, capability, and requirement in a group', () => {
     for (const pkg of [original, common, foia, grants, acquisition]) {
-      expect(pkg.schemaVersion).toBe('0.5.0');
+      expect(pkg.schemaVersion).toBe('0.6.0');
       expect(validatePackage(pkg, resolve), pkg.packageId).toEqual([]);
       for (const e of pkg.elements) {
         const field = { outcome: 'theme', capability: 'stage', requirement: 'kind' }[e.type];
@@ -469,5 +471,74 @@ describe('groups across missions (schema 0.5.0)', () => {
 
   it('keep a capability’s other attributes, such as its scope', () => {
     expect(original.elements.find((e) => e.id === 'eb:capability:complaint-allegation-disclosure-intake')!.attributes).toEqual({ scope: 'US-federal-OIG', stage: 'reach-take-in' });
+  });
+});
+
+describe('resources and ID prefixes (schema 0.6.0)', () => {
+  const check = (change: (pkg: BlueprintPackage) => void, from = common) => {
+    const pkg = structuredClone(from);
+    change(pkg);
+    return validatePackage(pkg, resolve).join('\n');
+  };
+  const current = [original, common, foia, grants, acquisition];
+  const resources = current.flatMap((p) => p.elements.filter((e) => e.type === 'resource'));
+  const erm = 'eb:resource:universal-erm-requirements';
+  const helps = (p: BlueprintPackage) => p.relations.find((r) => r.predicate === 'helps_with' && r.way)!;
+
+  it('give every library resource a kind the library uses, a link, who made it, when it was checked, and something it helps with', () => {
+    expect(resources.length).toBeGreaterThan(15);
+    const kinds = Object.keys(resourceKinds.groups).filter((k) => !soldKinds.includes(k));
+    for (const r of resources) {
+      expect(kinds, r.id).toContain(r.attributes!.kind);
+      expect(r.attributes, r.id).toEqual(expect.objectContaining({ url: expect.stringMatching(/^https:\/\//), by: expect.any(String), lastReviewedAt: expect.any(String) }));
+      expect(current.some((p) => p.relations.some((l) => l.from === r.id && l.predicate === 'helps_with')), r.id).toBe(true);
+    }
+  });
+
+  it('list the same kinds in the schema as in the vocabulary', () => {
+    expect(schema060.$defs.resourceAttributes.properties.kind.enum).toEqual(Object.keys(resourceKinds.groups));
+  });
+
+  it('accept a resource that helps with one way of a pattern', () => {
+    expect(helps(common)).toEqual(expect.objectContaining({ from: erm, to: 'eb:implementationPattern:records-in-business-systems', way: 'built-in' }));
+  });
+
+  it('accept a package from another publisher that builds on the library’s, and keep it to its own prefix', () => {
+    const vendor: BlueprintPackage = {
+      schemaVersion: '0.6.0', packageId: 'com.example.offerings', idPrefix: 'contoso', version: '1.0.0', title: 'Offerings', description: 'What we offer.',
+      publisher: { name: 'Contoso' }, license: 'MIT', publishedAt: '2026-10-30', domain: 'public-sector',
+      dependencies: [{ packageId: common.packageId, version: common.version }],
+      elements: [
+        { id: 'contoso:capability:case-management', type: 'capability', title: 'Case management, our way', description: 'The same key as the library’s, under its own prefix.' },
+        { id: 'contoso:resource:sprint', type: 'resource', title: 'Sprint', description: 'Help getting started.', attributes: { kind: 'service', url: 'https://example.com', contractVehicle: 'GSA MAS' } },
+      ],
+      relations: [
+        { id: 'rel:a', from: 'contoso:resource:sprint', predicate: 'helps_with', to: 'eb:capability:case-management' },
+        { id: 'rel:b', from: 'contoso:resource:sprint', predicate: 'helps_with', to: 'eb:implementationPattern:records-in-business-systems', way: 'records-service' },
+        { id: 'rel:c', from: 'contoso:resource:sprint', predicate: 'helps_with', to: 'contoso:capability:case-management' },
+      ],
+    };
+    expect(validatePackage(vendor, resolve)).toEqual([]);
+    const borrowed = { ...vendor, elements: [...vendor.elements, { id: 'eb:capability:x', type: 'capability', title: 'X', description: 'X.' }] };
+    expect(validatePackage(borrowed, resolve)).toContain('element eb:capability:x doesn\'t start with the package\'s prefix "contoso"');
+  });
+
+  it.each<[string, (pkg: BlueprintPackage) => void, string]>([
+    ['a resource without a link', (p) => delete p.elements.find((e) => e.id === erm)!.attributes!.url, "must have required property 'url'"],
+    ['a resource of an unknown kind', (p) => (p.elements.find((e) => e.id === erm)!.attributes!.kind = 'podcast'), '/attributes/kind must be equal to one of the allowed values'],
+    ['a way the pattern doesn’t have', (p) => (helps(p).way = 'magic'), 'has no way "magic"'],
+    ['helps_with from something other than a resource', (p) => (helps(p).from = 'eb:capability:records-management'), '"helps_with" can\'t link capability'],
+    ['a package without its prefix', (p) => delete p.idPrefix, "must have required property 'idPrefix'"],
+  ])('reject %s', (_, change, message) => {
+    expect(check(change)).toContain(message);
+  });
+
+  it('keep resources and helps_with to schema 0.6.0 and later', () => {
+    const older = check((p) => {
+      p.schemaVersion = '0.5.0';
+      delete p.idPrefix;
+    });
+    expect(older).toContain('resources are new in schema 0.6.0');
+    expect(older).toContain('helps_with is new in schema 0.6.0');
   });
 });

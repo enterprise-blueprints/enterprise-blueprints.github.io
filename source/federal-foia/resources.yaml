@@ -1,0 +1,39 @@
+# Resources, in the order the pages show them, each with what it helps with.
+# The library links only to free resources from government, standards bodies,
+# nonprofits, and universities.
+
+- id: oip-foia-training
+  title: FOIA training from the Office of Information Policy
+  kind: course
+  by: Office of Information Policy, U.S. Department of Justice
+  url: https://www.justice.gov/oip/training
+  lastReviewedAt: 2026-10-30
+  description: Live virtual courses for agency FOIA staff and contractors, from an introduction to the FOIA through processing a request start to finish, privacy considerations, litigation, and annual report refreshers.
+  helps_with: [ mission:public-access-to-agency-records, capability:records-review-redaction, capability:foia-reporting ]
+
+- id: foia-executive-briefing
+  title: Executive Briefing on the Freedom of Information Act
+  kind: video
+  by: Office of Information Policy, U.S. Department of Justice
+  url: https://www.youtube.com/watch?v=lL2rsznuH_Y
+  lastReviewedAt: 2026-10-30
+  description: A short overview of the FOIA for an agency’s senior executives, from the Director of the Office of Information Policy, on why their support matters to the agency’s FOIA program. Recorded in 2015.
+  helps_with: [ capability:foia-program-leadership ]
+
+- id: chief-foia-officers-council
+  title: Chief FOIA Officers Council
+  kind: community
+  by: Office of Information Policy and Office of Government Information Services
+  url: https://www.foia.gov/chief-foia-officers-council.html
+  lastReviewedAt: 2026-10-30
+  description: The council of agencies’ Chief FOIA Officers, led by the Department of Justice and the National Archives, which shares practices for improving FOIA programs. Its meetings and committees, on technology and on working across agencies, are open to follow.
+  helps_with: [ capability:foia-program-leadership ]
+
+- id: foia-gov-data
+  title: FOIA data on FOIA.gov
+  kind: dataset
+  by: Office of Information Policy, U.S. Department of Justice
+  url: https://www.foia.gov/data.html
+  lastReviewedAt: 2026-10-30
+  description: Every agency’s annual and quarterly FOIA figures, such as requests received and processed, response times, and backlogs, to compare one program with others or follow it over time.
+  helps_with: [ capability:foia-reporting, outcome:foia-performance-public ]

@@ -56,6 +56,14 @@ export const elementTypes: Record<string, ElementTypeInfo> = {
     section: 'patterns',
     definition: 'An example approach that might realize a capability.',
   },
+  // Since schema 0.6.0.
+  resource: {
+    label: 'Resource',
+    plural: 'Resources',
+    navLabel: 'Resources',
+    section: 'resources',
+    definition: 'Something that helps you learn about an item or act on it, such as a video, a course, or a guide.',
+  },
   // Packages before schema 0.4.0 only. Since then, a mission's own patterns are its architecture.
   solution: {
     label: 'Solution',
@@ -139,6 +147,14 @@ export const predicates: Record<string, PredicateInfo> = {
     to: ['implementationPattern'],
     outgoing: 'Works well with',
     incoming: 'Works well with',
+  },
+  // Since schema 0.6.0: what a resource helps with. A link to a pattern can
+  // name one of its ways, for a resource about sourcing it that way.
+  helps_with: {
+    from: ['resource'],
+    to: ['mission', 'outcome', 'capability', 'requirement', 'implementationPattern'],
+    outgoing: 'Helps with',
+    incoming: 'Resources',
   },
 };
 
@@ -246,12 +262,44 @@ export const requirementKinds: Grouping = {
   },
 };
 
+// Since schema 0.6.0. The library's own resources are free, from government,
+// standards bodies, nonprofits, and universities, so it doesn't use the kinds
+// for what's sold: services and products belong in their publishers' packages.
+export const resourceKinds: Grouping = {
+  field: 'kind',
+  label: 'Kind of resource',
+  groups: {
+    video: { label: 'Video', hint: 'Recorded talks, walkthroughs, and explainers.' },
+    course: { label: 'Course', hint: 'Training, on demand or scheduled.' },
+    guide: { label: 'Guide', hint: 'Handbooks, playbooks, and how-tos.' },
+    site: { label: 'Site', hint: 'Program sites and portals to know.' },
+    community: { label: 'Community', hint: 'Councils, communities of practice, and forums.' },
+    dataset: { label: 'Dataset', hint: 'Data to explore, compare, or build on.' },
+    tool: { label: 'Tool', hint: 'Free tools, calculators, and open-source software.' },
+    template: { label: 'Template', hint: 'Templates, samples, and checklists to start from.' },
+    demo: { label: 'Demo', hint: 'A working example to see or try.' },
+    service: { label: 'Service', hint: 'Help a firm offers, such as an assessment or an implementation.' },
+    product: { label: 'Product', hint: 'A product, or a feature of one, that fits.' },
+    'case-study': { label: 'Case study', hint: 'How an agency did it, and what it learned.' },
+  },
+};
+
+/** Kinds the library's own resources don't use. */
+export const soldKinds = ['service', 'product'];
+
 /** The grouping each type uses, by element type. */
 export const groupings: Record<string, Grouping> = {
   outcome: outcomeThemes,
   capability: capabilityStages,
   requirement: requirementKinds,
+  resource: resourceKinds,
 };
+
+/** What a resource holds besides its kind, written on it and published in its attributes. */
+export const resourceFields = ['url', 'by', 'lastReviewedAt'];
+
+/** The ID prefix of packages that don't name one, before schema 0.6.0: the library's own. */
+export const libraryPrefix = 'eb';
 
 export const patternApproaches: Record<string, string> = {
   product: 'Configure a product',

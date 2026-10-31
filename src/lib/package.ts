@@ -6,7 +6,10 @@
 // pattern its ways to source it, and makes a mission's patterns its
 // architecture, with outcomes holding their measures. Schema 0.5.0 lets
 // outcomes, capabilities, and requirements name a group that holds across
-// missions. Packages stay valid under the schema they were published with.
+// missions. Schema 0.6.0 adds resources and what they help with, and gives
+// each package a prefix for its element IDs, so packages from other
+// publishers can build on the library's. Packages stay valid under the
+// schema they were published with.
 
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
@@ -15,7 +18,8 @@ import schema020 from '../../schemas/blueprint-package-0.2.0.schema.json';
 import schema030 from '../../schemas/blueprint-package-0.3.0.schema.json';
 import schema040 from '../../schemas/blueprint-package-0.4.0.schema.json';
 import schema050 from '../../schemas/blueprint-package-0.5.0.schema.json';
-import { earlierLayers, elementTypes, patternApproaches, patternFields, patternLayers, predicates } from './vocabulary';
+import schema060 from '../../schemas/blueprint-package-0.6.0.schema.json';
+import { earlierLayers, elementTypes, libraryPrefix, patternApproaches, patternFields, patternLayers, predicates } from './vocabulary';
 
 export interface Source {
   id: string;
@@ -48,7 +52,7 @@ export interface Relation {
   to: string;
   /** For candidate_pattern, since schema 0.3.0: "partial" when the pattern covers only part of the capability. */
   coverage?: 'full' | 'partial';
-  /** Since schema 0.4.0. For includes, the way of sourcing the pattern the solution chooses; for depends_on, the way that needs the other pattern. */
+  /** Since schema 0.4.0. For depends_on, the way that needs the other pattern; since schema 0.6.0, for helps_with, the way of the pattern the resource helps with. */
   way?: string;
   description?: string;
   sourceIds?: string[];
@@ -89,8 +93,10 @@ export interface Dependency {
 }
 
 export interface BlueprintPackage {
-  schemaVersion: '0.1.0' | '0.2.0' | '0.3.0' | '0.4.0' | '0.5.0';
+  schemaVersion: '0.1.0' | '0.2.0' | '0.3.0' | '0.4.0' | '0.5.0' | '0.6.0';
   packageId: string;
+  /** Since schema 0.6.0: the first part of its element IDs. Before then, always "eb". */
+  idPrefix?: string;
   version: string;
   title: string;
   description: string;
@@ -115,6 +121,7 @@ const schemas = {
   '0.3.0': ajv.compile<BlueprintPackage>(schema030),
   '0.4.0': ajv.compile<BlueprintPackage>(schema040),
   '0.5.0': ajv.compile<BlueprintPackage>(schema050),
+  '0.6.0': ajv.compile<BlueprintPackage>(schema060),
 };
 export const schemaVersions = Object.keys(schemas) as (keyof typeof schemas)[];
 
@@ -167,6 +174,7 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
   for (const id of duplicates(sources.map((s) => s.id))) errors.push(`duplicate source ID ${id}`);
 
   const elementsById = new Map(pkg.elements.map((e) => [e.id, e]));
+  const prefix = pkg.idPrefix ?? libraryPrefix;
   for (const e of pkg.elements) {
     if (reachable.has(e.id)) errors.push(`element ${e.id} is already defined in a package this one depends on`);
     reachable.set(e.id, e);
@@ -175,8 +183,10 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
 
   for (const e of pkg.elements) {
     if (!elementTypes[e.type]) errors.push(`element ${e.id} has unknown type "${e.type}"`);
-    // The ID names its type, which keeps IDs and page URLs unique per type.
-    if (!e.id.startsWith(`eb:${e.type}:`)) errors.push(`element ${e.id} doesn't match its type "${e.type}"`);
+    // The ID names its package's prefix and its type, which keeps IDs and page URLs unique per type.
+    if (!e.id.startsWith(`${prefix}:`)) errors.push(`element ${e.id} doesn't start with the package's prefix "${prefix}"`);
+    else if (!e.id.startsWith(`${prefix}:${e.type}:`)) errors.push(`element ${e.id} doesn't match its type "${e.type}"`);
+    if (e.type === 'resource' && BEFORE_060.has(pkg.schemaVersion)) errors.push(`element ${e.id}: resources are new in schema 0.6.0`);
     for (const s of e.sourceIds ?? []) {
       if (!sourceIds.has(s)) errors.push(`element ${e.id} cites unknown source ${s}`);
     }
@@ -189,7 +199,7 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
       for (const s of measuresIn(e).flatMap((m) => m.sourceIds ?? [])) if (!sourceIds.has(s)) errors.push(`a measure of ${e.id} cites unknown source ${s}`);
     }
   }
-  // A measure's ID is unique in its package, since discovery answers and tools name it as eb:measure:<id>.
+  // A measure's ID is unique in its package, since discovery answers and tools name it as <prefix>:measure:<id>.
   for (const id of duplicates(pkg.elements.flatMap((e) => measuresIn(e).map((m) => m.id)))) errors.push(`two measures have the ID ${id}`);
 
   const edges = new Set<string>();
@@ -214,10 +224,12 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
     if (r.coverage && r.predicate !== 'candidate_pattern') errors.push(`relation ${r.id}: only a candidate pattern has coverage`);
     if (r.predicate === 'measured_by' && !BEFORE_040.has(pkg.schemaVersion)) errors.push(`relation ${r.id}: since schema 0.4.0, an outcome lists its measures instead`);
     if (r.from === r.to) errors.push(`relation ${r.id} links ${r.from} to itself`);
+    if (r.predicate === 'helps_with' && BEFORE_060.has(pkg.schemaVersion)) errors.push(`relation ${r.id}: helps_with is new in schema 0.6.0`);
     if (r.way !== undefined) {
-      // The way names the one of the pattern's ways that has the need.
-      if (r.predicate !== 'depends_on') errors.push(`relation ${r.id}: only depends_on names a way`);
-      else if (from && !waysOf(from).includes(r.way)) errors.push(`relation ${r.id}: ${from.id} has no way "${r.way}"`);
+      // The way names one of a pattern's ways: the one that has the need, or the one the resource helps with.
+      const pattern = r.predicate === 'depends_on' ? from : r.predicate === 'helps_with' ? to : undefined;
+      if (r.predicate !== 'depends_on' && r.predicate !== 'helps_with') errors.push(`relation ${r.id}: only depends_on and helps_with name a way`);
+      else if (pattern && !waysOf(pattern).includes(r.way)) errors.push(`relation ${r.id}: ${pattern.id} has no way "${r.way}"`);
     }
     const edge = `${r.from} ${r.predicate} ${r.to}`;
     if (edges.has(edge)) errors.push(`relation ${r.id} repeats ${edge}`);
@@ -225,9 +237,9 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
   }
 
   errors.push(...missionProblems(pkg, [...dependencyRelations, ...pkg.relations]));
-  // Discovery answers can point at an outcome's measure, by its ID: eb:measure:<id>.
+  // Discovery answers can point at an outcome's measure, by its ID: <prefix>:measure:<id>, with its outcome's prefix.
   const targets = new Map(reachable);
-  for (const e of reachable.values()) for (const m of measuresIn(e)) targets.set(`eb:measure:${m.id}`, e);
+  for (const e of reachable.values()) for (const m of measuresIn(e)) targets.set(measureId(e, m.id), e);
   errors.push(...assessmentProblems(pkg.assessments ?? [], targets));
   return errors;
 }
@@ -235,6 +247,10 @@ export function validatePackage(data: unknown, resolve: Resolve = () => undefine
 /** An outcome's measures, since schema 0.4.0. */
 const measuresIn = (e: Element) => (e.type === 'outcome' && Array.isArray(e.attributes?.measures) ? (e.attributes.measures as { id: string; sourceIds?: string[] }[]) : []);
 const waysOf = (e: Element) => (Array.isArray(e.attributes?.ways) ? (e.attributes.ways as { id: string }[]).map((w) => w.id) : []);
+/** A measure's ID, as discovery answers and tools name it: its outcome's prefix, then measure and its own ID. */
+export const measureId = (outcome: Pick<Element, 'id'>, id: string) => `${outcome.id.split(':')[0]}:measure:${id}`;
+/** Schema versions before 0.6.0, which have no resources or ID prefixes of their own. */
+const BEFORE_060 = new Set(['0.1.0', '0.2.0', '0.3.0', '0.4.0', '0.5.0']);
 /** Schema versions before 0.4.0, which have example solutions, and measures as elements of their own. */
 const BEFORE_040 = new Set(['0.1.0', '0.2.0', '0.3.0']);
 /**

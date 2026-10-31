@@ -8,6 +8,7 @@ import SourceList from '../../components/SourceList.astro';
 import MissionExplorer from '../../components/MissionExplorer.astro';
 import OutcomeMatrix from '../../components/OutcomeMatrix.astro';
 import PatternCompare from '../../components/PatternCompare.astro';
+import ResourceList from '../../components/ResourceList.astro';
 import {
   elements,
   groupOf,
@@ -18,12 +19,14 @@ import {
   patternDetails,
   questionsAbout,
   relationGroups,
+  resourceDetails,
+  resourcesFor,
   scopeLabel,
   sourcesOf,
   tagline,
   usedBy,
 } from '../../lib/library';
-import { groupings, patternFields, patternLayers, predicates, statuses } from '../../lib/vocabulary';
+import { groupings, patternFields, patternLayers, predicates, resourceFields, statuses } from '../../lib/vocabulary';
 import { attributeLabel, attributeValue, formatDate } from '../../lib/format';
 import { href } from '../../lib/paths';
 import { downloadUrl } from '../../lib/publish';
@@ -45,7 +48,7 @@ const isPattern = element.type === 'implementationPattern';
 const pattern = isPattern ? patternDetails(element) : null;
 const ownFields = ['approach', 'layer', 'role', 'ways', ...Object.keys(patternFields)];
 // A mission's tagline and principles, an outcome's measures, and the group an item names have places of their own.
-const placed = ['tagline', 'principles', 'measures', ...Object.values(groupings).map((g) => g.field)];
+const placed = ['tagline', 'principles', 'measures', ...resourceFields, ...Object.values(groupings).map((g) => g.field)];
 const attributes = Object.entries(element.attributes ?? {}).filter(([key]) => (!pattern || !ownFields.includes(key)) && !placed.includes(key));
 // An outcome's theme, a capability's stage, or a requirement's kind, linking to its group on the index page.
 const group = groupOf(element);
@@ -57,9 +60,12 @@ const blueprint = element.type === 'mission' ? missionBlueprint(element) : null;
 const principles = element.type === 'mission' ? principlesOf(element) : [];
 const measures = element.type === 'outcome' ? measuresOf(element) : [];
 const stacked = Boolean(blueprint?.capabilities.length);
+// A resource links out; the resources that help with anything else are listed as cards.
+const resource = element.type === 'resource' ? resourceDetails(element) : null;
+const resources = resourcesFor(element);
 const replacement = element.replacedBy ? elements.find((e) => e.id === element.replacedBy) : undefined;
 // The stack already shows the mission's outcomes and capabilities, and a capability compares its patterns.
-const covered = stacked ? [predicates.seeks.outgoing, predicates.supports_mission.incoming] : [];
+const covered = [predicates.helps_with.incoming, ...(stacked ? [predicates.seeks.outgoing, predicates.supports_mission.incoming] : [])];
 const patternGroup = groups.find((g) => g.heading === predicates.candidate_pattern.outgoing);
 const perLink = [predicates.candidate_pattern.incoming, predicates.depends_on.outgoing, predicates.depends_on.incoming, predicates.works_with.outgoing];
 const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes(g.heading));
@@ -86,6 +92,12 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
       <h1>{element.title}</h1>
       {line && <p class="record-tagline">{line}</p>}
       <p class="lede">{element.description}</p>
+      {resource && (
+        <p class="record-resource">
+          <a class="button button--primary" href={resource.url}>Go to the {resource.kind.toLowerCase()}</a>
+          <span class="muted">By {resource.by ?? pkg.publisher.name}{resource.lastReviewedAt && <> · Checked {formatDate(resource.lastReviewedAt)}</>}</span>
+        </p>
+      )}
     </header>
 
     {stacked && <MissionExplorer blueprint={blueprint!} />}
@@ -196,6 +208,14 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
           </section>
         )}
 
+        {resources.length > 0 && (
+          <section class="section">
+            <h2>Resources</h2>
+            <p class="section-note">To learn more, or to get started.</p>
+            <ResourceList resources={resources} />
+          </section>
+        )}
+
         {questions.length > 0 && (
           <section class="section">
             <h2>Discovery questions</h2>
@@ -267,6 +287,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
   .pattern-field--parts, .pattern-field--watchFor { grid-column: 1 / -1; }
   .pattern-field h2 { margin: 0 0 .5rem; font-size: 1rem; }
   .pattern-field ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .35rem; }
+  .record-resource { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin: 0; }
   .measures { display: grid; gap: .9rem; margin: 0; max-width: 54rem; }
   .measures dt { font-weight: 650; }
   .measures dd { margin: .15rem 0 0; color: var(--text-muted); }
