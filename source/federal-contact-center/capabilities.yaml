@@ -1,0 +1,138 @@
+# Capabilities, in the order the pages show them, each with the links it holds.
+
+- id: service-planning-staffing
+  title: Service Planning & Staffing
+  stage: plan-prepare
+  description: Ability to set standards for how long people wait on each channel, forecast contacts by channel, topic, and hour, schedule and train enough agents to meet the standards, and plan for surges such as deadlines, outages, and emergencies.
+  sources: [ gsdi-5-usc-321-324, gsa-contact-center-playbook ]
+  applicabilityNotes: Many agencies contract for some or all of their agents, so the contract’s service levels become the standards the center is held to. Surges often follow the agency’s own deadlines and announcements, which program offices can warn the center about.
+  contributes_to: [ people-reach-help-quickly ]
+  satisfies: [ set-service-standards ]
+  candidate_pattern:
+    - to: cloud-contact-center
+      coverage: partial
+      note: Its workforce management tools forecast contacts and schedule agents. The standards and the staffing budget are the agency’s decisions.
+    - to: contact-center-reporting
+      coverage: partial
+      note: Shows volumes and waits by channel and hour, which forecasts start from.
+
+- id: knowledge-management
+  title: Knowledge Management
+  stage: plan-prepare
+  description: Ability to keep one approved set of answers that agents, the website, the phone menu, and virtual agents all use, written in plain language, each with an owner in the program office and a date for its next review.
+  sources: [ plain-writing-act, gsa-contact-center-playbook ]
+  applicabilityNotes: Program offices own what an answer says; the center owns how it’s written and found. Each language the agency chooses to serve needs its own approved answers, kept in step with the English ones.
+  contributes_to: [ questions-resolved-first-time, answers-found-without-calling ]
+  satisfies: [ answers-in-plain-language, review-answers-on-schedule ]
+  candidate_pattern:
+    - shared-knowledge-base
+
+- id: contact-intake-routing
+  title: Contact Intake & Routing
+  stage: reach-take-in
+  description: Ability to take contacts by phone, chat, email, web form, and relay service, and send each to self-service or to an agent with the right skills, by topic and urgency, offering a callback instead of a long hold.
+  sources: [ idea-act, gsa-contact-center-technologies ]
+  applicabilityNotes: Some agencies run one center for everything; others have a center for each program, behind one number or several. Inventorying every number and inbox the public uses is often the first step.
+  contributes_to: [ people-reach-help-quickly, everyone-can-get-help ]
+  satisfies: [ keep-a-non-digital-path ]
+  candidate_pattern:
+    - cloud-contact-center
+    - to: ai-assisted-intake-sorting
+      coverage: partial
+      note: Suggests the topic and urgency of emails and web forms for staff to confirm. Calls and chats are routed by the contact center system.
+
+- id: self-service-virtual-assistance
+  title: Self-Service & Virtual Assistants
+  stage: reach-take-in
+  description: Ability to let people find answers and do routine things on their own, such as checking a status or updating an address, on the website, in the phone menu, or with a virtual agent, and to reach a person whenever they need one.
+  sources: [ idea-act, omb-m-25-21 ]
+  applicabilityNotes: Which tasks suit self-service depends on the program and on what its systems can safely do without a person. An AI that only answers general questions is used differently from one that helps decide a person’s access to a benefit, which OMB presumes to be high-impact.
+  contributes_to: [ answers-found-without-calling, people-reach-help-quickly ]
+  satisfies: [ digital-channels-meet-idea, assess-ai-before-use ]
+  candidate_pattern:
+    - virtual-agent
+    - to: shared-knowledge-base
+      coverage: partial
+      note: Publishes the approved answers on the website. Tasks such as checking a status need connections to the program’s systems.
+
+- id: caller-verification
+  title: Caller Verification
+  stage: assess-decide
+  description: Ability to confirm who someone is before discussing or changing their records, with steps matched to what’s at stake, and to record how each person was verified.
+  sources: [ privacy-act ]
+  applicabilityNotes: General questions need no verification. How much proof is enough for a status check, a change of address, or a payment question is set in the agency’s Privacy Act rules and its own risk decisions.
+  contributes_to: [ information-shared-is-protected ]
+  satisfies: [ verify-before-disclosing ]
+  candidate_pattern:
+    - caller-verification-codes
+
+- id: accessible-service
+  title: Accessible Service
+  stage: deliver-operate
+  description: Ability to serve people with disabilities as effectively as anyone else, taking relay and TTY calls, making phone menus, chat, and web forms work with assistive technology, and providing other aids when they’re needed, and to serve people in the other languages the agency chooses to support.
+  sources: [ rehabilitation-act-504, doj-effective-communication-rule, section-508-standards, eo-14224 ]
+  applicabilityNotes: Each agency has its own Section 504 rule for the programs it conducts, like the Justice Department’s. Executive Order 14224 of March 2025 revoked Executive Order 13166 on limited English proficiency, so whether and in which languages the center serves people is now each agency’s decision, unless a program’s own law requires it.
+  contributes_to: [ everyone-can-get-help ]
+  satisfies: [ communicate-effectively, menus-usable-with-tty, accessible-digital-channels ]
+  candidate_pattern:
+    - to: cloud-contact-center
+      coverage: partial
+      note: Relay and TTY calls, and accessible chat, are features to require and test. Interpreters and other aids are arranged outside it.
+    - to: virtual-agent
+      coverage: partial
+      note: Has to work with screen readers and keyboards, and hand off to a person for anyone it can’t serve.
+
+- id: contact-resolution-handoff
+  title: Contact Resolution & Handoff
+  stage: deliver-operate
+  description: Ability to resolve each contact or, when a program office must act, hand it off as a case with everything already gathered, so the person doesn’t have to explain again, and to tell them what happens next and when.
+  sources: [ gsdi-5-usc-321-324, cx-feedback-handbook, grs-6-5 ]
+  applicabilityNotes: Agents can often resolve general questions, while anything about a person’s case is decided by the program office. Where the line falls, and what an agent may change, is set for each program.
+  contributes_to: [ questions-resolved-first-time, information-shared-is-protected ]
+  satisfies: [ record-each-contact, tell-people-why-information-is-collected, hand-off-with-context ]
+  candidate_pattern:
+    - contact-records-crm
+    - to: shared-case-platform
+      coverage: partial
+      note: Holds the program office’s cases that contacts are handed off to. Contacts themselves are recorded in the contact system.
+
+- id: quality-review-coaching
+  title: Quality Review & Coaching
+  stage: monitor-correct
+  description: Ability to review a sample of each agent’s calls, chats, and emails against a written standard, coach agents on what the reviews find, and fix wrong or unclear answers in the knowledge base.
+  sources: [ gsa-contact-center-playbook, grs-6-5 ]
+  applicabilityNotes: Where agents work for a contractor, the contractor usually runs the reviews and the agency checks a sample of its own. Reviewers from the program offices help on topics agents often get wrong.
+  contributes_to: [ questions-resolved-first-time, information-shared-is-protected ]
+  satisfies: [ review-contacts-for-quality ]
+  candidate_pattern:
+    - to: contact-ai-insights
+      coverage: partial
+      note: Finds contacts worth reviewing and summarizes them. Reviewers still score each one and coach agents.
+    - to: cloud-contact-center
+      coverage: partial
+      note: Records calls and chats, and holds the evaluation forms and scores.
+
+- id: customer-feedback
+  title: Customer Feedback
+  stage: monitor-correct
+  description: Ability to ask people about their experience right after a contact, using OMB’s Section 280 questions with the clearance the Paperwork Reduction Act requires, and send what they say to the teams that can fix the cause.
+  sources: [ a11-section-280, pra-44-usc-3502, cx-feedback-handbook ]
+  applicabilityNotes: High Impact Service Providers must survey their designated services this way. Other offices can use the same questions and their department’s umbrella clearance, which lets their results be compared.
+  contributes_to: [ feedback-improves-service, service-results-public ]
+  satisfies: [ survey-after-contacts, clear-surveys-under-pra ]
+  candidate_pattern:
+    - post-contact-survey
+
+- id: service-performance-reporting
+  title: Service Performance Reporting
+  stage: report-close
+  description: Ability to report the center’s waits, resolution, and feedback to managers and program offices, find the top reasons people contact the agency and where they get stuck, and send survey data to OMB each quarter for designated services.
+  sources: [ a11-section-280, gsdi-5-usc-321-324 ]
+  applicabilityNotes: Quarterly reporting to OMB applies to High Impact Service Providers’ designated services. The reasons people contact the agency are often the most useful figures for program offices, since they show what to fix upstream.
+  contributes_to: [ service-results-public, feedback-improves-service ]
+  satisfies: [ report-feedback-quarterly, use-contact-data-to-improve ]
+  candidate_pattern:
+    - contact-center-reporting
+    - to: post-contact-survey
+      coverage: partial
+      note: Sends the survey data to OMB each quarter. The center’s other figures come from its own systems.

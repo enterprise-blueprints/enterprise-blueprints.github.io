@@ -1,0 +1,26 @@
+# Missions, in the order the pages show them, each with the links it holds.
+
+- id: helping-the-public-get-answers
+  title: Contact Center
+  description: "Help members of the public get answers and get things done with the agency, by phone, chat, email, and the web: reach them without a long wait, resolve what they came for on the first contact where possible, serve people with disabilities as well as anyone, protect what they share, and use what they say to improve the agency’s services."
+  sources: [ gsdi-5-usc-321-324, a11-section-280 ]
+  attributes:
+    tagline: Helping the public by phone, chat, email, and the web
+    sector: public-sector
+    scope: US-federal-contact-center
+    principles:
+      - Each contact is one record, with its channel, its reason, the answer, and any handoff
+      - People can move from the web to chat to a call without starting over
+      - Agents, the website, and virtual agents draw on the same approved answers
+      - People who call through relay or TTY, or use a screen reader, get the same service as anyone else
+      - No one has to use the web to get help; a person is always reachable
+      - A short survey after each contact goes back to the teams that can fix the cause
+      - AI answers routine questions and suggests answers to agents, and people decide anything about a person’s case
+  seeks:
+    - people-reach-help-quickly
+    - questions-resolved-first-time
+    - everyone-can-get-help
+    - answers-found-without-calling
+    - information-shared-is-protected
+    - feedback-improves-service
+    - service-results-public

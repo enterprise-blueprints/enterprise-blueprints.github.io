@@ -1,0 +1,90 @@
+# Outcomes, in the order the pages show them, each with the links it holds.
+
+- id: people-reach-help-quickly
+  title: People reach help without a long wait
+  theme: timely
+  description: Calls are answered, chats are picked up, and emails get a reply within the times the agency sets, even on its busiest days.
+  sources: [ gsdi-5-usc-321-324, gsa-contact-center-playbook ]
+  measures:
+    - id: average-speed-of-answer
+      title: Average speed of answer
+      description: The average time callers wait for an agent after choosing to speak to one, and the average time to a first reply on chat and email, by channel and by month. Most contact center systems report these figures already.
+      sources: [ gsdi-5-usc-321-324, gsa-contact-center-playbook ]
+    - id: contacts-abandoned
+      title: Contacts abandoned while waiting
+      description: The share of calls and chats in which the person gave up before reaching an agent, by channel and by hour, which shows when staffing falls short.
+      sources: [ gsa-contact-center-playbook ]
+
+- id: questions-resolved-first-time
+  title: People get what they came for on the first contact
+  theme: results
+  description: Agents and self-service give correct, complete answers, so people don’t have to call back, try another channel, or be passed from office to office.
+  sources: [ a11-section-280, cx-feedback-handbook ]
+  measures:
+    - id: first-contact-resolution
+      title: First contact resolution
+      description: The share of contacts resolved without the person contacting the agency again about the same matter within a set period, such as seven days, as the center defines it.
+      sources: [ gsa-contact-center-playbook ]
+    - id: issue-resolved-share
+      title: People who say their issue was resolved
+      description: The share of post-contact survey respondents who choose “My issue was resolved,” the effectiveness driver in OMB’s Section 280 survey.
+      sources: [ a11-section-280, cx-feedback-handbook ]
+
+- id: everyone-can-get-help
+  title: Everyone can get help, whatever their abilities
+  theme: fair-accessible
+  description: People who are deaf, hard of hearing, blind, or have other disabilities reach the center and are served as effectively as anyone else, on every channel the center offers.
+  sources: [ rehabilitation-act-504, section-508-standards ]
+  measures:
+    - id: channels-tested-for-508
+      title: Public channels tested for Section 508 conformance
+      description: The share of the center’s phone menus, chat, web forms, and virtual agents tested for conformance in the past year, and the open defects found, which feed the agency’s annual Section 508 assessment to OMB and GSA.
+      sources: [ section-508-standards, section508-gov ]
+
+- id: answers-found-without-calling
+  title: People can find answers on their own
+  theme: easy-to-use
+  description: Clear answers on the website, in the phone menu, and from virtual agents let people do routine things themselves, so agents have time for those who need a person.
+  sources: [ idea-act, a11-section-280 ]
+  measures:
+    - id: self-service-resolution
+      title: Contacts resolved in self-service
+      description: The share of web, phone menu, and virtual agent sessions that end with an answer and no handoff to an agent or follow-up contact within a set period.
+      sources: [ idea-act ]
+    - id: ease-share
+      title: People who say it was easy to find what they needed
+      description: The share of post-contact survey respondents who choose the ease driver in OMB’s Section 280 survey, “It was easy to find what I needed.”
+      sources: [ a11-section-280, cx-feedback-handbook ]
+
+- id: information-shared-is-protected
+  title: What people share is protected
+  theme: integrity
+  description: The center discusses a person’s records only with that person, once they’ve been verified, or as the law allows, and keeps recordings and contact records only as long as their schedule allows.
+  sources: [ privacy-act, grs-6-5 ]
+  measures:
+    - id: privacy-incidents-from-contacts
+      title: Privacy incidents that began in the contact center
+      description: The number of privacy incidents that began with a contact, such as a record discussed with someone who wasn’t verified, from the agency’s privacy incident reports.
+      sources: [ privacy-act ]
+
+- id: feedback-improves-service
+  title: What people say improves the service
+  theme: accountable
+  description: The center asks people about their experience after each contact, and the agency acts on what they say and on the reasons they contacted it in the first place.
+  sources: [ a11-section-280, gsdi-5-usc-321-324 ]
+  measures:
+    - id: trust-after-contact
+      title: Trust after a contact
+      description: The share of post-contact survey respondents who agree the interaction increased their trust in the agency, from OMB’s Section 280 survey. OMB’s benchmark is 75 percent or higher.
+      sources: [ a11-section-280, cx-feedback-handbook ]
+
+- id: service-results-public
+  title: The service’s results are open to view
+  theme: transparent
+  description: The agency reports what people say about its designated services to OMB each quarter, for publication on performance.gov, and shares its own service figures with the public.
+  sources: [ a11-section-280, cx-feedback-handbook ]
+  measures:
+    - id: quarterly-feedback-reported
+      title: Quarterly feedback reported on time
+      description: For services designated by a High Impact Service Provider, the quarters in which the agency sent its post-contact survey data to OMB by the final business day of January, April, July, and October.
+      sources: [ a11-section-280 ]

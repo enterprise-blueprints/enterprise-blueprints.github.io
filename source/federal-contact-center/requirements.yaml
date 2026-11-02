@@ -1,0 +1,109 @@
+# Requirements, in the order the pages show them, each with the links it holds.
+
+- id: set-service-standards
+  title: Set wait and response standards for each channel, and measure against them
+  kind: timeliness
+  description: Decide how long people should wait for an agent, a chat reply, and an email answer, and measure each channel against those standards, as the governmentwide service delivery standards weigh duration, including wait and processing times.
+  sources: [ gsdi-5-usc-321-324 ]
+
+- id: answers-in-plain-language
+  title: Write public answers in plain language
+  kind: service-access
+  description: Write the answers, letters, and web content people need to get a benefit or service so they’re clear, concise, and well organized, as the Plain Writing Act requires of every covered document the agency issues or substantially revises.
+  sources: [ plain-writing-act ]
+
+- id: review-answers-on-schedule
+  title: Give each answer an owner and a review date
+  kind: checks-controls
+  description: Name the program office that owns each approved answer, review it on a schedule and whenever the program changes, and take it down when it’s no longer right.
+  sources: [ gsa-contact-center-playbook ]
+
+- id: keep-a-non-digital-path
+  title: Keep a way to get help without the web
+  kind: service-access
+  description: Keep an accessible way, such as by phone, on paper, or in person, to complete each service the agency offers online, so no one is kept from it for lack of digital access or skills.
+  sources: [ idea-act ]
+
+- id: digital-channels-meet-idea
+  title: Build web and chat channels to the 21st Century IDEA’s standards
+  kind: service-access
+  description: Make each new or redesigned website, web form, and digital service accessible under Section 508, consistent in appearance, searchable, secure, designed around users’ needs, and usable on common mobile devices.
+  sources: [ idea-act ]
+
+- id: assess-ai-before-use
+  title: Review each use of AI, and meet OMB’s practices for high-impact uses
+  kind: checks-controls
+  description: List each AI use, such as a virtual agent or suggested answers, in the agency’s AI use case inventory, and before deploying a high-impact use, test it, assess its impact, monitor it, train the staff who oversee it, and give people a timely human review and a chance to appeal.
+  sources: [ omb-m-25-21 ]
+
+- id: verify-before-disclosing
+  title: Confirm who a person is before discussing their records
+  kind: privacy-security
+  description: Disclose a record from a system of records only to the person it’s about, once they’ve met the identification requirements in the agency’s Privacy Act rules, or to others only with their written consent or as the Privacy Act allows.
+  sources: [ privacy-act ]
+
+- id: communicate-effectively
+  title: Communicate as effectively with people with disabilities as with others
+  kind: service-access
+  description: Take relay and TTY calls, or use equally effective systems, wherever the center talks with people by phone, and provide other aids people need, giving primary consideration to what each person asks for.
+  sources: [ rehabilitation-act-504, doj-effective-communication-rule ]
+
+- id: menus-usable-with-tty
+  title: Make phone menus and voice mail usable with a TTY
+  kind: service-access
+  description: Make the center’s voice mail, auto-attendant, interactive voice response, and caller identification usable with a TTY, as the Section 508 standards require of two-way voice systems.
+  sources: [ section-508-standards ]
+
+- id: accessible-digital-channels
+  title: Make chat, web forms, and virtual agents conform to Section 508
+  kind: service-access
+  description: Buy, build, and keep the center’s digital channels conforming to the Section 508 standards, so people using screen readers, keyboards, magnification, or captions can use them, and test them before launch and after changes.
+  sources: [ section-508-standards ]
+
+- id: record-each-contact
+  title: Record each contact, and keep the records on schedule
+  kind: decisions-on-record
+  description: Record each contact’s reason, answer, and any handoff, and keep contact records, recordings, and survey data as General Records Schedule 6.5 allows, destroying them 1 year after the contact is resolved or when no longer needed for business use.
+  sources: [ grs-6-5 ]
+
+- id: tell-people-why-information-is-collected
+  title: Tell people why the center asks for their information
+  kind: privacy-security
+  description: Where the center asks people for information that goes into a system of records, such as on a web form or in chat, tell them the authority for asking, the purpose, the routine uses, and what happens if they don’t answer.
+  sources: [ privacy-act ]
+
+- id: hand-off-with-context
+  title: Hand off with what’s been gathered, and say what happens next
+  kind: service-access
+  description: When a program office must act, send it the contact’s details so the person doesn’t have to repeat them, and tell the person who will act, what they’ll need, and when to expect an answer.
+  sources: [ gsdi-5-usc-321-324, cx-feedback-handbook ]
+
+- id: review-contacts-for-quality
+  title: Review a sample of each agent’s contacts against a written standard
+  kind: checks-controls
+  description: Score a regular sample of each agent’s calls, chats, and emails against a written standard for accuracy, completeness, privacy, and courtesy, coach on the results, and check that reviewers score alike.
+  sources: [ gsa-contact-center-playbook, grs-6-5 ]
+
+- id: survey-after-contacts
+  title: Survey people after contacts with OMB’s questions
+  kind: transparency-reporting
+  description: For each designated service, ask people after a significant contact, or at the end of the service, whether it increased their trust and what made the difference, using OMB’s Section 280 question wording and response choices.
+  sources: [ a11-section-280, cx-feedback-handbook ]
+
+- id: clear-surveys-under-pra
+  title: Clear surveys under the Paperwork Reduction Act
+  kind: checks-controls
+  description: Get OMB approval before asking the same questions of ten or more people, using the department’s Section 280 umbrella clearance for post-contact surveys where it applies.
+  sources: [ pra-44-usc-3502, a11-section-280 ]
+
+- id: report-feedback-quarterly
+  title: Report survey data to OMB each quarter
+  kind: transparency-reporting
+  description: For designated services of High Impact Service Providers, send OMB the post-contact survey data by the final business day of January, April, July, and October, for publication on performance.gov.
+  sources: [ a11-section-280 ]
+
+- id: use-contact-data-to-improve
+  title: Use what contacts show to improve services
+  kind: transparency-reporting
+  description: Share the top reasons people contact the agency, and where they get stuck, with the program offices and the agency’s service delivery official, so the causes are fixed and not just answered.
+  sources: [ gsdi-5-usc-321-324 ]

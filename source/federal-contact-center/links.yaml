@@ -1,0 +1,19 @@
+# Links from elements of the packages this one builds on, such as a shared capability
+# that contributes to one of this package's outcomes.
+
+- from: capability:case-management
+  contributes_to: [ questions-resolved-first-time ]
+  candidate_pattern:
+    - contact-records-crm
+
+- from: capability:records-management
+  contributes_to: [ information-shared-is-protected ]
+
+- from: capability:identity-access-management
+  contributes_to: [ information-shared-is-protected ]
+
+- from: capability:data-protection-privacy
+  contributes_to: [ information-shared-is-protected ]
+
+- from: capability:security-logging-monitoring
+  contributes_to: [ information-shared-is-protected ]

@@ -1,0 +1,66 @@
+# Resources, in the order the pages show them, each with what it helps with.
+# The library links only to free resources from government, standards bodies,
+# nonprofits, and universities.
+
+- id: contact-center-playbook
+  title: Fifteen Plays of Our Contact Center Approach
+  kind: guide
+  by: Contact Center Center of Excellence, General Services Administration
+  url: https://coe.gsa.gov/2020/10/08/cc-update-5.html
+  lastReviewedAt: 2026-11-02
+  description: A 2020 playbook for agencies modernizing their contact centers, in fifteen plays from inventorying every center and number through workforce, cost, and maturity assessments, a shared knowledge base, new technology, and the contracting model, with a downloadable PDF.
+  helps_with: [ mission:helping-the-public-get-answers, capability:service-planning-staffing, capability:knowledge-management ]
+
+- id: contact-center-technologies
+  title: Contact center technologies
+  kind: guide
+  by: Digital.gov, General Services Administration
+  url: https://digital.gov/resources/contact-center-guidelines/contact-center-technologies
+  lastReviewedAt: 2026-11-02
+  description: What each common contact center technology does, from automatic call distributors, intelligent routing, and phone menus to web chat, email response, knowledge management, TTY services, and workforce management.
+  helps_with: [ capability:contact-intake-routing, capability:service-planning-staffing, { to: implementationPattern:cloud-contact-center, way: product } ]
+
+- id: contact-center-community
+  title: Contact Center Community
+  kind: community
+  by: Digital.gov, General Services Administration
+  url: https://digital.gov/communities/contact-center
+  lastReviewedAt: 2026-11-02
+  description: A community of practice for people who run government contact centers at every level of government, with a mailing list and events on performance, experience, and efficiency. Joining takes a government email address.
+  helps_with: [ mission:helping-the-public-get-answers ]
+
+- id: cx-feedback-handbook
+  title: Customer feedback data handbook
+  kind: guide
+  by: Performance.gov, Office of Management and Budget and General Services Administration
+  url: https://www.performance.gov/cx/data/handbook/
+  lastReviewedAt: 2026-11-02
+  description: The Section 280 post-transaction survey explained, with the trust question, the drivers and their wording, the response scales, how trust is scored, and the data published on performance.gov.
+  helps_with: [ capability:customer-feedback, capability:service-performance-reporting, implementationPattern:post-contact-survey ]
+
+- id: section508-gov
+  title: Section508.gov
+  kind: site
+  by: Office of Government-wide Policy, General Services Administration
+  url: https://www.section508.gov/
+  lastReviewedAt: 2026-11-02
+  description: Guidance, training, and tools for making technology accessible under Section 508, including how to test, how to write accessibility into a solicitation, and the annual Section 508 assessment.
+  helps_with: [ capability:accessible-service ]
+
+- id: plain-language-guide
+  title: Plain language guide series
+  kind: guide
+  by: Digital.gov, General Services Administration
+  url: https://digital.gov/guides/plain-language
+  lastReviewedAt: 2026-11-02
+  description: How to write, design, and test content people can understand, carried forward from PlainLanguage.gov, for anyone writing the answers agents and the website give.
+  helps_with: [ capability:knowledge-management, implementationPattern:shared-knowledge-base ]
+
+- id: usagov-quality-blueprint
+  title: "Creating a blueprint for quality: How the PX Contact Center helps agents grow their skills"
+  kind: case-study
+  by: USAGov, General Services Administration
+  url: https://www.usa.gov/blog/2024/04/creating-a-blueprint-for-quality-how-the-px-contact-center-helps-agents-grow-their-skills
+  lastReviewedAt: 2026-11-02
+  description: How USAGov’s Public Experience contact center reviews calls and chats, through live monitoring and audits of recordings, coaches agents on what it finds, and holds weekly calibration so reviewers score alike.
+  helps_with: [ capability:quality-review-coaching ]

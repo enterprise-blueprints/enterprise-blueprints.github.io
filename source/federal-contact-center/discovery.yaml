@@ -1,0 +1,252 @@
+# Discovery question sets. Each group under "points" names the answers that point to
+# one or more elements, and why.
+
+- id: contact-center-results
+  title: Contact center results discovery
+  description: Questions for the start of an engagement about which results matter most for the agency’s contact center and how the center tells how it’s doing. They ask about the center’s operations, never about individual contacts or the people who made them. Some answers point to outcomes and measures worth exploring.
+  questions:
+    - id: contact-priority-results
+      prompt: Which of these results matter most for this effort?
+      kind: multiple-choice
+      options:
+        - people-reach-help-quickly: People reach help without a long wait
+        - questions-resolved-first-time: People get what they came for on the first contact
+        - everyone-can-get-help: Everyone can get help, whatever their abilities
+        - answers-found-without-calling: People can find answers on their own
+        - information-shared-is-protected: What people share is protected
+        - feedback-improves-service: What people say improves the service
+        - service-results-public: The service’s results are open to view
+      points:
+        - when: people-reach-help-quickly
+          to: outcome:people-reach-help-quickly
+          why: This effort is meant to advance this result.
+        - when: questions-resolved-first-time
+          to: outcome:questions-resolved-first-time
+          why: This effort is meant to advance this result.
+        - when: everyone-can-get-help
+          to: outcome:everyone-can-get-help
+          why: This effort is meant to advance this result.
+        - when: answers-found-without-calling
+          to: outcome:answers-found-without-calling
+          why: This effort is meant to advance this result.
+        - when: information-shared-is-protected
+          to: outcome:information-shared-is-protected
+          why: This effort is meant to advance this result.
+        - when: feedback-improves-service
+          to: outcome:feedback-improves-service
+          why: This effort is meant to advance this result.
+        - when: service-results-public
+          to: outcome:service-results-public
+          why: This effort is meant to advance this result.
+    - id: contact-tracked-measures
+      prompt: Which of these does the center track during the year?
+      kind: multiple-choice
+      options:
+        - waits: How long people wait, and how many give up
+        - resolution: How many contacts are resolved the first time
+        - self-service: How many people find answers without an agent
+        - accessibility: Whether phone menus, chat, and web forms are tested for accessibility
+        - privacy: Privacy incidents that began with a contact
+        - survey: Post-contact survey results, such as trust and ease
+        - none: None of these regularly
+      points:
+        - when: waits
+          to: [ measure:average-speed-of-answer, measure:contacts-abandoned ]
+          why: The center tracks this already, so there may be a value for today.
+        - when: resolution
+          to: [ measure:first-contact-resolution, measure:issue-resolved-share ]
+          why: The center tracks this already, so there may be a value for today.
+        - when: self-service
+          to: [ measure:self-service-resolution, measure:ease-share ]
+          why: The center tracks this already, so there may be a value for today.
+        - when: accessibility
+          to: measure:channels-tested-for-508
+          why: The center tracks this already, so there may be a value for today.
+        - when: privacy
+          to: measure:privacy-incidents-from-contacts
+          why: The center tracks this already, so there may be a value for today.
+        - when: survey
+          to: [ measure:trust-after-contact, measure:quarterly-feedback-reported ]
+          why: The center tracks this already, so there may be a value for today.
+    - id: contact-measure-sources
+      prompt: Where do those figures come from today, and who puts them together?
+      kind: text
+
+- id: contact-center-operations
+  title: Contact center operations discovery
+  description: Questions about how the center serves the public today, from planning and intake to resolution and reporting. They ask about the center’s tools and steps, never about individual contacts or the people who made them. Answers point to capabilities and example patterns worth exploring.
+  questions:
+    - id: contact-channels
+      prompt: Through which channels can the public reach the center?
+      kind: multiple-choice
+      options:
+        - phone: Phone
+        - relay-tty: Relay services and TTY
+        - chat: Chat on the website
+        - virtual-agent: A virtual agent or chatbot
+        - email: Email or a web form
+        - in-person: In person
+      points:
+        - when: [ chat, virtual-agent, email ]
+          to: [ capability:contact-intake-routing, implementationPattern:cloud-contact-center ]
+          why: Channels beyond the phone work best in the same queues, so waits and staffing can be seen together.
+    - id: contact-phone-system
+      prompt: What runs the center’s phones and chat today?
+      kind: single-choice
+      options:
+        - cloud-product: A cloud contact center product the agency runs
+        - department-platform: The department’s shared contact center platform
+        - contractor: A contractor’s system, with the contractor’s agents
+        - on-premises: A phone system the agency hosts itself
+        - desk-phones: Desk phones, hunt groups, and a shared mailbox
+      points:
+        - when: [ on-premises, desk-phones ]
+          to: [ capability:contact-intake-routing, implementationPattern:cloud-contact-center ]
+          why: Older systems often can’t route by skill, offer callbacks, or show waits across channels.
+    - id: contact-staffing-forecasts
+      prompt: How does the center decide how many agents to schedule?
+      kind: single-choice
+      options:
+        - workforce-tool: Forecasts and schedules from a workforce management tool
+        - spreadsheets: Forecasts in spreadsheets
+        - fixed: The same schedule every week
+      points:
+        - when: [ spreadsheets, fixed ]
+          to: [ capability:service-planning-staffing, implementationPattern:contact-center-reporting ]
+          why: Without forecasts from real volumes, waits grow at the busiest hours and around deadlines.
+    - id: contact-wait-standards
+      prompt: Has the center set how long people should wait on each channel?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:service-planning-staffing, requirement:set-service-standards ]
+          why: Without a standard, there’s no way to tell whether staffing is enough.
+    - id: contact-knowledge
+      prompt: Where do agents find the approved answers?
+      kind: single-choice
+      options:
+        - shared: One knowledge base that the website also uses
+        - agents-only: A knowledge base for agents only
+        - documents: Documents and shared drives
+        - experience: Mostly experience, notes, and asking colleagues
+      points:
+        - when: [ agents-only, documents, experience ]
+          to: [ capability:knowledge-management, implementationPattern:shared-knowledge-base ]
+          why: Answers kept in more than one place drift apart, so people get different answers on different channels.
+    - id: contact-languages
+      prompt: Besides English, does the center serve people in other languages?
+      kind: single-choice
+      options:
+        - english-only: English only
+        - spanish: English and Spanish
+        - several: Several languages, with their own agents or answers
+        - interpreters: Through an interpreter line on request
+      points:
+        - when: several
+          to: capability:knowledge-management
+          why: Each language needs its own approved answers, kept in step with the English ones.
+    - id: contact-self-service
+      prompt: What can people do without reaching an agent?
+      kind: multiple-choice
+      options:
+        - web-answers: Find answers on the website
+        - status: Check the status of a request or application
+        - updates: Update details, such as an address
+        - phone-menu: Get answers in the phone menu
+        - virtual-agent: Ask a virtual agent
+        - none: Little or nothing yet
+      points:
+        - when: none
+          to: [ capability:self-service-virtual-assistance, implementationPattern:virtual-agent ]
+          why: Routine questions that could be answered on their own take agents’ time from people who need them.
+    - id: contact-ai-inventory
+      prompt: Is AI used in the center, such as a virtual agent, transcripts, or suggested answers, and is each use in the agency’s AI use case inventory?
+      kind: single-choice
+      options:
+        - listed: Yes, and each use is listed
+        - not-sure: Yes, but we’re not sure each is listed
+        - none: No AI is used yet
+      points:
+        - when: not-sure
+          to: [ capability:self-service-virtual-assistance, requirement:assess-ai-before-use ]
+          why: OMB requires each use to be inventoried, and high-impact uses to meet its practices before they’re deployed.
+    - id: contact-verification
+      prompt: How do agents confirm who someone is before discussing their records?
+      kind: single-choice
+      options:
+        - codes-or-sign-in: A one-time code, or the person’s signed-in session
+        - questions: Questions such as date of birth and address
+        - varies: It varies by agent
+        - no-records: Agents don’t discuss people’s records
+      points:
+        - when: [ questions, varies ]
+          to: [ capability:caller-verification, implementationPattern:caller-verification-codes ]
+          why: Answers to questions like these can often be found or guessed, and steps that vary by agent are hard to defend.
+    - id: contact-accessibility-testing
+      prompt: Have the center’s phone menus, chat, and web forms been tested with a TTY, relay calls, and screen readers in the past year?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:accessible-service, requirement:menus-usable-with-tty, requirement:accessible-digital-channels ]
+          why: Barriers in a phone menu or chat window shut people out before they ever reach an agent.
+    - id: contact-records
+      prompt: Is each contact recorded, with its reason and outcome, in one system?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:contact-resolution-handoff, implementationPattern:contact-records-crm ]
+          why: Without a record, people repeat themselves when they call back, and the center can’t tell why people contact it.
+    - id: contact-handoffs
+      prompt: When a program office must act, how does the contact reach it?
+      kind: single-choice
+      options:
+        - case: A case opens in the office’s system, with the contact’s details
+        - email: By email or a form sent to the office
+        - redirect: The person is told to contact the office themselves
+      points:
+        - when: [ email, redirect ]
+          to: [ capability:contact-resolution-handoff, requirement:hand-off-with-context ]
+          why: Handoffs by email are hard to follow up, and sending people elsewhere makes them start over.
+    - id: contact-quality-reviews
+      prompt: How are contacts reviewed for quality?
+      kind: single-choice
+      options:
+        - regular-sample: A regular sample of each agent’s contacts, scored against a written standard
+        - complaints: When there’s a complaint
+        - not-regularly: Not regularly
+      points:
+        - when: [ complaints, not-regularly ]
+          to: [ capability:quality-review-coaching, implementationPattern:contact-ai-insights ]
+          why: Wrong answers spread until someone notices, and reviews are how agents and the knowledge base improve.
+    - id: contact-surveys
+      prompt: How does the center ask people about their experience?
+      kind: single-choice
+      options:
+        - section-280: A survey after the contact, with OMB’s Section 280 questions
+        - own-survey: A survey with our own questions
+        - comments: Only through complaints and comments
+        - none: It doesn’t yet
+      points:
+        - when: [ own-survey, comments, none ]
+          to: [ capability:customer-feedback, implementationPattern:post-contact-survey ]
+          why: OMB’s questions, under the department’s umbrella clearance, give results the agency can act on and compare.
+    - id: contact-hisp-service
+      prompt: Is the center part of a service that a High Impact Service Provider has designated?
+      kind: boolean
+      points:
+        - when: true
+          to: [ capability:service-performance-reporting, requirement:report-feedback-quarterly ]
+          why: Designated services report survey data to OMB every quarter, for publication on performance.gov.
+    - id: contact-reasons-shared
+      prompt: Do program offices regularly hear the top reasons people contact the agency about their programs?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:service-performance-reporting, implementationPattern:contact-center-reporting ]
+          why: The reasons people contact the agency show what to fix in the programs, so fewer people need to contact it.
+    - id: contact-monthly-volume
+      prompt: About how many contacts does the center handle in a typical month, across all channels?
+      kind: number
+    - id: contact-hardest-part
+      prompt: What’s the hardest part of serving the public through the center today?
+      kind: text

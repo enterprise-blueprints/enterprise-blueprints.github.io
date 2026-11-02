@@ -69,7 +69,7 @@ short:
 1. Make `source/<name>/` with `package.yaml` (its `packageId`, `idPrefix: eb`, `dependencies: [ common ]`),
    then missions, outcomes (with `theme` and `measures`), capabilities (with `stage`), requirements (with
    `kind`), patterns (with `layer` and `ways`), resources, sources, `links.yaml` for the Common
-   capabilities it uses, and discovery questions. The four federal missions are the models to follow.
+   capabilities it uses, and discovery questions. The five federal missions are the models to follow.
 2. Fit the groups that exist (themes, stages, kinds); add a group to the vocabulary only when nothing fits.
 3. Cite official sources with `lastReviewedAt`, checked against the source itself. Each requirement
    belongs to exactly one capability in its own package, and every capability gets a discovery question.
@@ -103,8 +103,8 @@ current release.
 
 ## Will it hold up with dozens more missions?
 
-Mostly, with one thing to change first. Today a release is about 490 KB for five packages, and
-`content/` is 3.7 MB with 51 package files.
+Mostly, with one thing to change first. Today a release is about 620 KB for six packages, and
+`content/` is 4.3 MB with 57 package files.
 
 - **Every release copies every package.** One release version for all packages means a fix to one
   mission writes a new version of all of them. At 50 missions (about 5 MB a release) and a few releases a
@@ -131,7 +131,7 @@ Library:
 - A scheduled check that sources' and resources' links still work, alongside their review dates.
 - Eight requirements are unsourced on purpose (six in Common's case management, two in FOIA); cite them
   if an authoritative source turns up.
-- The fifth mission: benefits and eligibility, or inspection and enforcement.
+- The sixth mission: benefits and eligibility, or inspection and enforcement.
 
 Studio:
 

@@ -1,0 +1,21 @@
+# The package itself. Its version and date are set when it is built (pnpm content:build).
+
+schemaVersion: 0.6.0
+packageId: org.enterprise-blueprints.federal-contact-center
+idPrefix: eb
+title: Contact Center — Helping the Public by Phone, Chat, Email, and the Web
+description: "U.S. federal contact center blueprint: one mission with the outcomes it seeks and ways to measure them, ten capabilities from planning the service to reporting on it, with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for contact center results and for contact center operations. It follows the Government Service Delivery Improvement Act, OMB Circular A-11 Section 280, the 21st Century IDEA, and Sections 504 and 508 of the Rehabilitation Act, and builds on Common Capabilities for case management, records, identity and access, data protection, and security logging."
+publisher:
+  name: Enterprise Blueprints (independent reference project)
+  url: https://enterprise-blueprints.github.io
+license: MIT
+domain: public-sector
+jurisdictions:
+  - United States — federal agencies that answer the public by phone, chat, email, and the web
+tags:
+  - contact-center
+  - customer-experience
+  - service-delivery
+  - accessibility
+  - reference-architecture
+dependencies: [ common ]

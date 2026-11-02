@@ -16,6 +16,7 @@ const common = latest('common');
 const foia = latest('federal-foia');
 const grants = latest('federal-grants');
 const acquisition = latest('federal-acquisition');
+const contactCenter = latest('federal-contact-center');
 // Published versions, which never change.
 const oig050 = read('content/federal-oig/0.5.0/blueprint.json');
 const common040 = read('content/common/0.4.0/blueprint.json');
@@ -33,9 +34,9 @@ const common010 = read('content/common/0.1.0/blueprint.json');
 const common020 = read('content/common/0.2.0/blueprint.json');
 const foia010 = read('content/federal-foia/0.1.0/blueprint.json');
 const published = [oig010, oig020, oig030, oig040, oig050, common010, common020, common030, common040, foia010, foia020, foia030, grants010, solutions010, solutions020];
-const all = [original, common, foia, grants, acquisition, ...published];
+const all = [original, common, foia, grants, acquisition, contactCenter, ...published];
 const resolve: Resolve = (id, version) => all.find((p) => p.packageId === id && p.version === version);
-const missions = [original, foia, grants, acquisition];
+const missions = [original, foia, grants, acquisition, contactCenter];
 
 /** A copy of the real package with one change applied. */
 function broken(change: (pkg: BlueprintPackage) => void): BlueprintPackage {
@@ -55,6 +56,7 @@ describe('validatePackage', () => {
     expect(validatePackage(foia, resolve)).toEqual([]);
     expect(validatePackage(grants, resolve)).toEqual([]);
     expect(validatePackage(acquisition, resolve)).toEqual([]);
+    expect(validatePackage(contactCenter, resolve)).toEqual([]);
     expect(validatePackage(common)).toEqual([]);
   });
 
@@ -158,6 +160,21 @@ describe('validatePackage', () => {
     for (const c of ofType(acquisition, 'capability')) expect(acquisition.relations.some((r) => r.from === c.id && r.predicate === 'candidate_pattern'), c.id).toBe(true);
   });
 
+  it('has one mission, seven outcomes, ten capabilities, eighteen requirements, and eight patterns in the contact center package', () => {
+    const counts = Object.groupBy(contactCenter.elements, (e) => e.type);
+    expect(counts.mission).toHaveLength(1);
+    expect(counts.outcome).toHaveLength(7);
+    expect(counts.measure).toBeUndefined();
+    expect(counts.outcome!.flatMap((o) => o.attributes!.measures as unknown[])).toHaveLength(10);
+    expect(counts.capability).toHaveLength(10);
+    expect(counts.requirement).toHaveLength(18);
+    expect(counts.implementationPattern).toHaveLength(8);
+    expect(counts.implementationPattern!.some((p) => p.status === 'deprecated')).toBe(false);
+    expect(contactCenter.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
+    // Every capability has a candidate pattern.
+    for (const c of ofType(contactCenter, 'capability')) expect(contactCenter.relations.some((r) => r.from === c.id && r.predicate === 'candidate_pattern'), c.id).toBe(true);
+  });
+
   it('shares SAM.gov checks between grants and acquisition through the common package', () => {
     const checks = 'eb:implementationPattern:sam-gov-entity-checks';
     expect(ofType(common, 'implementationPattern').map((p) => p.id)).toContain(checks);
@@ -230,8 +247,8 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
 });
 
 describe('missions', () => {
-  const missions = [original, foia, grants, acquisition];
-  const patterns = [original, common, foia, grants, acquisition].flatMap((p) => ofType(p, 'implementationPattern'));
+  const missions = [original, foia, grants, acquisition, contactCenter];
+  const patterns = [original, common, foia, grants, acquisition, contactCenter].flatMap((p) => ofType(p, 'implementationPattern'));
   const layerOf = (id: string) => patterns.find((p) => p.id === id)!.attributes!.layer;
 
   it('list the principles their architecture follows', () => {
@@ -394,7 +411,7 @@ describe('versions', () => {
   });
 
   it('gives every capability its reference requirements, and every requirement one capability of its own package', () => {
-    for (const pkg of [original, common, foia, grants, acquisition]) {
+    for (const pkg of [original, common, foia, grants, acquisition, contactCenter]) {
       const own = new Set(pkg.elements.map((e) => e.id));
       const satisfies = pkg.relations.filter((r) => r.predicate === 'satisfies' && own.has(r.from));
       for (const c of ofType(pkg, 'capability')) expect(satisfies.some((r) => r.from === c.id), c.id).toBe(true);
@@ -451,7 +468,7 @@ describe('groups across missions (schema 0.5.0)', () => {
   const first = (p: BlueprintPackage, type: string) => p.elements.find((e) => e.type === type)!;
 
   it('accept every package, with each outcome, capability, and requirement in a group', () => {
-    for (const pkg of [original, common, foia, grants, acquisition]) {
+    for (const pkg of [original, common, foia, grants, acquisition, contactCenter]) {
       expect(pkg.schemaVersion).toBe('0.6.0');
       expect(validatePackage(pkg, resolve), pkg.packageId).toEqual([]);
       for (const e of pkg.elements) {
@@ -480,7 +497,7 @@ describe('resources and ID prefixes (schema 0.6.0)', () => {
     change(pkg);
     return validatePackage(pkg, resolve).join('\n');
   };
-  const current = [original, common, foia, grants, acquisition];
+  const current = [original, common, foia, grants, acquisition, contactCenter];
   const resources = current.flatMap((p) => p.elements.filter((e) => e.type === 'resource'));
   const erm = 'eb:resource:universal-erm-requirements';
   const helps = (p: BlueprintPackage) => p.relations.find((r) => r.predicate === 'helps_with' && r.way)!;

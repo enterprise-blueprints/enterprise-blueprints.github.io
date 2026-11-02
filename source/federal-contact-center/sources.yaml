@@ -1,0 +1,134 @@
+# The references this package cites. Elements and links name them by id.
+
+- id: gsdi-5-usc-321-324
+  title: 5 U.S.C. §§ 321–324 — Government service delivery (Government Service Delivery Improvement Act)
+  url: https://www.govinfo.gov/link/uscode/5/322?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: "Enacted in Public Law 118-231. OMB’s Federal Government Service Delivery Lead sets governmentwide standards for service delivery that weigh ease, efficiency, transparency, accessibility, fairness, burden, and duration, including wait and processing times, and collects and reports data on service delivery (§ 322). Each agency head names a senior official who coordinates service delivery improvements across the agency’s channels and uses that data to improve them (§ 323)."
+
+- id: a11-section-280
+  title: OMB Circular A-11 (2025), Section 280 — Managing Customer Experience and Improving Service Delivery
+  url: https://www.whitehouse.gov/wp-content/uploads/2025/08/s280.pdf
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: "Carries out the Government Service Delivery Improvement Act. High Impact Service Providers designate priority services each year, deploy at least one post-transaction customer feedback survey for each, following OMB’s question wording and response choices, and submit the data to OMB by the final business day of January, April, July, and October for publication (§§ 280.4–280.6). Surveys are approved under the Paperwork Reduction Act through a Section 280 umbrella clearance (§ 280.7)."
+
+- id: cx-feedback-handbook
+  title: Performance.gov — Customer feedback data handbook
+  url: https://www.performance.gov/cx/data/handbook/
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: "The Section 280 survey: a trust question, such as “This interaction increased my trust in [agency],” and drivers people choose from, including effectiveness (“My issue was resolved”), ease (“It was easy to find what I needed”), efficiency, transparency, fairness, and employee helpfulness. Trust is the share of positive answers, with a benchmark of 75 percent or higher, and results are published on performance.gov."
+
+- id: idea-act
+  title: 21st Century Integrated Digital Experience Act (21st Century IDEA), Public Law 115-336
+  url: https://www.govinfo.gov/link/plaw/115/public/336?link-type=html
+  kind: official-reference
+  publicationDate: 2018-12-20
+  lastReviewedAt: 2026-11-02
+  note: "New or redesigned websites and digital services are, to the greatest extent practicable, accessible under Section 508, consistent, searchable, secure, designed around user needs, and usable on mobile devices (§ 3). Agencies make services available digitally, and maintain an accessible way to complete digital services in person, on paper, or by other means, so people aren’t kept from them (§ 4)."
+
+- id: rehabilitation-act-504
+  title: 29 U.S.C. § 794 — Nondiscrimination under Federal grants and programs (Section 504 of the Rehabilitation Act)
+  url: https://www.govinfo.gov/link/uscode/29/794?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: No qualified individual with a disability may, because of the disability, be excluded from, denied the benefits of, or discriminated against under any program or activity conducted by an executive agency. Each agency issues its own rules for the programs it conducts.
+
+- id: doj-effective-communication-rule
+  title: 28 CFR § 39.160 — Communications (Department of Justice, Section 504 in federally conducted programs)
+  url: https://www.law.cornell.edu/cfr/text/28/39.160
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: The Justice Department’s rule, which other agencies’ Section 504 rules follow closely. The agency takes appropriate steps to communicate effectively with applicants, participants, and the public, provides auxiliary aids where necessary, giving primary consideration to the person’s request, and where it communicates by telephone, uses TDDs or equally effective telecommunication systems.
+
+- id: section-508-standards
+  title: U.S. Access Board — Revised Section 508 Standards, 36 CFR Part 1194
+  url: https://www.access-board.gov/ict/
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: "Information and communication technology that agencies buy, build, maintain, or use conforms to the standards (E201.1). For two-way voice communication, voice mail, auto-attendant, interactive voice response, and caller identification systems are usable with a TTY (412.8.4), and caller identification is visible and audible (412.6). Web content and software conform to WCAG 2.0 Level AA."
+
+- id: section508-gov
+  title: Section508.gov — Annual Section 508 assessment
+  url: https://www.section508.gov/manage/section-508-assessment/
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Under Section 508 as the Consolidated Appropriations Act, 2023 amended it, agencies respond each year to OMB’s criteria for assessing their Section 508 compliance, and GSA reports the results to Congress.
+
+- id: eo-14224
+  title: Executive Order 14224 — Designating English as the Official Language of the United States (March 1, 2025)
+  url: https://www.govinfo.gov/content/pkg/FR-2025-03-06/pdf/2025-03694.pdf
+  kind: official-reference
+  publicationDate: 2025-03-06
+  lastReviewedAt: 2026-11-02
+  note: Revokes Executive Order 13166 on access to services for people with limited English proficiency, while saying nothing in the order requires a change in agencies’ services. Agency heads decide what their missions need, and aren’t required to stop documents or services offered in other languages (§ 3(b)).
+
+- id: plain-writing-act
+  title: Plain Writing Act of 2010, Public Law 111-274
+  url: https://www.govinfo.gov/link/plaw/111/public/274?link-type=html
+  kind: official-reference
+  publicationDate: 2010-10-13
+  lastReviewedAt: 2026-11-02
+  note: Each agency uses plain writing, clear, concise, and well organized, in every covered document it issues or substantially revises (§ 4(b)). Covered documents include letters, publications, forms, notices, and instructions necessary for obtaining a federal benefit or service (§ 3(2)).
+
+- id: pra-44-usc-3502
+  title: 44 U.S.C. § 3502 — Definitions (Paperwork Reduction Act)
+  url: https://www.govinfo.gov/link/uscode/44/3502?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: A collection of information includes answers to identical questions posed to ten or more people outside the federal government, which needs OMB approval under the Paperwork Reduction Act before it’s used.
+
+- id: privacy-act
+  title: 5 U.S.C. § 552a — Records maintained on individuals (Privacy Act of 1974)
+  url: https://www.govinfo.gov/link/uscode/5/552a?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: "An agency discloses a record from a system of records only with the person’s written request or consent, or under a listed exception (b). It tells people it asks for information the authority, purpose, routine uses, and effect of not answering (e)(3), keeps safeguards for the records (e)(10), and sets in its rules the requirements for identifying a person who asks for their own record (f)(2)."
+
+- id: grs-6-5
+  title: National Archives — General Records Schedule 6.5, Public Customer Service Records
+  url: https://www.archives.gov/files/records-mgmt/grs/grs06-5.pdf
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: "Covers records of call and service centers that serve the public by phone, chat, and email, including incoming requests and responses, tracking logs, recordings used for quality control and training, FAQs, reports, and customer feedback and surveys: destroy 1 year after resolved, or when no longer needed for business use (item 010). Centers that take tips or allegations for oversight and enforcement offices need their own schedule."
+
+- id: omb-m-25-21
+  title: OMB Memorandum M-25-21 — Accelerating Federal Use of AI through Innovation, Governance, and Public Trust (April 3, 2025)
+  url: https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf
+  kind: official-reference
+  publicationDate: 2025-04-03
+  lastReviewedAt: 2026-11-02
+  note: "Agencies inventory their AI use cases. AI whose output is a principal basis for decisions with a significant effect on rights or safety is high-impact, and uses affecting the ability to apply for, or eligibility for, critical federal services and benefits are presumed to be. High-impact uses need pre-deployment testing, an impact assessment, ongoing monitoring, trained operators, human oversight, timely human review and appeal, and a way for the public to give feedback (§ 4(b))."
+
+- id: nist-ai-rmf
+  title: NIST — Artificial Intelligence Risk Management Framework (AI RMF 1.0)
+  url: https://www.nist.gov/itl/ai-risk-management-framework
+  kind: official-reference
+  publicationDate: 2023-01-26
+  lastReviewedAt: 2026-11-02
+  note: A framework for voluntary use in managing the risks of AI systems, built around four functions, govern, map, measure, and manage, and the characteristics of trustworthy AI, such as being valid, accountable, and fair.
+
+- id: nist-sp-800-63-4
+  title: NIST SP 800-63-4 — Digital Identity Guidelines
+  url: https://csrc.nist.gov/pubs/sp/800/63/4/final
+  kind: official-reference
+  publicationDate: 2025-07-31
+  lastReviewedAt: 2026-11-02
+  note: Requirements for identity proofing, authenticators, and authentication for people who use government systems, including the people signing in to an agency’s public website.
+
+- id: gsa-contact-center-playbook
+  title: GSA Contact Center Center of Excellence — Fifteen Plays of Our Contact Center Approach (2020)
+  url: https://coe.gsa.gov/2020/10/08/cc-update-5.html
+  kind: background
+  publicationDate: 2020-10-08
+  lastReviewedAt: 2026-11-02
+  note: Practices for modernizing federal contact centers, including workforce management against the center’s service-level standard, assessing whether calls and emails are answered soon enough, training that raises first-call resolution, evaluating agents, and building one shared knowledge base so answers are consistent.
+
+- id: gsa-contact-center-technologies
+  title: Digital.gov — Contact center technologies
+  url: https://digital.gov/resources/contact-center-guidelines/contact-center-technologies
+  kind: background
+  lastReviewedAt: 2026-11-02
+  note: The technologies a contact center commonly runs on, including automatic call distribution, intelligent routing, interactive voice response, web chat, email response management, knowledge management, TTY services, and workforce management.
