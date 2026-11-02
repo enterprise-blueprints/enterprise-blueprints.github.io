@@ -12,7 +12,7 @@ const { resources } = Astro.props;
   {resources.map(({ resource, details, way, note }) => (
     <li class="resource type-resource">
       <p class="resource__kind">{details.kind}{way && <> · for <a href={`#way-${way.id}`}>{way.title}</a></>}</p>
-      <a class="resource__title" href={details.url}>{resource.title}</a>
+      <a class="resource__title" href={details.url} target="_blank" rel="noopener">{resource.title}<span class="sr-only"> (opens in a new tab)</span></a>
       <p class="resource__by">{details.by ?? resource.package.publisher.name}</p>
       <p class="resource__about">{note ?? resource.description}</p>
       <p class="resource__more">

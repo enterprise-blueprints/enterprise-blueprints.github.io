@@ -94,7 +94,7 @@ const shownGroups = groups.filter((g) => g !== patternGroup && !covered.includes
       <p class="lede">{element.description}</p>
       {resource && (
         <p class="record-resource">
-          <a class="button button--primary" href={resource.url}>Go to the {resource.kind.toLowerCase()}</a>
+          <a class="button button--primary" href={resource.url} target="_blank" rel="noopener">Go to the {resource.kind.toLowerCase()}<span class="sr-only"> (opens in a new tab)</span></a>
           <span class="muted">By {resource.by ?? pkg.publisher.name}{resource.lastReviewedAt && <> · Checked {formatDate(resource.lastReviewedAt)}</>}</span>
         </p>
       )}

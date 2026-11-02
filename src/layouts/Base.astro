@@ -91,7 +91,7 @@ const nav = [
         <nav class="site-footer__nav" aria-label="Footer">
           <ul>
             {nav.map((item) => <li><a href={item.url}>{item.label}</a></li>)}
-            <li><a href={site.repositoryUrl}>Source on GitHub</a></li>
+            <li><a href={site.repositoryUrl} target="_blank" rel="noopener">Source on GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
           </ul>
         </nav>
       </div>

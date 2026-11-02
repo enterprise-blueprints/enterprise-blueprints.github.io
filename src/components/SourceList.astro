@@ -12,7 +12,7 @@ const { sources } = Astro.props;
 <ul class="source-list">
   {sources.map((s) => (
     <li>
-      <a class="source-list__title" href={s.url}>{s.title}</a>
+      <a class="source-list__title" href={s.url} target="_blank" rel="noopener">{s.title}<span class="sr-only"> (opens in a new tab)</span></a>
       <p class="source-list__meta">
         {sourceKinds[s.kind]}{s.lastReviewedAt && ` · Reviewed ${formatDate(s.lastReviewedAt)}`}
         {s.note && <><br />{s.note}</>}

@@ -141,7 +141,7 @@ const node = (id: string) => ({ 'data-node': id, 'data-links': neighbors(id).joi
           {resourcesFor(o.outcome).length > 0 && (
             <>
               <h4>Resources</h4>
-              <div class="ex__chips type-resource">{resourcesFor(o.outcome).map((r) => <a class="ex-chip" href={r.details.url}>{r.resource.title}<span class="ex-chip__note">{r.details.kind}</span></a>)}</div>
+              <div class="ex__chips type-resource">{resourcesFor(o.outcome).map((r) => <a class="ex-chip" href={r.details.url} target="_blank" rel="noopener">{r.resource.title}<span class="ex-chip__note">{r.details.kind}</span><span class="sr-only"> (opens in a new tab)</span></a>)}</div>
             </>
           )}
           <p class="ex__open"><a href={o.outcome.url}>Open the outcome’s page →</a></p>
@@ -177,7 +177,7 @@ const node = (id: string) => ({ 'data-node': id, 'data-links': neighbors(id).joi
           {resourcesFor(c.capability).length > 0 && (
             <>
               <h4>Resources</h4>
-              <div class="ex__chips type-resource">{resourcesFor(c.capability).map((r) => <a class="ex-chip" href={r.details.url}>{r.resource.title}<span class="ex-chip__note">{r.details.kind}</span></a>)}</div>
+              <div class="ex__chips type-resource">{resourcesFor(c.capability).map((r) => <a class="ex-chip" href={r.details.url} target="_blank" rel="noopener">{r.resource.title}<span class="ex-chip__note">{r.details.kind}</span><span class="sr-only"> (opens in a new tab)</span></a>)}</div>
             </>
           )}
           <p class="ex__open"><a href={c.capability.url}>Open the capability’s page →</a></p>
@@ -209,7 +209,7 @@ const node = (id: string) => ({ 'data-node': id, 'data-links': neighbors(id).joi
             {resourcesFor(p).length > 0 && (
               <>
                 <h4>Resources</h4>
-                <div class="ex__chips type-resource">{resourcesFor(p).map((r) => <a class="ex-chip" href={r.details.url}>{r.resource.title}<span class="ex-chip__note">{r.details.kind}</span></a>)}</div>
+                <div class="ex__chips type-resource">{resourcesFor(p).map((r) => <a class="ex-chip" href={r.details.url} target="_blank" rel="noopener">{r.resource.title}<span class="ex-chip__note">{r.details.kind}</span><span class="sr-only"> (opens in a new tab)</span></a>)}</div>
               </>
             )}
             <p class="ex__open"><a href={p.url}>Open the pattern’s page →</a></p>

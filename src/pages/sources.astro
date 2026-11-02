@@ -24,7 +24,7 @@ import { formatDate } from '../lib/format';
           {sources.map((s) => (
             <tr>
               <th scope="row">
-                <a href={s.url}>{s.title}</a>
+                <a href={s.url} target="_blank" rel="noopener">{s.title}<span class="sr-only"> (opens in a new tab)</span></a>
                 {s.note && <p class="source-list__meta">{s.note}</p>}
               </th>
               <td data-label="Kind" class="nowrap">{sourceKinds[s.kind]}</td>

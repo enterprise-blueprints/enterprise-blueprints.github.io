@@ -1,7 +1,7 @@
 // Checks a built site. Every internal link and asset must start with the base
 // path and resolve to a built file, every package in the catalog must match
 // its digest and its source file in content/, and the vocabulary must cover
-// every element, with a page for each.
+// every element, with a page for each. A link to another site opens in a new tab.
 //
 // Usage: node scripts/check-dist.mjs [dist] [base path]
 //   node scripts/check-dist.mjs dist
@@ -43,6 +43,11 @@ for (const page of pages) {
     }
     const path = decodeURI(url.slice(base.length).replace(/[?#].*$/, '').replace(/&amp;/g, '&'));
     if (!resolves(path)) errors.push(`${where}: link ${url} doesn't resolve`);
+  }
+  for (const [tag, url] of html.matchAll(/<a\s[^>]*?href="(https?:\/\/[^"]*)"[^>]*>/g)) {
+    if (!/\starget="_blank"/.test(tag) || !/\srel="[^"]*noopener/.test(tag)) {
+      errors.push(`${relative(dist, page)}: link ${url} goes to another site, so it should open in a new tab`);
+    }
   }
 }
 
