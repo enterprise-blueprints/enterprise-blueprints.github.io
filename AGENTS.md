@@ -5,7 +5,7 @@ repo's README covers its own code in more depth.
 
 ## The ecosystem
 
-Three repos, usually side by side in `C:\Users\jerem\repos\`, each deployed on its own:
+Three repos, usually side by side in `C:\Users\jerem\repos\work\`, each deployed on its own:
 
 | Repo | What it is | Remote |
 | --- | --- | --- |
@@ -62,6 +62,9 @@ pnpm dev             # the site at http://localhost:4321
   change too.
 
 ### Adding a mission
+
+`AUTHORING.md` is the full guide: each file and field, the groups, how to write, and how to finish. In
+short:
 
 1. Make `source/<name>/` with `package.yaml` (its `packageId`, `idPrefix: eb`, `dependencies: [ common ]`),
    then missions, outcomes (with `theme` and `measures`), capabilities (with `stage`), requirements (with
