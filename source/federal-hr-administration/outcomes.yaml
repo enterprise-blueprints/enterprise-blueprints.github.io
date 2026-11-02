@@ -1,0 +1,112 @@
+# Outcomes, in the order the pages show them, each with the links it holds.
+
+- id: positions-filled-on-time
+  title: The agency fills the positions it needs on time
+  theme: timely
+  description: Approved positions are announced, assessed, and offered quickly enough that the work doesn’t wait, within the government-wide goal of under 80 days to an initial offer.
+  sources: [ merit-hiring-plan ]
+  measures:
+    - id: time-to-initial-offer
+      title: Time to initial offer
+      description: The days from the start of a hiring action to the initial job offer, by office and kind of position, against the government-wide goal of under 80 days. OPM tracks it on its hiring compliance dashboard.
+      sources: [ merit-hiring-plan ]
+
+- id: hiring-on-merit
+  title: People are hired on merit, with veterans’ preference
+  theme: fair-accessible
+  description: Vacancies are open to the people the law allows to apply, candidates are ranked on validated assessments of their skills, and veterans’ preference is applied as the law requires.
+  sources: [ merit-hiring-plan, veterans-preference-5-usc-3309, rule-of-many ]
+  measures:
+    - id: actions-with-technical-assessment
+      title: Hiring actions with a technical or alternative assessment
+      description: The share of competitive hiring actions that used at least one technical or alternative assessment before the certificate was issued, rather than a self-assessment alone.
+      sources: [ merit-hiring-plan ]
+    - id: certificates-without-selection
+      title: Certificates returned without a selection
+      description: The share of certificates of eligible candidates that hiring managers returned without selecting anyone, which can mean the assessment didn’t find the right people.
+      sources: [ rule-of-many ]
+
+- id: new-hires-vetted-promptly
+  title: New employees are vetted promptly, to the right level
+  theme: integrity
+  description: Each position is designated at the right risk and sensitivity level, and each new employee is vetted to that level within the government’s timeliness goals.
+  sources: [ suitability-5-cfr-731, merit-hiring-plan ]
+  measures:
+    - id: vetting-timeliness
+      title: Vetting completed within the timeliness goals
+      description: The share of new employees whose vetting finished within the goals the Merit Hiring Plan cites, 21 days for low-risk positions, 25 days for non-sensitive moderate-risk positions, and 45 days for top secret, and within 3 days when reciprocity applies.
+      sources: [ merit-hiring-plan ]
+
+- id: actions-correct-on-time
+  title: Personnel actions are correct and take effect on time
+  theme: timely
+  description: Each appointment, promotion, change, and separation is approved by its effective date, coded correctly, and reported to OPM accurately, so pay, benefits, and records follow without correction.
+  sources: [ gppa, workforce-information-5-cfr-9 ]
+  measures:
+    - id: retroactive-actions
+      title: Actions processed after their effective date
+      description: The share of personnel actions processed after the date they took effect, by kind of action and office.
+      sources: [ gppa ]
+    - id: ehri-errors
+      title: Errors returned from OPM’s data screening
+      description: The number of errors OPM finds when it screens each submission to its Enterprise Human Resources Integration data warehouse, and how long they take to fix.
+      sources: [ gppa, ehri ]
+
+- id: employees-paid-correctly
+  title: Employees are paid correctly and on time
+  theme: integrity
+  description: Pay, leave, and deductions follow each employee’s personnel actions and approved time, so overpayments and the debts they create are rare.
+  sources: [ pay-debts-5-usc-5514 ]
+  measures:
+    - id: pay-debts-established
+      title: Pay debts established
+      description: The number and amount of debts established because an employee was overpaid, by cause, such as a late personnel action or a time and attendance error.
+      sources: [ pay-debts-5-usc-5514 ]
+
+- id: retirements-without-delay
+  title: Retiring employees get their annuity without delay
+  theme: timely
+  description: The agency prepares each retirement application completely and sends it to OPM promptly, so OPM can begin paying the annuity without returning it for more information.
+  sources: [ online-retirement-application ]
+  measures:
+    - id: days-to-submit-retirement
+      title: Days from retirement to submission to OPM
+      description: The days from each employee’s retirement date to the agency’s submission of the complete application to OPM, through HR and payroll.
+      sources: [ online-retirement-application ]
+
+- id: performance-managed
+  title: Employees know what’s expected and are rated on it
+  theme: results
+  description: Each employee has a performance plan at the start of the appraisal period, is rated against it at the end, and ratings distinguish levels of performance as OPM’s rules require.
+  sources: [ appraisal-5-usc-4302, appraisal-5-cfr-430 ]
+  measures:
+    - id: plans-and-ratings-on-time
+      title: Performance plans and ratings on time
+      description: The share of employees given a performance plan within 30 days of the appraisal period’s start, and the share with a rating of record soon after it ends.
+      sources: [ appraisal-5-cfr-430 ]
+    - id: top-ratings-share
+      title: Share of ratings at the top two levels
+      description: The share of employees in each covered population rated at Level 4 or Level 5, against OPM’s cap, which is 40 percent for the 2026 appraisal cycle.
+      sources: [ rating-distribution-fy2026, appraisal-5-cfr-430 ]
+
+- id: actions-hold-up
+  title: Discipline and removals are fair and hold up on appeal
+  theme: accountable
+  description: Each adverse or performance-based action gives the employee the notice, time to reply, and decision the law requires, rests on a documented record, and stands up when appealed.
+  sources: [ adverse-actions-5-usc-7513, appraisal-5-usc-4302 ]
+  measures:
+    - id: actions-sustained-on-appeal
+      title: Actions sustained on appeal
+      description: The number of adverse and performance-based actions appealed, and the share that were sustained, settled, or reversed.
+      sources: [ adverse-actions-5-usc-7513 ]
+
+- id: workforce-data-public
+  title: The workforce’s data is open to view
+  theme: transparent
+  description: The agency reports complete, accurate workforce data to OPM on schedule, so the public can see the size, hiring, pay, and separations of the federal workforce each month.
+  sources: [ workforce-information-5-cfr-9, ehri, federal-workforce-data ]
+  measures:
+    - id: ehri-submissions-on-time
+      title: Workforce data submitted on schedule
+      description: The share of the agency’s scheduled submissions to EHRI accepted on time, which feed OPM’s monthly Federal Workforce Data site.
+      sources: [ ehri, federal-workforce-data ]

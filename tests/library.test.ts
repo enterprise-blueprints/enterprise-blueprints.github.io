@@ -118,7 +118,7 @@ describe('pattern connections', () => {
 
   it('say what a pattern needs, and what needs it', () => {
     const groups = relationGroups(get('eb:implementationPattern:agency-sign-on'));
-    expect(groups.find((g) => g.heading === 'Needed by')!.elements.map(slug)).toEqual(['shared-case-platform', 'records-aware-collaboration']);
+    expect(groups.find((g) => g.heading === 'Needed by')!.elements.map(slug)).toEqual(['shared-case-platform', 'records-aware-collaboration', 'core-hr-system']);
   });
 
   it('mark a candidate pattern that covers only part of a capability', () => {
@@ -200,7 +200,7 @@ describe('the index pages', () => {
     // A group lists each mission's items together, missions in title order and the shared package last.
     const caps = indexGroups('capability');
     expect(caps.map((g) => g.label)).toEqual(['Plan and prepare', 'Reach and take in', 'Assess and decide', 'Deliver and operate', 'Monitor and correct', 'Report and close', 'Across the work']);
-    expect(caps.find((g) => g.id === 'reach-take-in')!.items.map((e) => e.slug)).toEqual(['solicitation-publicizing', 'contact-intake-routing', 'self-service-virtual-assistance', 'foia-request-intake', 'funding-opportunities-applications', 'complaint-allegation-disclosure-intake']);
+    expect(caps.find((g) => g.id === 'reach-take-in')!.items.map((e) => e.slug)).toEqual(['solicitation-publicizing', 'contact-intake-routing', 'self-service-virtual-assistance', 'foia-request-intake', 'funding-opportunities-applications', 'recruitment-hiring', 'complaint-allegation-disclosure-intake']);
     expect(caps.at(-1)!.items.every((e) => e.package.packageId.endsWith('.common'))).toBe(true);
     expect(indexGroups('mission')).toHaveLength(1);
   });

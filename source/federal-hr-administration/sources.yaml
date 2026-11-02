@@ -1,0 +1,198 @@
+# The references this package cites. Elements and links name them by id.
+
+- id: federal-hr-2-0
+  title: OMB and OPM — Creating “Federal HR 2.0” by Consolidating Core Human Capital Management Across the Federal Government (December 10, 2025)
+  url: https://www.opm.gov/chcoc/latest-memos/creating-federal-hr-20-by-consolidating-core-human-capital-management-across-the-federal-government.pdf
+  kind: official-reference
+  publicationDate: 2025-12-10
+  lastReviewedAt: 2026-11-02
+  note: "Moves executive agencies onto one commercial core human capital management system, covering personnel action processing, the employee system of record, position management, self-service, analytics, time and attendance, and learning, connected to payroll, benefits, hiring, performance, and retirement systems. Agencies move in two waves from fiscal year 2026, with government-wide adoption the goal by fiscal year 2028, and pause their own core HR purchases and projects unless the OMB and OPM Directors grant an exception. The system will make eOPF and EHRI redundant. Military personnel and intelligence agencies aren’t included at first."
+
+- id: merit-hiring-plan
+  title: White House Domestic Policy Council and OPM — Merit Hiring Plan (May 29, 2025)
+  url: https://www.opm.gov/chcoc/latest-memos/merit-hiring-plan.pdf
+  kind: official-reference
+  publicationDate: 2025-05-29
+  lastReviewedAt: 2026-11-02
+  note: "Carries out Executive Order 14170. Every competitive hiring process includes at least one technical or alternative assessment before the certificate, self-assessments are no longer used for ranking, and agencies use USAJOBS, USA Staffing, talent pools, and shared certificates. Sets the goal of time to initial offer under 80 days, and cites vetting goals of 21 days for low-risk positions, 25 days for non-sensitive moderate-risk positions, and 45 days for top secret, and 3 days when reciprocity applies."
+
+- id: rule-of-many
+  title: OPM — Reinvigorating Merit-Based Hiring Through Candidate Ranking in the Competitive and Excepted Service (Rule of Many), final rule (September 8, 2025)
+  url: https://www.govinfo.gov/content/pkg/FR-2025-09-08/pdf/2025-17125.pdf
+  kind: official-reference
+  publicationDate: 2025-09-08
+  lastReviewedAt: 2026-11-02
+  note: Lets agencies rank candidates by numerical score, with veterans’ preference points, and certify a set number of the highest-ranked to the hiring manager, using cut scores set by the assessment, business necessity, or a number or share of applicants. Effective November 7, 2025, with full compliance by March 9, 2026.
+
+- id: eo-14356-guidance
+  title: OMB and OPM — Guidance on Executive Order 14356, Ensuring Continued Accountability in Federal Hiring (November 5, 2025)
+  url: https://www.opm.gov/chcoc/latest-memos/guidance-on-executive-order-14356-ensuring-continued-accountability-in-federal-hiring.pdf
+  kind: official-reference
+  publicationDate: 2025-11-05
+  lastReviewedAt: 2026-11-02
+  note: Each agency’s Strategic Hiring Committee approves the creation or filling of each vacancy, consistent with the Merit Hiring Plan and an Annual Staffing Plan the agency prepares with OMB and OPM, and gives OPM prompt written notice of approved hires.
+
+- id: classification-5-usc-5107
+  title: 5 U.S.C. § 5107 — Classification of positions
+  url: https://www.govinfo.gov/link/uscode/5/5107?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Each agency places each position under its jurisdiction in its appropriate class and grade in conformance with standards OPM publishes, and those actions are the basis for pay and personnel transactions.
+
+- id: vacancies-5-usc-3327
+  title: 5 U.S.C. § 3327 — Civil service employment information
+  url: https://www.govinfo.gov/link/uscode/5/3327?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Each agency promptly notifies OPM of each competitive service vacancy for which it seeks applications from people outside the federal service, and when applications will be accepted.
+
+- id: veterans-preference-5-usc-3309
+  title: 5 U.S.C. § 3309 — Preference eligibles; examinations; additional points for
+  url: https://www.govinfo.gov/link/uscode/5/3309?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: A preference eligible who passes a competitive service examination receives 10 or 5 additional points above the earned rating, depending on the kind of preference.
+
+- id: suitability-5-cfr-731
+  title: 5 CFR § 731.106 — Designation of public trust positions and investigative requirements
+  url: https://www.law.cornell.edu/cfr/text/5/731.106
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: The agency head designates each covered position at high, moderate, or low risk, which sets the investigation it needs, and people in public trust positions are subject to continuous vetting.
+
+- id: form-i9-8-cfr-274a-2
+  title: 8 CFR § 274a.2 — Verification of identity and employment authorization
+  url: https://www.law.cornell.edu/cfr/text/8/274a.2
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: The employee completes Section 1 of Form I-9 at the time of hire, and the employer examines the documents and completes Section 2 within three business days of the hire.
+
+- id: gppa
+  title: OPM — Guide to Processing Personnel Actions
+  url: https://www.opm.gov/policy-data-oversight/data-analysis-documentation/personnel-documentation/processing-personnel-actions/guide_to_processing_personnel_actions.pdf
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: "OPM’s instructions for personnel actions, revised continually (Update 112 took effect October 7, 2026). Most actions are approved by an appointing officer on or before their effective dates, and none takes effect before approval except as the guide allows. Agencies notify employees of every action, with an SF-50 for appointments, conversions, and separations, and report each action to EHRI accurately and on time."
+
+- id: workforce-information-5-cfr-9
+  title: 5 CFR § 9.2 — Reporting workforce information
+  url: https://www.law.cornell.edu/cfr/text/5/9.2
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: The OPM Director may require executive agencies to report workforce information, sets the standards for it, and agencies make their submissions meet those standards consistent with the Privacy Act.
+
+- id: ehri
+  title: OPM — Enterprise Human Resources Integration (EHRI)
+  url: https://www.opm.gov/policy-data-oversight/data-analysis-documentation/enterprise-human-resources-integration/
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: OPM’s government-wide HR data warehouse for about 2 million executive branch employees. Agencies send HR, payroll, and training data through standard interfaces, collected every two weeks, and retirement data to its standard. EHRI also hosts the electronic Official Personnel Folder.
+
+- id: federal-workforce-data
+  title: OPM — Federal Workforce Data
+  url: https://data.opm.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: OPM’s public site of federal civilian workforce data, updated monthly, covering employment, hiring, separations, pay, location, and demographics. It replaced FedScope in January 2026.
+
+- id: pay-debts-5-usc-5514
+  title: 5 U.S.C. § 5514 — Installment deduction for indebtedness to the United States
+  url: https://www.govinfo.gov/link/uscode/5/5514?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Before collecting a debt from an employee’s pay, the agency gives at least 30 days’ written notice, a chance to inspect the records, to agree a repayment schedule, and to request a hearing. Deductions may not exceed 15 percent of disposable pay without the employee’s written consent.
+
+- id: fehb-5-cfr-890-301
+  title: 5 CFR § 890.301 — Opportunities for employees to enroll or change enrollment (Federal Employees Health Benefits)
+  url: https://www.law.cornell.edu/cfr/text/5/890.301
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: An employee who becomes eligible may elect to enroll or not to enroll within 60 days after becoming eligible.
+
+- id: online-retirement-application
+  title: OPM — Online Retirement Application (ORA)
+  url: https://www.opm.gov/retirement-center/apply/online-retirement-application/
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: OPM’s fully digital system that replaces the paper retirement process. The employee’s HR office starts the application, which is prefilled from EHRI and eOPF data, and the applicant, HR, and payroll share one view of its status.
+
+- id: appraisal-5-usc-4302
+  title: 5 U.S.C. § 4302 — Establishment of performance appraisal systems
+  url: https://www.govinfo.gov/link/uscode/5/4302?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Each performance appraisal system communicates performance standards and critical elements to each employee at the beginning of each appraisal period, evaluates employees against them, assists employees in improving unacceptable performance, and reassigns, reduces in grade, or removes those who continue to perform unacceptably only after an opportunity to demonstrate acceptable performance.
+
+- id: appraisal-5-cfr-430
+  title: 5 CFR Part 430, Subpart B — Performance Appraisal for General Schedule, Prevailing Rate, and Certain Other Employees
+  url: https://www.law.cornell.edu/cfr/text/5/part-430/subpart-B
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: "Performance plans are provided at the beginning of each appraisal period, normally within 30 days, and the appraisal period is generally 12 months (§ 430.206). Programs use one of OPM’s rating patterns, and OPM may set a standardized distribution of rating levels (§ 430.208). Amended by a final rule effective August 6, 2026, with compliance with the new rating patterns and distribution by January 1, 2027."
+
+- id: rating-distribution-fy2026
+  title: OPM — FY 2026 Standardized Distribution of Rating Levels and FY 2026 Performance Awards Guidance for Federal Employees (September 21, 2026)
+  url: https://www.opm.gov/chcoc/latest-memos/fy-2026-standardized-distribution-of-rating-levels-and-fy-2026-performance-awards-guidance-for-federal-employees.pdf
+  kind: official-reference
+  publicationDate: 2026-09-21
+  lastReviewedAt: 2026-11-02
+  note: Caps Level 4 and Level 5 ratings at 40 percent of each covered population, career SES, Senior Professional, and General Schedule employees, for appraisal periods ending September 30, 2026, as a ceiling, not a target. At least 60 percent of each bonus pool should go to Level 4 and Level 5 performers.
+
+- id: probation-5-cfr-11-5
+  title: 5 CFR § 11.5 — Civil Service Rule XI, finalizing probationary appointments
+  url: https://www.law.cornell.edu/cfr/text/5/11.5
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Added by Executive Order 14284 of April 24, 2025, and amended August 3, 2026. Within the last 30 days of a probationary or trial period, the agency head or a designated official certifies in writing whether the employee’s continued employment will advance the public interest; without certification, the employee’s service ends with the period.
+
+- id: adverse-actions-5-usc-7513
+  title: 5 U.S.C. § 7513 — Cause and procedure (adverse actions)
+  url: https://www.govinfo.gov/link/uscode/5/7513?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: An employee against whom an adverse action is proposed is entitled to at least 30 days’ advance written notice with the specific reasons, unless there is reasonable cause to believe the employee committed a crime punishable by imprisonment, at least 7 days to answer orally and in writing, representation, and a written decision with its specific reasons.
+
+- id: rif-5-cfr-351
+  title: 5 CFR § 351.801 — Notice period (reduction in force)
+  url: https://www.law.cornell.edu/cfr/text/5/351.801
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Each competing employee selected for release is entitled to specific written notice at least 60 full days before the effective date, or at least 30 full days when OPM approves a shorter period for circumstances not reasonably foreseeable.
+
+- id: rif-rule-2026
+  title: OPM — Reduction in Force, final rule, 91 FR 49178 (August 3, 2026)
+  url: https://www.govinfo.gov/content/pkg/FR-2026-08-03/pdf/2026-15665.pdf
+  kind: official-reference
+  publicationDate: 2026-08-03
+  lastReviewedAt: 2026-11-02
+  note: Rewrites subparts B through H of 5 CFR Part 351 for notices issued on or after September 2, 2026. Employees are ranked by tenure group, then by performance credit with veterans’ preference, with tenure subgroup and service computation date as tie-breakers, and each notice lists the factors used.
+
+- id: personnel-records-5-cfr-293
+  title: 5 CFR § 293.302 — Establishment of the Official Personnel Folder
+  url: https://www.law.cornell.edu/cfr/text/5/293.302
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Each agency establishes an Official Personnel Folder for each employee, and except as OPM’s Guide to Personnel Recordkeeping provides, only one is kept for each employee.
+
+- id: grs-2-2
+  title: National Archives — General Records Schedule 2.2, Employee Management Records
+  url: https://www.archives.gov/files/records-mgmt/grs/grs02-2.pdf
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Covers records of supervising employees, processing personnel actions, and managing performance, including the Official Personnel Folder and its electronic equivalent, with how long each is kept and when separated employees’ folders are transferred (Transmittal 35, May 2024).
+
+- id: omb-m-25-21
+  title: OMB Memorandum M-25-21 — Accelerating Federal Use of AI through Innovation, Governance, and Public Trust (April 3, 2025)
+  url: https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf
+  kind: official-reference
+  publicationDate: 2025-04-03
+  lastReviewedAt: 2026-11-02
+  note: "AI whose output is a principal basis for decisions with a significant effect on rights or safety is high-impact, and AI used to determine the terms or conditions of federal employment, including pre-employment screening, pay or promotion, performance management, hiring or termination, or recommending disciplinary action, is presumed to be (§ 6(n)). High-impact uses need testing, an impact assessment, monitoring, human oversight, and human review and appeal (§ 4(b))."
+
+- id: nist-ai-rmf
+  title: NIST — Artificial Intelligence Risk Management Framework (AI RMF 1.0)
+  url: https://www.nist.gov/itl/ai-risk-management-framework
+  kind: official-reference
+  publicationDate: 2023-01-26
+  lastReviewedAt: 2026-11-02
+  note: A framework for voluntary use in managing the risks of AI systems, built around four functions, govern, map, measure, and manage, and the characteristics of trustworthy AI, such as being valid, accountable, and fair.

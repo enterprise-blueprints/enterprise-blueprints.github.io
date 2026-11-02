@@ -1,0 +1,252 @@
+# Discovery question sets. Each group under "points" names the answers that point to
+# one or more elements, and why.
+
+- id: hr-results
+  title: HR results discovery
+  description: Questions for the start of an engagement about which results matter most for the agency’s HR office and how the office tells how it’s doing. They ask about the office’s operations, never about individual employees, applicants, or cases. Some answers point to outcomes and measures worth exploring.
+  questions:
+    - id: hr-priority-results
+      prompt: Which of these results matter most for this effort?
+      kind: multiple-choice
+      options:
+        - positions-filled-on-time: The agency fills the positions it needs on time
+        - hiring-on-merit: People are hired on merit, with veterans’ preference
+        - new-hires-vetted-promptly: New employees are vetted promptly, to the right level
+        - actions-correct-on-time: Personnel actions are correct and take effect on time
+        - employees-paid-correctly: Employees are paid correctly and on time
+        - retirements-without-delay: Retiring employees get their annuity without delay
+        - performance-managed: Employees know what’s expected and are rated on it
+        - actions-hold-up: Discipline and removals are fair and hold up on appeal
+        - workforce-data-public: The workforce’s data is open to view
+      points:
+        - when: positions-filled-on-time
+          to: outcome:positions-filled-on-time
+          why: This effort is meant to advance this result.
+        - when: hiring-on-merit
+          to: outcome:hiring-on-merit
+          why: This effort is meant to advance this result.
+        - when: new-hires-vetted-promptly
+          to: outcome:new-hires-vetted-promptly
+          why: This effort is meant to advance this result.
+        - when: actions-correct-on-time
+          to: outcome:actions-correct-on-time
+          why: This effort is meant to advance this result.
+        - when: employees-paid-correctly
+          to: outcome:employees-paid-correctly
+          why: This effort is meant to advance this result.
+        - when: retirements-without-delay
+          to: outcome:retirements-without-delay
+          why: This effort is meant to advance this result.
+        - when: performance-managed
+          to: outcome:performance-managed
+          why: This effort is meant to advance this result.
+        - when: actions-hold-up
+          to: outcome:actions-hold-up
+          why: This effort is meant to advance this result.
+        - when: workforce-data-public
+          to: outcome:workforce-data-public
+          why: This effort is meant to advance this result.
+    - id: hr-tracked-measures
+      prompt: Which of these does the office track during the year?
+      kind: multiple-choice
+      options:
+        - time-to-hire: Time to hire, to the initial offer
+        - assessments: How hiring actions assess applicants, and certificates returned without a selection
+        - vetting: How long vetting takes for new employees
+        - actions: Personnel actions processed late, and errors OPM returns
+        - pay-debts: Overpayments and the pay debts they create
+        - retirements: How long retirement applications take to reach OPM
+        - ratings: Performance plans and ratings on time, and the share at the top levels
+        - appeals: Adverse actions appealed, and how they turned out
+        - none: None of these regularly
+      points:
+        - when: time-to-hire
+          to: measure:time-to-initial-offer
+          why: The office tracks this already, so there may be a value for today.
+        - when: assessments
+          to: [ measure:actions-with-technical-assessment, measure:certificates-without-selection ]
+          why: The office tracks this already, so there may be a value for today.
+        - when: vetting
+          to: measure:vetting-timeliness
+          why: The office tracks this already, so there may be a value for today.
+        - when: actions
+          to: [ measure:retroactive-actions, measure:ehri-errors, measure:ehri-submissions-on-time ]
+          why: The office tracks this already, so there may be a value for today.
+        - when: pay-debts
+          to: measure:pay-debts-established
+          why: The office tracks this already, so there may be a value for today.
+        - when: retirements
+          to: measure:days-to-submit-retirement
+          why: The office tracks this already, so there may be a value for today.
+        - when: ratings
+          to: [ measure:plans-and-ratings-on-time, measure:top-ratings-share ]
+          why: The office tracks this already, so there may be a value for today.
+        - when: appeals
+          to: measure:actions-sustained-on-appeal
+          why: The office tracks this already, so there may be a value for today.
+    - id: hr-measure-sources
+      prompt: Where do those figures come from today, and who puts them together?
+      kind: text
+
+- id: hr-operations
+  title: HR operations discovery
+  description: Questions about how the HR office runs its work today, from planning positions to separation and reporting. They ask about the office’s tools and steps, never about individual employees, applicants, or cases. Answers point to capabilities and example patterns worth exploring.
+  questions:
+    - id: hr-core-system
+      prompt: Where does the agency process personnel actions today?
+      kind: single-choice
+      options:
+        - shared-service: An HR shared service provider’s system
+        - department: The department’s own HR system
+        - agency-system: A system the agency runs itself
+      points:
+        - when: [ shared-service, department, agency-system ]
+          to: [ capability:personnel-action-processing, implementationPattern:core-hr-system ]
+          why: Every agency is moving to the government-wide core HR system, so its data, connections, and staff need preparing for its wave.
+    - id: hr-core-wave
+      prompt: Does the office know when the agency moves to the government-wide core HR system?
+      kind: boolean
+      points:
+        - when: false
+          to: implementationPattern:core-hr-system
+          why: Agencies were asked to pause their own core HR projects and prepare data and connections now, so knowing the wave shapes what to work on first.
+    - id: hr-position-data
+      prompt: Where does the office keep position data, such as each position’s classification, organization, and funding?
+      kind: single-choice
+      options:
+        - core-system: In the core HR system, as records of their own
+        - separate-tool: In a separate position management tool
+        - spreadsheets: In spreadsheets and documents
+      points:
+        - when: [ separate-tool, spreadsheets ]
+          to: [ capability:workforce-position-management, implementationPattern:core-hr-system ]
+          why: Positions kept apart from the core record drift from it, and the staffing plan and approvals depend on them.
+    - id: hr-vacancy-approvals
+      prompt: How are vacancies approved by the Strategic Hiring Committee and tracked against the staffing plan?
+      kind: single-choice
+      options:
+        - in-system: Requests and approvals in a system, tracked against the plan
+        - email: By email and memos, tracked in spreadsheets
+        - not-yet: The process is still being set up
+      points:
+        - when: [ email, not-yet ]
+          to: [ capability:workforce-position-management, requirement:approve-each-vacancy, implementationPattern:workforce-analytics ]
+          why: Approvals tracked by hand make it hard to see where each request stands and how hiring compares with the plan.
+    - id: hr-assessments
+      prompt: How do most hiring actions rank applicants today?
+      kind: single-choice
+      options:
+        - technical: Technical or alternative assessments, such as USA Hire or structured interviews
+        - mixed: Some technical assessments, some self-assessments
+        - self-assessment: Mostly self-assessment questionnaires
+      points:
+        - when: [ mixed, self-assessment ]
+          to: [ capability:recruitment-hiring, requirement:assess-before-certifying, implementationPattern:usa-staffing-hiring ]
+          why: The Merit Hiring Plan requires a technical or alternative assessment before the certificate and ends ranking by self-assessment.
+    - id: hr-shared-certificates
+      prompt: Does the office share certificates or talent pools across offices or agencies?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:recruitment-hiring, implementationPattern:usa-staffing-hiring ]
+          why: Sharing one assessment across several hires is among the quickest ways to cut time to hire.
+    - id: hr-onboarding
+      prompt: How does onboarding move from the tentative offer to the first day?
+      kind: single-choice
+      options:
+        - connected: An onboarding system connected to vetting, E-Verify, and credentials
+        - partly: An onboarding system, with vetting and credentials handled separately
+        - manual: Email, PDFs, and spreadsheets
+      points:
+        - when: [ partly, manual ]
+          to: [ capability:onboarding-vetting, implementationPattern:onboarding-connections ]
+          why: Start dates slip when vetting, credentials, and paperwork aren’t tracked together.
+    - id: hr-action-errors
+      prompt: Does the office regularly fix errors that OPM returns from its screening of the agency’s data?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:personnel-records-reporting, requirement:report-workforce-data, implementationPattern:eopf-and-ehri ]
+          why: Errors left in the data reach retirement calculations and the public workforce figures.
+    - id: hr-pay-errors
+      prompt: What most often causes pay errors?
+      kind: single-choice
+      options:
+        - late-actions: Personnel actions processed late
+        - time: Time and attendance errors
+        - coding: Actions coded wrongly
+        - rare: Pay errors are rare
+      points:
+        - when: [ late-actions, coding ]
+          to: [ capability:personnel-action-processing, requirement:approve-by-effective-date ]
+          why: Actions that are late or coded wrongly reach payroll wrong, and become debts the employee has to repay.
+        - when: time
+          to: [ capability:pay-leave-administration, implementationPattern:federal-payroll-provider ]
+          why: Time and attendance errors are fixed best where time is approved, before payroll runs.
+    - id: hr-retirements
+      prompt: Do HR specialists prepare every retirement application in OPM’s Online Retirement Application?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:benefits-retirement, requirement:submit-retirements-online, implementationPattern:online-retirement-application ]
+          why: OPM’s online system replaces the paper process, and applications prepared there reach OPM sooner and complete.
+    - id: hr-performance-tool
+      prompt: Where are performance plans and ratings kept?
+      kind: single-choice
+      options:
+        - online: In an online performance tool
+        - documents: In documents and email
+        - paper: On paper forms
+      points:
+        - when: [ documents, paper ]
+          to: [ capability:performance-management, implementationPattern:performance-appraisal-system ]
+          why: Plans and ratings outside a system are hard to check against OPM’s distribution cap before they’re final.
+    - id: hr-probation-tracking
+      prompt: Does the office track each probationer’s end date and certification decision in a system?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:performance-management, requirement:certify-probationers ]
+          why: Without a timely certification, the employee’s service ends with the probationary period.
+    - id: hr-er-cases
+      prompt: How are conduct and performance cases tracked?
+      kind: single-choice
+      options:
+        - case-system: In a case system, with deadlines and documents
+        - spreadsheet: In a spreadsheet, with documents on a shared drive
+        - varies: It varies by specialist
+      points:
+        - when: [ spreadsheet, varies ]
+          to: [ capability:employee-relations-conduct, implementationPattern:shared-case-platform ]
+          why: Missed notice periods and scattered evidence are common reasons actions don’t hold up on appeal.
+    - id: hr-rif-registers
+      prompt: How would the office build retention registers if it had a reduction in force?
+      kind: single-choice
+      options:
+        - tool: With a tool that applies OPM’s current rules from the core HR data
+        - spreadsheets: In spreadsheets, from extracts
+        - not-sure: Not sure
+      points:
+        - when: [ spreadsheets, not-sure ]
+          to: [ capability:separations-reshaping, requirement:give-rif-notice, implementationPattern:workforce-analytics ]
+          why: OPM’s rules changed in September 2026, and registers built by hand are where ranking errors creep in.
+    - id: hr-ai-use
+      prompt: Is AI used in HR work today, and for what?
+      kind: single-choice
+      options:
+        - drafting: To draft documents and answer policy questions
+        - decisions: To help screen applicants, or suggest ratings or actions
+        - none: Not yet
+      points:
+        - when: drafting
+          to: implementationPattern:hr-ai-drafting
+          why: Drafting help works best with OPM’s current guides as reference material and specialists checking each draft.
+        - when: decisions
+          to: implementationPattern:hr-ai-drafting
+          why: AI that helps decide hiring, pay, ratings, or discipline is presumed high-impact under OMB’s AI memo, with practices required before use.
+    - id: hr-yearly-actions
+      prompt: About how many personnel actions does the office process in a year?
+      kind: number
+    - id: hr-hardest-part
+      prompt: What’s the hardest part of the office’s work today?
+      kind: text

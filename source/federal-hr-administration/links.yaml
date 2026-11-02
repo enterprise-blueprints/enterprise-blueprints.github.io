@@ -1,0 +1,18 @@
+# Links from elements of the packages this one builds on, such as a shared capability
+# that contributes to one of this package's outcomes.
+
+- from: capability:case-management
+  contributes_to: [ actions-hold-up ]
+  candidate_pattern:
+    - onboarding-connections
+
+- from: capability:records-management
+  contributes_to: [ actions-correct-on-time, actions-hold-up ]
+  candidate_pattern:
+    - eopf-and-ehri
+
+- from: capability:identity-access-management
+  contributes_to: [ new-hires-vetted-promptly ]
+
+- from: capability:data-protection-privacy
+  contributes_to: [ workforce-data-public ]

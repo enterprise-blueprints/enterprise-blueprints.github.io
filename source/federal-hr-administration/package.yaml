@@ -1,0 +1,21 @@
+# The package itself. Its version and date are set when it is built (pnpm content:build).
+
+schemaVersion: 0.6.0
+packageId: org.enterprise-blueprints.federal-hr-administration
+idPrefix: eb
+title: HR Administration — Hiring, Paying, and Supporting the Federal Civilian Workforce
+description: "U.S. federal civilian human resources blueprint: one mission with the outcomes it seeks and ways to measure them, ten capabilities from position management through separation and workforce reporting, with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for HR results and for HR operations. It follows Title 5 of the U.S. Code and OPM’s rules, including the 2025 Merit Hiring Plan and the move to one government-wide core HR system, and builds on Common Capabilities for case management, records, identity and access, and data protection."
+publisher:
+  name: Enterprise Blueprints (independent reference project)
+  url: https://enterprise-blueprints.github.io
+license: MIT
+domain: public-sector
+jurisdictions:
+  - United States — federal executive agencies with civilian employees under Title 5
+tags:
+  - human-resources
+  - human-capital
+  - hiring
+  - personnel-actions
+  - reference-architecture
+dependencies: [ common ]

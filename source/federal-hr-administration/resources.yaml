@@ -1,0 +1,84 @@
+# Resources, in the order the pages show them, each with what it helps with.
+# The library links only to free resources from government, standards bodies,
+# nonprofits, and universities.
+
+- id: merit-hiring-plan-resources
+  title: Merit Hiring Plan resources
+  kind: guide
+  by: Office of Personnel Management
+  url: https://www.opm.gov/policy-data-oversight/hiring-information/merit-hiring-plan-resources/
+  lastReviewedAt: 2026-11-02
+  description: Guidance, FAQs, and fact sheets for putting the Merit Hiring Plan in place, on applications, assessments, pooled hiring, and Rule of Many ranking, with a webinar series and templates such as a sample Rule of Many policy.
+  helps_with: [ mission:administering-the-civilian-workforce, capability:recruitment-hiring, { to: implementationPattern:usa-staffing-hiring, way: usa-staffing } ]
+
+- id: assessment-and-selection
+  title: Assessment and selection
+  kind: guide
+  by: Office of Personnel Management
+  url: https://www.opm.gov/policy-data-oversight/assessment-and-selection/
+  lastReviewedAt: 2026-11-02
+  description: How to assess applicants, from job analysis and competencies to structured interviews and other assessment methods, and how to design an assessment strategy for a position.
+  helps_with: [ capability:recruitment-hiring, requirement:assess-before-certifying ]
+
+- id: classification-qualifications
+  title: Classification and qualifications
+  kind: guide
+  by: Office of Personnel Management
+  url: https://www.opm.gov/policy-data-oversight/classification-qualifications/
+  lastReviewedAt: 2026-11-02
+  description: OPM’s grading criteria for the General Schedule and Federal Wage System, draft standards, classification flysheets, and the government-wide qualification standards, for anyone classifying positions or writing job requirements.
+  helps_with: [ capability:workforce-position-management, requirement:classify-positions, implementationPattern:hr-ai-drafting ]
+
+- id: guide-to-processing-personnel-actions
+  title: Guide to Processing Personnel Actions
+  kind: guide
+  by: Office of Personnel Management
+  url: https://www.opm.gov/policy-data-oversight/data-analysis-documentation/personnel-documentation/
+  lastReviewedAt: 2026-11-02
+  description: OPM’s instructions for preparing personnel actions and keeping the Official Personnel Folder, revised as rules change, alongside the Guide to Personnel Recordkeeping.
+  helps_with: [ capability:personnel-action-processing, capability:personnel-records-reporting ]
+
+- id: ora-hr-specialist-guide
+  title: Online Retirement Application — Human Resources Specialist Guide
+  kind: guide
+  by: Office of Personnel Management
+  url: https://www.opm.gov/retirement-center/retirement-quick-guide/ora-hr-specialist-guide.pdf
+  lastReviewedAt: 2026-11-02
+  description: A 2025 step-by-step guide for HR specialists using OPM’s Online Retirement Application, from creating the applicant’s profile through the pre-application and the certified summary of service to sending the package to payroll.
+  helps_with: [ capability:benefits-retirement, implementationPattern:online-retirement-application ]
+
+- id: performance-management-resources
+  title: Performance management
+  kind: guide
+  by: Office of Personnel Management
+  url: https://www.opm.gov/policy-data-oversight/performance-management/
+  lastReviewedAt: 2026-11-02
+  description: OPM’s Performance Management Playbook for agency leaders, toolkits for managers and employees, and the memos and rules on rating patterns and distribution, including the 2026 changes.
+  helps_with: [ capability:performance-management ]
+
+- id: employee-relations-resources
+  title: Employee relations
+  kind: guide
+  by: Office of Personnel Management
+  url: https://www.opm.gov/policy-data-oversight/employee-relations/
+  lastReviewedAt: 2026-11-02
+  description: The laws, rules, and precedents for addressing conduct and performance, including adverse and performance-based actions, appeals, and alternative dispute resolution, with training and an interagency network of employee relations managers.
+  helps_with: [ capability:employee-relations-conduct ]
+
+- id: reductions-in-force
+  title: Reductions in force
+  kind: guide
+  by: Office of Personnel Management
+  url: https://www.opm.gov/policy-data-oversight/workforce-restructuring/reductions-in-force/
+  lastReviewedAt: 2026-11-02
+  description: A summary of the reduction in force rules, the notice employees must receive, a guide to pay, leave, and benefits for employees, and handbooks for agencies.
+  helps_with: [ capability:separations-reshaping ]
+
+- id: federal-workforce-data
+  title: Federal Workforce Data
+  kind: dataset
+  by: Office of Personnel Management
+  url: https://data.opm.gov/
+  lastReviewedAt: 2026-11-02
+  description: OPM’s open data site on the federal civilian workforce, updated monthly, with employment, hiring, separations, pay, location, and demographics to explore and download. It replaced FedScope in January 2026.
+  helps_with: [ capability:personnel-records-reporting, implementationPattern:workforce-analytics ]

@@ -1,0 +1,141 @@
+# Capabilities, in the order the pages show them, each with the links it holds.
+
+- id: workforce-position-management
+  title: Workforce & Position Management
+  stage: plan-prepare
+  description: Ability to plan the staff the agency needs each year, keep each position as a record with its organization, classification, and funding, classify positions against OPM’s standards, and get the approvals each new or vacant position needs before it’s filled.
+  sources: [ eo-14356-guidance, classification-5-usc-5107 ]
+  applicabilityNotes: Since October 2025, each agency’s Strategic Hiring Committee approves the creation or filling of every vacancy against the agency’s Annual Staffing Plan. Many agencies keep position data in a separate tool today; the government-wide core HR system includes position management.
+  contributes_to: [ positions-filled-on-time, hiring-on-merit ]
+  satisfies: [ approve-each-vacancy, classify-positions ]
+  candidate_pattern:
+    - core-hr-system
+    - to: workforce-analytics
+      coverage: partial
+      note: Tracks hiring against the staffing plan and shows where retirements and departures will open gaps.
+    - to: hr-ai-drafting
+      coverage: partial
+      note: Drafts position descriptions and job analyses for classifiers to check and finish.
+
+- id: recruitment-hiring
+  title: Recruitment & Hiring
+  stage: reach-take-in
+  description: Ability to announce vacancies on USAJOBS, assess applicants with validated, skills-based assessments, rank them by score with veterans’ preference, issue certificates to hiring managers, and make offers, sharing certificates and talent pools across offices and agencies.
+  sources: [ merit-hiring-plan, vacancies-5-usc-3327, veterans-preference-5-usc-3309, rule-of-many ]
+  applicabilityNotes: Excepted service and special hiring authorities, such as for veterans or people with disabilities, follow their own rules. Agencies had to comply with the Rule of Many by March 9, 2026.
+  contributes_to: [ positions-filled-on-time, hiring-on-merit ]
+  satisfies: [ announce-vacancies, assess-before-certifying, rank-with-veterans-preference ]
+  candidate_pattern:
+    - usa-staffing-hiring
+    - to: hr-ai-drafting
+      coverage: partial
+      note: Drafts job announcements and interview questions from the job analysis. It doesn’t screen, rate, or rank applicants.
+
+- id: onboarding-vetting
+  title: Onboarding & Vetting
+  stage: assess-decide
+  description: Ability to designate each position’s risk and sensitivity, start each selectee’s background investigation and credential, verify their eligibility to work, and bring them on board ready to work on their first day.
+  sources: [ suitability-5-cfr-731, form-i9-8-cfr-274a-2, merit-hiring-plan ]
+  applicabilityNotes: Agencies with delegated investigative authority run some of their own background investigations. Reciprocity lets a previously vetted person start sooner, and the Merit Hiring Plan asks for vetting within 3 days when it applies.
+  contributes_to: [ new-hires-vetted-promptly, positions-filled-on-time ]
+  satisfies: [ designate-position-risk, verify-employment-eligibility, vet-within-goals ]
+  candidate_pattern:
+    - onboarding-connections
+
+- id: personnel-action-processing
+  title: Personnel Action Processing
+  stage: deliver-operate
+  description: Ability to request, approve, and process each personnel action, such as an appointment, promotion, reassignment, or change in pay, coded as OPM’s guide directs, approved by its effective date, and sent to payroll and the employee’s record.
+  sources: [ gppa ]
+  applicabilityNotes: Most agencies process actions through an HR shared service provider or a department system today, and will move to the government-wide core HR system in their wave.
+  contributes_to: [ actions-correct-on-time, employees-paid-correctly ]
+  satisfies: [ approve-by-effective-date, notify-employees-of-actions ]
+  candidate_pattern:
+    - core-hr-system
+
+- id: pay-leave-administration
+  title: Pay & Leave Administration
+  stage: deliver-operate
+  description: Ability to record and approve each employee’s time and leave, pay them correctly each pay period from their personnel actions, and, when someone is overpaid, give the notice and choices the law requires before collecting.
+  sources: [ pay-debts-5-usc-5514 ]
+  applicabilityNotes: A federal payroll provider calculates and pays salaries for most agencies. The agency owns the personnel actions and approved time that payroll runs on.
+  contributes_to: [ employees-paid-correctly ]
+  satisfies: [ notice-before-pay-debt-collection ]
+  candidate_pattern:
+    - federal-payroll-provider
+    - to: core-hr-system
+      coverage: partial
+      note: Records time and attendance and sends personnel actions to payroll. Pay itself is calculated by the payroll provider.
+
+- id: benefits-retirement
+  title: Benefits & Retirement
+  stage: deliver-operate
+  description: Ability to offer new employees their benefits, such as health and life insurance and the Thrift Savings Plan, within their enrollment periods, counsel employees nearing retirement, and prepare and certify each retirement application to OPM.
+  sources: [ fehb-5-cfr-890-301, online-retirement-application ]
+  applicabilityNotes: OPM decides retirement eligibility and pays annuities; the agency prepares the application, certifies the service history, and sends it on through payroll.
+  contributes_to: [ retirements-without-delay ]
+  satisfies: [ offer-enrollment-in-time, submit-retirements-online ]
+  candidate_pattern:
+    - online-retirement-application
+    - to: core-hr-system
+      coverage: partial
+      note: Employees enroll and update benefits through self-service. Retirement applications are prepared in OPM’s online system.
+
+- id: performance-management
+  title: Performance Management
+  stage: monitor-correct
+  description: Ability to give each employee a performance plan at the start of the appraisal period, check in during it, rate them against it at the end within OPM’s rating distribution, and certify each probationer’s continued employment before the probationary period ends.
+  sources: [ appraisal-5-usc-4302, appraisal-5-cfr-430, probation-5-cfr-11-5 ]
+  applicabilityNotes: Agencies must move to OPM’s new rating patterns and apply its distribution caps by January 1, 2027. Senior Executive Service ratings follow their own rules.
+  contributes_to: [ performance-managed, actions-hold-up ]
+  satisfies: [ communicate-performance-plans, rate-within-distribution, certify-probationers ]
+  candidate_pattern:
+    - performance-appraisal-system
+    - to: workforce-analytics
+      coverage: partial
+      note: Shows plans and ratings due or overdue, and ratings against the cap, by office.
+
+- id: employee-relations-conduct
+  title: Employee Relations & Conduct
+  stage: assess-decide
+  description: Ability to help managers address misconduct and poor performance, give employees an opportunity to improve where the law requires one, propose and decide adverse actions with the notice and reply the law requires, and keep the record that supports each action if it’s appealed.
+  sources: [ adverse-actions-5-usc-7513, appraisal-5-usc-4302 ]
+  applicabilityNotes: Agency counsel often advises on proposed actions. Collective bargaining agreements can add steps for employees in a bargaining unit.
+  contributes_to: [ actions-hold-up ]
+  satisfies: [ notice-and-reply-before-adverse-action, opportunity-to-improve ]
+  candidate_pattern:
+    - to: shared-case-platform
+      note: Each matter tracked as its own case, with its notices, deadlines, evidence, decision, and any appeal.
+    - to: letters-from-case-data
+      coverage: partial
+      note: Assembles proposal and decision letters from the case, for the manager and counsel to review.
+
+- id: separations-reshaping
+  title: Separations & Workforce Reshaping
+  stage: report-close
+  description: Ability to process each resignation, retirement, removal, and reduction in force with the right notices, final pay, and clearance, and, in a reduction in force, rank employees by the retention factors in OPM’s rules.
+  sources: [ rif-5-cfr-351, rif-rule-2026 ]
+  applicabilityNotes: OPM rewrote its reduction in force rules for notices issued on or after September 2, 2026, ranking employees by performance credit with veterans’ preference within each tenure group, with length of service as the tie-breaker.
+  contributes_to: [ actions-correct-on-time, actions-hold-up ]
+  satisfies: [ give-rif-notice ]
+  candidate_pattern:
+    - to: core-hr-system
+      coverage: partial
+      note: Processes separation actions and sends final pay information to payroll. Retention registers for a reduction in force often need a separate tool.
+    - to: workforce-analytics
+      coverage: partial
+      note: Builds retention registers from the core HR data, for HR specialists to check.
+
+- id: personnel-records-reporting
+  title: Personnel Records & Workforce Reporting
+  stage: report-close
+  description: Ability to keep one Official Personnel Folder for each employee, move it with them between agencies and to the National Archives when they leave, and report the agency’s workforce data to OPM accurately and on schedule.
+  sources: [ personnel-records-5-cfr-293, grs-2-2, workforce-information-5-cfr-9, ehri ]
+  applicabilityNotes: OPM runs the electronic Official Personnel Folder and EHRI for most agencies. The government-wide core HR system is meant to replace both once agencies have moved to it.
+  contributes_to: [ workforce-data-public, actions-correct-on-time ]
+  satisfies: [ keep-one-personnel-folder, report-workforce-data ]
+  candidate_pattern:
+    - eopf-and-ehri
+    - to: workforce-analytics
+      coverage: partial
+      note: Checks the data before it’s sent and finds errors OPM returns.

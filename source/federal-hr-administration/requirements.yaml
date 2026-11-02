@@ -1,0 +1,127 @@
+# Requirements, in the order the pages show them, each with the links it holds.
+
+- id: approve-each-vacancy
+  title: Get each new or vacant position approved before filling it
+  kind: checks-controls
+  description: Have the agency’s Strategic Hiring Committee approve the creation or filling of each vacancy, consistent with the Annual Staffing Plan prepared with OMB and OPM at the start of each fiscal year, and notify OPM promptly in writing of approved hires.
+  sources: [ eo-14356-guidance ]
+
+- id: classify-positions
+  title: Classify each position against OPM’s standards
+  kind: decisions-on-record
+  description: Place each position in its class and grade in conformance with the standards OPM publishes, and record the classification that pay and personnel actions rest on.
+  sources: [ classification-5-usc-5107 ]
+
+- id: announce-vacancies
+  title: Announce vacancies open to applicants from outside the government
+  kind: transparency-reporting
+  description: Notify OPM promptly of each competitive service vacancy for which the agency seeks applications from outside the federal service, and say when applications will be accepted.
+  sources: [ vacancies-5-usc-3327 ]
+
+- id: assess-before-certifying
+  title: Use at least one technical or alternative assessment before the certificate
+  kind: fairness-due-process
+  description: Include at least one technical or alternative assessment in every competitive hiring process before the certificate is issued, tell applicants how they’ll be assessed, and use self-assessments only for minimum qualifications and eligibility.
+  sources: [ merit-hiring-plan ]
+
+- id: rank-with-veterans-preference
+  title: Rank candidates by score, with veterans’ preference
+  kind: fairness-due-process
+  description: Add 5 or 10 points to the passing scores of preference eligibles as the law provides, rank candidates in score order, and certify the number the agency’s Rule of Many method sets.
+  sources: [ veterans-preference-5-usc-3309, rule-of-many ]
+
+- id: designate-position-risk
+  title: Designate each position’s risk level
+  kind: checks-controls
+  description: Designate each covered position at high, moderate, or low risk, so each person is investigated to the level the position needs, and enroll employees in continuous vetting.
+  sources: [ suitability-5-cfr-731 ]
+
+- id: verify-employment-eligibility
+  title: Verify each new employee’s eligibility to work within 3 business days
+  kind: checks-controls
+  description: Have each new employee complete Section 1 of Form I-9 at the time of hire, and examine their documents and complete Section 2 within three business days of the hire.
+  sources: [ form-i9-8-cfr-274a-2 ]
+
+- id: vet-within-goals
+  title: Complete vetting within the government’s timeliness goals
+  kind: timeliness
+  description: Aim to finish vetting within 21 days for low-risk positions, 25 days for non-sensitive moderate-risk positions, and 45 days for top secret, and within 3 days when reciprocity applies, using preliminary determinations where allowed.
+  sources: [ merit-hiring-plan ]
+
+- id: approve-by-effective-date
+  title: Approve each personnel action by its effective date
+  kind: timeliness
+  description: Have an appointing officer approve most personnel actions on or before their effective dates, since no action can take effect before it’s approved except as OPM’s guide allows, and code each one as the guide directs.
+  sources: [ gppa ]
+
+- id: notify-employees-of-actions
+  title: Tell each employee about every personnel action taken on them
+  kind: decisions-on-record
+  description: Give employees an SF-50 for appointments, conversions, and separations, and an electronic or paper notice they can print for other actions, without making them ask whether an action was processed.
+  sources: [ gppa ]
+
+- id: notice-before-pay-debt-collection
+  title: Give notice and choices before collecting an overpayment from pay
+  kind: fairness-due-process
+  description: Give at least 30 days’ written notice of the debt and the plan to collect it from pay, a chance to inspect the records, to agree a repayment schedule, and to request a hearing, and deduct no more than 15 percent of disposable pay without consent.
+  sources: [ pay-debts-5-usc-5514 ]
+
+- id: offer-enrollment-in-time
+  title: Let new employees enroll in health benefits within 60 days
+  kind: service-access
+  description: Give each newly eligible employee the information and chance to enroll in the Federal Employees Health Benefits Program, or not, within 60 days after they become eligible.
+  sources: [ fehb-5-cfr-890-301 ]
+
+- id: submit-retirements-online
+  title: Prepare and certify retirement applications in OPM’s online system
+  kind: service-access
+  description: Start each retirement application in OPM’s Online Retirement Application, review the employee’s documents, certify the summary of service, and send the package through payroll to OPM.
+  sources: [ online-retirement-application ]
+
+- id: communicate-performance-plans
+  title: Give each employee a performance plan at the start of the appraisal period
+  kind: fairness-due-process
+  description: Communicate each employee’s critical elements and performance standards at the beginning of the appraisal period, normally within 30 days, and rate them against those standards at its end.
+  sources: [ appraisal-5-usc-4302, appraisal-5-cfr-430 ]
+
+- id: rate-within-distribution
+  title: Keep ratings within OPM’s distribution of rating levels
+  kind: checks-controls
+  description: Use one of OPM’s rating patterns, and keep the share of each covered population rated at the top levels within the cap OPM sets each year, which for 2026 is 40 percent at Levels 4 and 5 combined.
+  sources: [ appraisal-5-cfr-430, rating-distribution-fy2026 ]
+
+- id: certify-probationers
+  title: Certify each probationer before the probationary period ends
+  kind: decisions-on-record
+  description: Have the agency head or a designated official decide in writing, within the last 30 days of each probationary or trial period, whether the employee’s continued employment will advance the public interest; without that certification, the employee’s service ends with the period.
+  sources: [ probation-5-cfr-11-5 ]
+
+- id: notice-and-reply-before-adverse-action
+  title: Give 30 days’ notice and 7 days to reply before an adverse action
+  kind: fairness-due-process
+  description: Give the employee at least 30 days’ written notice with the specific reasons, at least 7 days to answer orally and in writing, the right to a representative, and a written decision with its reasons, except where the law allows a shorter notice.
+  sources: [ adverse-actions-5-usc-7513 ]
+
+- id: opportunity-to-improve
+  title: Give an opportunity to improve before acting on poor performance
+  kind: fairness-due-process
+  description: Help an employee whose performance is unacceptable to improve, and reassign, reduce in grade, or remove them for it only after an opportunity to demonstrate acceptable performance.
+  sources: [ appraisal-5-usc-4302 ]
+
+- id: give-rif-notice
+  title: Give at least 60 days’ notice before release in a reduction in force
+  kind: fairness-due-process
+  description: Give each employee released in a reduction in force specific written notice at least 60 full days before the release, or at least 30 days with OPM’s approval when the cause wasn’t foreseeable, with the retention factors the ranking used.
+  sources: [ rif-5-cfr-351, rif-rule-2026 ]
+
+- id: keep-one-personnel-folder
+  title: Keep one Official Personnel Folder for each employee
+  kind: decisions-on-record
+  description: Keep a single Official Personnel Folder, or its approved electronic equivalent, for each employee, with the records OPM’s rules require, and keep or transfer it as General Records Schedule 2.2 directs when the employee leaves.
+  sources: [ personnel-records-5-cfr-293, grs-2-2 ]
+
+- id: report-workforce-data
+  title: Report workforce data to OPM accurately and on schedule
+  kind: transparency-reporting
+  description: Send OPM the personnel action, status, payroll, and other workforce data it requires, in its data standards and on its schedule, and fix the errors its screening returns.
+  sources: [ workforce-information-5-cfr-9, ehri, gppa ]

@@ -1,0 +1,347 @@
+# Implementation patterns, in the order the pages show them, each with the links it holds.
+
+- id: core-hr-system
+  title: One Core HR System of Record
+  description: "An example architecture: one core human capital management system holds each employee’s record, each position, and each personnel action, gives managers and employees self-service, records time and attendance, and sends actions to payroll, benefits, retirement, and OPM."
+  sources: [ federal-hr-2-0, gppa ]
+  attributes:
+    layer: business-applications
+    parts:
+      - The employee record, from the job offer to separation, with each personnel action on it
+      - Positions as records of their own, with their organization, classification, funding, and approvals
+      - Requests for personnel actions from managers, routed for approval by the appointing officer before the effective date
+      - Self-service for employees and managers, such as changes of address, benefits, and direct deposit
+      - Time and attendance, approved by supervisors each pay period
+      - Connections to hiring, payroll, benefits, retirement, performance, and learning systems
+      - Reports and dashboards from the same records
+    strengths:
+      - One record for each employee and position, instead of copies in several systems
+      - Actions entered once reach payroll and OPM without retyping
+      - Workforce figures come from the system of record
+    fitsWhen:
+      - Every executive agency with civilian employees, since OMB and OPM are moving all of them to one system
+    watchFor:
+      - Moving decades of records needs early work on which data moves, which is kept elsewhere, and which is cleaned first
+      - Each agency-unique practice either fits the common system or has to be given up, so they need listing and deciding early
+      - Connections to payroll and other systems often take the most work
+    ways:
+      - id: federal-core-hcm
+        approach: platform
+        title: OPM’s government-wide core HR system
+        description: The single commercial core HR platform OMB and OPM are moving executive agencies onto under Federal HR 2.0, in two waves from fiscal year 2026, with government-wide adoption the goal by 2028.
+        strengths:
+          - One system across government, so employees moving between agencies keep one record
+          - It will make the separate eOPF and EHRI systems unnecessary over time
+        fitsWhen:
+          - The agency’s wave has begun, or it’s preparing data, connections, and staff for it
+        watchFor:
+          - Agencies were told to pause their own core HR purchases and projects, with exceptions only from the OMB and OPM Directors
+          - Military personnel and intelligence agencies aren’t included at first
+      - id: hr-shared-service
+        approach: platform
+        title: The agency’s current HR shared service provider
+        description: The core HR system the agency uses today through a federal HR shared service provider or its department, until its move to the government-wide system.
+        strengths:
+          - Already in place, with staff who know it
+        fitsWhen:
+          - The agency’s wave hasn’t begun yet
+        watchFor:
+          - Changes worth making now are the ones that also prepare for the move, such as cleaning data and documenting connections
+  depends_on:
+    - to: agency-sign-on
+      note: Employees and managers sign in through the agency, and HR roles follow its role groups.
+  works_with:
+    - to: federal-payroll-provider
+      note: Personnel actions and approved time flow to payroll each pay period.
+    - to: eopf-and-ehri
+      note: Actions and documents reach the electronic personnel folder and OPM’s workforce data.
+    - to: usa-staffing-hiring
+      note: Selections become new hire records and appointment actions.
+
+- id: usa-staffing-hiring
+  title: Hiring through USAJOBS and USA Staffing with Validated Assessments
+  description: "An example architecture: vacancies are posted on USAJOBS, applicants are assessed with validated, skills-based assessments, ranked by score with veterans’ preference, and certified to hiring managers in OPM’s USA Staffing, with talent pools and shared certificates reaching across offices and agencies."
+  sources: [ merit-hiring-plan, rule-of-many ]
+  attributes:
+    layer: public-facing
+    parts:
+      - Job announcements on USAJOBS that say how applicants will be assessed
+      - A short eligibility questionnaire, then technical assessments such as USA Hire, structured interviews, or work samples
+      - Scores with veterans’ preference points, ranked and certified by the agency’s Rule of Many method
+      - Talent pools and shared certificates, so one assessment can fill several positions
+      - Automatic notices to applicants at each stage
+      - Hiring data that shows time to hire and assessment use
+    strengths:
+      - Applicants find and apply for every job in one place
+      - Validated assessments rank on skills instead of how applicants rate themselves
+      - Shared certificates and talent pools cut the time to the next hire
+    fitsWhen:
+      - The agency still ranks applicants with self-assessments
+      - Several offices hire for the same kinds of positions
+    watchFor:
+      - Validated assessments exist for many job series but not all, so some need subject matter experts to build them
+      - OPM plans to merge USAJOBS and USA Staffing, so steps and connections may change
+    ways:
+      - id: usa-staffing
+        approach: platform
+        title: OPM’s USA Staffing
+        description: OPM’s talent acquisition system, used with USAJOBS and USA Hire, which the Merit Hiring Plan asks agencies to use.
+        strengths:
+          - Built for federal hiring rules and OPM’s hiring data
+          - Shared certificates and talent pools work across agencies that use it
+        fitsWhen:
+          - Most agencies, especially those changing how they assess applicants
+        watchFor:
+          - Each agency still sets up its own assessments, ranking method, and approvals
+      - id: talent-acquisition-product
+        approach: product
+        title: A talent acquisition product connected to USAJOBS
+        description: A commercial talent acquisition product that posts to USAJOBS and sends hiring data to OPM.
+        strengths:
+          - Can suit agencies with unusual hiring authorities or very high volume
+        fitsWhen:
+          - The agency already runs one and it meets the Merit Hiring Plan’s steps
+        watchFor:
+          - Shared certificates and OPM’s hiring data are harder outside USA Staffing
+  works_with:
+    - to: onboarding-connections
+      note: Each tentative offer starts onboarding and vetting.
+    - to: workforce-analytics
+      note: Time to hire and assessment use feed the agency’s reports.
+
+- id: onboarding-connections
+  title: Onboarding Connected to Vetting, E-Verify, and Credentials
+  description: "An example architecture: each tentative offer starts one onboarding case that sends the selectee’s forms to the background investigation system, checks employment eligibility through E-Verify, orders the identity credential, and tracks each step to the first day."
+  sources: [ merit-hiring-plan, form-i9-8-cfr-274a-2, suitability-5-cfr-731 ]
+  attributes:
+    layer: connections
+    parts:
+      - An onboarding case for each selectee, opened from the tentative offer
+      - Investigation forms sent to the background investigation system, with the position’s risk designation
+      - Form I-9 completed online, with E-Verify checks
+      - Identity credential and system accounts ordered once vetting allows
+      - Status for the selectee, the hiring manager, and HR at each step
+    strengths:
+      - Selectees fill in each form once
+      - Everyone can see what’s holding up a start date
+      - Vetting starts the day the offer is made
+    fitsWhen:
+      - Onboarding runs on email, PDFs, and spreadsheets
+      - Start dates often slip while vetting and credentials catch up
+    watchFor:
+      - Each connection to a vetting or credential system needs approval and keeping up
+      - Preliminary determinations and reciprocity rules need to be set up correctly to save time
+    ways:
+      - id: talent-acquisition-onboarding
+        approach: platform
+        title: The talent acquisition system’s onboarding
+        description: The onboarding features of the agency’s talent acquisition system, connected to the vetting, E-Verify, and credentialing systems.
+        strengths:
+          - Picks up where the hiring action ends, with no retyping
+        fitsWhen:
+          - The agency uses USA Staffing or a product with onboarding
+        watchFor:
+          - Connections the Merit Hiring Plan names, such as to background investigations and credentials, may still need building
+  works_with:
+    - to: core-hr-system
+      note: The completed onboarding becomes the appointment action and the employee record.
+    - to: agency-sign-on
+      note: Accounts and credentials are issued as the new employee joins.
+
+- id: federal-payroll-provider
+  title: Payroll from a Federal Payroll Provider
+  description: "An example architecture: a federal payroll provider calculates each employee’s pay every pay period from the agency’s personnel actions and approved time, pays salaries, withholds taxes and benefits, and manages pay debts with the notices the law requires."
+  sources: [ pay-debts-5-usc-5514 ]
+  attributes:
+    layer: connections
+    parts:
+      - Personnel actions and approved time received from the core HR system each pay period
+      - Pay, deductions, and leave balances calculated and paid
+      - Earnings and leave statements for employees
+      - Overpayments found, with debt notices, repayment agreements, and hearing requests handled
+      - Payroll data sent to OPM and to the agency’s financial system
+    strengths:
+      - Payroll rules and tax changes are kept up by the provider for many agencies
+      - The agency doesn’t run its own payroll system
+    fitsWhen:
+      - Most executive agencies, which pay employees through one of a few federal payroll providers
+    watchFor:
+      - Late or wrong personnel actions are the most common cause of pay errors, so the hand-off from HR needs watching
+      - Changes to the core HR system need testing with the payroll provider before they go live
+    ways:
+      - id: payroll-provider
+        approach: platform
+        title: The agency’s federal payroll provider
+  works_with:
+    - to: core-hr-system
+    - to: online-retirement-application
+      note: Payroll certifies pay and leave information on each retirement application.
+
+- id: online-retirement-application
+  title: Retirement Applications through OPM’s Online Retirement Application
+  description: "An example architecture: HR starts each retirement application in OPM’s Online Retirement Application, prefilled from EHRI and eOPF data, the employee completes it online, HR reviews and certifies the summary of service, and payroll certifies its part before the package goes to OPM."
+  sources: [ online-retirement-application ]
+  attributes:
+    layer: connections
+    parts:
+      - Applications started by HR with the employee’s email, prefilled with service history, salary, and sick leave from EHRI and eOPF
+      - Documents uploaded by the employee and reviewed by HR
+      - A summary of service certified by HR
+      - Payroll’s certification, then submission to OPM
+      - One view of each application’s status for the employee, HR, and payroll
+    strengths:
+      - Replaces the paper process, so applications reach OPM sooner and complete
+      - Prefilled data cuts errors in service and salary history
+      - Everyone sees the same status
+    fitsWhen:
+      - Every agency whose employees retire under the federal retirement systems
+    watchFor:
+      - Prefilled data is only as good as the agency’s records, so gaps in service history still need finding early
+      - HR specialists and payroll staff need access and training before a wave of retirements
+    ways:
+      - id: ora
+        approach: platform
+        title: OPM’s Online Retirement Application
+  depends_on:
+    - to: eopf-and-ehri
+      note: Applications are prefilled from EHRI and eOPF data.
+
+- id: eopf-and-ehri
+  title: Electronic Personnel Folders and Workforce Data through OPM
+  description: "An example architecture: each employee’s Official Personnel Folder is kept electronically in OPM’s eOPF, and the agency’s personnel action, status, and payroll data reach OPM’s Enterprise Human Resources Integration warehouse on schedule, screened and corrected, for OPM’s reports and public data."
+  sources: [ ehri, personnel-records-5-cfr-293, grs-2-2 ]
+  attributes:
+    layer: data-records
+    parts:
+      - An electronic personnel folder for each employee, with documents filed as OPM’s recordkeeping guide directs
+      - Folders that move with employees between agencies, and to the National Personnel Records Center when they leave
+      - Regular submissions of personnel action, status, and payroll data to EHRI in OPM’s data standards
+      - Error lists returned by OPM, worked and corrected at the source
+      - Data that feeds OPM’s retirement processing and its public Federal Workforce Data site
+    strengths:
+      - One folder for each employee across their federal career
+      - The agency’s data reaches OPM’s reports and the public without a separate effort
+    fitsWhen:
+      - Every agency, until the government-wide core HR system replaces these systems
+    watchFor:
+      - Errors fixed in EHRI but not in the agency’s own system come back next time
+      - OMB and OPM plan to retire eOPF and EHRI once the core HR system is in place, so new connections to them should be few
+    ways:
+      - id: opm-systems
+        approach: platform
+        title: OPM’s eOPF and EHRI
+  works_with:
+    - to: records-in-business-systems
+      note: Personnel records follow General Records Schedule 2.2.
+
+- id: performance-appraisal-system
+  title: Performance Plans and Appraisals Online
+  description: "An example architecture: performance plans, check-ins, and ratings are kept online, plans go to employees at the start of the appraisal period, ratings are checked against OPM’s distribution cap before they’re final, and ratings of record reach the core HR system and personnel folder."
+  sources: [ appraisal-5-cfr-430, rating-distribution-fy2026 ]
+  attributes:
+    layer: worker-productivity
+    parts:
+      - Performance plans with critical elements and standards, built from templates for each kind of position
+      - Acknowledgment by each employee at the start of the period, and check-ins during it
+      - Ratings proposed by supervisors and reviewed by higher-level officials
+      - A view of proposed ratings against OPM’s cap, by covered population, before ratings are final
+      - Ratings of record sent to the core HR system, the personnel folder, and awards
+      - Probationers’ end dates, with reminders for each certification decision
+    strengths:
+      - Plans and ratings are on time and in one place
+      - Leaders can see the distribution before ratings are final, not after
+      - Ratings flow to awards and to reduction in force retention without retyping
+    fitsWhen:
+      - Plans and ratings are kept on paper or in documents
+      - The agency needs to change rating patterns and apply the cap by January 2027
+    watchFor:
+      - Templates help consistency but can make standards too general to rate against
+      - Probationary certifications have a hard deadline, so reminders need an owner
+    ways:
+      - id: hr-provider-module
+        approach: platform
+        title: The HR provider’s performance tool
+        description: The performance management tool the agency’s HR shared service provider or department offers, connected to its core HR system.
+        strengths:
+          - Shares data with the core HR system the agency already uses
+        fitsWhen:
+          - The provider’s tool supports OPM’s current rating patterns
+        watchFor:
+          - The connection to the government-wide core HR system will need building when the agency moves
+      - id: product
+        approach: product
+        title: A performance management product
+        description: A performance management product configured for OPM’s rules and connected to the core HR system.
+        strengths:
+          - Can offer better check-ins and goal setting than a basic tool
+        fitsWhen:
+          - The agency’s current tool can’t meet the new rules
+        watchFor:
+          - Another product to buy and keep up, and to connect to the core HR system
+  works_with:
+    - to: core-hr-system
+      note: Ratings of record are saved on the employee’s record.
+
+- id: hr-ai-drafting
+  title: AI Help Drafting HR Documents and Answering Policy Questions
+  description: "An example architecture: HR specialists and managers use an AI model, in an environment the agency approves, to draft position descriptions, job analyses, announcements, and interview questions from OPM’s standards and the agency’s templates, and to find answers in OPM’s guides, and then check and finish each draft themselves. It isn’t used to screen, rate, or rank applicants or employees."
+  sources: [ omb-m-25-21, nist-ai-rmf ]
+  attributes:
+    layer: ai-insights
+    parts:
+      - An AI model in an environment the agency has approved for HR information
+      - OPM’s classification and qualification standards, its processing and recordkeeping guides, and the agency’s templates as reference material
+      - Drafts shown with the sources they drew on
+      - HR specialists and managers who check, correct, and approve each draft
+      - Rules that keep the model away from decisions about people, such as screening applicants or proposing ratings
+    strengths:
+      - Specialists start from a draft instead of a blank page
+      - Answers point to the guide and section they came from
+      - Managers can get help writing clear job requirements before they reach HR
+    fitsWhen:
+      - Writing position descriptions and announcements takes much of the time to hire
+      - HR specialists field many routine policy questions
+    watchFor:
+      - Drafts can be wrong or cite rules that have changed, as many did in 2025 and 2026, so specialists check each one
+      - Using AI to decide the terms of someone’s employment, such as hiring, pay, ratings, or discipline, is presumed high-impact under OMB’s AI memo
+      - The agency’s AI governance may require a listing in its AI use case inventory first
+    ways:
+      - id: platform
+        approach: platform
+        title: An AI model the agency approves
+
+- id: workforce-analytics
+  title: Workforce Analytics from Core HR Data
+  description: "An example architecture: an analytics workspace draws on the core HR, hiring, payroll, and performance data to show hiring against the staffing plan, time to hire, retirement eligibility and attrition, ratings against the cap, and data errors before they reach OPM."
+  sources: [ eo-14356-guidance, federal-workforce-data ]
+  attributes:
+    layer: ai-insights
+    parts:
+      - Regular feeds from the core HR system, hiring, payroll, and performance tools
+      - Hiring against the Annual Staffing Plan, by office and occupation
+      - Time to hire by step, so delays show where they happen
+      - Retirement eligibility and departures, by office and skill
+      - Plans, ratings, and probationary certifications due or overdue
+      - Checks of the agency’s data against OPM’s standards before each submission
+    strengths:
+      - Leaders see gaps coming before positions sit empty
+      - The same figures support the staffing plan, OPM’s reports, and the agency’s own decisions
+    fitsWhen:
+      - Reports are built by hand from several systems
+      - Leaders ask the same workforce questions every month
+    watchFor:
+      - Person-level HR data is sensitive, so who sees what needs setting with care
+      - Figures defined differently from OPM’s, such as time to hire, need reconciling first
+    ways:
+      - id: build
+        approach: build
+        title: An analytics workspace
+        description: HR data brought together in the agency’s analytics tools.
+        strengths:
+          - Joins data from every HR system the agency uses
+        fitsWhen:
+          - The agency has analytics tools and people who use them
+        watchFor:
+          - Feeds need rebuilding when the agency moves to the government-wide core HR system
+  works_with:
+    - to: core-hr-system
