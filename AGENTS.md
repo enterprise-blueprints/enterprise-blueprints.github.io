@@ -149,12 +149,8 @@ Library:
 
 Studio:
 
-- Search and grouping in the library drawer, and a short-lived cache of catalogs instead of reading
-  them on every package opened.
-- Read the order of resource kinds and the fallback groups from the vocabulary, instead of Studio's own
-  copies in `src/lib/packages.ts` and `src/lib/groups.ts`.
-- The Options card leaves a wider right gutter on phones.
-- Next features, per `VISION.md`: Assist, then Roadmaps.
+- Its own `ROADMAP.md` holds what's queued, the next features (Assist, then Roadmaps), the open questions,
+  and what Studio work shows the library may need.
 
 Kit:
 
