@@ -29,6 +29,13 @@ How they connect:
   `src/lib/config.ts`) and keeps its own home page and published data. On a publisher's site, the library
   packages its own build on get pages under `library/`, with the publisher's resources added, and link to
   the library's own. `tests/engine.test.ts` checks the engine imports nothing outside the list.
+- **The engine has a version,** `version` in `engine.json`, tagged `engine-v<version>` when deployed.
+  Organizations' copies of the kit take the engine by that tag, so a version's files never change:
+  `pnpm engine:check` (part of `verify`, and run in CI) fails when they did. Raise the patch for a fix,
+  the minor for something added, and the major when an organization's own home page may need changes,
+  such as a renamed export of `src/lib/library.ts`. Then sync the kit (`pnpm sync --tools
+  ../enterprise-blueprints.github.io`), which records the version in its `kit.yaml`, and push it after
+  the library, so copies take the new version once its tag exists.
 - **IDs are `<prefix>:<type>:<key>`,** such as `eb:capability:records-management`. `eb` is the library's
   prefix; each publisher names its own `idPrefix`. Measures are `<prefix>:measure:<id>`.
 

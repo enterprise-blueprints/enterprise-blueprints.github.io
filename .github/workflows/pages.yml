@@ -26,6 +26,12 @@ jobs:
       pages: write # lets configure-pages read the Pages settings
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # the engine's tags, to check its version against
+
+      # Publishers' sites take the engine by its version, so a version's files never change.
+      - name: Check the engine version
+        run: node scripts/engine.mjs check
 
       - uses: pnpm/action-setup@v6
 
@@ -94,3 +100,16 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
+
+  # Once deployed, the engine's version is tagged engine-v<version>, where the kit's sync finds it.
+  tag-engine:
+    name: Tag the engine version
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - run: node scripts/engine.mjs tag
