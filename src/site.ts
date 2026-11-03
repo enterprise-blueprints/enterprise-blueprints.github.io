@@ -8,6 +8,7 @@ export const site: SiteConfig & { repositoryUrl: string } = {
     'An independent, open reference library of public-sector missions, the capabilities they depend on, and example patterns that might realize them.',
   repositoryUrl: 'https://github.com/enterprise-blueprints/enterprise-blueprints.github.io',
   nav: [
+    { label: 'Blueprint Kit', path: 'kit/' },
     { label: 'Data', path: 'data/' },
     { label: 'About', path: 'about/' },
   ],

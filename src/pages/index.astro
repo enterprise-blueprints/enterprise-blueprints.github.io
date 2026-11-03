@@ -117,4 +117,34 @@ const shared = packages
       </ul>
     </div>
   </section>
+
+  <section class="section-band" aria-labelledby="kit-heading">
+    <div class="container kit-band">
+      <div class="section-intro">
+        <p class="kicker">For organizations</p>
+        <h2 id="kit-heading">Map your own work to the library</h2>
+        <p>
+          Offer services, products, demos, or training for these missions? The Blueprint Kit lets any
+          organization describe its work in the library's terms, linked to the missions, capabilities, and
+          patterns it helps with, and publish it on a site of its own that works like this one.
+        </p>
+      </div>
+      <ol class="kit-band__steps">
+        <li><strong>Copy the kit</strong> from GitHub as a template.</li>
+        <li><strong>Describe what you offer,</strong> each with what it helps with.</li>
+        <li><strong>Publish your site,</strong> and tools such as Solution Studio read it beside the library.</li>
+      </ol>
+      <p class="hero__actions">
+        <a class="button button--primary" href={href('kit/')}>How the Blueprint Kit works</a>
+        <a class="button" href="https://enterprise-blueprints.github.io/blueprint-kit/" target="_blank" rel="noopener">See a sample site<span class="sr-only"> (opens in a new tab)</span></a>
+      </p>
+    </div>
+  </section>
 </Base>
+
+<style>
+  .kit-band__steps { display: grid; gap: .75rem; margin: 0 0 1.5rem; padding: 0; list-style: none; counter-reset: step; }
+  @media (min-width: 46rem) { .kit-band__steps { grid-template-columns: repeat(3, 1fr); } }
+  .kit-band__steps li { counter-increment: step; padding: .9rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+  .kit-band__steps li::before { content: counter(step); display: inline-grid; place-items: center; width: 1.6rem; height: 1.6rem; margin-right: .5rem; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: .875rem; }
+</style>

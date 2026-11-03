@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../lib/paths';
+
+// For organizations that want to map their own work to the library: why, what they get, and how to start.
+const kitRepo = 'https://github.com/enterprise-blueprints/blueprint-kit';
+const sample = 'https://enterprise-blueprints.github.io/blueprint-kit/';
+---
+<Base title="Blueprint Kit" description="Map your organization's solutions, services, and products to Enterprise Blueprints, and publish them on a site of your own.">
+  <div class="container container--narrow">
+    <header class="page-header">
+      <p class="kicker">For organizations</p>
+      <h1>The Blueprint Kit</h1>
+      <p class="lede">
+        Map your organization's solutions, services, and products to the library's missions, capabilities,
+        and patterns, and publish them on a site of your own.
+      </p>
+      <p class="kit-actions">
+        <a class="button button--primary" href={kitRepo} target="_blank" rel="noopener">Get the kit on GitHub<span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="button" href={sample} target="_blank" rel="noopener">See a sample site<span class="sr-only"> (opens in a new tab)</span></a>
+      </p>
+    </header>
+
+    <div class="prose">
+      <h2>Why use it</h2>
+      <p>
+        Enterprise Blueprints describes what public organizations are responsible for and what that work
+        depends on, in shared terms: <a href={href('missions/')}>missions</a>, the outcomes they seek,
+        the <a href={href('capabilities/')}>capabilities</a> and requirements behind them, and
+        <a href={href('patterns/')}>example patterns</a> that might realize them. The library stays free of
+        anyone's products, so everyone can use it as common ground.
+      </p>
+      <p>
+        The kit is for any organization that serves those missions, such as an agency's own technology
+        team, a firm, a nonprofit, or a university, to say where its work fits, in those same terms. People
+        planning a mission can then find what helps with each part of it, described the same way.
+      </p>
+
+      <h2>What you get</h2>
+      <ul>
+        <li>
+          <strong>A site of your own that works like this one,</strong> with the mission explorer and the
+          outcome, capability, and pattern pages, in your name and color.
+        </li>
+        <li>
+          <strong>The library's missions your work builds on,</strong> with your offerings shown beside the
+          library's items they help with. A small book marks what comes from the library, and each of those
+          pages links back here.
+        </li>
+        <li>
+          <strong>Missions, capabilities, and patterns of your own,</strong> if the library doesn't cover
+          them yet, built from the library's shared ones.
+        </li>
+        <li>
+          <strong>Packages in the library's format, with a catalog,</strong> so tools such as Solution Studio
+          read yours beside the library's.
+        </li>
+      </ul>
+
+      <h2>What goes in it</h2>
+      <p>
+        Mostly resources: a service you offer, a product or one of its features, a demo, a template, training,
+        or a case study. Each one names the missions, outcomes, capabilities, requirements, or patterns it
+        helps with, by the IDs shown on this site's pages, such as <code>eb:capability:records-management</code>.
+      </p>
+      <p>
+        A product goes on one of a pattern's ways to source it, such as "configure a product", rather than
+        becoming a pattern of its own. That keeps the library's patterns examples, with yours beside them.
+      </p>
+
+      <h2>How to start</h2>
+      <ol class="kit-steps">
+        <li>
+          On GitHub, open the <a href={kitRepo} target="_blank" rel="noopener">Blueprint Kit<span class="sr-only"> (opens in a new tab)</span></a>
+          and choose <strong>Use this template</strong> to make a repository of your own. You need Node 22.12
+          or later and pnpm.
+        </li>
+        <li>Name your site and choose its color in <code>kit.yaml</code>.</li>
+        <li>
+          Describe your offerings in <code>source/offerings/resources.yaml</code>, each with what it helps with.
+          The sample has one of each kind to start from.
+        </li>
+        <li>
+          Run <code>pnpm content:build</code> to build your packages, and <code>pnpm verify</code> to check
+          every link against the library.
+        </li>
+        <li>Push to GitHub with Pages turned on, and the kit's workflow publishes your site and its catalog.</li>
+      </ol>
+      <p>The kit's README walks through each step, and its sample site shows the result.</p>
+
+      <h2>Staying current</h2>
+      <p>
+        Your site builds on one library release, so it changes only when you choose. Each week, the kit opens
+        a pull request in your repository that moves to the library's current release and the kit's latest
+        pages, with the result of its checks, for you to review and merge.
+      </p>
+
+      <h2>Yours to keep</h2>
+      <p>
+        Your packages carry your own license and live in your own repository; the library never includes
+        them. To keep them to your team, host your site where only your team can reach it, or share the
+        package files, which Solution Studio can open directly.
+      </p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .kit-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.25rem 0 0; }
+  .kit-steps { max-width: 54rem; padding-left: 1.4rem; margin: 0 0 1em; }
+  .kit-steps li { margin-bottom: .5em; padding-left: .25rem; }
+</style>
