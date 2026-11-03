@@ -59,13 +59,13 @@ the library.
 
 ## Other publishers
 
-A firm can publish packages of its own that build on the library's, the way each mission builds on Common.
-Every element ID starts with its package's prefix, such as `eb` for the library's own, so a firm's IDs
-never collide with the library's. A firm's package can add resources, such as its services, products,
+Any organization can publish packages of its own that build on the library's, the way each mission builds on Common.
+Every element ID starts with its package's prefix, such as `eb` for the library's own, so its IDs
+never collide with the library's. Its packages can add resources, such as its services, products,
 demos, and case studies, linked to the library's items, and missions, outcomes, capabilities, and patterns
 of its own, all in the library's types. A product is a resource that helps with one of the library's
 ways, not a new way, so the library's patterns stay examples. Extra details, such as a service's contract
-vehicle, go in a resource's attributes; a detail many firms add becomes a field or a kind in a later
+vehicle, go in a resource's attributes; a detail many publishers add becomes a field or a kind in a later
 schema.
 
 ## Words

@@ -11,7 +11,7 @@ Three repos, usually side by side in `C:\Users\jerem\repos\work\`, each deployed
 | --- | --- | --- |
 | `enterprise-blueprints.github.io` (this one) | The library: public reference architecture for public-sector missions, as a site (Astro) and as versioned JSON packages with a catalog, schemas, and a vocabulary. | `enterprise-blueprints/enterprise-blueprints.github.io`, on GitHub Pages |
 | `solution-studio` | Studio: a private, local workspace (Next.js, SQLite) where an architect models one engagement, building on the library's packages as blueprints. | `hofmanniac/solution-studio` |
-| `blueprint-kit` | A template a firm copies to publish its own packages (resources such as services, demos, and products, or missions of its own) on a pinned library release. | Local only so far; meant for `enterprise-blueprints/blueprint-kit` as a template repo |
+| `blueprint-kit` | A template any organization copies to publish its own packages (resources such as services, demos, and products, or missions of its own) on a pinned library release. | `enterprise-blueprints/blueprint-kit`, a template repo; its sample site is on GitHub Pages |
 
 How they connect:
 
@@ -44,7 +44,7 @@ How they connect:
 - Words: plain language throughout. Patterns are "example" or "sample", never "vendor-neutral". No
   disclaimers or safety notices. Discovery questions ask how an office works, never about a particular
   case or person. The library's own resources are free ones from government, standards bodies,
-  nonprofits, and universities; the `service` and `product` kinds belong in firms' packages.
+  nonprofits, and universities; the `service` and `product` kinds belong in other organizations' packages.
 - Naming in code: a workspace's packages are its **blueprints**; **layer** means only the seven parts of
   a mission's architecture; a pattern has **ways** to source it.
 
@@ -151,5 +151,5 @@ Studio:
 
 Kit:
 
-- Publish it as the `enterprise-blueprints/blueprint-kit` template repo. Creating a public repo needs the
-  user's go-ahead in their own session; the commands are in the kit's `AGENTS.md`.
+- Move the sample to the current library release: `release` in `kit.yaml`, then `pnpm sync`,
+  `pnpm content:build`, and `pnpm verify`.
