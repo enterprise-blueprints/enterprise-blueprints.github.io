@@ -357,6 +357,16 @@ export function resourcesFor(element: LibraryElement): ElementResource[] {
     .sort((a, b) => kinds.indexOf(String(a.resource.attributes?.kind)) - kinds.indexOf(String(b.resource.attributes?.kind)));
 }
 
+/** What a resource helps with, in the order it lists them, with the pattern's way when a link names one. */
+export function helpsWith(resource: LibraryElement): { element: LibraryElement; way?: { id: string; title: string } }[] {
+  return relationsOf(resource, 'helps_with', 'outgoing').map((r) => {
+    const element = byId.get(r.to)!;
+    const ways = Array.isArray(element.attributes?.ways) ? (element.attributes.ways as { id: string; title: string }[]) : [];
+    const way = r.way ? ways.find((w) => w.id === r.way) : undefined;
+    return { element, ...(way && { way: { id: way.id, title: way.title } }) };
+  });
+}
+
 /** What a relation between two elements says about itself, such as a mission's caveat on a shared pattern. */
 export function relationNote(from: LibraryElement, predicate: string, to: LibraryElement): string | undefined {
   return relations.find((r) => r.from === from.id && r.predicate === predicate && r.to === to.id)?.description;

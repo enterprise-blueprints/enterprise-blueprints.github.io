@@ -20,10 +20,11 @@ const nav = [
   ...site.nav.map((item) => ({ label: item.label, url: item.url ?? href(item.path ?? ''), external: Boolean(item.url) })),
 ];
 const newTab = (external: boolean) => (external ? { target: '_blank', rel: 'noopener' } : {});
-// A site with a color of its own, for links and buttons, softened for the dark theme.
+// A site with a color of its own, for links and buttons, softened for the dark theme. The doubled
+// :root outranks the stylesheet's, which loads after it.
 const accent = site.accent
-  ? `:root { --accent: ${site.accent}; --accent-strong: color-mix(in srgb, ${site.accent} 80%, black); --accent-soft: color-mix(in srgb, ${site.accent} 10%, white); }
-@media (prefers-color-scheme: dark) { :root { --accent: color-mix(in srgb, ${site.accent} 55%, white); --accent-strong: color-mix(in srgb, ${site.accent} 35%, white); --accent-soft: color-mix(in srgb, ${site.accent} 22%, #111827); } }`
+  ? `:root:root { --accent: ${site.accent}; --accent-strong: color-mix(in srgb, ${site.accent} 80%, black); --accent-soft: color-mix(in srgb, ${site.accent} 10%, white); }
+@media (prefers-color-scheme: dark) { :root:root { --accent: color-mix(in srgb, ${site.accent} 55%, white); --accent-strong: color-mix(in srgb, ${site.accent} 35%, white); --accent-soft: color-mix(in srgb, ${site.accent} 22%, #111827); } }`
   : undefined;
 ---
 <!doctype html>
