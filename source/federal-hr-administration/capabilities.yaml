@@ -31,16 +31,30 @@
       coverage: partial
       note: Drafts job announcements and interview questions from the job analysis. It doesn’t screen, rate, or rank applicants.
 
-- id: onboarding-vetting
-  title: Onboarding & Vetting
+- id: pre-employment-vetting
+  title: Pre-Employment & Vetting
   stage: assess-decide
-  description: Ability to designate each position’s risk and sensitivity, start each selectee’s background investigation and credential, verify their eligibility to work, and bring them on board ready to work on their first day.
+  description: Ability to designate each position’s risk and sensitivity, and between the tentative offer and the first day, start each selectee’s background investigation and credential, verify their eligibility to work, and set a start date the vetting allows.
   sources: [ suitability-5-cfr-731, form-i9-8-cfr-274a-2, merit-hiring-plan ]
   applicabilityNotes: Agencies with delegated investigative authority run some of their own background investigations. Reciprocity lets a previously vetted person start sooner, and the Merit Hiring Plan asks for vetting within 3 days when it applies.
-  contributes_to: [ new-hires-vetted-promptly, positions-filled-on-time ]
+  contributes_to: [ new-employees-start-well, positions-filled-on-time ]
   satisfies: [ designate-position-risk, verify-employment-eligibility, vet-within-goals ]
   candidate_pattern:
-    - onboarding-connections
+    - pre-employment-connections
+
+- id: new-employee-onboarding
+  title: New Employee Onboarding
+  stage: deliver-operate
+  description: Ability to give each new employee a good start, with their equipment, accounts, credential, and workspace ready on their first day, an orientation, a sponsor who helps them settle in, the training every new employee needs assigned and tracked, and check-ins with their supervisor through their first year.
+  sources: [ dod-onboarding-portal, ethics-training-5-cfr-2638-304, security-awareness-5-cfr-930-301, no-fear-training-5-cfr-724-203 ]
+  applicabilityNotes: The same steps suit employees who transfer in or are promoted into a new role. Day-one readiness depends on IT, facilities, and security teams outside HR, and employees who work remotely need their equipment and accounts working before they start.
+  contributes_to: [ new-employees-start-well, performance-managed ]
+  satisfies: [ security-awareness-before-access, ethics-training-within-3-months, no-fear-training-within-90-days ]
+  candidate_pattern:
+    - guided-onboarding
+    - to: core-hr-system
+      coverage: partial
+      note: Gives new employees self-service and assigns their training. Tasks for IT, facilities, and security often run elsewhere.
 
 - id: personnel-action-processing
   title: Personnel Action Processing

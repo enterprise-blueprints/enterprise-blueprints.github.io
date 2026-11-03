@@ -4,7 +4,7 @@
 - from: capability:case-management
   contributes_to: [ actions-hold-up ]
   candidate_pattern:
-    - onboarding-connections
+    - pre-employment-connections
 
 - from: capability:records-management
   contributes_to: [ actions-correct-on-time, actions-hold-up ]
@@ -12,7 +12,7 @@
     - eopf-and-ehri
 
 - from: capability:identity-access-management
-  contributes_to: [ new-hires-vetted-promptly ]
+  contributes_to: [ new-employees-start-well ]
 
 - from: capability:data-protection-privacy
   contributes_to: [ workforce-data-public ]

@@ -103,7 +103,7 @@ current release.
 
 ## Will it hold up with dozens more missions?
 
-Mostly, with one thing to change first. Today a release is about 760 KB for seven packages, and
+Mostly, with one thing to change first. Today a release is about 780 KB for seven packages, and
 `content/` is 5.1 MB with 64 package files.
 
 - **Every release copies every package.** One release version for all packages means a fix to one

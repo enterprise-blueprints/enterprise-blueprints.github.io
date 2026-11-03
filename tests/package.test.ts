@@ -177,15 +177,15 @@ describe('validatePackage', () => {
     for (const c of ofType(contactCenter, 'capability')) expect(contactCenter.relations.some((r) => r.from === c.id && r.predicate === 'candidate_pattern'), c.id).toBe(true);
   });
 
-  it('has one mission, nine outcomes, ten capabilities, twenty-one requirements, and nine patterns in the HR administration package', () => {
+  it('has one mission, nine outcomes, eleven capabilities, twenty-four requirements, and ten patterns in the HR administration package', () => {
     const counts = Object.groupBy(hr.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.outcome).toHaveLength(9);
     expect(counts.measure).toBeUndefined();
-    expect(counts.outcome!.flatMap((o) => o.attributes!.measures as unknown[])).toHaveLength(12);
-    expect(counts.capability).toHaveLength(10);
-    expect(counts.requirement).toHaveLength(21);
-    expect(counts.implementationPattern).toHaveLength(9);
+    expect(counts.outcome!.flatMap((o) => o.attributes!.measures as unknown[])).toHaveLength(15);
+    expect(counts.capability).toHaveLength(11);
+    expect(counts.requirement).toHaveLength(24);
+    expect(counts.implementationPattern).toHaveLength(10);
     expect(counts.implementationPattern!.some((p) => p.status === 'deprecated')).toBe(false);
     expect(hr.dependencies).toEqual([{ packageId: common.packageId, version: common.version }]);
     // Every capability has a candidate pattern.

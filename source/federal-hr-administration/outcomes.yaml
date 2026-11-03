@@ -26,16 +26,28 @@
       description: The share of certificates of eligible candidates that hiring managers returned without selecting anyone, which can mean the assessment didn’t find the right people.
       sources: [ rule-of-many ]
 
-- id: new-hires-vetted-promptly
-  title: New employees are vetted promptly, to the right level
-  theme: integrity
-  description: Each position is designated at the right risk and sensitivity level, and each new employee is vetted to that level within the government’s timeliness goals.
-  sources: [ suitability-5-cfr-731, merit-hiring-plan ]
+- id: new-employees-start-well
+  title: New employees start well, vetted, equipped, and supported
+  theme: easy-to-use
+  description: Each new employee is vetted promptly to the level their position needs, finds their equipment, accounts, and credential ready on their first day, and has an orientation, a sponsor, and their supervisor’s attention through their first year, so they become effective quickly and stay.
+  sources: [ suitability-5-cfr-731, merit-hiring-plan, dod-onboarding-portal ]
   measures:
     - id: vetting-timeliness
       title: Vetting completed within the timeliness goals
       description: The share of new employees whose vetting finished within the goals the Merit Hiring Plan cites, 21 days for low-risk positions, 25 days for non-sensitive moderate-risk positions, and 45 days for top secret, and within 3 days when reciprocity applies.
       sources: [ merit-hiring-plan ]
+    - id: ready-on-day-one
+      title: New employees ready to work on their first day
+      description: The share of new employees whose equipment, accounts, credential, and workspace were ready on their first day, from the onboarding tasks or a short question to each new employee.
+      sources: [ dod-onboarding-portal ]
+    - id: new-employee-training-on-time
+      title: New employee training completed on time
+      description: The share of new employees who completed security awareness training before their system access, initial ethics training within 3 months, and No FEAR Act training within 90 days.
+      sources: [ security-awareness-5-cfr-930-301, ethics-training-5-cfr-2638-304, no-fear-training-5-cfr-724-203 ]
+    - id: first-year-departures
+      title: New employees who leave in their first year
+      description: The share of new employees who separate within a year of starting, by office and occupation, from the separations the agency reports to OPM.
+      sources: [ ehri, federal-workforce-data ]
 
 - id: actions-correct-on-time
   title: Personnel actions are correct and take effect on time

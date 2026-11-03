@@ -29,6 +29,15 @@
   description: OPM’s grading criteria for the General Schedule and Federal Wage System, draft standards, classification flysheets, and the government-wide qualification standards, for anyone classifying positions or writing job requirements.
   helps_with: [ capability:workforce-position-management, requirement:classify-positions, implementationPattern:hr-ai-drafting ]
 
+- id: dod-onboarding-resource-portal
+  title: DoD Onboarding Resource Portal
+  kind: guide
+  by: Defense Civilian Personnel Advisory Service, Department of Defense
+  url: https://www.dcpas.osd.mil/sites/default/files/DoD%20Onboarding%20Resource%20Portal.pdf
+  lastReviewedAt: 2026-11-02
+  description: A 2024 collection of guides, tip sheets, checklists, and templates for onboarding new, transferred, and promoted civilian employees, with what supervisors, sponsors, and mentors each do, useful well beyond Defense.
+  helps_with: [ capability:new-employee-onboarding, implementationPattern:guided-onboarding ]
+
 - id: guide-to-processing-personnel-actions
   title: Guide to Processing Personnel Actions
   kind: guide

@@ -104,19 +104,19 @@
         watchFor:
           - Shared certificates and OPM’s hiring data are harder outside USA Staffing
   works_with:
-    - to: onboarding-connections
+    - to: pre-employment-connections
       note: Each tentative offer starts onboarding and vetting.
     - to: workforce-analytics
       note: Time to hire and assessment use feed the agency’s reports.
 
-- id: onboarding-connections
-  title: Onboarding Connected to Vetting, E-Verify, and Credentials
-  description: "An example architecture: each tentative offer starts one onboarding case that sends the selectee’s forms to the background investigation system, checks employment eligibility through E-Verify, orders the identity credential, and tracks each step to the first day."
+- id: pre-employment-connections
+  title: Pre-Employment Steps Connected to Vetting, E-Verify, and Credentials
+  description: "An example architecture: each tentative offer starts one pre-employment case that sends the selectee’s forms to the background investigation system, checks employment eligibility through E-Verify, orders the identity credential, and tracks each step to the first day."
   sources: [ merit-hiring-plan, form-i9-8-cfr-274a-2, suitability-5-cfr-731 ]
   attributes:
     layer: connections
     parts:
-      - An onboarding case for each selectee, opened from the tentative offer
+      - A pre-employment case for each selectee, opened from the tentative offer
       - Investigation forms sent to the background investigation system, with the position’s risk designation
       - Form I-9 completed online, with E-Verify checks
       - Identity credential and system accounts ordered once vetting allows
@@ -147,6 +147,72 @@
       note: The completed onboarding becomes the appointment action and the employee record.
     - to: agency-sign-on
       note: Accounts and credentials are issued as the new employee joins.
+
+- id: guided-onboarding
+  title: A Guided Onboarding Journey for New Employees
+  description: "An example architecture: each new employee follows one onboarding journey, from the tentative offer through their first year, that shows them what comes next, sends tasks to IT, facilities, security, the supervisor, and a sponsor so everything is ready on day one, assigns the training every new employee needs, and prompts check-ins along the way."
+  sources: [ dod-onboarding-portal, security-awareness-5-cfr-930-301, ethics-training-5-cfr-2638-304, no-fear-training-5-cfr-724-203 ]
+  attributes:
+    layer: worker-productivity
+    parts:
+      - A personal onboarding page for each new employee, with each step, its owner, and its date
+      - Forms completed online before the first day, prefilled where the agency already has the information
+      - Tasks for IT, facilities, security, and the supervisor, with deadlines before the first day, for equipment, accounts, credential, and workspace
+      - A sponsor named for each new employee, with a short guide to the role
+      - An orientation schedule, and the training every new employee needs assigned with its due date, security awareness before system access first
+      - Check-ins with the supervisor at set points, such as 30, 60, and 90 days, starting with the performance plan
+      - A short survey after the first few months, with results by office
+    strengths:
+      - New employees know what comes next instead of waiting to be told
+      - Day-one readiness is tracked as tasks with owners, not hoped for
+      - Required training doesn’t slip past its deadlines
+      - Supervisors and sponsors get prompts at the moments that matter
+    fitsWhen:
+      - Onboarding steps live in email, checklists, and people’s memories
+      - New employees often start without equipment or accounts
+      - Many new employees work remotely or at sites away from HR
+    watchFor:
+      - Tasks for teams outside HR only work if those teams accept them, with owners and deadlines
+      - A portal doesn’t replace a supervisor and sponsor who make time for the new employee
+      - Too many steps on day one overwhelm people, so spread them over the first weeks
+    ways:
+      - id: core-hcm
+        approach: platform
+        title: The core HR system’s onboarding and learning
+        description: The new employee self-service, onboarding, and learning features of the agency’s core HR system, which the government-wide system includes.
+        strengths:
+          - The employee record, training, and onboarding steps share one system
+        fitsWhen:
+          - The agency’s core HR system offers onboarding journeys
+        watchFor:
+          - Tasks for IT, facilities, and security may still need sending to the systems those teams use
+      - id: service-platform
+        approach: platform
+        title: The agency’s shared service or case platform
+        description: Onboarding journeys built on the platform the agency already uses for IT and facilities requests, with tasks routed to each team.
+        strengths:
+          - Tasks land in the queues IT, facilities, and security already work from
+        fitsWhen:
+          - Day-one readiness is the biggest problem, and those teams already use the platform
+        watchFor:
+          - Training assignments and the employee record stay in the HR systems, so connections are needed
+      - id: product
+        approach: product
+        title: An onboarding product
+        description: An onboarding product connected to the core HR system and the agency’s request systems.
+        strengths:
+          - Built for a new employee’s experience, with welcome content and check-ins
+        fitsWhen:
+          - The agency hires many people a year across many sites
+        watchFor:
+          - Another product to buy and keep up, and its data and connections may need moving when the agency joins the government-wide core HR system
+  works_with:
+    - to: pre-employment-connections
+      note: The journey picks up the vetting and credential steps that run before the first day.
+    - to: core-hr-system
+      note: The new employee’s record, and their training, come from the core HR system.
+    - to: performance-appraisal-system
+      note: The first check-in starts the new employee’s performance plan.
 
 - id: federal-payroll-provider
   title: Payroll from a Federal Payroll Provider

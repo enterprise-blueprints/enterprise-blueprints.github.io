@@ -11,7 +11,7 @@
       options:
         - positions-filled-on-time: The agency fills the positions it needs on time
         - hiring-on-merit: People are hired on merit, with veterans’ preference
-        - new-hires-vetted-promptly: New employees are vetted promptly, to the right level
+        - new-employees-start-well: New employees start well, vetted, equipped, and supported
         - actions-correct-on-time: Personnel actions are correct and take effect on time
         - employees-paid-correctly: Employees are paid correctly and on time
         - retirements-without-delay: Retiring employees get their annuity without delay
@@ -25,8 +25,8 @@
         - when: hiring-on-merit
           to: outcome:hiring-on-merit
           why: This effort is meant to advance this result.
-        - when: new-hires-vetted-promptly
-          to: outcome:new-hires-vetted-promptly
+        - when: new-employees-start-well
+          to: outcome:new-employees-start-well
           why: This effort is meant to advance this result.
         - when: actions-correct-on-time
           to: outcome:actions-correct-on-time
@@ -53,6 +53,7 @@
         - time-to-hire: Time to hire, to the initial offer
         - assessments: How hiring actions assess applicants, and certificates returned without a selection
         - vetting: How long vetting takes for new employees
+        - onboarding: Day-one readiness, new employee training, and first-year departures
         - actions: Personnel actions processed late, and errors OPM returns
         - pay-debts: Overpayments and the pay debts they create
         - retirements: How long retirement applications take to reach OPM
@@ -68,6 +69,9 @@
           why: The office tracks this already, so there may be a value for today.
         - when: vetting
           to: measure:vetting-timeliness
+          why: The office tracks this already, so there may be a value for today.
+        - when: onboarding
+          to: [ measure:ready-on-day-one, measure:new-employee-training-on-time, measure:first-year-departures ]
           why: The office tracks this already, so there may be a value for today.
         - when: actions
           to: [ measure:retroactive-actions, measure:ehri-errors, measure:ehri-submissions-on-time ]
@@ -150,17 +154,53 @@
         - when: false
           to: [ capability:recruitment-hiring, implementationPattern:usa-staffing-hiring ]
           why: Sharing one assessment across several hires is among the quickest ways to cut time to hire.
-    - id: hr-onboarding
-      prompt: How does onboarding move from the tentative offer to the first day?
+    - id: hr-pre-employment
+      prompt: How do the steps between the tentative offer and the first day work today?
       kind: single-choice
       options:
-        - connected: An onboarding system connected to vetting, E-Verify, and credentials
-        - partly: An onboarding system, with vetting and credentials handled separately
-        - manual: Email, PDFs, and spreadsheets
+        - connected: In a system connected to vetting, E-Verify, and credentials
+        - partly: In a system, with vetting and credentials handled separately
+        - manual: By email, PDFs, and spreadsheets
       points:
         - when: [ partly, manual ]
-          to: [ capability:onboarding-vetting, implementationPattern:onboarding-connections ]
+          to: [ capability:pre-employment-vetting, implementationPattern:pre-employment-connections ]
           why: Start dates slip when vetting, credentials, and paperwork aren’t tracked together.
+    - id: hr-day-one
+      prompt: How often are new employees’ equipment, accounts, and credential ready on their first day?
+      kind: single-choice
+      options:
+        - always: Almost always
+        - usually: Usually, with a few gaps
+        - often-not: Often not, especially for remote employees
+      points:
+        - when: [ usually, often-not ]
+          to: [ capability:new-employee-onboarding, implementationPattern:guided-onboarding ]
+          why: A first day without equipment or accounts wastes the new employee’s time and sets the tone for what follows.
+    - id: hr-sponsors
+      prompt: Does each new employee get a sponsor who helps them settle in?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:new-employee-onboarding, implementationPattern:guided-onboarding ]
+          why: A sponsor answers the everyday questions a supervisor may not think of, which helps new employees become effective and stay.
+    - id: hr-new-employee-training
+      prompt: Does the office track that new employees complete security, ethics, and No FEAR Act training by their deadlines?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:new-employee-onboarding, requirement:security-awareness-before-access, requirement:ethics-training-within-3-months, requirement:no-fear-training-within-90-days ]
+          why: Each has a deadline counted from the start date or from system access, and they’re easy to miss without tracking.
+    - id: hr-first-year
+      prompt: Does the office hear from new employees about their first months, or know how many leave in their first year?
+      kind: single-choice
+      options:
+        - both: Both, by office
+        - one: One or the other
+        - neither: Neither
+      points:
+        - when: [ one, neither ]
+          to: [ outcome:new-employees-start-well, measure:first-year-departures ]
+          why: People who leave in their first year often say why in their first months, while there’s still time to act.
     - id: hr-action-errors
       prompt: Does the office regularly fix errors that OPM returns from its screening of the agency’s data?
       kind: boolean

@@ -67,6 +67,35 @@
   lastReviewedAt: 2026-11-02
   note: The employee completes Section 1 of Form I-9 at the time of hire, and the employer examines the documents and completes Section 2 within three business days of the hire.
 
+- id: security-awareness-5-cfr-930-301
+  title: 5 CFR § 930.301 — Information systems security awareness training program
+  url: https://www.law.cornell.edu/cfr/text/5/930.301
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Agencies provide information security awareness material to all new employees before allowing them access to the systems, and all users of federal information systems see awareness material at least annually.
+
+- id: ethics-training-5-cfr-2638-304
+  title: 5 CFR § 2638.304 — Initial ethics training
+  url: https://www.law.cornell.edu/cfr/text/5/2638.304
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Each new employee subject to the Standards of Conduct completes initial ethics training within 3 months of appointment, covering financial conflicts of interest, impartiality, misuse of position, and gifts.
+
+- id: no-fear-training-5-cfr-724-203
+  title: 5 CFR § 724.203 — Training (No FEAR Act)
+  url: https://www.law.cornell.edu/cfr/text/5/724.203
+  kind: official-reference
+  lastReviewedAt: 2026-11-02
+  note: Agencies train all employees on their rights and remedies under the antidiscrimination and whistleblower protection laws at least every 2 years, and, unless new employee orientation covers it, train new employees within 90 calendar days of appointment.
+
+- id: dod-onboarding-portal
+  title: Defense Civilian Personnel Advisory Service — DoD Onboarding Resource Portal (April 2, 2024)
+  url: https://www.dcpas.osd.mil/sites/default/files/DoD%20Onboarding%20Resource%20Portal.pdf
+  kind: background
+  publicationDate: 2024-04-02
+  lastReviewedAt: 2026-11-02
+  note: Guides, tip sheets, checklists, and templates for onboarding new, transferred, and promoted civilian employees, with the roles of supervisors, sponsors, and mentors, aimed at helping employees become productive quickly and stay.
+
 - id: gppa
   title: OPM — Guide to Processing Personnel Actions
   url: https://www.opm.gov/policy-data-oversight/data-analysis-documentation/personnel-documentation/processing-personnel-actions/guide_to_processing_personnel_actions.pdf

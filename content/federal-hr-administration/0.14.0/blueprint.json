@@ -4,7 +4,7 @@
   "idPrefix": "eb",
   "version": "0.14.0",
   "title": "HR Administration — Hiring, Paying, and Supporting the Federal Civilian Workforce",
-  "description": "U.S. federal civilian human resources blueprint: one mission with the outcomes it seeks and ways to measure them, ten capabilities from position management through separation and workforce reporting, with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for HR results and for HR operations. It follows Title 5 of the U.S. Code and OPM’s rules, including the 2025 Merit Hiring Plan and the move to one government-wide core HR system, and builds on Common Capabilities for case management, records, identity and access, and data protection.",
+  "description": "U.S. federal civilian human resources blueprint: one mission with the outcomes it seeks and ways to measure them, eleven capabilities from position management and onboarding through separation and workforce reporting, with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for HR results and for HR operations. It follows Title 5 of the U.S. Code and OPM’s rules, including the 2025 Merit Hiring Plan and the move to one government-wide core HR system, and builds on Common Capabilities for case management, records, identity and access, and data protection.",
   "publisher": {
     "name": "Enterprise Blueprints (independent reference project)",
     "url": "https://enterprise-blueprints.github.io"
@@ -104,6 +104,39 @@
       "kind": "official-reference",
       "lastReviewedAt": "2026-11-02",
       "note": "The employee completes Section 1 of Form I-9 at the time of hire, and the employer examines the documents and completes Section 2 within three business days of the hire."
+    },
+    {
+      "id": "src:security-awareness-5-cfr-930-301",
+      "title": "5 CFR § 930.301 — Information systems security awareness training program",
+      "url": "https://www.law.cornell.edu/cfr/text/5/930.301",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-11-02",
+      "note": "Agencies provide information security awareness material to all new employees before allowing them access to the systems, and all users of federal information systems see awareness material at least annually."
+    },
+    {
+      "id": "src:ethics-training-5-cfr-2638-304",
+      "title": "5 CFR § 2638.304 — Initial ethics training",
+      "url": "https://www.law.cornell.edu/cfr/text/5/2638.304",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-11-02",
+      "note": "Each new employee subject to the Standards of Conduct completes initial ethics training within 3 months of appointment, covering financial conflicts of interest, impartiality, misuse of position, and gifts."
+    },
+    {
+      "id": "src:no-fear-training-5-cfr-724-203",
+      "title": "5 CFR § 724.203 — Training (No FEAR Act)",
+      "url": "https://www.law.cornell.edu/cfr/text/5/724.203",
+      "kind": "official-reference",
+      "lastReviewedAt": "2026-11-02",
+      "note": "Agencies train all employees on their rights and remedies under the antidiscrimination and whistleblower protection laws at least every 2 years, and, unless new employee orientation covers it, train new employees within 90 calendar days of appointment."
+    },
+    {
+      "id": "src:dod-onboarding-portal",
+      "title": "Defense Civilian Personnel Advisory Service — DoD Onboarding Resource Portal (April 2, 2024)",
+      "url": "https://www.dcpas.osd.mil/sites/default/files/DoD%20Onboarding%20Resource%20Portal.pdf",
+      "kind": "background",
+      "publicationDate": "2024-04-02",
+      "lastReviewedAt": "2026-11-02",
+      "note": "Guides, tip sheets, checklists, and templates for onboarding new, transferred, and promoted civilian employees, with the roles of supervisors, sponsors, and mentors, aimed at helping employees become productive quickly and stay."
     },
     {
       "id": "src:gppa",
@@ -259,7 +292,7 @@
       "id": "eb:mission:administering-the-civilian-workforce",
       "type": "mission",
       "title": "HR Administration",
-      "description": "Hire, pay, and support the agency’s civilian employees under the merit system: fill the positions the agency needs on merit and on time, process each personnel action correctly, pay people accurately, manage their performance, handle conduct fairly, see them through retirement or separation, and keep the records and data the law requires.",
+      "description": "Hire, pay, and support the agency’s civilian employees under the merit system: fill the positions the agency needs on merit and on time, give new employees a good start, process each personnel action correctly, pay people accurately, manage their performance, handle conduct fairly, see them through retirement or separation, and keep the records and data the law requires.",
       "status": "reference",
       "sourceIds": [
         "src:federal-hr-2-0",
@@ -273,6 +306,7 @@
           "Each employee has one record, from the job offer to retirement, in one system of record",
           "Personnel actions are entered once and reach payroll, benefits, retirement, and OPM without retyping",
           "Positions are records of their own, with their classification, funding, and approvals",
+          "Each new employee follows one onboarding journey, from the offer through their first year, with everything ready on day one",
           "Hiring uses validated assessments and ranks candidates by score, with veterans’ preference, and tells applicants where they stand",
           "Managers and employees do routine tasks themselves, such as updating details or starting a request",
           "Workforce figures come from the system of record, not from spreadsheets",
@@ -337,14 +371,15 @@
       }
     },
     {
-      "id": "eb:outcome:new-hires-vetted-promptly",
+      "id": "eb:outcome:new-employees-start-well",
       "type": "outcome",
-      "title": "New employees are vetted promptly, to the right level",
-      "description": "Each position is designated at the right risk and sensitivity level, and each new employee is vetted to that level within the government’s timeliness goals.",
+      "title": "New employees start well, vetted, equipped, and supported",
+      "description": "Each new employee is vetted promptly to the level their position needs, finds their equipment, accounts, and credential ready on their first day, and has an orientation, a sponsor, and their supervisor’s attention through their first year, so they become effective quickly and stay.",
       "status": "reference",
       "sourceIds": [
         "src:suitability-5-cfr-731",
-        "src:merit-hiring-plan"
+        "src:merit-hiring-plan",
+        "src:dod-onboarding-portal"
       ],
       "attributes": {
         "measures": [
@@ -355,9 +390,36 @@
             "sourceIds": [
               "src:merit-hiring-plan"
             ]
+          },
+          {
+            "id": "ready-on-day-one",
+            "title": "New employees ready to work on their first day",
+            "description": "The share of new employees whose equipment, accounts, credential, and workspace were ready on their first day, from the onboarding tasks or a short question to each new employee.",
+            "sourceIds": [
+              "src:dod-onboarding-portal"
+            ]
+          },
+          {
+            "id": "new-employee-training-on-time",
+            "title": "New employee training completed on time",
+            "description": "The share of new employees who completed security awareness training before their system access, initial ethics training within 3 months, and No FEAR Act training within 90 days.",
+            "sourceIds": [
+              "src:security-awareness-5-cfr-930-301",
+              "src:ethics-training-5-cfr-2638-304",
+              "src:no-fear-training-5-cfr-724-203"
+            ]
+          },
+          {
+            "id": "first-year-departures",
+            "title": "New employees who leave in their first year",
+            "description": "The share of new employees who separate within a year of starting, by office and occupation, from the separations the agency reports to OPM.",
+            "sourceIds": [
+              "src:ehri",
+              "src:federal-workforce-data"
+            ]
           }
         ],
-        "theme": "integrity"
+        "theme": "easy-to-use"
       }
     },
     {
@@ -555,10 +617,10 @@
       }
     },
     {
-      "id": "eb:capability:onboarding-vetting",
+      "id": "eb:capability:pre-employment-vetting",
       "type": "capability",
-      "title": "Onboarding & Vetting",
-      "description": "Ability to designate each position’s risk and sensitivity, start each selectee’s background investigation and credential, verify their eligibility to work, and bring them on board ready to work on their first day.",
+      "title": "Pre-Employment & Vetting",
+      "description": "Ability to designate each position’s risk and sensitivity, and between the tentative offer and the first day, start each selectee’s background investigation and credential, verify their eligibility to work, and set a start date the vetting allows.",
       "status": "reference",
       "sourceIds": [
         "src:suitability-5-cfr-731",
@@ -568,6 +630,23 @@
       "applicabilityNotes": "Agencies with delegated investigative authority run some of their own background investigations. Reciprocity lets a previously vetted person start sooner, and the Merit Hiring Plan asks for vetting within 3 days when it applies.",
       "attributes": {
         "stage": "assess-decide"
+      }
+    },
+    {
+      "id": "eb:capability:new-employee-onboarding",
+      "type": "capability",
+      "title": "New Employee Onboarding",
+      "description": "Ability to give each new employee a good start, with their equipment, accounts, credential, and workspace ready on their first day, an orientation, a sponsor who helps them settle in, the training every new employee needs assigned and tracked, and check-ins with their supervisor through their first year.",
+      "status": "reference",
+      "sourceIds": [
+        "src:dod-onboarding-portal",
+        "src:ethics-training-5-cfr-2638-304",
+        "src:security-awareness-5-cfr-930-301",
+        "src:no-fear-training-5-cfr-724-203"
+      ],
+      "applicabilityNotes": "The same steps suit employees who transfer in or are promoted into a new role. Day-one readiness depends on IT, facilities, and security teams outside HR, and employees who work remotely need their equipment and accounts working before they start.",
+      "attributes": {
+        "stage": "deliver-operate"
       }
     },
     {
@@ -779,6 +858,45 @@
       ],
       "attributes": {
         "kind": "timeliness"
+      }
+    },
+    {
+      "id": "eb:requirement:security-awareness-before-access",
+      "type": "requirement",
+      "title": "Give security awareness training before system access",
+      "description": "Give each new employee information security awareness training before allowing them access to the agency’s systems, and refresh it at least once a year.",
+      "status": "reference",
+      "sourceIds": [
+        "src:security-awareness-5-cfr-930-301"
+      ],
+      "attributes": {
+        "kind": "privacy-security"
+      }
+    },
+    {
+      "id": "eb:requirement:ethics-training-within-3-months",
+      "type": "requirement",
+      "title": "Complete initial ethics training within 3 months",
+      "description": "Have each new employee subject to the Standards of Conduct complete initial ethics training, on conflicts of interest, impartiality, misuse of position, and gifts, within 3 months of appointment.",
+      "status": "reference",
+      "sourceIds": [
+        "src:ethics-training-5-cfr-2638-304"
+      ],
+      "attributes": {
+        "kind": "checks-controls"
+      }
+    },
+    {
+      "id": "eb:requirement:no-fear-training-within-90-days",
+      "type": "requirement",
+      "title": "Train new employees on the No FEAR Act within 90 days",
+      "description": "Train each new employee on their rights and remedies under the antidiscrimination and whistleblower protection laws within 90 calendar days of appointment, unless new employee orientation covers it, and all employees at least every 2 years.",
+      "status": "reference",
+      "sourceIds": [
+        "src:no-fear-training-5-cfr-724-203"
+      ],
+      "attributes": {
+        "kind": "fairness-due-process"
       }
     },
     {
@@ -1095,10 +1213,10 @@
       }
     },
     {
-      "id": "eb:implementationPattern:onboarding-connections",
+      "id": "eb:implementationPattern:pre-employment-connections",
       "type": "implementationPattern",
-      "title": "Onboarding Connected to Vetting, E-Verify, and Credentials",
-      "description": "An example architecture: each tentative offer starts one onboarding case that sends the selectee’s forms to the background investigation system, checks employment eligibility through E-Verify, orders the identity credential, and tracks each step to the first day.",
+      "title": "Pre-Employment Steps Connected to Vetting, E-Verify, and Credentials",
+      "description": "An example architecture: each tentative offer starts one pre-employment case that sends the selectee’s forms to the background investigation system, checks employment eligibility through E-Verify, orders the identity credential, and tracks each step to the first day.",
       "status": "reference",
       "sourceIds": [
         "src:merit-hiring-plan",
@@ -1108,7 +1226,7 @@
       "attributes": {
         "layer": "connections",
         "parts": [
-          "An onboarding case for each selectee, opened from the tentative offer",
+          "A pre-employment case for each selectee, opened from the tentative offer",
           "Investigation forms sent to the background investigation system, with the position’s risk designation",
           "Form I-9 completed online, with E-Verify checks",
           "Identity credential and system accounts ordered once vetting allows",
@@ -1141,6 +1259,94 @@
             ],
             "watchFor": [
               "Connections the Merit Hiring Plan names, such as to background investigations and credentials, may still need building"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "eb:implementationPattern:guided-onboarding",
+      "type": "implementationPattern",
+      "title": "A Guided Onboarding Journey for New Employees",
+      "description": "An example architecture: each new employee follows one onboarding journey, from the tentative offer through their first year, that shows them what comes next, sends tasks to IT, facilities, security, the supervisor, and a sponsor so everything is ready on day one, assigns the training every new employee needs, and prompts check-ins along the way.",
+      "status": "reference",
+      "sourceIds": [
+        "src:dod-onboarding-portal",
+        "src:security-awareness-5-cfr-930-301",
+        "src:ethics-training-5-cfr-2638-304",
+        "src:no-fear-training-5-cfr-724-203"
+      ],
+      "attributes": {
+        "layer": "worker-productivity",
+        "parts": [
+          "A personal onboarding page for each new employee, with each step, its owner, and its date",
+          "Forms completed online before the first day, prefilled where the agency already has the information",
+          "Tasks for IT, facilities, security, and the supervisor, with deadlines before the first day, for equipment, accounts, credential, and workspace",
+          "A sponsor named for each new employee, with a short guide to the role",
+          "An orientation schedule, and the training every new employee needs assigned with its due date, security awareness before system access first",
+          "Check-ins with the supervisor at set points, such as 30, 60, and 90 days, starting with the performance plan",
+          "A short survey after the first few months, with results by office"
+        ],
+        "strengths": [
+          "New employees know what comes next instead of waiting to be told",
+          "Day-one readiness is tracked as tasks with owners, not hoped for",
+          "Required training doesn’t slip past its deadlines",
+          "Supervisors and sponsors get prompts at the moments that matter"
+        ],
+        "fitsWhen": [
+          "Onboarding steps live in email, checklists, and people’s memories",
+          "New employees often start without equipment or accounts",
+          "Many new employees work remotely or at sites away from HR"
+        ],
+        "watchFor": [
+          "Tasks for teams outside HR only work if those teams accept them, with owners and deadlines",
+          "A portal doesn’t replace a supervisor and sponsor who make time for the new employee",
+          "Too many steps on day one overwhelm people, so spread them over the first weeks"
+        ],
+        "ways": [
+          {
+            "id": "core-hcm",
+            "approach": "platform",
+            "title": "The core HR system’s onboarding and learning",
+            "description": "The new employee self-service, onboarding, and learning features of the agency’s core HR system, which the government-wide system includes.",
+            "strengths": [
+              "The employee record, training, and onboarding steps share one system"
+            ],
+            "fitsWhen": [
+              "The agency’s core HR system offers onboarding journeys"
+            ],
+            "watchFor": [
+              "Tasks for IT, facilities, and security may still need sending to the systems those teams use"
+            ]
+          },
+          {
+            "id": "service-platform",
+            "approach": "platform",
+            "title": "The agency’s shared service or case platform",
+            "description": "Onboarding journeys built on the platform the agency already uses for IT and facilities requests, with tasks routed to each team.",
+            "strengths": [
+              "Tasks land in the queues IT, facilities, and security already work from"
+            ],
+            "fitsWhen": [
+              "Day-one readiness is the biggest problem, and those teams already use the platform"
+            ],
+            "watchFor": [
+              "Training assignments and the employee record stay in the HR systems, so connections are needed"
+            ]
+          },
+          {
+            "id": "product",
+            "approach": "product",
+            "title": "An onboarding product",
+            "description": "An onboarding product connected to the core HR system and the agency’s request systems.",
+            "strengths": [
+              "Built for a new employee’s experience, with welcome content and check-ins"
+            ],
+            "fitsWhen": [
+              "The agency hires many people a year across many sites"
+            ],
+            "watchFor": [
+              "Another product to buy and keep up, and its data and connections may need moving when the agency joins the government-wide core HR system"
             ]
           }
         ]
@@ -1463,6 +1669,19 @@
       }
     },
     {
+      "id": "eb:resource:dod-onboarding-resource-portal",
+      "type": "resource",
+      "title": "DoD Onboarding Resource Portal",
+      "description": "A 2024 collection of guides, tip sheets, checklists, and templates for onboarding new, transferred, and promoted civilian employees, with what supervisors, sponsors, and mentors each do, useful well beyond Defense.",
+      "status": "reference",
+      "attributes": {
+        "kind": "guide",
+        "url": "https://www.dcpas.osd.mil/sites/default/files/DoD%20Onboarding%20Resource%20Portal.pdf",
+        "by": "Defense Civilian Personnel Advisory Service, Department of Defense",
+        "lastReviewedAt": "2026-11-02"
+      }
+    },
+    {
       "id": "eb:resource:guide-to-processing-personnel-actions",
       "type": "resource",
       "title": "Guide to Processing Personnel Actions",
@@ -1555,10 +1774,10 @@
       "to": "eb:outcome:hiring-on-merit"
     },
     {
-      "id": "rel:administering-the-civilian-workforce-seeks-new-hires-vetted-promptly",
+      "id": "rel:administering-the-civilian-workforce-seeks-new-employees-start-well",
       "from": "eb:mission:administering-the-civilian-workforce",
       "predicate": "seeks",
-      "to": "eb:outcome:new-hires-vetted-promptly"
+      "to": "eb:outcome:new-employees-start-well"
     },
     {
       "id": "rel:administering-the-civilian-workforce-seeks-actions-correct-on-time",
@@ -1687,40 +1906,84 @@
       "description": "Drafts job announcements and interview questions from the job analysis. It doesn’t screen, rate, or rank applicants."
     },
     {
-      "id": "rel:onboarding-vetting-contributes-to-new-hires-vetted-promptly",
-      "from": "eb:capability:onboarding-vetting",
+      "id": "rel:pre-employment-vetting-contributes-to-new-employees-start-well",
+      "from": "eb:capability:pre-employment-vetting",
       "predicate": "contributes_to",
-      "to": "eb:outcome:new-hires-vetted-promptly"
+      "to": "eb:outcome:new-employees-start-well"
     },
     {
-      "id": "rel:onboarding-vetting-contributes-to-positions-filled-on-time",
-      "from": "eb:capability:onboarding-vetting",
+      "id": "rel:pre-employment-vetting-contributes-to-positions-filled-on-time",
+      "from": "eb:capability:pre-employment-vetting",
       "predicate": "contributes_to",
       "to": "eb:outcome:positions-filled-on-time"
     },
     {
-      "id": "rel:onboarding-vetting-satisfies-designate-position-risk",
-      "from": "eb:capability:onboarding-vetting",
+      "id": "rel:pre-employment-vetting-satisfies-designate-position-risk",
+      "from": "eb:capability:pre-employment-vetting",
       "predicate": "satisfies",
       "to": "eb:requirement:designate-position-risk"
     },
     {
-      "id": "rel:onboarding-vetting-satisfies-verify-employment-eligibility",
-      "from": "eb:capability:onboarding-vetting",
+      "id": "rel:pre-employment-vetting-satisfies-verify-employment-eligibility",
+      "from": "eb:capability:pre-employment-vetting",
       "predicate": "satisfies",
       "to": "eb:requirement:verify-employment-eligibility"
     },
     {
-      "id": "rel:onboarding-vetting-satisfies-vet-within-goals",
-      "from": "eb:capability:onboarding-vetting",
+      "id": "rel:pre-employment-vetting-satisfies-vet-within-goals",
+      "from": "eb:capability:pre-employment-vetting",
       "predicate": "satisfies",
       "to": "eb:requirement:vet-within-goals"
     },
     {
-      "id": "rel:onboarding-vetting-candidate-pattern-onboarding-connections",
-      "from": "eb:capability:onboarding-vetting",
+      "id": "rel:pre-employment-vetting-candidate-pattern-pre-employment-connections",
+      "from": "eb:capability:pre-employment-vetting",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:onboarding-connections"
+      "to": "eb:implementationPattern:pre-employment-connections"
+    },
+    {
+      "id": "rel:new-employee-onboarding-contributes-to-new-employees-start-well",
+      "from": "eb:capability:new-employee-onboarding",
+      "predicate": "contributes_to",
+      "to": "eb:outcome:new-employees-start-well"
+    },
+    {
+      "id": "rel:new-employee-onboarding-contributes-to-performance-managed",
+      "from": "eb:capability:new-employee-onboarding",
+      "predicate": "contributes_to",
+      "to": "eb:outcome:performance-managed"
+    },
+    {
+      "id": "rel:new-employee-onboarding-satisfies-security-awareness-before-access",
+      "from": "eb:capability:new-employee-onboarding",
+      "predicate": "satisfies",
+      "to": "eb:requirement:security-awareness-before-access"
+    },
+    {
+      "id": "rel:new-employee-onboarding-satisfies-ethics-training-within-3-months",
+      "from": "eb:capability:new-employee-onboarding",
+      "predicate": "satisfies",
+      "to": "eb:requirement:ethics-training-within-3-months"
+    },
+    {
+      "id": "rel:new-employee-onboarding-satisfies-no-fear-training-within-90-days",
+      "from": "eb:capability:new-employee-onboarding",
+      "predicate": "satisfies",
+      "to": "eb:requirement:no-fear-training-within-90-days"
+    },
+    {
+      "id": "rel:new-employee-onboarding-candidate-pattern-guided-onboarding",
+      "from": "eb:capability:new-employee-onboarding",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:guided-onboarding"
+    },
+    {
+      "id": "rel:new-employee-onboarding-candidate-pattern-core-hr-system",
+      "from": "eb:capability:new-employee-onboarding",
+      "predicate": "candidate_pattern",
+      "to": "eb:implementationPattern:core-hr-system",
+      "coverage": "partial",
+      "description": "Gives new employees self-service and assigns their training. Tasks for IT, facilities, and security often run elsewhere."
     },
     {
       "id": "rel:personnel-action-processing-contributes-to-actions-correct-on-time",
@@ -1988,10 +2251,10 @@
       "description": "Selections become new hire records and appointment actions."
     },
     {
-      "id": "rel:usa-staffing-hiring-works-with-onboarding-connections",
+      "id": "rel:usa-staffing-hiring-works-with-pre-employment-connections",
       "from": "eb:implementationPattern:usa-staffing-hiring",
       "predicate": "works_with",
-      "to": "eb:implementationPattern:onboarding-connections",
+      "to": "eb:implementationPattern:pre-employment-connections",
       "description": "Each tentative offer starts onboarding and vetting."
     },
     {
@@ -2002,18 +2265,39 @@
       "description": "Time to hire and assessment use feed the agency’s reports."
     },
     {
-      "id": "rel:onboarding-connections-works-with-core-hr-system",
-      "from": "eb:implementationPattern:onboarding-connections",
+      "id": "rel:pre-employment-connections-works-with-core-hr-system",
+      "from": "eb:implementationPattern:pre-employment-connections",
       "predicate": "works_with",
       "to": "eb:implementationPattern:core-hr-system",
       "description": "The completed onboarding becomes the appointment action and the employee record."
     },
     {
-      "id": "rel:onboarding-connections-works-with-agency-sign-on",
-      "from": "eb:implementationPattern:onboarding-connections",
+      "id": "rel:pre-employment-connections-works-with-agency-sign-on",
+      "from": "eb:implementationPattern:pre-employment-connections",
       "predicate": "works_with",
       "to": "eb:implementationPattern:agency-sign-on",
       "description": "Accounts and credentials are issued as the new employee joins."
+    },
+    {
+      "id": "rel:guided-onboarding-works-with-pre-employment-connections",
+      "from": "eb:implementationPattern:guided-onboarding",
+      "predicate": "works_with",
+      "to": "eb:implementationPattern:pre-employment-connections",
+      "description": "The journey picks up the vetting and credential steps that run before the first day."
+    },
+    {
+      "id": "rel:guided-onboarding-works-with-core-hr-system",
+      "from": "eb:implementationPattern:guided-onboarding",
+      "predicate": "works_with",
+      "to": "eb:implementationPattern:core-hr-system",
+      "description": "The new employee’s record, and their training, come from the core HR system."
+    },
+    {
+      "id": "rel:guided-onboarding-works-with-performance-appraisal-system",
+      "from": "eb:implementationPattern:guided-onboarding",
+      "predicate": "works_with",
+      "to": "eb:implementationPattern:performance-appraisal-system",
+      "description": "The first check-in starts the new employee’s performance plan."
     },
     {
       "id": "rel:federal-payroll-provider-works-with-core-hr-system",
@@ -2105,6 +2389,18 @@
       "to": "eb:implementationPattern:hr-ai-drafting"
     },
     {
+      "id": "rel:dod-onboarding-resource-portal-helps-with-new-employee-onboarding",
+      "from": "eb:resource:dod-onboarding-resource-portal",
+      "predicate": "helps_with",
+      "to": "eb:capability:new-employee-onboarding"
+    },
+    {
+      "id": "rel:dod-onboarding-resource-portal-helps-with-guided-onboarding",
+      "from": "eb:resource:dod-onboarding-resource-portal",
+      "predicate": "helps_with",
+      "to": "eb:implementationPattern:guided-onboarding"
+    },
+    {
       "id": "rel:guide-to-processing-personnel-actions-helps-with-personnel-action-processing",
       "from": "eb:resource:guide-to-processing-personnel-actions",
       "predicate": "helps_with",
@@ -2165,10 +2461,10 @@
       "to": "eb:outcome:actions-hold-up"
     },
     {
-      "id": "rel:case-management-candidate-pattern-onboarding-connections",
+      "id": "rel:case-management-candidate-pattern-pre-employment-connections",
       "from": "eb:capability:case-management",
       "predicate": "candidate_pattern",
-      "to": "eb:implementationPattern:onboarding-connections"
+      "to": "eb:implementationPattern:pre-employment-connections"
     },
     {
       "id": "rel:records-management-contributes-to-actions-correct-on-time",
@@ -2189,10 +2485,10 @@
       "to": "eb:implementationPattern:eopf-and-ehri"
     },
     {
-      "id": "rel:identity-access-management-contributes-to-new-hires-vetted-promptly",
+      "id": "rel:identity-access-management-contributes-to-new-employees-start-well",
       "from": "eb:capability:identity-access-management",
       "predicate": "contributes_to",
-      "to": "eb:outcome:new-hires-vetted-promptly"
+      "to": "eb:outcome:new-employees-start-well"
     },
     {
       "id": "rel:data-protection-privacy-contributes-to-workforce-data-public",
@@ -2220,8 +2516,8 @@
               "label": "People are hired on merit, with veterans’ preference"
             },
             {
-              "value": "new-hires-vetted-promptly",
-              "label": "New employees are vetted promptly, to the right level"
+              "value": "new-employees-start-well",
+              "label": "New employees start well, vetted, equipped, and supported"
             },
             {
               "value": "actions-correct-on-time",
@@ -2260,8 +2556,8 @@
               "interpretation": "This effort is meant to advance this result."
             },
             {
-              "answerValue": "new-hires-vetted-promptly",
-              "elementId": "eb:outcome:new-hires-vetted-promptly",
+              "answerValue": "new-employees-start-well",
+              "elementId": "eb:outcome:new-employees-start-well",
               "interpretation": "This effort is meant to advance this result."
             },
             {
@@ -2314,6 +2610,10 @@
               "label": "How long vetting takes for new employees"
             },
             {
+              "value": "onboarding",
+              "label": "Day-one readiness, new employee training, and first-year departures"
+            },
+            {
               "value": "actions",
               "label": "Personnel actions processed late, and errors OPM returns"
             },
@@ -2357,6 +2657,21 @@
             {
               "answerValue": "vetting",
               "elementId": "eb:measure:vetting-timeliness",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "onboarding",
+              "elementId": "eb:measure:ready-on-day-one",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "onboarding",
+              "elementId": "eb:measure:new-employee-training-on-time",
+              "interpretation": "The office tracks this already, so there may be a value for today."
+            },
+            {
+              "answerValue": "onboarding",
+              "elementId": "eb:measure:first-year-departures",
               "interpretation": "The office tracks this already, so there may be a value for today."
             },
             {
@@ -2637,43 +2952,169 @@
           ]
         },
         {
-          "id": "question:hr-onboarding",
-          "prompt": "How does onboarding move from the tentative offer to the first day?",
+          "id": "question:hr-pre-employment",
+          "prompt": "How do the steps between the tentative offer and the first day work today?",
           "kind": "single-choice",
           "options": [
             {
               "value": "connected",
-              "label": "An onboarding system connected to vetting, E-Verify, and credentials"
+              "label": "In a system connected to vetting, E-Verify, and credentials"
             },
             {
               "value": "partly",
-              "label": "An onboarding system, with vetting and credentials handled separately"
+              "label": "In a system, with vetting and credentials handled separately"
             },
             {
               "value": "manual",
-              "label": "Email, PDFs, and spreadsheets"
+              "label": "By email, PDFs, and spreadsheets"
             }
           ],
           "candidateMappings": [
             {
               "answerValue": "partly",
-              "elementId": "eb:capability:onboarding-vetting",
+              "elementId": "eb:capability:pre-employment-vetting",
               "interpretation": "Start dates slip when vetting, credentials, and paperwork aren’t tracked together."
             },
             {
               "answerValue": "manual",
-              "elementId": "eb:capability:onboarding-vetting",
+              "elementId": "eb:capability:pre-employment-vetting",
               "interpretation": "Start dates slip when vetting, credentials, and paperwork aren’t tracked together."
             },
             {
               "answerValue": "partly",
-              "elementId": "eb:implementationPattern:onboarding-connections",
+              "elementId": "eb:implementationPattern:pre-employment-connections",
               "interpretation": "Start dates slip when vetting, credentials, and paperwork aren’t tracked together."
             },
             {
               "answerValue": "manual",
-              "elementId": "eb:implementationPattern:onboarding-connections",
+              "elementId": "eb:implementationPattern:pre-employment-connections",
               "interpretation": "Start dates slip when vetting, credentials, and paperwork aren’t tracked together."
+            }
+          ]
+        },
+        {
+          "id": "question:hr-day-one",
+          "prompt": "How often are new employees’ equipment, accounts, and credential ready on their first day?",
+          "kind": "single-choice",
+          "options": [
+            {
+              "value": "always",
+              "label": "Almost always"
+            },
+            {
+              "value": "usually",
+              "label": "Usually, with a few gaps"
+            },
+            {
+              "value": "often-not",
+              "label": "Often not, especially for remote employees"
+            }
+          ],
+          "candidateMappings": [
+            {
+              "answerValue": "usually",
+              "elementId": "eb:capability:new-employee-onboarding",
+              "interpretation": "A first day without equipment or accounts wastes the new employee’s time and sets the tone for what follows."
+            },
+            {
+              "answerValue": "often-not",
+              "elementId": "eb:capability:new-employee-onboarding",
+              "interpretation": "A first day without equipment or accounts wastes the new employee’s time and sets the tone for what follows."
+            },
+            {
+              "answerValue": "usually",
+              "elementId": "eb:implementationPattern:guided-onboarding",
+              "interpretation": "A first day without equipment or accounts wastes the new employee’s time and sets the tone for what follows."
+            },
+            {
+              "answerValue": "often-not",
+              "elementId": "eb:implementationPattern:guided-onboarding",
+              "interpretation": "A first day without equipment or accounts wastes the new employee’s time and sets the tone for what follows."
+            }
+          ]
+        },
+        {
+          "id": "question:hr-sponsors",
+          "prompt": "Does each new employee get a sponsor who helps them settle in?",
+          "kind": "boolean",
+          "candidateMappings": [
+            {
+              "answerValue": "false",
+              "elementId": "eb:capability:new-employee-onboarding",
+              "interpretation": "A sponsor answers the everyday questions a supervisor may not think of, which helps new employees become effective and stay."
+            },
+            {
+              "answerValue": "false",
+              "elementId": "eb:implementationPattern:guided-onboarding",
+              "interpretation": "A sponsor answers the everyday questions a supervisor may not think of, which helps new employees become effective and stay."
+            }
+          ]
+        },
+        {
+          "id": "question:hr-new-employee-training",
+          "prompt": "Does the office track that new employees complete security, ethics, and No FEAR Act training by their deadlines?",
+          "kind": "boolean",
+          "candidateMappings": [
+            {
+              "answerValue": "false",
+              "elementId": "eb:capability:new-employee-onboarding",
+              "interpretation": "Each has a deadline counted from the start date or from system access, and they’re easy to miss without tracking."
+            },
+            {
+              "answerValue": "false",
+              "elementId": "eb:requirement:security-awareness-before-access",
+              "interpretation": "Each has a deadline counted from the start date or from system access, and they’re easy to miss without tracking."
+            },
+            {
+              "answerValue": "false",
+              "elementId": "eb:requirement:ethics-training-within-3-months",
+              "interpretation": "Each has a deadline counted from the start date or from system access, and they’re easy to miss without tracking."
+            },
+            {
+              "answerValue": "false",
+              "elementId": "eb:requirement:no-fear-training-within-90-days",
+              "interpretation": "Each has a deadline counted from the start date or from system access, and they’re easy to miss without tracking."
+            }
+          ]
+        },
+        {
+          "id": "question:hr-first-year",
+          "prompt": "Does the office hear from new employees about their first months, or know how many leave in their first year?",
+          "kind": "single-choice",
+          "options": [
+            {
+              "value": "both",
+              "label": "Both, by office"
+            },
+            {
+              "value": "one",
+              "label": "One or the other"
+            },
+            {
+              "value": "neither",
+              "label": "Neither"
+            }
+          ],
+          "candidateMappings": [
+            {
+              "answerValue": "one",
+              "elementId": "eb:outcome:new-employees-start-well",
+              "interpretation": "People who leave in their first year often say why in their first months, while there’s still time to act."
+            },
+            {
+              "answerValue": "neither",
+              "elementId": "eb:outcome:new-employees-start-well",
+              "interpretation": "People who leave in their first year often say why in their first months, while there’s still time to act."
+            },
+            {
+              "answerValue": "one",
+              "elementId": "eb:measure:first-year-departures",
+              "interpretation": "People who leave in their first year often say why in their first months, while there’s still time to act."
+            },
+            {
+              "answerValue": "neither",
+              "elementId": "eb:measure:first-year-departures",
+              "interpretation": "People who leave in their first year often say why in their first months, while there’s still time to act."
             }
           ]
         },

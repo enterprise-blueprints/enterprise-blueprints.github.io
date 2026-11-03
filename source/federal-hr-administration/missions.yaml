@@ -2,7 +2,7 @@
 
 - id: administering-the-civilian-workforce
   title: HR Administration
-  description: "Hire, pay, and support the agency’s civilian employees under the merit system: fill the positions the agency needs on merit and on time, process each personnel action correctly, pay people accurately, manage their performance, handle conduct fairly, see them through retirement or separation, and keep the records and data the law requires."
+  description: "Hire, pay, and support the agency’s civilian employees under the merit system: fill the positions the agency needs on merit and on time, give new employees a good start, process each personnel action correctly, pay people accurately, manage their performance, handle conduct fairly, see them through retirement or separation, and keep the records and data the law requires."
   sources: [ federal-hr-2-0, merit-hiring-plan ]
   attributes:
     tagline: Hiring, paying, and supporting the federal civilian workforce
@@ -12,6 +12,7 @@
       - Each employee has one record, from the job offer to retirement, in one system of record
       - Personnel actions are entered once and reach payroll, benefits, retirement, and OPM without retyping
       - Positions are records of their own, with their classification, funding, and approvals
+      - Each new employee follows one onboarding journey, from the offer through their first year, with everything ready on day one
       - Hiring uses validated assessments and ranks candidates by score, with veterans’ preference, and tells applicants where they stand
       - Managers and employees do routine tasks themselves, such as updating details or starting a request
       - Workforce figures come from the system of record, not from spreadsheets
@@ -19,7 +20,7 @@
   seeks:
     - positions-filled-on-time
     - hiring-on-merit
-    - new-hires-vetted-promptly
+    - new-employees-start-well
     - actions-correct-on-time
     - employees-paid-correctly
     - retirements-without-delay

@@ -48,6 +48,24 @@
   description: Aim to finish vetting within 21 days for low-risk positions, 25 days for non-sensitive moderate-risk positions, and 45 days for top secret, and within 3 days when reciprocity applies, using preliminary determinations where allowed.
   sources: [ merit-hiring-plan ]
 
+- id: security-awareness-before-access
+  title: Give security awareness training before system access
+  kind: privacy-security
+  description: Give each new employee information security awareness training before allowing them access to the agency’s systems, and refresh it at least once a year.
+  sources: [ security-awareness-5-cfr-930-301 ]
+
+- id: ethics-training-within-3-months
+  title: Complete initial ethics training within 3 months
+  kind: checks-controls
+  description: Have each new employee subject to the Standards of Conduct complete initial ethics training, on conflicts of interest, impartiality, misuse of position, and gifts, within 3 months of appointment.
+  sources: [ ethics-training-5-cfr-2638-304 ]
+
+- id: no-fear-training-within-90-days
+  title: Train new employees on the No FEAR Act within 90 days
+  kind: fairness-due-process
+  description: Train each new employee on their rights and remedies under the antidiscrimination and whistleblower protection laws within 90 calendar days of appointment, unless new employee orientation covers it, and all employees at least every 2 years.
+  sources: [ no-fear-training-5-cfr-724-203 ]
+
 - id: approve-by-effective-date
   title: Approve each personnel action by its effective date
   kind: timeliness
