@@ -12,13 +12,19 @@ interface Props {
 const { title, description = site.description } = Astro.props;
 const pageTitle = title ? `${title} · ${site.title}` : site.title;
 const path = Astro.url.pathname;
+// The element types, Discovery, and Sources, then the site's own pages. A link to another site opens in a new tab.
 const nav = [
-  ...typesInUse().map(([, t]) => ({ label: t.navLabel, url: href(`${t.section}/`) })),
-  ...(assessments.length ? [{ label: 'Discovery', url: href('discovery/') }] : []),
-  { label: 'Sources', url: href('sources/') },
-  { label: 'Data', url: href('data/') },
-  { label: 'About', url: href('about/') },
+  ...typesInUse().map(([, t]) => ({ label: t.navLabel, url: href(`${t.section}/`), external: false })),
+  ...(assessments.length ? [{ label: 'Discovery', url: href('discovery/'), external: false }] : []),
+  { label: 'Sources', url: href('sources/'), external: false },
+  ...site.nav.map((item) => ({ label: item.label, url: item.url ?? href(item.path ?? ''), external: Boolean(item.url) })),
 ];
+const newTab = (external: boolean) => (external ? { target: '_blank', rel: 'noopener' } : {});
+// A site with a color of its own, for links and buttons, softened for the dark theme.
+const accent = site.accent
+  ? `:root { --accent: ${site.accent}; --accent-strong: color-mix(in srgb, ${site.accent} 80%, black); --accent-soft: color-mix(in srgb, ${site.accent} 10%, white); }
+@media (prefers-color-scheme: dark) { :root { --accent: color-mix(in srgb, ${site.accent} 55%, white); --accent-strong: color-mix(in srgb, ${site.accent} 35%, white); --accent-soft: color-mix(in srgb, ${site.accent} 22%, #111827); } }`
+  : undefined;
 ---
 <!doctype html>
 <html lang="en">
@@ -32,6 +38,7 @@ const nav = [
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <link rel="icon" href={href('favicon.svg')} type="image/svg+xml" />
+    {accent && <style is:inline set:html={accent} />}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -54,7 +61,8 @@ const nav = [
                   href={item.url}
                   aria-current={path === item.url ? 'page' : undefined}
                   class={path !== item.url && path.startsWith(item.url) ? 'is-active' : undefined}
-                >{item.label}</a>
+                  {...newTab(item.external)}
+                >{item.label}{item.external && <span class="sr-only"> (opens in a new tab)</span>}</a>
               </li>
             ))}
           </ul>
@@ -86,12 +94,12 @@ const nav = [
         <div class="site-footer__about">
           <p class="site-footer__title">{site.title}</p>
           <p>{site.description}</p>
-          <p>Released under the MIT License.</p>
+          {site.footer && <p>{site.footer}</p>}
         </div>
         <nav class="site-footer__nav" aria-label="Footer">
           <ul>
-            {nav.map((item) => <li><a href={item.url}>{item.label}</a></li>)}
-            <li><a href={site.repositoryUrl} target="_blank" rel="noopener">Source on GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
+            {nav.map((item) => <li><a href={item.url} {...newTab(item.external)}>{item.label}{item.external && <span class="sr-only"> (opens in a new tab)</span>}</a></li>)}
+            {site.links?.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.label}<span class="sr-only"> (opens in a new tab)</span></a></li>)}
           </ul>
         </nav>
       </div>

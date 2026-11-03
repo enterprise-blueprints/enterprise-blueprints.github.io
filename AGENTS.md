@@ -22,8 +22,13 @@ How they connect:
   the others at that version. A published version never changes; it is on `origin/main` once pushed.
 - **Studio reads catalogs.** The library's first, then other publishers' (made with the kit), by web
   address or folder. It checks each package against its catalog's digest and the schema, and keeps it.
-- **The kit reuses the library's code.** Its `src/lib/{compile,package,vocabulary,format,paths}.ts` are
-  verbatim copies of this repo's, refreshed by `pnpm sync --tools`. Change them here, never in the kit.
+- **The kit runs the library's pages.** `engine.json` lists the files a publisher's site takes as they
+  are: the compiler, validator, and index in `src/lib/`, the components, the layout, the styles, and the
+  element, index, discovery, and sources pages. `pnpm sync --tools` copies them into the kit; change them
+  here, never in the kit. Each site describes itself in its own `src/site.ts` (`SiteConfig` in
+  `src/lib/config.ts`) and keeps its own home page and published data. On a publisher's site, the library
+  packages its own build on get pages under `library/`, with the publisher's resources added, and link to
+  the library's own. `tests/engine.test.ts` checks the engine imports nothing outside the list.
 - **IDs are `<prefix>:<type>:<key>`,** such as `eb:capability:records-management`. `eb` is the library's
   prefix; each publisher names its own `idPrefix`. Measures are `<prefix>:measure:<id>`.
 

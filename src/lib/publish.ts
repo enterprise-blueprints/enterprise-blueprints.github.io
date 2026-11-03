@@ -12,8 +12,6 @@ import schema040 from '../../schemas/blueprint-package-0.4.0.schema.json?raw';
 import schema050 from '../../schemas/blueprint-package-0.5.0.schema.json?raw';
 import schema060 from '../../schemas/blueprint-package-0.6.0.schema.json?raw';
 import { packageFiles, release, type PackageFile } from './library';
-import type { BlueprintPackage } from './package';
-import { href } from './paths';
 import { capabilityStages, earlierLayers, elementTypes, outcomeThemes, patternApproaches, patternFields, patternLayers, predicates, requirementKinds, resourceKinds, sourceKinds, statuses } from './vocabulary';
 
 /** Every schema version stays published, so packages that use an older one still validate. Newest last. */
@@ -35,10 +33,6 @@ export const published: PublishedPackage[] = packageFiles.map((f) => ({
   path: `packages/${f.name}/${f.data.version}/blueprint.json`,
   sha256: createHash('sha256').update(f.text, 'utf8').digest('hex'),
 }));
-
-export function downloadUrl(pkg: BlueprintPackage): string {
-  return href(published.find((p) => p.data === pkg)!.path);
-}
 
 export function catalog() {
   return {

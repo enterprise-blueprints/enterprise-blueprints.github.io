@@ -1,13 +1,20 @@
-// Loads every package version under content/<name>/<version>/, validates it,
-// and indexes the current release for the pages: the packages at the newest
-// version, which build on each other at that version. Earlier versions stay
-// published exactly as they were, and so do the versions of a package that
-// was retired. A package can build on another, such as a mission package on
-// the common one, and point at its elements. Any validation problem stops the
-// build.
+// Loads the packages the pages show, validates them, and indexes them. A
+// site's own packages are every version under content/<name>/<version>/, and
+// the pages show its current release: the packages at the newest version,
+// which build on each other at that version. Earlier versions stay published
+// exactly as they were, and so do the versions of a package that was retired.
+// A package can build on another, such as a mission package on the common
+// one, and point at its elements.
+//
+// A publisher's site, made with the Blueprint Kit, also holds the library's
+// packages under library/packages/, at the release its site config names. The
+// library packages its own build on, and the ones those build on, are shown
+// too, with pages under library/ that link to the library's own. Any
+// validation problem in the site's own packages stops the build.
 
+import { site } from '../site';
 import { measureId, validatePackage, type Assessment, type BlueprintPackage, type Element, type Question, type Relation, type Source } from './package';
-import { elementTypes, groupings, patternApproaches, patternFields, patternLayers, predicates, resourceKinds, type ElementTypeInfo } from './vocabulary';
+import { elementTypes, groupings, libraryPrefix, patternApproaches, patternFields, patternLayers, predicates, resourceKinds, type ElementTypeInfo } from './vocabulary';
 import { href } from './paths';
 import { compareVersions } from './format';
 
@@ -16,6 +23,8 @@ export interface LibraryElement extends Element {
   typeInfo: ElementTypeInfo;
   slug: string;
   url: string;
+  /** Its page on the library's site, for a library element on a publisher's site. */
+  canonicalUrl?: string;
 }
 
 export interface RelationGroup {
@@ -36,20 +45,25 @@ export interface PackageFile {
   latest: boolean;
 }
 
-const files = import.meta.glob<string>('/content/*/*/blueprint.json', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-});
+const glob = (files: Record<string, string>, root: string) =>
+  Object.entries(files).map(([path, text]) => {
+    const [name, version] = path.slice(root.length).split('/');
+    return { path, name, version, text, data: JSON.parse(text) as BlueprintPackage };
+  });
+const ownFiles = glob(import.meta.glob<string>('/content/*/*/blueprint.json', { query: '?raw', import: 'default', eager: true }), '/content/');
+// Only on a publisher's site, which syncs them from the library.
+const upstreamFiles = glob(import.meta.glob<string>('/library/packages/*/*/blueprint.json', { query: '?raw', import: 'default', eager: true }), '/library/packages/');
 
-function load(): PackageFile[] {
+/** The library a publisher's site builds on, with the address its pages and packages are under. */
+export const upstream = site.upstream && { ...site.upstream, base: site.upstream.url.endsWith('/') ? site.upstream.url : `${site.upstream.url}/` };
+
+function load(): { own: PackageFile[]; upstream: { name: string; data: BlueprintPackage }[] } {
   const errors: string[] = [];
   const loaded: Omit<PackageFile, 'latest'>[] = [];
-  const parsed = Object.entries(files).map(([path, text]) => ({ path, text, data: JSON.parse(text) as BlueprintPackage }));
-  // Dependencies resolve against every package in content/, valid or not; their own problems are reported on their own.
-  const resolve = (packageId: string, version: string) => parsed.find((p) => p.data.packageId === packageId && p.data.version === version)?.data;
-  for (const { path, text, data } of parsed) {
-    const [, , name, version] = path.split('/');
+  // Dependencies resolve against every package there is, valid or not; their own problems are reported on their own.
+  const all = [...ownFiles, ...upstreamFiles];
+  const resolve = (packageId: string, version: string) => all.find((p) => p.data.packageId === packageId && p.data.version === version)?.data;
+  for (const { path, name, version, text, data } of ownFiles) {
     const problems = validatePackage(data, resolve);
     errors.push(...problems.map((p) => `${path}: ${p}`));
     if (problems.length) continue;
@@ -76,13 +90,27 @@ function load(): PackageFile[] {
   const current = [...versions.values()].map((list) => list.at(-1)!.data).filter((pkg) => pkg.version === release);
   for (const pkg of current) {
     for (const d of pkg.dependencies ?? []) {
-      if (d.version !== release) errors.push(`${pkg.packageId} ${pkg.version} builds on ${d.packageId} ${d.version}, not on the release`);
+      if (folderOf.has(d.packageId) && d.version !== release) errors.push(`${pkg.packageId} ${pkg.version} builds on ${d.packageId} ${d.version}, not on the release`);
     }
+  }
+
+  // The library's packages that the site's own build on, and the ones those build on.
+  const shown: { name: string; data: BlueprintPackage }[] = [];
+  const add = (packageId: string, version: string) => {
+    const file = upstreamFiles.find((f) => f.data.packageId === packageId && f.data.version === version);
+    if (!file || shown.some((s) => s.data === file.data)) return;
+    shown.push(file);
+    for (const d of file.data.dependencies ?? []) add(d.packageId, d.version);
+  };
+  for (const pkg of current) for (const d of pkg.dependencies ?? []) add(d.packageId, d.version);
+  for (const pkg of current) {
+    const prefix = pkg.idPrefix ?? libraryPrefix;
+    if (shown.some((s) => (s.data.idPrefix ?? libraryPrefix) === prefix)) errors.push(`${pkg.packageId}: the "${prefix}" prefix is the library's, so name an idPrefix of your own`);
   }
 
   // Element IDs are unique across the packages the pages show.
   const seen = new Map<string, string>();
-  for (const pkg of current) {
+  for (const pkg of [...current, ...shown.map((s) => s.data)]) {
     const measureIds = pkg.elements.flatMap((e) => (Array.isArray(e.attributes?.measures) ? (e.attributes.measures as { id: string }[]).map((m) => measureId(e, m.id)) : []));
     for (const id of [...pkg.elements.map((e) => e.id), ...measureIds]) {
       const other = seen.get(id);
@@ -90,25 +118,42 @@ function load(): PackageFile[] {
       seen.set(id, pkg.packageId);
     }
   }
-  if (!Object.keys(files).length) errors.push('no packages found under content/');
+  if (!ownFiles.length) errors.push('no packages found under content/. Run pnpm content:build.');
   if (errors.length) {
     throw new Error(`Blueprint package validation failed:\n  ${errors.join('\n  ')}`);
   }
-  return [...versions.values()].flatMap((list) => list.map((f) => ({ ...f, latest: f.data.version === release })));
+  return { own: [...versions.values()].flatMap((list) => list.map((f) => ({ ...f, latest: f.data.version === release }))), upstream: shown };
 }
 
-/** Every package version, oldest first within each package. */
-export const packageFiles = load();
-/** The packages in the current release. */
-export const packages = packageFiles.filter((f) => f.latest).map((f) => f.data);
-/** The current release's version, which every package in it has. */
-export const release = packages[0]?.version;
+const loaded = load();
+/** Every version of the site's own packages, oldest first within each package. */
+export const packageFiles = loaded.own;
+/** The site's own packages in its current release. */
+export const ownPackages = packageFiles.filter((f) => f.latest).map((f) => f.data);
+/** The packages the pages show: the site's own, then, on a publisher's site, the library's they build on. */
+export const packages = [...ownPackages, ...loaded.upstream.map((f) => f.data)];
+/** The site's current release, which every one of its own packages has. */
+export const release = ownPackages[0]?.version;
+
+/** Whether a package is the site's own, rather than one of the library's on a publisher's site. */
+export const isOwn = (pkg: BlueprintPackage) => ownPackages.includes(pkg);
+
+const folders = new Map<BlueprintPackage, string>([...packageFiles.map((f) => [f.data, f.name] as const), ...loaded.upstream.map((f) => [f.data, f.name] as const)]);
+
+/** Where to download a package: from this site, or a library package from the library's. */
+export function downloadUrl(pkg: BlueprintPackage): string {
+  const path = `packages/${folders.get(pkg)}/${pkg.version}/blueprint.json`;
+  return isOwn(pkg) ? href(path) : new URL(path, upstream!.base).href;
+}
 
 export const elements: LibraryElement[] = packages.flatMap((pkg) =>
   pkg.elements.map((e) => {
     const typeInfo = elementTypes[e.type];
     const slug = e.id.split(':')[2];
-    return { ...e, package: pkg, typeInfo, slug, url: href(`${typeInfo.section}/${slug}/`) };
+    const path = `${typeInfo.section}/${slug}/`;
+    return isOwn(pkg)
+      ? { ...e, package: pkg, typeInfo, slug, url: href(path) }
+      : { ...e, package: pkg, typeInfo, slug, url: href(`library/${path}`), canonicalUrl: new URL(path, upstream!.base).href };
   }),
 );
 
@@ -516,12 +561,15 @@ export interface LibraryAssessment extends Assessment {
   package: BlueprintPackage;
   slug: string;
   url: string;
+  /** Its page on the library's site, for a library discovery set on a publisher's site. */
+  canonicalUrl?: string;
 }
 
 export const assessments: LibraryAssessment[] = packages.flatMap((pkg) =>
   (pkg.assessments ?? []).map((a) => {
     const slug = a.id.split(':')[1];
-    return { ...a, package: pkg, slug, url: href(`discovery/${slug}/`) };
+    const path = `discovery/${slug}/`;
+    return { ...a, package: pkg, slug, url: href(isOwn(pkg) ? path : `library/${path}`), ...(!isOwn(pkg) && { canonicalUrl: new URL(path, upstream!.base).href }) };
   }),
 );
 

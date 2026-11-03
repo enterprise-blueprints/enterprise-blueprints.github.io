@@ -1,0 +1,33 @@
+{
+  "description": "The files a publisher's site, made with the Blueprint Kit, takes from the library as they are, with pnpm sync --tools. Change them here, never in the kit. Each site keeps its own src/site.ts, home page, and published data.",
+  "files": [
+    "src/lib/compile.ts",
+    "src/lib/config.ts",
+    "src/lib/format.ts",
+    "src/lib/library.ts",
+    "src/lib/package.ts",
+    "src/lib/paths.ts",
+    "src/lib/vocabulary.ts",
+    "src/components/DiscoveryPage.astro",
+    "src/components/ElementPage.astro",
+    "src/components/ElementTable.astro",
+    "src/components/MissionExplorer.astro",
+    "src/components/OutcomeMatrix.astro",
+    "src/components/PatternCompare.astro",
+    "src/components/ResourceList.astro",
+    "src/components/SourceList.astro",
+    "src/components/StatusBadge.astro",
+    "src/components/TypeBadge.astro",
+    "src/layouts/Base.astro",
+    "src/styles/site.css",
+    "src/pages/[section]/[slug].astro",
+    "src/pages/[section]/index.astro",
+    "src/pages/discovery/[slug].astro",
+    "src/pages/discovery/index.astro",
+    "src/pages/library/[section]/[slug].astro",
+    "src/pages/library/discovery/[slug].astro",
+    "src/pages/sources.astro",
+    "src/pages/404.astro",
+    "public/favicon.svg"
+  ]
+}
