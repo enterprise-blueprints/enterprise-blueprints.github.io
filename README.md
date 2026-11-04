@@ -75,10 +75,9 @@ byte for byte.
 
 ## Edit content
 
-Edit the files under `source/<package>/`, or run `pnpm editor` and work on the pages themselves, with the same
-checks. The editor is on your computer only, and the built site never has it. Then run `pnpm content:build`
-and `pnpm verify`. If either fails,
-its message names each problem and the file it's in. `content:build` checks the release the way the site
+Run `pnpm editor` and work on the pages themselves, or edit the files under `source/<package>/` and run
+`pnpm content:build`. [EDITING.md](EDITING.md) is the guide to the editor and the ways of running the site.
+Either way, finish with `pnpm verify`. If a check fails, its message names each problem and the file it's in. `content:build` checks the release the way the site
 does, against the schema and every package it builds on, before it writes anything. A new element type or
 predicate needs an entry in `src/lib/vocabulary.ts` first.
 

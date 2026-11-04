@@ -82,7 +82,8 @@ pnpm editor          # the site with the editor on, at http://127.0.0.1:4323
 ### The editor
 
 `pnpm editor` is the site with a bar across the top and forms on the pages, for everything in `source/`: on
-this computer only, never in a build. It's the same editor the kit's sites have, so a change here reaches
+this computer only, never in a build. `EDITING.md` is the guide for people using it, and an engine file, so
+keep it true of both sites. It's the same editor the kit's sites have, so a change here reaches
 both, and it can't drift. `editor/store.ts` edits the YAML in place, keeping comments and fields the forms
 don't show; a save runs `scripts/content.ts build`, whose checks decide, and a refused change is undone.
 `forms` there lists the types and what each form holds. `client.ts` finds its places by the attributes the

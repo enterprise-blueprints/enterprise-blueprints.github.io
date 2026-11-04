@@ -5,8 +5,8 @@ and the working agreements; read it first. This guide covers the content: what t
 and how to check it. The six federal missions in `source/` are the models. When this guide and a model
 disagree, the model shows what the tests and pages expect, so follow it and fix this guide.
 
-A person can do all of this in the browser too, with `pnpm editor`. It writes the same files, so everything
-here applies, and the forms hold what they can of it, such as each requirement belonging to one capability.
+A person can do all of this in the browser too, with `pnpm editor`, as [EDITING.md](EDITING.md) describes. It
+writes the same files, so everything here applies.
 
 ## Before writing anything
 
