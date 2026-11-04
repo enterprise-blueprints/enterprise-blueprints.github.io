@@ -12,6 +12,7 @@
     "src/components/DiscoveryPage.astro",
     "src/components/ElementPage.astro",
     "src/components/ElementTable.astro",
+    "src/components/ExplorerResources.astro",
     "src/components/LibraryCount.astro",
     "src/components/LibraryMark.astro",
     "src/components/LibrarySwitch.astro",
