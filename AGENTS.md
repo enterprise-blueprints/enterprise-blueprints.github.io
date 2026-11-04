@@ -30,7 +30,8 @@ How they connect:
   packages its own build on get pages under `library/`, with the publisher's resources added, and link to
   the library's own. With `upstream.showAll` (`show: all` in `kit.yaml`) the rest of the release does too,
   and the lists get a switch that hides what's marked `only-whole`; `inUse` says which packages stay. The pages
-  also carry `data-resources-for`, `data-resource-id`, `data-element`, and `data-detail`, which is how the kit's
+  also carry `data-resources-for`, `data-resource-id`, `data-element`, `data-detail`, `data-source`,
+  `data-assessment`, `data-question`, and `data-package`, which is how the kit's
   editor finds its places, so keep them.
   `tests/engine.test.ts` checks the engine imports nothing outside the list.
 - **The engine has a version,** `version` in `engine.json`, tagged `engine-v<version>` when deployed.
@@ -158,7 +159,8 @@ Studio:
 
 Kit:
 
-- The editor (`pnpm editor`, for one technical person on their own machine) handles resources, missions,
-  outcomes, capabilities, requirements, and patterns, with their links. Next: sources, discovery questions,
-  and starting a new package. YAML stays the source of truth. Sign-in, editing by several people, and an
-  installer for less technical staff can come later.
+- The editor (`pnpm editor`, for one technical person on their own machine) handles everything in a package,
+  with its links, sources, and discovery questions, and starts new packages. Still by hand: the sources of a
+  measure or a link, the order of items, and a package's details once it's started. YAML stays the source of
+  truth. Sign-in, editing by several people, and an installer for less technical staff can come later. The
+  library could use the editor too, for authoring its own content, which would move it into shared code.
