@@ -11,7 +11,7 @@ Three repos, usually side by side in `C:\Users\jerem\repos\work\`, each deployed
 | --- | --- | --- |
 | `enterprise-blueprints.github.io` (this one) | The library: public reference architecture for public-sector missions, as a site (Astro) and as versioned JSON packages with a catalog, schemas, and a vocabulary. | `enterprise-blueprints/enterprise-blueprints.github.io`, on GitHub Pages |
 | `solution-studio` | Studio: a private, local workspace (Next.js, SQLite) where an architect models one engagement, building on the library's packages as blueprints. | `hofmanniac/solution-studio` |
-| `blueprint-kit` | A template any organization copies to publish its own packages (resources such as services, demos, and products, or missions of its own) on a pinned library release. | `enterprise-blueprints/blueprint-kit`, a template repo; its sample site is on GitHub Pages |
+| `blueprint-kit` | A template any organization copies to publish its own packages (resources such as services, demos, and products, or missions of its own) on a pinned library release, on its own computer with an editor for resources, or on any host. | `enterprise-blueprints/blueprint-kit`, a template repo; its sample site is on GitHub Pages |
 
 How they connect:
 
@@ -29,7 +29,9 @@ How they connect:
   `src/lib/config.ts`) and keeps its own home page and published data. On a publisher's site, the library
   packages its own build on get pages under `library/`, with the publisher's resources added, and link to
   the library's own. With `upstream.showAll` (`show: all` in `kit.yaml`) the rest of the release does too,
-  and the lists get a switch that hides what's marked `only-whole`; `inUse` says which packages stay.
+  and the lists get a switch that hides what's marked `only-whole`; `inUse` says which packages stay. The pages
+  also carry `data-resources-for`, `data-resource-id`, and `data-element`, which is how the kit's editor finds
+  its places, so keep them.
   `tests/engine.test.ts` checks the engine imports nothing outside the list.
 - **The engine has a version,** `version` in `engine.json`, tagged `engine-v<version>` when deployed.
   Organizations' copies of the kit take the engine by that tag, so a version's files never change:

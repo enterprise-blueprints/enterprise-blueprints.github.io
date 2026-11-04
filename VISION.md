@@ -95,8 +95,9 @@ schema.
 Built so far, each step pairing library content with the Studio feature that uses it: capture, starting from
 a blueprint, discovery, requirements and gaps, options, and deliverables, starting with an architecture
 summary made from a fixed revision of the model, grouped by the library's stages and kinds. Then resources,
-ID prefixes for other publishers, the Blueprint Kit they publish with, and Studio reading their catalogs
-beside the library's, with resources shown beside the items they help with. Next:
+ID prefixes for other publishers, the Blueprint Kit they publish with, which runs on their own computers
+with an editor for their resources, and Studio reading their catalogs beside the library's, with resources
+shown beside the items they help with. Next:
 
 1. **Assist.** AI suggestions from notes and findings, through the same review as discovery's.
 2. **Roadmaps.** Which parts of the architecture to build first, from wherever an agency starts.

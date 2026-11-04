@@ -52,6 +52,10 @@ const sample = 'https://enterprise-blueprints.github.io/blueprint-kit/';
           them yet, built from the library's shared ones.
         </li>
         <li>
+          <strong>An editor on your own computer,</strong> for adding your resources from the pages they help
+          with, right beside the library's items.
+        </li>
+        <li>
           <strong>Packages in the library's format, with a catalog,</strong> so tools such as Solution Studio
           read yours beside the library's.
         </li>
@@ -77,8 +81,9 @@ const sample = 'https://enterprise-blueprints.github.io/blueprint-kit/';
         </li>
         <li>Name your site and choose its color in <code>kit.yaml</code>.</li>
         <li>
-          Describe your offerings in <code>source/offerings/resources.yaml</code>, each with what it helps with.
-          The sample has one of each kind to start from.
+          Add your offerings in the browser with <code>pnpm editor</code>, or by hand in
+          <code>source/offerings/resources.yaml</code>, each with what it helps with. The sample has one of
+          each kind to start from.
         </li>
         <li>
           Run <code>pnpm content:build</code> to build your packages, and <code>pnpm verify</code> to check
@@ -94,15 +99,16 @@ const sample = 'https://enterprise-blueprints.github.io/blueprint-kit/';
 
       <h2>Staying current</h2>
       <p>
-        Your site builds on one library release, so it changes only when you choose. Each week, the kit opens
-        a pull request in your repository that moves to the library's current release and the kit's latest
-        pages, with the result of its checks, for you to review and merge.
+        Your site builds on one library release, so it changes only when you choose. A site on an older
+        release is working as it should. When you want what's new, one command brings it in. On GitHub, the
+        kit also opens a pull request each week that moves to the library's current release and the kit's
+        latest pages, with the result of its checks, for you to review and merge.
       </p>
 
       <h2>Yours to keep</h2>
       <p>
-        Your packages carry your own license and live in your own repository; the library never includes
-        them. To keep them to your team, host your site where only your team can reach it, or share the
+        Your packages carry your own license and stay in your own copy of the kit; the library never
+        includes them. To keep them to your team, host your site where only your team can reach it, or share the
         package files, which Solution Studio can open directly.
       </p>
     </div>
