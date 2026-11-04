@@ -3,6 +3,8 @@
 //   pnpm content:build   write each package whose source changed, at its next version
 //   pnpm content:check   fail if content/ is behind source/, writing nothing
 //
+// The editor also asks `status` for the release and whether it's a draft, as JSON.
+//
 // Both check the release as it will be published, the way the site does:
 // each package against its schema and the packages it builds on. A problem
 // stops the build before anything is written.
@@ -17,8 +19,8 @@ import { plan, readSources, SourceError } from '../src/lib/compile.ts';
 import { validatePackage, type BlueprintPackage } from '../src/lib/package.ts';
 
 const mode = process.argv[2];
-if (mode !== 'build' && mode !== 'check') {
-  console.error('Usage: content.ts build | check');
+if (mode !== 'build' && mode !== 'check' && mode !== 'status') {
+  console.error('Usage: content.ts build | check | status');
   process.exit(2);
 }
 
@@ -30,9 +32,9 @@ const content: Record<string, Record<string, BlueprintPackage>> = Object.fromEnt
   }),
 );
 
-// Checking reads every version in content/ as published; building asks Git which are.
+// Checking reads every version in content/ as published; the others ask Git which are.
 let isPublished = (_name: string, _version: string) => true;
-if (mode === 'build') {
+if (mode !== 'check') {
   let listed: string;
   try {
     listed = execFileSync('git', ['ls-tree', '-r', '--name-only', 'origin/main', '--', 'content'], { encoding: 'utf8' });
@@ -54,6 +56,12 @@ try {
     process.exit(1);
   }
   throw e;
+}
+
+if (mode === 'status') {
+  const current = steps.filter((s) => !s.retired);
+  console.log(JSON.stringify({ release: current[0]?.version, draft: current.some((s) => !isPublished(s.name, s.version)) }));
+  process.exit(0);
 }
 
 // The release as it will be: what's written, and what stays.

@@ -16,6 +16,7 @@ Requires Node 22.12 or newer and pnpm.
 ```bash
 pnpm install
 pnpm dev            # http://localhost:4321
+pnpm editor         # the site with forms for editing source/, at http://127.0.0.1:4323
 pnpm content:build  # build content/ from source/, as the next release when anything changed
 pnpm content:check  # fail if content/ is behind source/
 pnpm check          # type-check
@@ -74,7 +75,9 @@ byte for byte.
 
 ## Edit content
 
-Edit the files under `source/<package>/`, then run `pnpm content:build` and `pnpm verify`. If either fails,
+Edit the files under `source/<package>/`, or run `pnpm editor` and work on the pages themselves, with the same
+checks. The editor is on your computer only, and the built site never has it. Then run `pnpm content:build`
+and `pnpm verify`. If either fails,
 its message names each problem and the file it's in. `content:build` checks the release the way the site
 does, against the schema and every package it builds on, before it writes anything. A new element type or
 predicate needs an entry in `src/lib/vocabulary.ts` first.

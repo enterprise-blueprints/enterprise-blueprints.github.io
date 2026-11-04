@@ -23,8 +23,8 @@ How they connect:
 - **Studio reads catalogs.** The library's first, then other publishers' (made with the kit), by web
   address or folder. It checks each package against its catalog's digest and the schema, and keeps it.
 - **The kit runs the library's pages.** `engine.json` lists the files a publisher's site takes as they
-  are: the compiler, validator, and index in `src/lib/`, the components, the layout, the styles, and the
-  element, index, discovery, and sources pages. `pnpm sync --tools` copies them into the kit; change them
+  are: the compiler, validator, and index in `src/lib/`, the components, the layout, the styles, the
+  element, index, discovery, and sources pages, and the editor. `pnpm sync --tools` copies them into the kit; change them
   here, never in the kit. Each site describes itself in its own `src/site.ts` (`SiteConfig` in
   `src/lib/config.ts`) and keeps its own home page and published data. On a publisher's site, the library
   packages its own build on get pages under `library/`, with the publisher's resources added, and link to
@@ -67,6 +67,7 @@ pnpm install
 pnpm content:build   # source/ → content/, at the next release when anything changed; validates first
 pnpm verify          # content check, type check, tests, site build, and published-data check
 pnpm dev             # the site at http://localhost:4321
+pnpm editor          # the site with the editor on, at http://127.0.0.1:4323
 ```
 
 - `source/<package>/*.yaml` is what people edit; `content/<package>/<version>/blueprint.json` is built.
@@ -77,6 +78,24 @@ pnpm dev             # the site at http://localhost:4321
   `publish.ts` defines the published files.
 - Tests in `tests/` pin real content, such as counts and rules, so a content change often means a test
   change too.
+
+### The editor
+
+`pnpm editor` is the site with a bar across the top and forms on the pages, for everything in `source/`: on
+this computer only, never in a build. It's the same editor the kit's sites have, so a change here reaches
+both, and it can't drift. `editor/store.ts` edits the YAML in place, keeping comments and fields the forms
+don't show; a save runs `scripts/content.ts build`, whose checks decide, and a refused change is undone.
+`forms` there lists the types and what each form holds. `client.ts` finds its places by the attributes the
+pages carry. A link that can't go on the other end's element goes in `links.yaml`. A link's `way` is the
+linked pattern's, except on `depends_on`, where it's the way of the pattern with the need. A package that
+gains a second prefix among its dependencies has its short references written out, or the compiler can't
+tell them apart. The server tells the two sites apart by `kit.yaml`: a publisher's site has a Publish button
+and the `service` and `product` resource kinds, and the library publishes by pushing to `main`.
+
+Tests pin real content, so a saved change can fail `pnpm verify` until its test changes too; that's the same
+as editing the YAML by hand. Try editor changes in a clone, since a save writes `source/` and `content/`, and
+`content:build` needs `origin/main`. Keep `allowed()` in `server.ts`: any site open in the browser can reach a
+server on this computer. `tests/` for the editor run in every kit copy too, so they can't rely on real content.
 
 ### Adding a mission
 
@@ -162,5 +181,4 @@ Kit:
 - The editor (`pnpm editor`, for one technical person on their own machine) handles everything in a package,
   with its links, sources, and discovery questions, and starts new packages. Still by hand: the sources of a
   measure or a link, the order of items, and a package's details once it's started. YAML stays the source of
-  truth. Sign-in, editing by several people, and an installer for less technical staff can come later. The
-  library could use the editor too, for authoring its own content, which would move it into shared code.
+  truth. Sign-in, editing by several people, and an installer for less technical staff can come later.

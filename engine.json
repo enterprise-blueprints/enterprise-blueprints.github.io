@@ -1,6 +1,6 @@
 {
   "description": "The files a publisher's site, made with the Blueprint Kit, takes from the library as they are, with pnpm sync --tools. Change them here, never in the kit. Each site keeps its own src/site.ts, home page, and published data. Its version is tagged engine-v<version> when deployed; raise it when the files change (see scripts/engine.mjs).",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "files": [
     "src/lib/compile.ts",
     "src/lib/config.ts",
@@ -33,6 +33,12 @@
     "src/pages/library/discovery/[slug].astro",
     "src/pages/sources.astro",
     "src/pages/404.astro",
-    "public/favicon.svg"
+    "public/favicon.svg",
+    "editor/client.css",
+    "editor/client.ts",
+    "editor/server.ts",
+    "editor/store.ts",
+    "scripts/editor.ts",
+    "tests/editor.test.ts"
   ]
 }
