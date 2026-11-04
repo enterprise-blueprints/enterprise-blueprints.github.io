@@ -159,6 +159,6 @@ Studio:
 Kit:
 
 - The editor (`pnpm editor`, for one technical person on their own machine) handles resources, missions,
-  outcomes, and capabilities, with their links. Next: requirements and patterns, then sources, discovery
-  questions, and starting a new package. YAML stays the source of truth. Sign-in, editing by several
-  people, and an installer for less technical staff can come later.
+  outcomes, capabilities, requirements, and patterns, with their links. Next: sources, discovery questions,
+  and starting a new package. YAML stays the source of truth. Sign-in, editing by several people, and an
+  installer for less technical staff can come later.
