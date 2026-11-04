@@ -1,0 +1,334 @@
+# The references this package cites. Elements and links name them by id.
+
+- id: apa-5-usc-555
+  title: 5 U.S.C. § 555 — Ancillary matters (Administrative Procedure Act)
+  url: https://www.govinfo.gov/link/uscode/5/555?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Agencies conclude a matter presented to them within a reasonable time (§ 555(b)), and give prompt notice when they deny a written application in whole or in part, with a brief statement of the grounds unless the denial affirms an earlier one or explains itself (§ 555(e)).
+
+- id: goldberg-v-kelly
+  title: Goldberg v. Kelly, 397 U.S. 254 (1970)
+  url: https://www.law.cornell.edu/supremecourt/text/397/254
+  kind: official-reference
+  publicationDate: 1970-03-23
+  lastReviewedAt: 2026-11-04
+  note: Stopping welfare benefits calls for a hearing first, with timely and adequate notice of the reasons, a chance to present arguments and evidence, a chance to have a lawyer, a decision maker who didn’t take part in the decision under review, and a decision resting on the rules and evidence from the hearing.
+
+- id: mathews-v-eldridge
+  title: Mathews v. Eldridge, 424 U.S. 319 (1976)
+  url: https://www.law.cornell.edu/supremecourt/text/424/319
+  kind: official-reference
+  publicationDate: 1976-02-24
+  lastReviewedAt: 2026-11-04
+  note: Stopping Social Security disability benefits doesn’t call for an evidentiary hearing first. How much process is due depends on the person’s interest, the risk of error and the value of more safeguards, and the government’s interest.
+
+- id: privacy-act
+  title: 5 U.S.C. § 552a — Records maintained on individuals (Privacy Act of 1974, with the Computer Matching and Privacy Protection Act)
+  url: https://www.govinfo.gov/link/uscode/5/552a?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Agencies tell each person they ask for information the authority for asking, whether answering is required, the purpose, the routine uses, and what happens if the person doesn’t answer (§ 552a(e)(3)). A matching program needs a written agreement, in effect for up to 18 months and renewable for up to one more year (§ 552a(o)). An agency can’t suspend, end, reduce, or finally deny a benefit because of a match until it has verified the information, told the person what it found, and given them the time set by law to contest it, or 30 days if none is set (§ 552a(p)).
+
+- id: paperwork-reduction-44-usc-3506
+  title: 44 U.S.C. § 3506 — Federal agency responsibilities (Paperwork Reduction Act)
+  url: https://www.govinfo.gov/link/uscode/44/3506?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Before a form goes to OMB, the agency gives 60 days’ public notice and certifies that the collection is needed, doesn’t duplicate information the agency can reasonably get elsewhere, reduces burden where it can, and uses plain language (§ 3506(c)). Each form shows its control number, purpose, estimated burden, and whether answering is voluntary, required for a benefit, or mandatory.
+
+- id: plain-writing-act
+  title: Plain Writing Act of 2010, Public Law 111-274
+  url: https://www.govinfo.gov/link/plaw/111/public/274?link-type=html
+  kind: official-reference
+  publicationDate: 2010-10-13
+  lastReviewedAt: 2026-11-04
+  note: Agencies use plain writing in every covered document they issue or substantially revise, including letters, forms, notices, and instructions needed to get a federal benefit or service.
+
+- id: idea-act
+  title: 21st Century Integrated Digital Experience Act (21st Century IDEA), Public Law 115-336
+  url: https://www.govinfo.gov/link/plaw/115/public/336?link-type=html
+  kind: official-reference
+  publicationDate: 2018-12-20
+  lastReviewedAt: 2026-11-04
+  note: New and redesigned public websites and digital services are accessible, secure, designed around users’ needs, and work on mobile devices (§ 3). Paper forms have a digital version, and agencies keep an accessible way for people who can’t use digital services (§ 4).
+
+- id: rehabilitation-act-504
+  title: 29 U.S.C. § 794 — Nondiscrimination under Federal grants and programs (Section 504 of the Rehabilitation Act)
+  url: https://www.govinfo.gov/link/uscode/29/794?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: No qualified person with a disability may, because of the disability, be excluded from, denied the benefits of, or discriminated against under any program or activity conducted by an executive agency.
+
+- id: section-508-standards
+  title: U.S. Access Board — Revised Section 508 Standards, 36 CFR Part 1194
+  url: https://www.access-board.gov/ict/
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Public-facing content conforms to WCAG 2.0 Level AA (E205.4). So does official communication that isn’t public-facing, including adjudication decisions, notices about benefits, acknowledgments of receipt, and templates and forms (E205.3).
+
+- id: nist-sp-800-63-4
+  title: NIST SP 800-63-4 — Digital Identity Guidelines
+  url: https://csrc.nist.gov/pubs/sp/800/63/4/final
+  kind: official-reference
+  publicationDate: 2025-07-31
+  lastReviewedAt: 2026-11-04
+  note: Requirements for identity proofing, authentication, and federation for people using government systems over a network.
+
+- id: login-gov
+  title: Login.gov — Developer guide overview
+  url: https://developers.login.gov/overview/
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: A government sign-in and identity verification service that agency applications connect to with OpenID Connect or SAML, under an interagency agreement. The application keeps its own authorization and roles.
+
+- id: payment-integrity-31-usc-3352
+  title: 31 U.S.C. § 3352 — Estimates of improper payments and reports on actions to reduce improper payments
+  url: https://www.govinfo.gov/link/uscode/31/3352?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Part of the Payment Integrity Information Act. Agencies review each program at least once every 3 fiscal years for risk of significant improper payments, which means more than $10,000,000 and 1.5 percent of program outlays, or more than $100,000,000. For programs at risk they estimate improper payments, counting payments they can’t confirm for lack of documentation, and report causes and actions.
+
+- id: do-not-pay-31-usc-3354
+  title: 31 U.S.C. § 3354 — Improving the Do Not Pay Initiative
+  url: https://www.govinfo.gov/link/uscode/31/3354?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Agencies review their prepayment procedures and check eligibility before releasing federal funds, using databases that include death records, SAM exclusions, Treasury’s Debt Check, and Social Security’s data on people who are incarcerated.
+
+- id: do-not-pay
+  title: U.S. Department of the Treasury, Bureau of the Fiscal Service — Do Not Pay products
+  url: https://fiscal.treasury.gov/payment-integrity/do-not-pay-dnp/products
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Do Not Pay Connect is an API for screening inside an agency’s own workflow, the Web Portal offers searches, batch matches, and monitoring alerts, and Treasury Payment Verification screens Treasury-disbursed payments automatically.
+
+- id: fraud-controls-31-usc-3357
+  title: 31 U.S.C. § 3357 — Financial and administrative controls relating to fraud and improper payments
+  url: https://www.govinfo.gov/link/uscode/31/3357?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Agencies evaluate fraud risks, use a risk-based approach to design controls, collect and analyze data on fraud they detect, and use monitoring, audits, and investigations to improve how they prevent and respond to it.
+
+- id: gao-fraud-risk-framework
+  title: GAO-15-593SP — A Framework for Managing Fraud Risks in Federal Programs
+  url: https://www.gao.gov/products/gao-15-593sp
+  kind: official-reference
+  publicationDate: 2015-07-28
+  lastReviewedAt: 2026-11-04
+  note: Leading practices for program managers to prevent, detect, and respond to fraud, with an emphasis on prevention.
+
+- id: payment-accuracy
+  title: PaymentAccuracy.gov
+  url: https://www.paymentaccuracy.gov/
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Agencies’ reported improper payment rates, recoveries, dollar amounts, and root causes.
+
+- id: eft-31-cfr-208
+  title: 31 CFR Part 208 — Management of Federal Agency Disbursements
+  url: https://www.law.cornell.edu/cfr/text/31/part-208
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Federal payments are made by electronic funds transfer (§ 208.3), with listed waivers, such as for a person whose mental impairment or remote location makes an account a hardship (§ 208.4). A person who receives a federal payment can open a Treasury-sponsored account (§ 208.6).
+
+- id: eo-14247
+  title: Executive Order 14247 — Modernizing Payments To and From America’s Bank Account (March 25, 2025)
+  url: https://www.govinfo.gov/content/pkg/DCPD-202500396/pdf/DCPD-202500396.pdf
+  kind: official-reference
+  publicationDate: 2025-03-25
+  lastReviewedAt: 2026-11-04
+  note: From September 30, 2025, to the extent the law permits, Treasury stops issuing paper checks, including for benefits, and agencies enroll recipients in electronic payments (§ 3). People who qualify for an exception, such as having no access to banking services, get another way to be paid (§ 4), and agencies make sure those affected have adequate support (§ 5).
+
+- id: treasury-payment-systems
+  title: U.S. Department of the Treasury, Bureau of the Fiscal Service — Payment Automation Manager FAQs
+  url: https://fiscal.treasury.gov/payments-from-government/payment-automation-manager-pam/faqs
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Agencies send payment requests in Treasury’s Standard Payment Request format, keyed into the Secure Payment System or sent as a bulk file, and certify their summary through the Secure Payment System.
+
+- id: offset-31-usc-3716
+  title: 31 U.S.C. § 3716 — Administrative offset
+  url: https://www.govinfo.gov/link/uscode/31/3716?link-type=html
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Before offsetting a debt, an agency gives written notice of the debt, its intent, and the person’s rights, a chance to see the records, a chance for agency review, and a chance to agree on repayment (§ 3716(a)). Agencies tell Treasury about debts over 120 days delinquent (§ 3716(c)(6)). The first $9,000 of federal benefit payments in a 12-month period is exempt from offset (§ 3716(c)(3)(A)(ii)).
+
+- id: treasury-offset-program
+  title: U.S. Department of the Treasury, Bureau of the Fiscal Service — Treasury Offset Program
+  url: https://fiscal.treasury.gov/top/
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Matches delinquent debts owed to agencies against federal payments to the same people, and withholds payments to cover the debt where the law permits.
+
+- id: ssn-fraud-prevention-act
+  title: Social Security Number Fraud Prevention Act of 2017, Public Law 115-59
+  url: https://www.govinfo.gov/link/plaw/115/public/59?link-type=html
+  kind: official-reference
+  publicationDate: 2017-09-15
+  lastReviewedAt: 2026-11-04
+  note: Agencies don’t put a person’s Social Security number on a document sent by mail unless the agency head finds it necessary, and agency rules cover partial redaction and keeping the number from showing on the outside of a package.
+
+- id: m-25-21
+  title: OMB Memorandum M-25-21 — Accelerating Federal Use of AI through Innovation, Governance, and Public Trust (April 3, 2025)
+  url: https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf
+  kind: official-reference
+  publicationDate: 2025-04-03
+  lastReviewedAt: 2026-11-04
+  note: AI that serves as a principal basis for decisions on applying for or getting critical federal benefits, on continued eligibility, or on detecting fraudulent use of government services is presumed to be high-impact (§ 6). High-impact uses need human oversight and accountability, and people affected get timely human review and a chance to appeal, which can extend an appeals process already in place (§ 4(b)).
+
+- id: a11-section-280
+  title: OMB Circular A-11, Section 280 — Managing Customer Experience and Improving Service Delivery (2025)
+  url: https://www.whitehouse.gov/wp-content/uploads/2025/08/s280.pdf
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: High Impact Service Providers each year designate at least one priority service, plan improvements, and collect post-transaction customer feedback, which is submitted quarterly and shared publicly.
+
+- id: high-impact-service-providers
+  title: Performance.gov — High Impact Service Providers
+  url: https://www.performance.gov/cx/hisps/
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: OMB’s current list, which includes the Social Security Administration, the Veterans Benefits Administration, and the Office of Personnel Management.
+
+- id: acus-2021-10
+  title: Administrative Conference of the United States — Recommendation 2021-10, Quality Assurance Systems in Agency Adjudication
+  url: https://www.govinfo.gov/content/pkg/FR-2022-01-12/pdf/2022-00463.pdf
+  kind: official-reference
+  publicationDate: 2022-01-12
+  lastReviewedAt: 2026-11-04
+  note: Quality assurance is an internal review that finds and remedies problems in individual decisions and across a program. It looks at fairness, accuracy, consistency, and timeliness, and stays separate from appeals. Analytics and AI tools support its staff’s judgment and don’t replace it.
+
+- id: save-system-notice
+  title: DHS/USCIS-004 Systematic Alien Verification for Entitlements (SAVE) Program — System of Records Notice (May 27, 2020)
+  url: https://www.govinfo.gov/content/pkg/FR-2020-05-27/pdf/2020-11390.pdf
+  kind: official-reference
+  publicationDate: 2020-05-27
+  lastReviewedAt: 2026-11-04
+  note: SAVE is a fee-based service that helps benefit-granting agencies determine citizenship and immigration status. The agency that asks makes its own benefit decision.
+
+- id: ssa-review-process
+  title: 20 CFR § 404.900 — Administrative review process (Social Security)
+  url: https://www.law.cornell.edu/cfr/text/20/404.900
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: The steps are the initial determination, reconsideration, a hearing before an administrative law judge, Appeals Council review, and federal court. A person who doesn’t ask in time loses further review unless they show good cause.
+
+- id: ssa-reconsideration
+  title: 20 CFR § 404.909 — How to request reconsideration (Social Security)
+  url: https://www.law.cornell.edu/cfr/text/20/404.909
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: A request is due within 60 days after the person receives notice, which 20 CFR § 404.901 takes to be 5 days after the date on the notice unless they show otherwise. Good cause can extend the time.
+
+- id: ssa-filing-date
+  title: 20 CFR § 404.630 — Use of date of written statement as application filing date (Social Security)
+  url: https://www.law.cornell.edu/cfr/text/20/404.630
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: A written statement of intent to claim benefits sets the filing date, if the application follows within 6 months after the notice Social Security sends about filing it.
+
+- id: ssa-continued-benefits
+  title: 20 CFR § 404.1597a — Continued benefits pending appeal of a medical cessation determination (Social Security)
+  url: https://www.law.cornell.edu/cfr/text/20/404.1597a
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: A person appealing the end of disability benefits can ask for them to continue, within 10 days after receiving the notice, through a hearing decision. If the decision stands they’re generally asked to repay them, and can ask for a waiver.
+
+- id: ssa-42-usc-405
+  title: 42 U.S.C. § 405 — Evidence, procedure, and certification for payments (Social Security)
+  url: https://www.law.cornell.edu/uscode/text/42/405
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: An unfavorable disability decision comes with a statement of the case in understandable language, discussing the evidence and giving the reasons (§ 405(b)(1)). Benefits can go to a representative payee when that serves the person’s interest, and the certification is promptly revoked if benefits are misused (§ 405(j)).
+
+- id: ssa-payees
+  title: 20 CFR § 404.2010 — When payment will be made to a representative payee (Social Security)
+  url: https://www.law.cornell.edu/cfr/text/20/404.2010
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Benefits go to a representative payee for an adult who is legally incompetent or mentally or physically unable to manage them, and generally for a beneficiary under 18.
+
+- id: ssa-overpayments-42-usc-404
+  title: 42 U.S.C. § 404 — Overpayments and underpayments (Social Security)
+  url: https://www.law.cornell.edu/uscode/text/42/404
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Recovery isn’t allowed from a person without fault if it would defeat the law’s purpose or go against equity and good conscience. In deciding fault, the agency considers the person’s physical, mental, educational, and language limitations (§ 404(b)).
+
+- id: ssa-disability-reviews-42-usc-421
+  title: 42 U.S.C. § 421 — Disability determinations (Social Security)
+  url: https://www.law.cornell.edu/uscode/text/42/421
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: A disability case is reviewed for continuing eligibility at least once every 3 years, unless the disability has been found to be permanent (§ 421(i)).
+
+- id: va-duty-to-assist
+  title: 38 U.S.C. § 5103A — Duty to assist claimants (Veterans’ benefits)
+  url: https://www.law.cornell.edu/uscode/text/38/5103A
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: VA makes reasonable efforts to get the evidence a claim needs, with at least two requests for private records, and tells the claimant which records it couldn’t get and that it will decide on what it has. For disability compensation it gets federal records until they’re found or further effort would be futile, and provides a medical exam or opinion when the decision needs one.
+
+- id: va-decision-notices
+  title: 38 U.S.C. § 5104 — Decisions and notices of decisions (Veterans’ benefits)
+  url: https://www.law.cornell.edu/uscode/text/38/5104
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Each notice names the issues decided, summarizes the evidence and the law, identifies favorable findings, says what wasn’t met in a denial, and explains how to get the evidence used and what would be needed for a grant or the next higher level.
+
+- id: va-review-options
+  title: 38 U.S.C. § 5104C — Options following decision by agency of original jurisdiction (Veterans’ benefits)
+  url: https://www.law.cornell.edu/uscode/text/38/5104C
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Within one year after a decision, a claimant can ask for a higher-level review, file a supplemental claim, or file a notice of disagreement with the Board of Veterans’ Appeals.
+
+- id: va-procedural-rights
+  title: 38 CFR § 3.103 — Procedural due process and other rights (Veterans’ benefits)
+  url: https://www.law.cornell.edu/cfr/text/38/3.103
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Before an adverse action, a beneficiary generally gets notice and 60 days to send evidence, with listed exceptions. Claimants can have a representative of their choice at every stage, and a hearing on a proposed adverse action comes before staff who took no part in proposing it.
+
+- id: va-intent-to-file
+  title: 38 CFR § 3.155 — How to file a claim (Veterans’ benefits)
+  url: https://www.law.cornell.edu/cfr/text/38/3.155
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: An intent to file, by a saved online application, a signed form, or a statement to a designated employee, holds the claim’s date if a complete claim arrives within one year.
+
+- id: va-overpayment-waiver
+  title: 38 U.S.C. § 5302 — Waiver of recovery of claims by the United States (Veterans’ benefits)
+  url: https://www.law.cornell.edu/uscode/text/38/5302
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: VA waives recovery that would be against equity and good conscience, on a request made within one year of the notice of the debt, unless there’s an indication of fraud, misrepresentation, or bad faith.
+
+- id: va-fiduciaries
+  title: 38 U.S.C. § 5502 — Payments to and supervision of fiduciaries (Veterans’ benefits)
+  url: https://www.law.cornell.edu/uscode/text/38/5502
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: VA can pay a beneficiary’s benefits to a fiduciary when that serves the beneficiary’s interest, and fiduciaries account for how they’ve used the payments.
+
+- id: vba-claims-data
+  title: Veterans Benefits Administration — Detailed Claims Data
+  url: https://www.benefits.va.gov/reports/detailed_claims_data.asp
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Updated weekly with the Monday Morning Workload Report. It gives the claims inventory, the backlog of claims pending more than 125 days, and issue-based and claim-based accuracy over 3 and 12 months.
+
+- id: ssa-performance
+  title: Social Security Administration — Social Security performance
+  url: https://www.ssa.gov/ssa-performance
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Monthly figures for average processing time and pending cases, for initial disability claims, reconsiderations, and hearings.
+
+- id: usagov-benefit-finder
+  title: USAGov — Benefit finder
+  url: https://www.usa.gov/benefit-finder
+  kind: official-reference
+  lastReviewedAt: 2026-11-04
+  note: Helps people explore government benefits they may qualify for, by category, and learn how to apply.

@@ -113,7 +113,7 @@ short:
 1. Make `source/<name>/` with `package.yaml` (its `packageId`, `idPrefix: eb`, `dependencies: [ common ]`),
    then missions, outcomes (with `theme` and `measures`), capabilities (with `stage`), requirements (with
    `kind`), patterns (with `layer` and `ways`), resources, sources, `links.yaml` for the Common
-   capabilities it uses, and discovery questions. The six federal missions are the models to follow.
+   capabilities it uses, and discovery questions. The seven federal missions are the models to follow.
 2. Fit the groups that exist (themes, stages, kinds); add a group to the vocabulary only when nothing fits.
 3. Cite official sources with `lastReviewedAt`, checked against the source itself. Each requirement
    belongs to exactly one capability in its own package, and every capability gets a discovery question.
@@ -147,8 +147,8 @@ current release.
 
 ## Will it hold up with dozens more missions?
 
-Mostly, with one thing to change first. Today a release is about 780 KB for seven packages, and
-`content/` is 5.1 MB with 64 package files.
+Mostly, with one thing to change first. Today a release is about 970 KB for eight packages, and
+`content/` is 6 MB with 72 package files.
 
 - **Every release copies every package.** One release version for all packages means a fix to one
   mission writes a new version of all of them. At 50 missions (about 5 MB a release) and a few releases a
@@ -156,7 +156,7 @@ Mostly, with one thing to change first. Today a release is about 780 KB for seve
   at 1 GB. The fix to propose: a release becomes a set of package versions, so only changed packages get
   new versions and the catalog's `release` names which version of each it includes.
 - **Builds stay fast.** Parsing every version takes well under a second; the site build is a few seconds
-  for 259 pages and grows with element count, not versions.
+  for 451 pages and grows with element count, not versions.
 - **Authoring stays manageable** for people and agents: one folder per mission, stable IDs, validation
   when the release is built, and `content:show` and `content:report` for questions across packages.
 - **Finding things gets harder.** The site's search helps, but the missions, capabilities, and
@@ -178,7 +178,7 @@ Library:
   if an authoritative source turns up.
 - Military personnel management (billets and manning, assignments, deployment readiness, the master
   military personnel record), agreed as its own mission apart from civilian HR administration.
-- Another mission: benefits and eligibility, or inspection and enforcement.
+- Another mission: inspection and enforcement.
 
 Studio:
 

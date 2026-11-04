@@ -1,0 +1,23 @@
+# Links from elements of the packages this one builds on, such as a shared capability
+# that contributes to one of this package's outcomes.
+
+- from: capability:case-management
+  contributes_to: [ decisions-without-long-waits, fair-timely-review ]
+  candidate_pattern:
+    - benefits-claims-system
+
+- from: capability:records-management
+  contributes_to: [ fair-timely-review, decisions-accurate-consistent ]
+  candidate_pattern:
+    - to: claim-evidence-folder
+      coverage: partial
+      note: Keeps each claim’s evidence on schedule. Other records need their schedules applied where they’re kept.
+
+- from: capability:identity-access-management
+  contributes_to: [ benefits-paid-correctly ]
+
+- from: capability:data-protection-privacy
+  contributes_to: [ benefits-paid-correctly, claiming-takes-little-effort ]
+
+- from: capability:security-logging-monitoring
+  contributes_to: [ benefits-paid-correctly ]

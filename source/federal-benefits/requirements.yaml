@@ -1,0 +1,175 @@
+# Requirements, in the order the pages show them, each with the links it holds.
+
+- id: ask-only-what-is-needed
+  title: Ask only for what’s needed, and say why
+  kind: service-access
+  description: Before a form goes to OMB, give 60 days’ public notice and certify that it’s needed and doesn’t ask for what the office can reasonably get elsewhere. Tell each person the authority for asking, whether answering is required, how the information will be used, and what happens if they don’t answer.
+  sources: [ paperwork-reduction-44-usc-3506, privacy-act ]
+
+- id: write-benefit-documents-plainly
+  title: Write forms, letters, and notices in plain language
+  kind: service-access
+  description: Use plain writing in every letter, form, notice, and instruction people need to get a benefit, whenever one is issued or substantially revised.
+  sources: [ plain-writing-act ]
+
+- id: keep-services-accessible
+  title: Keep the program open to people with disabilities
+  kind: service-access
+  description: Don’t exclude anyone from the program because of a disability. Make public content, and also decisions, benefit notices, receipts, and forms sent to people, conform to WCAG 2.0 Level AA.
+  sources: [ rehabilitation-act-504, section-508-standards ]
+
+- id: offer-digital-and-other-ways
+  title: Offer a digital way to claim, and keep another
+  kind: service-access
+  description: Provide each form in a digital version that’s secure and works on mobile devices, and keep an accessible way for people who can’t use digital services.
+  sources: [ idea-act ]
+
+- id: protect-filing-date
+  title: Protect the date a person first asks
+  kind: fairness-due-process
+  description: Where the program allows it, let a statement of intent to claim hold the filing date while the person finishes. Social Security holds it for 6 months after its notice about filing, and VA for one year.
+  sources: [ ssa-filing-date, va-intent-to-file ]
+
+- id: accept-representatives
+  title: Work with the representative a person chooses
+  kind: fairness-due-process
+  description: Let a claimant be represented by someone of their choice, within the program’s rules for who can represent, and record the representative on the claim. VA allows this at every stage.
+  sources: [ va-procedural-rights, goldberg-v-kelly ]
+
+- id: help-gather-evidence
+  title: Help people get the evidence their claim needs
+  kind: fairness-due-process
+  description: Where the program gives a duty to assist, make reasonable efforts to get the records a claim needs, and say which records couldn’t be found. VA makes at least two requests for private records, and provides a medical exam or opinion when the decision needs one.
+  sources: [ va-duty-to-assist ]
+
+- id: prove-identity-to-fit-risk
+  title: Confirm who people are, to fit the risk
+  kind: privacy-security
+  description: Choose identity proofing and sign-in that fit what a person can do in each service, following NIST SP 800-63-4, and provide another way for people who can’t complete it online.
+  sources: [ nist-sp-800-63-4, idea-act ]
+
+- id: check-before-paying
+  title: Check eligibility before paying
+  kind: checks-controls
+  description: Review prepayment procedures, and use Do Not Pay’s databases, including death records and Social Security’s data on people who are incarcerated, to check eligibility before releasing funds.
+  sources: [ do-not-pay-31-usc-3354, do-not-pay ]
+
+- id: keep-matching-agreements
+  title: Keep a written agreement for each data match
+  kind: privacy-security
+  description: Put each computer matching program under a written agreement covering its purpose, records, notice, verification, retention, and security, in effect for up to 18 months and renewable for up to one more year. Do Not Pay has its own provisions, so check which apply.
+  sources: [ privacy-act, do-not-pay-31-usc-3354 ]
+
+- id: verify-match-before-acting
+  title: Verify a match before acting on it
+  kind: fairness-due-process
+  description: Don’t suspend, end, reduce, or finally deny a benefit because of a match until the information is verified, the person has been told what was found, and the time to contest it has passed, which is 30 days unless a law or regulation sets another.
+  sources: [ privacy-act ]
+
+- id: decide-in-reasonable-time
+  title: Decide each claim within a reasonable time
+  kind: timeliness
+  description: Move each claim to a decision within a reasonable time, and set a target the office can be measured against, since most programs’ laws set no fixed deadline.
+  sources: [ apa-5-usc-555 ]
+
+- id: explain-each-decision
+  title: Explain each decision in writing
+  kind: decisions-on-record
+  description: Give prompt written notice of each denial, with the grounds. VA’s notices name the issues, summarize the evidence and law, and identify favorable findings and what wasn’t met, and Social Security’s unfavorable disability decisions discuss the evidence in understandable language.
+  sources: [ apa-5-usc-555, va-decision-notices, ssa-42-usc-405 ]
+
+- id: keep-ssn-off-mail
+  title: Keep Social Security numbers off mailed documents
+  kind: privacy-security
+  description: Leave a person’s Social Security number off anything mailed unless the agency head has found it necessary, then redact it where feasible and keep it from showing on the outside of the envelope.
+  sources: [ ssn-fraud-prevention-act ]
+
+- id: keep-people-deciding
+  title: Keep staff responsible for AI-assisted decisions
+  kind: checks-controls
+  description: Treat AI that’s a principal basis for an eligibility, continued eligibility, or fraud decision as high-impact. Keep human oversight and accountability, and give people affected timely human review and a chance to appeal.
+  sources: [ m-25-21 ]
+
+- id: pay-electronically
+  title: Pay benefits electronically
+  kind: checks-controls
+  description: Pay by electronic funds transfer, enroll people in it, and offer a Treasury-sponsored account. Give people who qualify for a waiver or an exception, such as those without access to banking services, another way to be paid.
+  sources: [ eft-31-cfr-208, eo-14247 ]
+
+- id: oversee-payees
+  title: Appoint and oversee people who manage benefits for others
+  kind: checks-controls
+  description: Pay a representative payee or fiduciary only when that serves the beneficiary’s interest, have them account for how they’ve used the money, and move the payments promptly if they’re misused.
+  sources: [ ssa-42-usc-405, ssa-payees, va-fiduciaries ]
+
+- id: review-eligibility-on-schedule
+  title: Review continuing eligibility on the program’s schedule
+  kind: checks-controls
+  description: Review ongoing benefits as the program requires. Social Security reviews a disability case at least once every 3 years, unless the disability has been found to be permanent.
+  sources: [ ssa-disability-reviews-42-usc-421 ]
+
+- id: give-notice-before-cutting
+  title: Give notice before stopping or reducing a benefit
+  kind: fairness-due-process
+  description: Tell the person the reasons and give them a chance to respond before an action against their benefit, in the form due process calls for in that program. VA generally gives 60 days to send evidence.
+  sources: [ goldberg-v-kelly, mathews-v-eldridge, va-procedural-rights ]
+
+- id: state-review-rights
+  title: Say how to ask for a review, and by when
+  kind: fairness-due-process
+  description: Put the review options and deadlines in each decision notice. Social Security allows 60 days after the notice is received, taken to be 5 days after its date, and VA allows one year for its three options.
+  sources: [ ssa-review-process, ssa-reconsideration, va-review-options ]
+
+- id: use-independent-reviewers
+  title: Have someone new review a decision
+  kind: fairness-due-process
+  description: Assign each review to someone who took no part in the decision, and base the result on the rules and the evidence on record.
+  sources: [ goldberg-v-kelly, va-procedural-rights ]
+
+- id: continue-benefits-during-appeal
+  title: Continue benefits during an appeal where the program allows
+  kind: fairness-due-process
+  description: Tell people when they can ask for payments to continue, and that they may have to repay them. For the end of Social Security disability benefits, the request is due within 10 days after the notice is received.
+  sources: [ ssa-continued-benefits ]
+
+- id: decide-waiver-requests
+  title: Decide requests to waive an overpayment
+  kind: fairness-due-process
+  description: Tell people they can ask for a waiver, and decide on the program’s standard. Social Security considers fault, including physical, mental, educational, and language limitations, and VA takes requests within one year of the notice of the debt.
+  sources: [ ssa-overpayments-42-usc-404, va-overpayment-waiver ]
+
+- id: give-notice-before-offset
+  title: Give debtors their rights before offset
+  kind: fairness-due-process
+  description: Before offsetting a debt, give written notice of the debt, the intent to offset, and the person’s rights, with a chance to see the records, ask for agency review, and agree on repayment. The first $9,000 of federal benefit payments in a 12-month period is exempt.
+  sources: [ offset-31-usc-3716 ]
+
+- id: report-delinquent-debts
+  title: Tell Treasury about delinquent debts
+  kind: timeliness
+  description: Notify Treasury of past-due, legally enforceable debts over 120 days delinquent, so they can go to the Treasury Offset Program.
+  sources: [ offset-31-usc-3716, treasury-offset-program ]
+
+- id: estimate-benefit-improper-payments
+  title: Estimate and report improper payments
+  kind: transparency-reporting
+  description: Review each program at least once every 3 fiscal years for risk of significant improper payments. For those at risk, estimate them, count payments that lack documentation, and report the causes and what’s being done.
+  sources: [ payment-integrity-31-usc-3352, payment-accuracy ]
+
+- id: manage-fraud-risk
+  title: Manage the program’s fraud risks
+  kind: checks-controls
+  description: Evaluate fraud risks, design controls to fit them, and use data on detected fraud and the results of audits and investigations to improve prevention.
+  sources: [ fraud-controls-31-usc-3357, gao-fraud-risk-framework ]
+
+- id: review-decision-quality
+  title: Review the quality of decisions, apart from appeals
+  kind: checks-controls
+  description: Run a quality review that looks at fairness, accuracy, consistency, and timeliness, finds problems across the program as well as in single decisions, and keeps reviewers free of pressure from those they review.
+  sources: [ acus-2021-10 ]
+
+- id: collect-service-feedback
+  title: Collect feedback after each service
+  kind: transparency-reporting
+  description: If the office is a High Impact Service Provider, designate at least one priority service each year, plan improvements, and collect post-transaction feedback to submit each quarter.
+  sources: [ a11-section-280, high-impact-service-providers ]

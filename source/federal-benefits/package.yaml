@@ -1,0 +1,21 @@
+# The package itself. Its version and date are set when it is built (pnpm content:build).
+
+schemaVersion: 0.6.0
+packageId: org.enterprise-blueprints.federal-benefits
+idPrefix: eb
+title: Benefits and Eligibility — Deciding Claims and Paying Federal Benefits
+description: "U.S. federal benefits blueprint: one mission with the outcomes it seeks and ways to measure them, eleven capabilities from program rules through reporting with their reference requirements, example implementation patterns with their tradeoffs, and discovery question sets for benefits results and for benefits operations. It covers offices that decide people’s eligibility and pay them directly, following the laws that reach across programs and using Social Security and veterans’ benefits as worked examples, and builds on Common Capabilities for case management, records, identity and access, data protection, and security logging."
+publisher:
+  name: Enterprise Blueprints (independent reference project)
+  url: https://enterprise-blueprints.github.io
+license: MIT
+domain: public-sector
+jurisdictions:
+  - United States — federal agencies that decide eligibility and pay benefits directly to people
+tags:
+  - benefits
+  - eligibility
+  - claims
+  - payment-integrity
+  - reference-architecture
+dependencies: [ common ]

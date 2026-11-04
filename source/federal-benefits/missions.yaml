@@ -1,0 +1,28 @@
+# Missions, in the order the pages show them, each with the links it holds.
+
+- id: deciding-paying-federal-benefits
+  title: Benefits and Eligibility
+  description: "Help people learn what they may qualify for, take in their claims, gather the evidence, decide eligibility fairly and without long waits, explain each decision, pay the right amount to the right person, keep eligibility current, correct mistakes, and show the public how the program is doing."
+  sources: [ apa-5-usc-555, goldberg-v-kelly, payment-integrity-31-usc-3352 ]
+  attributes:
+    tagline: Deciding claims and paying benefits
+    sector: public-sector
+    scope: US-federal-benefits
+    principles:
+      - Each claim is one record from the first contact to the final decision, and each benefit is one record while it’s paid
+      - People give a fact once, and the office reuses it instead of asking again
+      - The program’s rules are written down, versioned, and tested, so the same facts get the same decision
+      - A data match prompts a check, and staff confirm it before anything changes for the person
+      - AI and analytics help staff find and weigh evidence, and staff decide
+      - Every decision says why, in plain language, and how to ask for a review
+      - Online is the easiest way in, and never the only way
+  seeks:
+    - qualified-people-receive-benefits
+    - claiming-takes-little-effort
+    - everyone-can-claim
+    - decisions-without-long-waits
+    - decisions-accurate-consistent
+    - fair-timely-review
+    - benefits-paid-correctly
+    - overpayments-handled-fairly
+    - program-performance-public

@@ -201,7 +201,7 @@ describe('the index pages', () => {
     // A group lists each mission's items together, missions in title order and the shared package last.
     const caps = indexGroups('capability');
     expect(caps.map((g) => g.label)).toEqual(['Plan and prepare', 'Reach and take in', 'Assess and decide', 'Deliver and operate', 'Monitor and correct', 'Report and close', 'Across the work']);
-    expect(caps.find((g) => g.id === 'reach-take-in')!.items.map((e) => e.slug)).toEqual(['solicitation-publicizing', 'contact-intake-routing', 'self-service-virtual-assistance', 'foia-request-intake', 'funding-opportunities-applications', 'recruitment-hiring', 'complaint-allegation-disclosure-intake']);
+    expect(caps.find((g) => g.id === 'reach-take-in')!.items.map((e) => e.slug)).toEqual(['solicitation-publicizing', 'public-guidance', 'application-intake', 'contact-intake-routing', 'self-service-virtual-assistance', 'foia-request-intake', 'funding-opportunities-applications', 'recruitment-hiring', 'complaint-allegation-disclosure-intake']);
     expect(caps.at(-1)!.items.every((e) => e.package.packageId.endsWith('.common'))).toBe(true);
     expect(indexGroups('mission')).toHaveLength(1);
   });

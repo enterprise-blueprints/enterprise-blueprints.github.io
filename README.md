@@ -2,9 +2,10 @@
 
 An independent, open reference library of public-sector missions, the capabilities they depend on, and example
 patterns that might realize them. A mission seeks outcomes, each with measures for telling how it's going, and
-capabilities contribute to those outcomes. Six mission packages describe U.S. federal Offices of Inspector
+capabilities contribute to those outcomes. Seven mission packages describe U.S. federal Offices of Inspector
 General, federal agencies' Freedom of Information Act programs, federal grants management, federal
-acquisition, federal contact centers, and federal civilian HR administration in general terms. Each builds on
+acquisition, federal contact centers, federal civilian HR administration, and federal benefits and
+eligibility in general terms. Each builds on
 Common Capabilities, a package of the capabilities many missions rely on, such as identity and access, data
 protection, records, logging, and case management. A mission's patterns, by layer, are its logical
 architecture, and the mission lists the principles the library recommends that architecture follow.

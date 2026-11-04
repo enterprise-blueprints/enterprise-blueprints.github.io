@@ -1,0 +1,75 @@
+# Resources, in the order the pages show them, each with what it helps with.
+# The library links only to free resources from government, standards bodies,
+# nonprofits, and universities.
+
+- id: usagov-benefit-finder-tool
+  title: USAGov Benefit Finder
+  kind: tool
+  by: USAGov
+  url: https://www.usa.gov/benefit-finder
+  lastReviewedAt: 2026-11-04
+  description: The government’s tool for exploring benefits by category, such as disabilities, retirement, and military and veterans. Useful to point people to, and to see how a program’s benefits are described.
+  helps_with: [ capability:public-guidance, outcome:qualified-people-receive-benefits ]
+
+- id: digital-government-hub-benefits
+  title: Digital Government Hub — Benefits
+  kind: site
+  by: Beeck Center for Social Impact + Innovation, Georgetown University
+  url: https://digitalgovernmenthub.org/benefits/
+  lastReviewedAt: 2026-11-04
+  description: A reference library on delivering public benefits, sorted by stage of the journey, such as outreach, applying and enrolling, eligibility, payments, and renewal. Much of it comes from state programs, and the lessons carry over to federal ones.
+  helps_with: [ capability:application-intake, outcome:claiming-takes-little-effort, implementationPattern:benefits-online-account ]
+
+- id: plain-language-guides
+  title: Plain language guide series
+  kind: guide
+  by: Digital.gov
+  url: https://digital.gov/guides/plain-language
+  lastReviewedAt: 2026-11-04
+  description: Guides to writing clearly for the public, with the principles of plain language and how the Plain Writing Act applies. Useful for rewriting notices and forms.
+  helps_with: [ requirement:write-benefit-documents-plainly, capability:determinations-notices ]
+
+- id: gao-fraud-risk-framework-guide
+  title: A Framework for Managing Fraud Risks in Federal Programs
+  kind: guide
+  by: U.S. Government Accountability Office
+  url: https://www.gao.gov/products/gao-15-593sp
+  lastReviewedAt: 2026-11-04
+  description: GAO’s leading practices for program managers on preventing, detecting, and responding to fraud, from 2015. Auditors and oversight bodies still use it as the yardstick.
+  helps_with: [ requirement:manage-fraud-risk, implementationPattern:payment-risk-analytics ]
+
+- id: do-not-pay-products
+  title: Do Not Pay products
+  kind: site
+  by: U.S. Department of the Treasury, Bureau of the Fiscal Service
+  url: https://fiscal.treasury.gov/payment-integrity/do-not-pay-dnp/products
+  lastReviewedAt: 2026-11-04
+  description: What Do Not Pay offers, from the API that fits into a claims system to the Web Portal for searches and batch matches. A good first stop for comparing the two.
+  helps_with: [ capability:identity-eligibility-checks, implementationPattern:eligibility-data-exchanges ]
+
+- id: login-gov-developer-guide
+  title: Login.gov developer guide
+  kind: guide
+  by: U.S. General Services Administration
+  url: https://developers.login.gov/overview/
+  lastReviewedAt: 2026-11-04
+  description: How an agency’s application connects to Login.gov, what each service level verifies, and how to try it in the sandbox before signing an agreement.
+  helps_with: [ { to: "implementationPattern:public-sign-in", way: login-gov } ]
+
+- id: vba-detailed-claims-data
+  title: VBA Detailed Claims Data
+  kind: dataset
+  by: Veterans Benefits Administration
+  url: https://www.benefits.va.gov/reports/detailed_claims_data.asp
+  lastReviewedAt: 2026-11-04
+  description: A weekly public report of claims pending, the backlog, and decision accuracy, with downloadable workload files. A working example of a benefits office publishing its figures on a schedule.
+  helps_with: [ outcome:program-performance-public, implementationPattern:benefits-workload-reporting ]
+
+- id: payment-accuracy-data
+  title: PaymentAccuracy.gov
+  kind: dataset
+  by: U.S. Office of Management and Budget
+  url: https://www.paymentaccuracy.gov/
+  lastReviewedAt: 2026-11-04
+  description: Agencies’ reported improper payment rates, amounts, root causes, and recoveries. Useful for comparing a program with others and seeing what causes improper payments.
+  helps_with: [ capability:quality-integrity-reporting, outcome:benefits-paid-correctly ]

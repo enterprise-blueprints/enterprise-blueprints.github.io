@@ -1,0 +1,127 @@
+# Outcomes, in the order the pages show them, each with the links it holds.
+
+- id: qualified-people-receive-benefits
+  title: People who qualify receive what they’re due
+  theme: results
+  description: People can find out what they may qualify for and how to claim it, and those who qualify get the benefit, from the earliest date the law allows.
+  sources: [ usagov-benefit-finder, ssa-filing-date, va-intent-to-file ]
+  measures:
+    - id: estimated-participation
+      title: Likely eligible people receiving the benefit
+      description: The estimated share of people likely to qualify who receive the benefit, where the office can estimate it. The office sets its own target.
+    - id: filing-dates-protected
+      title: Claims with an earlier date protected
+      description: The share of claims that kept an earlier filing date, through a statement of intent to file, compared with those that could have. A low share can mean people don’t know the option exists. The office sets its own target.
+      sources: [ ssa-filing-date, va-intent-to-file ]
+
+- id: claiming-takes-little-effort
+  title: Claiming a benefit takes no more effort than it needs
+  theme: easy-to-use
+  description: Forms ask only what the office needs and can’t get elsewhere, notices are written in plain language, and people can see where their claim stands.
+  sources: [ paperwork-reduction-44-usc-3506, plain-writing-act, idea-act, a11-section-280 ]
+  measures:
+    - id: customer-feedback-scores
+      title: Post-transaction customer feedback
+      description: What people say after finishing a claim or other service, on OMB’s standard questions. High Impact Service Providers submit these results each quarter for publication.
+      sources: [ a11-section-280, high-impact-service-providers ]
+    - id: claims-filed-online
+      title: Claims filed online
+      description: The share of claims filed online, alongside how many of those were finished without a call or a visit. The office sets its own target.
+      sources: [ idea-act ]
+
+- id: everyone-can-claim
+  title: Everyone can claim and be served, however they’re able
+  theme: fair-accessible
+  description: People with disabilities, people without internet access, and people who need help can claim benefits and read what the office sends them.
+  sources: [ rehabilitation-act-504, section-508-standards, idea-act ]
+  measures:
+    - id: accessibility-barriers-fixed
+      title: Accessibility barriers fixed
+      description: The share of reported barriers in the office’s sites, forms, and notices that were fixed within the office’s own target.
+      sources: [ rehabilitation-act-504, section-508-standards ]
+    - id: time-to-decide-by-channel
+      title: Time to decide, by way of filing
+      description: Average days to decide claims filed online, by phone, in person, and on paper. A wide gap can mean some people are getting slower service.
+      sources: [ idea-act ]
+
+- id: decisions-without-long-waits
+  title: Decisions come without long waits
+  theme: timely
+  description: Claims are decided within a reasonable time, and the office knows how long people are waiting and which claims have waited longest.
+  sources: [ apa-5-usc-555, vba-claims-data, ssa-performance ]
+  measures:
+    - id: average-days-to-decide
+      title: Average days to decide a claim
+      description: The average time from a claim’s filing date to its decision. Social Security publishes this each month for initial disability claims.
+      sources: [ ssa-performance ]
+    - id: claims-past-target
+      title: Claims waiting past the office’s target
+      description: The number of claims pending longer than the office’s target. The Veterans Benefits Administration publishes this each week as its backlog, claims pending more than 125 days.
+      sources: [ vba-claims-data ]
+
+- id: decisions-accurate-consistent
+  title: Decisions are accurate and consistent
+  theme: integrity
+  description: People with the same facts get the same decision, whichever staff member handles the claim, and a quality review finds problems in individual decisions and across the program.
+  sources: [ acus-2021-10, vba-claims-data ]
+  measures:
+    - id: decision-accuracy
+      title: Decision accuracy
+      description: The share of sampled decisions found correct by quality review. The Veterans Benefits Administration publishes this each week, by claim and by issue.
+      sources: [ vba-claims-data, acus-2021-10 ]
+
+- id: fair-timely-review
+  title: People can challenge a decision and get a fair, timely review
+  theme: fair-accessible
+  description: Each notice says how to ask for a review and by when, someone who didn’t make the decision reviews it, and the person is told what happened and why.
+  sources: [ goldberg-v-kelly, ssa-review-process, va-review-options, va-procedural-rights ]
+  measures:
+    - id: average-days-to-review
+      title: Average days to finish a review
+      description: The average time from a request for review to its decision, at each level. Social Security publishes this each month for reconsiderations and hearings.
+      sources: [ ssa-performance ]
+    - id: decisions-changed-on-review
+      title: Decisions changed on review
+      description: The share of reviewed decisions that were changed, and why. A high share can point to a problem with first decisions, or with the evidence gathered for them.
+      sources: [ acus-2021-10 ]
+
+- id: benefits-paid-correctly
+  title: Benefits are paid on time, in the right amount, to the right person
+  theme: integrity
+  description: Payments go out electronically on schedule, checks before payment stop what shouldn’t be paid, and someone responsible manages the money for people who can’t manage it themselves.
+  sources: [ eft-31-cfr-208, eo-14247, do-not-pay-31-usc-3354, payment-integrity-31-usc-3352, payment-accuracy ]
+  measures:
+    - id: benefit-improper-payment-rate
+      title: Improper payment rate
+      description: For programs at risk of significant improper payments, the estimated share of payments that were improper or couldn’t be confirmed for lack of documentation. Agencies report it each year, and PaymentAccuracy.gov publishes it.
+      sources: [ payment-integrity-31-usc-3352, payment-accuracy ]
+    - id: payments-made-electronically
+      title: Payments made electronically
+      description: The share of benefit payments made by electronic funds transfer, and how many people have a waiver or an exception.
+      sources: [ eft-31-cfr-208, eo-14247 ]
+
+- id: overpayments-handled-fairly
+  title: Overpayments are found early and recovered fairly
+  theme: accountable
+  description: The office finds overpayments soon, explains them clearly, decides requests to waive them, and recovers what it should with the protections the law gives.
+  sources: [ ssa-overpayments-42-usc-404, va-overpayment-waiver, offset-31-usc-3716, payment-accuracy ]
+  measures:
+    - id: benefit-overpayments-recovered
+      title: Overpayments recovered
+      description: The amount of overpayments recovered, compared with the amount identified for recovery.
+      sources: [ payment-integrity-31-usc-3352, payment-accuracy ]
+    - id: waiver-requests-decided
+      title: Time to decide a waiver request
+      description: The average time from a request to waive an overpayment to its decision. The office sets its own target.
+      sources: [ ssa-overpayments-42-usc-404, va-overpayment-waiver ]
+
+- id: program-performance-public
+  title: The public can see how the program is doing
+  theme: transparent
+  description: The office publishes its workloads, waits, accuracy, and improper payments on a schedule, in terms people can understand.
+  sources: [ vba-claims-data, ssa-performance, payment-accuracy, a11-section-280 ]
+  measures:
+    - id: figures-published-on-schedule
+      title: Performance figures published on schedule
+      description: The share of the office’s planned updates, such as a weekly or monthly workload report, published when due.
+      sources: [ vba-claims-data, ssa-performance ]

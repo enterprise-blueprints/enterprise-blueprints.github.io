@@ -2,7 +2,7 @@
 
 How to add a mission to the library, for a coding agent starting cold. `AGENTS.md` covers the ecosystem
 and the working agreements; read it first. This guide covers the content: what to write, how to write it,
-and how to check it. The six federal missions in `source/` are the models. When this guide and a model
+and how to check it. The seven federal missions in `source/` are the models. When this guide and a model
 disagree, the model shows what the tests and pages expect, so follow it and fix this guide.
 
 A person can do all of this in the browser too, with `pnpm editor`, as [EDITING.md](EDITING.md) describes. It

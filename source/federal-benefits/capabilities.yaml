@@ -1,0 +1,165 @@
+# Capabilities, in the order the pages show them, each with the links it holds.
+
+- id: program-rules-forms
+  title: Program Rules & Forms
+  stage: plan-prepare
+  description: Ability to turn the program’s laws and regulations into written rules, procedures, and forms, keep each version with the dates it applied, and ask people only for what the office needs.
+  sources: [ paperwork-reduction-44-usc-3506, privacy-act ]
+  applicabilityNotes: Each program’s statute and regulations set who qualifies and how much they get. An office applies many versions at once, since a claim is often decided on the rules in force on an earlier date.
+  contributes_to: [ decisions-accurate-consistent, claiming-takes-little-effort ]
+  satisfies: [ ask-only-what-is-needed ]
+  candidate_pattern:
+    - to: eligibility-rules-service
+      coverage: partial
+      note: Keeps the rules and their versions. Forms and procedures are written and approved elsewhere.
+
+- id: public-guidance
+  title: Public Guidance & Access
+  stage: reach-take-in
+  description: Ability to help people learn what they may qualify for and how to claim it, in plain language, on the USAGov benefit finder and the office’s own channels, and to keep what the office offers open to people with disabilities.
+  sources: [ usagov-benefit-finder, plain-writing-act, rehabilitation-act-504, section-508-standards ]
+  applicabilityNotes: Offices often rely on partners such as veterans service organizations, community groups, and benefits counselors to reach people. Many questions arrive at a contact center, which the Contact Center mission covers.
+  contributes_to: [ qualified-people-receive-benefits, everyone-can-claim, claiming-takes-little-effort ]
+  satisfies: [ write-benefit-documents-plainly, keep-services-accessible ]
+  candidate_pattern:
+    - to: benefits-online-account
+      coverage: partial
+      note: Gives people a place to read about their own benefits. General guidance also goes out through the office’s website, partners, and staff.
+
+- id: application-intake
+  title: Application & Claim Intake
+  stage: reach-take-in
+  description: Ability to take in claims online, by phone, in person, and on paper, protect the date a person first asked, record who represents them, and start a single record for each claim.
+  sources: [ idea-act, ssa-filing-date, va-intent-to-file, va-procedural-rights ]
+  applicabilityNotes: Some programs let a statement of intent hold the filing date, and each sets its own time to finish. Who can represent a person, and whether they can charge, varies by program.
+  contributes_to: [ qualified-people-receive-benefits, claiming-takes-little-effort, everyone-can-claim ]
+  satisfies: [ offer-digital-and-other-ways, protect-filing-date, accept-representatives ]
+  candidate_pattern:
+    - benefits-online-account
+    - benefits-claims-system
+    - to: claim-evidence-folder
+      coverage: partial
+      note: Brings mailed claims and documents into the claim. The claim itself starts in the claims system.
+
+- id: evidence-development
+  title: Evidence Gathering
+  stage: assess-decide
+  description: Ability to work out what a claim still needs, ask for it from the person, other agencies, and doctors, follow up, and tell the person what couldn’t be found.
+  sources: [ va-duty-to-assist ]
+  applicabilityNotes: VA has a duty to assist set out in law, with specific steps. Other programs put more of the work on the claimant, and may rely on state agencies or contracted examiners for medical evidence.
+  contributes_to: [ decisions-without-long-waits, decisions-accurate-consistent, qualified-people-receive-benefits ]
+  satisfies: [ help-gather-evidence ]
+  candidate_pattern:
+    - claim-evidence-folder
+    - to: ai-evidence-summaries
+      coverage: partial
+      note: Helps staff find what matters in a long file. Asking for evidence and following up stay in the claims system.
+    - to: eligibility-data-exchanges
+      coverage: partial
+      note: Brings in what other agencies hold. Evidence from doctors and from the person arrives by other routes.
+
+- id: identity-eligibility-checks
+  title: Identity & Eligibility Checks
+  stage: assess-decide
+  description: Ability to confirm who a person is, check the facts of a claim against trusted data such as Do Not Pay and other agencies’ records, keep the agreements those matches need, and confirm what a match shows before acting on it.
+  sources: [ nist-sp-800-63-4, do-not-pay-31-usc-3354, do-not-pay, privacy-act, save-system-notice ]
+  applicabilityNotes: Which data a program can use depends on its statute and on agreements with the agencies that hold the data. Identity checks should fit the risk of each service, so viewing a letter may need less than changing a bank account.
+  contributes_to: [ benefits-paid-correctly, decisions-accurate-consistent ]
+  satisfies: [ prove-identity-to-fit-risk, check-before-paying, keep-matching-agreements, verify-match-before-acting ]
+  candidate_pattern:
+    - eligibility-data-exchanges
+    - to: public-sign-in
+      coverage: partial
+      note: Confirms who’s signing in online. People who claim by phone, by mail, or in person need other checks.
+
+- id: determinations-notices
+  title: Determinations & Notices
+  stage: assess-decide
+  description: Ability to apply the rules in force to the facts of a claim, work out the amount and start date, record the reasons, and send a plain-language notice with the decision and the person’s rights.
+  sources: [ apa-5-usc-555, va-decision-notices, ssa-42-usc-405, ssn-fraud-prevention-act, m-25-21 ]
+  applicabilityNotes: Few programs have a fixed deadline for a decision, so most offices set their own target. Medical decisions may be made by state agencies under federal rules. Some simple claims can be decided automatically, but AI that’s a principal basis for a decision is presumed to be high-impact.
+  contributes_to: [ decisions-without-long-waits, decisions-accurate-consistent, fair-timely-review ]
+  satisfies: [ decide-in-reasonable-time, explain-each-decision, keep-ssn-off-mail, keep-people-deciding ]
+  candidate_pattern:
+    - benefits-claims-system
+    - to: eligibility-rules-service
+      coverage: partial
+      note: Works out what the rules give for a set of facts. Weighing evidence and deciding stay with staff.
+    - to: letters-from-case-data
+      coverage: partial
+      note: Drafts the notice from the claim. The decision itself is recorded in the claims system.
+    - to: ai-evidence-summaries
+      coverage: partial
+      note: Prepares a summary for the person deciding. It doesn’t recommend an outcome.
+
+- id: benefit-payment
+  title: Benefit Payment & Payees
+  stage: deliver-operate
+  description: Ability to set up and change how each person is paid, send certified payments through Treasury on schedule, protect payment details from being changed by someone else, and appoint and oversee people who manage benefits for others.
+  sources: [ eft-31-cfr-208, eo-14247, treasury-payment-systems, ssa-42-usc-405, ssa-payees, va-fiduciaries ]
+  applicabilityNotes: Treasury disburses most federal benefits, and a few agencies have their own disbursing authority. Social Security calls those who manage benefits representative payees, and VA calls them fiduciaries.
+  contributes_to: [ benefits-paid-correctly ]
+  satisfies: [ pay-electronically, oversee-payees ]
+  candidate_pattern:
+    - payments-through-treasury
+    - to: benefits-claims-system
+      coverage: partial
+      note: Holds each person’s payment details and any payee. Payments go through Treasury.
+
+- id: continuing-eligibility
+  title: Continuing Eligibility & Changes
+  stage: monitor-correct
+  description: Ability to take in changes people report, review ongoing benefits on the program’s schedule, act on what data matches show, and give notice before stopping or reducing a benefit.
+  sources: [ ssa-disability-reviews-42-usc-421, goldberg-v-kelly, mathews-v-eldridge, va-procedural-rights, privacy-act ]
+  applicabilityNotes: Programs differ in how often they review eligibility, and in what process is due before a benefit changes. Means-tested benefits generally need closer attention to income and resources than earned ones.
+  contributes_to: [ benefits-paid-correctly, overpayments-handled-fairly, fair-timely-review ]
+  satisfies: [ review-eligibility-on-schedule, give-notice-before-cutting ]
+  candidate_pattern:
+    - benefits-claims-system
+    - to: eligibility-data-exchanges
+      coverage: partial
+      note: Flags changes such as a death or new income. Staff confirm them and take any action.
+    - to: benefits-online-account
+      coverage: partial
+      note: Lets people report changes themselves. Reviews and notices happen in the claims system.
+
+- id: reviews-appeals
+  title: Reviews & Appeals
+  stage: monitor-correct
+  description: Ability to take in requests for review, assign them to someone who wasn’t involved, keep benefits going where the program allows, give the person access to the record, and carry out the result.
+  sources: [ ssa-review-process, ssa-reconsideration, ssa-continued-benefits, va-review-options, va-procedural-rights, goldberg-v-kelly ]
+  applicabilityNotes: Each program sets its own levels of review and deadlines. Some end in a hearing before an administrative law judge, or a separate board, that keeps its own system and may be independent of the office.
+  contributes_to: [ fair-timely-review, decisions-accurate-consistent ]
+  satisfies: [ state-review-rights, use-independent-reviewers, continue-benefits-during-appeal ]
+  candidate_pattern:
+    - to: benefits-claims-system
+      coverage: partial
+      note: Tracks reviews inside the office. Hearings before a judge or a board usually have a system of their own.
+    - to: shared-case-platform
+      coverage: partial
+      note: Can run an appeals office’s docket, with the claim’s file brought over from the claims system.
+
+- id: overpayment-recovery
+  title: Overpayments & Debt Recovery
+  stage: monitor-correct
+  description: Ability to work out and explain an overpayment, take and decide waiver requests and appeals, set up repayment, and send debts that remain to Treasury, with the protections the law gives.
+  sources: [ ssa-overpayments-42-usc-404, va-overpayment-waiver, offset-31-usc-3716, treasury-offset-program ]
+  applicabilityNotes: Each program sets its own waiver standard and how much it withholds from ongoing payments. Means-tested benefits can be exempt from offset at the request of the agency that runs them.
+  contributes_to: [ overpayments-handled-fairly, benefits-paid-correctly ]
+  satisfies: [ decide-waiver-requests, give-notice-before-offset, report-delinquent-debts ]
+  candidate_pattern:
+    - overpayment-tracking
+
+- id: quality-integrity-reporting
+  title: Quality, Integrity & Reporting
+  stage: report-close
+  description: Ability to review the quality of decisions, estimate improper payments, manage fraud risks, collect feedback from people served, and report workloads, waits, and results to leaders and the public.
+  sources: [ acus-2021-10, payment-integrity-31-usc-3352, fraud-controls-31-usc-3357, gao-fraud-risk-framework, a11-section-280, payment-accuracy ]
+  applicabilityNotes: Suspected fraud goes to the agency’s Office of Inspector General, which the Office of Inspector General mission covers. Improper payment estimates are required only for programs at risk of significant improper payments.
+  contributes_to: [ program-performance-public, decisions-accurate-consistent, benefits-paid-correctly, overpayments-handled-fairly ]
+  satisfies: [ estimate-benefit-improper-payments, manage-fraud-risk, review-decision-quality, collect-service-feedback ]
+  candidate_pattern:
+    - benefits-workload-reporting
+    - to: payment-risk-analytics
+      coverage: partial
+      note: Points quality reviews and fraud work at the highest risks. Staff do the reviews, and estimates follow their own sampling plan.

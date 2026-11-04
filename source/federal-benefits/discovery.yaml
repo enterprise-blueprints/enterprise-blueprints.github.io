@@ -1,0 +1,328 @@
+# Discovery question sets. Each group under "points" names the answers that point to
+# one or more elements, and why.
+
+- id: benefits-results
+  title: Benefits results discovery
+  description: Questions for the start of an engagement about which results matter most for the benefit program and how the office tells how it’s doing. They ask about the program’s operations, never about individual claims, claimants, or beneficiaries. Some answers point to outcomes and measures worth exploring.
+  questions:
+    - id: benefits-priority-results
+      prompt: Which of these results matter most for this effort?
+      kind: multiple-choice
+      options:
+        - qualified-people-receive-benefits: People who qualify receive what they’re due
+        - claiming-takes-little-effort: Claiming a benefit takes no more effort than it needs
+        - everyone-can-claim: Everyone can claim and be served, however they’re able
+        - decisions-without-long-waits: Decisions come without long waits
+        - decisions-accurate-consistent: Decisions are accurate and consistent
+        - fair-timely-review: People can challenge a decision and get a fair, timely review
+        - benefits-paid-correctly: Benefits are paid on time, in the right amount, to the right person
+        - overpayments-handled-fairly: Overpayments are found early and recovered fairly
+        - program-performance-public: The public can see how the program is doing
+      points:
+        - when: qualified-people-receive-benefits
+          to: outcome:qualified-people-receive-benefits
+          why: This effort is meant to advance this result.
+        - when: claiming-takes-little-effort
+          to: outcome:claiming-takes-little-effort
+          why: This effort is meant to advance this result.
+        - when: everyone-can-claim
+          to: outcome:everyone-can-claim
+          why: This effort is meant to advance this result.
+        - when: decisions-without-long-waits
+          to: outcome:decisions-without-long-waits
+          why: This effort is meant to advance this result.
+        - when: decisions-accurate-consistent
+          to: outcome:decisions-accurate-consistent
+          why: This effort is meant to advance this result.
+        - when: fair-timely-review
+          to: outcome:fair-timely-review
+          why: This effort is meant to advance this result.
+        - when: benefits-paid-correctly
+          to: outcome:benefits-paid-correctly
+          why: This effort is meant to advance this result.
+        - when: overpayments-handled-fairly
+          to: outcome:overpayments-handled-fairly
+          why: This effort is meant to advance this result.
+        - when: program-performance-public
+          to: outcome:program-performance-public
+          why: This effort is meant to advance this result.
+    - id: benefits-tracked-measures
+      prompt: Which of these does the office track during the year?
+      kind: multiple-choice
+      options:
+        - days-to-decide: How long claims take to decide
+        - past-target: How many claims are waiting past a target
+        - accuracy: How accurate decisions are
+        - days-to-review: How long reviews and appeals take
+        - improper-payments: Improper payments found and recovered
+        - feedback: What people say after a service
+        - none: None of these regularly
+      points:
+        - when: days-to-decide
+          to: measure:average-days-to-decide
+          why: The office tracks this already, so there may be a value for today.
+        - when: past-target
+          to: measure:claims-past-target
+          why: The office tracks this already, so there may be a value for today.
+        - when: accuracy
+          to: measure:decision-accuracy
+          why: The office tracks this already, so there may be a value for today.
+        - when: days-to-review
+          to: measure:average-days-to-review
+          why: The office tracks this already, so there may be a value for today.
+        - when: improper-payments
+          to: [ measure:benefit-improper-payment-rate, measure:benefit-overpayments-recovered ]
+          why: The office tracks this already, so there may be a value for today.
+        - when: feedback
+          to: measure:customer-feedback-scores
+          why: The office tracks this already, so there may be a value for today.
+    - id: benefits-figures-source
+      prompt: Where do the office’s figures come from today, and how much of that is put together by hand?
+      kind: text
+    - id: benefits-figures-published
+      prompt: Does the office publish its workloads and waits on a regular schedule?
+      kind: boolean
+      points:
+        - when: false
+          to: [ outcome:program-performance-public, implementationPattern:benefits-workload-reporting ]
+          why: Figures published on a schedule tell the public how the program is doing, and keep the office’s own definitions steady.
+
+- id: benefits-operations
+  title: Benefits operations discovery
+  description: Questions about how the office runs the program today. They ask about the program’s operations, never about individual claims, claimants, or beneficiaries. Some answers point to capabilities and patterns worth exploring.
+  questions:
+    - id: benefits-rules-kept
+      prompt: Where are the program’s rules written down in a form staff and systems use?
+      kind: single-choice
+      options:
+        - rules-service: In one place that’s versioned and tested
+        - manuals: In manuals, with the system’s code following them
+        - in-code: Mostly in an old system, and in what experienced staff know
+      points:
+        - when: [ manuals, in-code ]
+          to: [ capability:program-rules-forms, implementationPattern:eligibility-rules-service ]
+          why: Rules that live in several places drift apart, and a change in the law is slow and risky to carry out.
+    - id: benefits-finding-out
+      prompt: How do people usually find out what they may qualify for?
+      kind: multiple-choice
+      options:
+        - website: The office’s website or the USAGov benefit finder
+        - partners: Partners, such as advocates and community groups
+        - staff: Calls or visits to the office
+        - not-sure: The office isn’t sure
+      points:
+        - when: not-sure
+          to: [ capability:public-guidance, measure:estimated-participation ]
+          why: Without knowing how people find the program, it’s hard to tell who’s being missed.
+    - id: benefits-accessibility-testing
+      prompt: Are forms, notices, and online services tested with people with disabilities?
+      kind: boolean
+      points:
+        - when: false
+          to: [ requirement:keep-services-accessible, capability:public-guidance ]
+          why: Notices and forms have to be usable as well as online services, and testing is how problems are found.
+    - id: benefits-claim-channels
+      prompt: How do most claims arrive?
+      kind: single-choice
+      options:
+        - online: Online, into the claims system
+        - staff-entered: By phone or in person, entered by staff
+        - paper: On paper, by mail or fax
+      points:
+        - when: paper
+          to: [ capability:application-intake, implementationPattern:claim-evidence-folder, implementationPattern:benefits-online-account ]
+          why: Paper claims take longer to reach anyone, and often arrive incomplete.
+        - when: staff-entered
+          to: [ capability:application-intake, implementationPattern:benefits-online-account ]
+          why: An online option can take routine claims off staff, and leave them time for people who need help.
+    - id: benefits-filing-date
+      prompt: Can someone hold their filing date while they finish a claim?
+      kind: single-choice
+      options:
+        - easily: Yes, and it’s easy to do online or by phone
+        - by-form: Yes, but it takes a separate form or a call
+        - not-available: The program doesn’t offer it
+      points:
+        - when: by-form
+          to: [ requirement:protect-filing-date, implementationPattern:benefits-online-account ]
+          why: A saved online application can hold the date without another step, where the program allows it.
+    - id: benefits-claim-status
+      prompt: How do people find out where their claim stands?
+      kind: single-choice
+      options:
+        - online: Online, in plain words
+        - phone: By calling
+        - wait: They mostly wait for a letter
+      points:
+        - when: [ phone, wait ]
+          to: [ outcome:claiming-takes-little-effort, implementationPattern:benefits-online-account ]
+          why: Not knowing where a claim stands drives calls, and it’s one of the main worries for people waiting.
+    - id: benefits-evidence-kept
+      prompt: How are a claim’s documents kept?
+      kind: single-choice
+      options:
+        - electronic: In one electronic folder for each claim
+        - mixed: Partly electronic, partly on paper
+        - paper: Mostly in paper files
+      points:
+        - when: [ mixed, paper ]
+          to: [ capability:evidence-development, implementationPattern:claim-evidence-folder ]
+          why: Paper files slow every step and limit who can work a claim.
+    - id: benefits-evidence-time
+      prompt: How much of a claim’s time goes to waiting for or reading evidence?
+      kind: single-choice
+      options:
+        - little: Little, since most evidence arrives quickly and is short
+        - waiting: A lot, waiting for records from others
+        - reading: A lot, reading long files
+      points:
+        - when: waiting
+          to: [ capability:evidence-development, implementationPattern:eligibility-data-exchanges ]
+          why: Electronic exchanges with those who hold the records can cut the wait.
+        - when: reading
+          to: [ capability:evidence-development, implementationPattern:ai-evidence-summaries ]
+          why: Summaries that point to their sources can help staff find what matters, and staff still decide.
+    - id: benefits-eligibility-checks
+      prompt: How does the office check the facts of a claim against other data?
+      kind: single-choice
+      options:
+        - automatic: Automatically, during the claim
+        - batch: With batch matches on a schedule
+        - by-hand: By hand, as staff think it’s needed
+      points:
+        - when: [ batch, by-hand ]
+          to: [ capability:identity-eligibility-checks, implementationPattern:eligibility-data-exchanges ]
+          why: Checks made during the claim catch problems before payment and ask less of people.
+    - id: benefits-match-verification
+      prompt: When a data match suggests a change, does the office have a set way to confirm it and give notice before acting?
+      kind: boolean
+      points:
+        - when: false
+          to: [ requirement:verify-match-before-acting, capability:identity-eligibility-checks ]
+          why: The law generally calls for verification, notice, and time to respond before a match changes a benefit.
+    - id: benefits-online-identity
+      prompt: How do people prove who they are online?
+      kind: single-choice
+      options:
+        - shared: A government sign-in service
+        - own: The agency’s own sign-in
+        - none: The office has no online services that need it
+      points:
+        - when: [ own, none ]
+          to: [ capability:identity-eligibility-checks, implementationPattern:public-sign-in ]
+          why: A shared service can take on identity checks and sign-in, and people may already have an account.
+    - id: benefits-decision-consistency
+      prompt: How does the office make sure the same facts get the same decision?
+      kind: single-choice
+      options:
+        - review-and-rules: Tested rules and a regular quality review
+        - review: A regular quality review
+        - supervisors: Supervisors check what they can
+      points:
+        - when: [ review, supervisors ]
+          to: [ capability:determinations-notices, implementationPattern:eligibility-rules-service ]
+          why: Rules kept in one place give the same answer for the same facts, wherever they’re entered.
+    - id: benefits-notices
+      prompt: How are decision notices written?
+      kind: single-choice
+      options:
+        - templates: From tested plain-language templates, filled in from the claim
+        - staff-written: Staff write or edit most of them
+        - old-letters: From old templates no one has reviewed lately
+      points:
+        - when: [ staff-written, old-letters ]
+          to: [ requirement:explain-each-decision, capability:determinations-notices, implementationPattern:letters-from-case-data ]
+          why: A notice has to say why, in plain language, and say what the person can do next.
+    - id: benefits-payment-channel
+      prompt: How do payments reach people today?
+      kind: single-choice
+      options:
+        - treasury-eft: Electronically through Treasury, for nearly everyone
+        - some-checks: Electronically, with a real share of paper checks
+        - other: Some other way
+      points:
+        - when: [ some-checks, other ]
+          to: [ capability:benefit-payment, requirement:pay-electronically, implementationPattern:payments-through-treasury ]
+          why: Paper checks are being phased out, and people without bank accounts need another way that works.
+    - id: benefits-bank-changes
+      prompt: Are changes to a person’s bank account checked more closely than other changes?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:benefit-payment, implementationPattern:public-sign-in ]
+          why: Redirecting a payment is a common way to steal benefits, so these changes need the strongest checks.
+    - id: benefits-payees
+      prompt: How does the office keep track of people who manage benefits for others?
+      kind: single-choice
+      options:
+        - in-system: In the claims system, with reports and follow-up
+        - separate: In a separate system or spreadsheet
+        - not-applicable: The program doesn’t use them
+      points:
+        - when: separate
+          to: [ requirement:oversee-payees, capability:benefit-payment ]
+          why: People who depend on a payee are the least able to tell the office when something goes wrong.
+    - id: benefits-changes-reviews
+      prompt: How does the office learn that someone’s situation has changed?
+      kind: multiple-choice
+      options:
+        - self-report: People tell the office
+        - data-matches: Data matches
+        - scheduled-reviews: Scheduled reviews
+      points:
+        - when: self-report
+          to: [ capability:continuing-eligibility, implementationPattern:eligibility-data-exchanges ]
+          why: Relying on people to report changes is a common cause of overpayments.
+        - when: scheduled-reviews
+          to: [ capability:continuing-eligibility, requirement:review-eligibility-on-schedule ]
+          why: Reviews need staff and time, and falling behind on them builds up later overpayments.
+    - id: benefits-review-tracking
+      prompt: Are requests for review tracked in the same system as the original claim?
+      kind: boolean
+      points:
+        - when: false
+          to: [ capability:reviews-appeals, implementationPattern:shared-case-platform ]
+          why: Reviewers need the claim’s record, and the first decision makers need to hear what reviews find.
+    - id: benefits-overpayment-handling
+      prompt: How are overpayments handled?
+      kind: single-choice
+      options:
+        - one-record: In one record, from the first notice through recovery
+        - two-systems: Split between the claims and financial systems, kept in step
+        - by-hand: Mostly by letters and spreadsheets
+      points:
+        - when: by-hand
+          to: [ capability:overpayment-recovery, implementationPattern:overpayment-tracking ]
+          why: Collection can run ahead of a waiver request when no one record shows where things stand.
+    - id: benefits-collection-pause
+      prompt: Does collection pause automatically while a waiver request or appeal is open, where the rules call for it?
+      kind: boolean
+      points:
+        - when: false
+          to: [ requirement:decide-waiver-requests, measure:waiver-requests-decided ]
+          why: Collecting while a request is open can do real harm to someone who shouldn’t have to repay.
+    - id: benefits-quality-review
+      prompt: Does the office review a sample of decisions for quality, apart from appeals?
+      kind: boolean
+      points:
+        - when: false
+          to: [ requirement:review-decision-quality, capability:quality-integrity-reporting ]
+          why: Appeals only show the decisions people challenge, and a quality review shows problems across the program.
+    - id: benefits-fraud-risk
+      prompt: Does the program have a current assessment of its fraud risks?
+      kind: boolean
+      points:
+        - when: false
+          to: [ requirement:manage-fraud-risk, implementationPattern:payment-risk-analytics ]
+          why: Controls that fit the program’s real risks start with knowing what they are.
+    - id: benefits-ai-use
+      prompt: Is the office using or planning AI in claims, eligibility, or fraud work?
+      kind: single-choice
+      options:
+        - using: Yes, in use now
+        - planning: Yes, being planned
+        - no-plans: No plans now
+      points:
+        - when: [ using, planning ]
+          to: [ requirement:keep-people-deciding, implementationPattern:ai-evidence-summaries ]
+          why: AI that’s a principal basis for these decisions is presumed to be high-impact, so the practices that brings are worth planning for early.
