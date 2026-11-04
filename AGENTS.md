@@ -28,7 +28,9 @@ How they connect:
   here, never in the kit. Each site describes itself in its own `src/site.ts` (`SiteConfig` in
   `src/lib/config.ts`) and keeps its own home page and published data. On a publisher's site, the library
   packages its own build on get pages under `library/`, with the publisher's resources added, and link to
-  the library's own. `tests/engine.test.ts` checks the engine imports nothing outside the list.
+  the library's own. With `upstream.showAll` (`show: all` in `kit.yaml`) the rest of the release does too,
+  and the lists get a switch that hides what's marked `only-whole`; `inUse` says which packages stay.
+  `tests/engine.test.ts` checks the engine imports nothing outside the list.
 - **The engine has a version,** `version` in `engine.json`, tagged `engine-v<version>` when deployed.
   Organizations' copies of the kit take the engine by that tag, so a version's files never change:
   `pnpm engine:check` (part of `verify`, and run in CI) fails when they did. Raise the patch for a fix,
@@ -154,5 +156,12 @@ Studio:
 
 Kit:
 
-- Move the sample to the current library release: `release` in `kit.yaml`, then `pnpm sync`,
-  `pnpm content:build`, and `pnpm verify`.
+- Publish without GitHub. `scripts/content.ts` asks `origin/main` what's published, so a copy with no remote
+  deletes its older versions and rewrites the newest in place, which Studio refuses. Keep a local record of
+  published versions and pass it to `plan()` as `isPublished`. The editor below needs this first.
+- An editor for one technical person on their own machine, listening on 127.0.0.1. Forms from
+  `vocabulary.ts` write `source/*.yaml`, so YAML stays the source of truth and the compiler and validator stay
+  as they are. Saving validates, and a Publish step freezes a version and rebuilds. Library items stay
+  read-only, each with a way to add something that helps with it. The built site stays static, to deploy
+  anywhere: a laptop, a server, a static host, or Pages. Start with resources and their links, then the
+  other types. Sign-in, editing by several people, and an installer for less technical staff can come later.
