@@ -156,9 +156,7 @@ Studio:
 
 Kit:
 
-- An editor for one technical person on their own machine, listening on 127.0.0.1. Forms from
-  `vocabulary.ts` write `source/*.yaml`, so YAML stays the source of truth and the compiler and validator stay
-  as they are. Saving validates, and a Publish button runs `pnpm content:publish` and rebuilds. Library items stay
-  read-only, each with a way to add something that helps with it. The built site stays static, to deploy
-  anywhere: a laptop, a server, a static host, or Pages. Start with resources and their links, then the
-  other types. Sign-in, editing by several people, and an installer for less technical staff can come later.
+- The editor (`pnpm editor`, for one technical person on their own machine) handles resources and their
+  links. Next, the other types: missions, outcomes, capabilities, requirements, and patterns, then
+  `links.yaml` and discovery questions. YAML stays the source of truth. Sign-in, editing by several people,
+  and an installer for less technical staff can come later.
