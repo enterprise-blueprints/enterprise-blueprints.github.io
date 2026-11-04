@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { byLayer, coversPartly, elements, elementsOfType, groupOf, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, resourceDetails, resourcesFor, tagline } from '../src/lib/library';
+import { byLayer, coversPartly, searchIndex, elements, elementsOfType, groupOf, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, resourceDetails, resourcesFor, tagline } from '../src/lib/library';
 import { groupings } from '../src/lib/vocabulary';
+import { prepare, search } from '../src/lib/search';
 
 describe('missionBlueprint', () => {
   const mission = elements.find((e) => e.id === 'eb:mission:independent-government-oversight')!;
@@ -256,3 +257,33 @@ describe('ways to source a pattern', () => {
   });
 });
 
+describe('what search looks through', () => {
+  const index = searchIndex();
+  const kinds = new Set(index.map((i) => i.type));
+
+  it('holds every kind of thing, each with a place to go', () => {
+    for (const type of ['mission', 'outcome', 'measure', 'capability', 'requirement', 'implementationPattern', 'resource', 'discovery', 'source']) expect(kinds, type).toContain(type);
+    for (const i of index) {
+      expect(i.title, i.url).toBeTruthy();
+      expect(i.url, i.title).toMatch(i.external ? /^https?:/ : /^\//);
+    }
+  });
+
+  it('finds real things', () => {
+    const found = (query: string) => search(prepare(index), query).results;
+    expect(found('records management')[0]).toMatchObject({ title: 'Records Management', type: 'capability', label: 'Capability', url: '/capabilities/records-management/' });
+    expect(found('freedom of information act').some((r) => r.type === 'source' && r.external)).toBe(true);
+    expect(found('sam.gov system for award').filter((r) => r.title === 'SAM.gov — System for Award Management')).toHaveLength(1);
+    expect(found('backlog').some((r) => r.type === 'measure')).toBe(true);
+    expect(found('hotline').some((r) => r.type === 'discovery' && r.url.includes('#'))).toBe(true);
+  });
+
+  it('leaves out what’s been replaced', () => {
+    const gone = elements.filter((e) => e.status === 'deprecated').map((e) => e.url);
+    expect(index.filter((i) => gone.includes(i.url))).toEqual([]);
+  });
+
+  it('stays small enough to load when search opens', () => {
+    expect(JSON.stringify(index).length).toBeLessThan(600_000);
+  });
+});

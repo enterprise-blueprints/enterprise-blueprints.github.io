@@ -1,6 +1,6 @@
 {
   "description": "The files a publisher's site, made with the Blueprint Kit, takes from the library as they are, with pnpm sync --tools. Change them here, never in the kit. Each site keeps its own src/site.ts, home page, and published data. Its version is tagged engine-v<version> when deployed; raise it when the files change (see scripts/engine.mjs).",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "files": [
     "src/lib/compile.ts",
     "src/lib/config.ts",
@@ -8,6 +8,7 @@
     "src/lib/library.ts",
     "src/lib/package.ts",
     "src/lib/paths.ts",
+    "src/lib/search.ts",
     "src/lib/vocabulary.ts",
     "src/components/DiscoveryPage.astro",
     "src/components/ElementPage.astro",
@@ -20,6 +21,7 @@
     "src/components/PatternCompare.astro",
     "src/components/ResourceDrawer.astro",
     "src/components/ResourceList.astro",
+    "src/components/SiteSearch.astro",
     "src/components/SourceList.astro",
     "src/components/StatusBadge.astro",
     "src/components/TypeBadge.astro",
@@ -31,6 +33,7 @@
     "src/pages/discovery/index.astro",
     "src/pages/library/[section]/[slug].astro",
     "src/pages/library/discovery/[slug].astro",
+    "src/pages/search.json.ts",
     "src/pages/sources.astro",
     "src/pages/404.astro",
     "public/favicon.svg",
@@ -40,6 +43,7 @@
     "editor/server.ts",
     "editor/store.ts",
     "scripts/editor.ts",
-    "tests/editor.test.ts"
+    "tests/editor.test.ts",
+    "tests/search.test.ts"
   ]
 }

@@ -79,6 +79,13 @@ pnpm editor          # the site with the editor on, at http://127.0.0.1:4323
 - Tests in `tests/` pin real content, such as counts and rules, so a content change often means a test
   change too.
 
+### Search
+
+`searchIndex()` in `library.ts` gathers what can be found, `search.json` publishes it, and `SiteSearch.astro`
+loads it when search first opens and ranks it with `src/lib/search.ts`. It's our own rather than Pagefind's, which
+only works on a finished build, so it would be missing from `pnpm dev` and the editor, and needs a binary that
+organizations' package mirrors may not carry.
+
 ### The editor
 
 `pnpm editor` is the site with a bar across the top and forms on the pages, for everything in `source/`: on
@@ -152,8 +159,9 @@ Mostly, with one thing to change first. Today a release is about 780 KB for seve
   for 259 pages and grows with element count, not versions.
 - **Authoring stays manageable** for people and agents: one folder per mission, stable IDs, validation
   when the release is built, and `content:show` and `content:report` for questions across packages.
-- **Finding things gets harder.** The site has no search, and the missions, capabilities, and
-  requirements indexes become long lists. Studio's library drawer lists every package in one column.
+- **Finding things gets harder.** The site's search helps, but the missions, capabilities, and
+  requirements indexes become long lists. Search loads one index, which at 50 missions would be a few MB, so
+  it may need splitting by then. Studio's library drawer lists every package in one column.
 
 ## Backlog
 
@@ -164,7 +172,7 @@ Decisions to propose first:
 
 Library:
 
-- Site search, such as Pagefind, and filters on the long index pages.
+- Filters on the long index pages.
 - A scheduled check that sources' and resources' links still work, alongside their review dates.
 - Eight requirements are unsourced on purpose (six in Common's case management, two in FOIA); cite them
   if an authoritative source turns up.
