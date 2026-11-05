@@ -189,5 +189,5 @@ Kit:
 
 - The editor (`pnpm editor`, for one technical person on their own machine) handles everything in a package,
   with its links, sources, and discovery questions, and starts new packages. Still by hand: the sources of a
-  measure or a link, the order of items, and a package's details once it's started. YAML stays the source of
-  truth. Sign-in, editing by several people, and an installer for less technical staff can come later.
+  measure or a link, the coverage or note on a link in `links.yaml`, a mission's `sector` and `scope`, the
+  order of items, and a package's details once it's started. YAML stays the source of truth. Sign-in, editing by several people, and an installer for less technical staff can come later.
