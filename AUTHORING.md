@@ -73,18 +73,26 @@ figure from the law in the description (10 calendar days, 20 working days). Usua
 ### `patterns.yaml`
 
 At least five example architectures. `description` starts "An example architecture:". `attributes` has
-exactly `layer`, `parts`, `strengths`, `fitsWhen`, `watchFor`, and `ways`; each list item is a short
-sentence. `ways` lists one or more ways to source the pattern, each with `id`, `approach` (`product`,
-`platform`, `combine`, or `build`), `title`, `description`, and its own `strengths`, `fitsWhen`, and
-`watchFor`. Link patterns with `depends_on:` (can't work without; may name the `way` that needs it) and
-`works_with:`. Keep patterns generic: describe kinds of product, never name a vendor.
+exactly `layer`, `parts`, `strengths`, `fitsWhen`, and `watchFor`; each list item is a short sentence. Link
+patterns with `depends_on:` (can't work without, however it's sourced) and `works_with:`. Keep patterns
+generic: describe kinds of product, never name a vendor. Each pattern gets at least one solution.
+
+### `solutions.yaml`
+
+The ways to source each pattern, in the order of their patterns. Each has an `id` (the pattern's key and a
+short word for the way, as in `grants-management-product`), a `title` that says what it is ("A grants
+management product", "The agency's shared case platform"), an `approach` (`product`, `platform`, `shared`
+for a service another agency runs, `combine`, or `build`), a `description`, `implements:` with the patterns
+it sources, and in `attributes` its own `strengths`, `fitsWhen`, and `watchFor`, which add to the pattern's.
+A need of this solution only, such as case management on the agency's platform needing the platform, goes
+on it as `depends_on:`. The library's solutions are examples too: kinds of product, never a vendor's.
 
 ### `resources.yaml`
 
 Free resources from government, standards bodies, nonprofits, and universities: training, videos, guides,
-communities, datasets. Each has `title`, `kind` (never `service` or `product` here), `by`, `url`,
+communities, datasets. Each has `title`, `kind` (never `service` here), `by`, `url`,
 `lastReviewedAt`, `description`, and `helps_with:` with typed targets
-(`capability:foia-reporting`, or `{ to: implementationPattern:x, way: y }`). Open each link before adding
+(`capability:foia-reporting`, or `solution:grants-management-product` for one way of sourcing a pattern). Open each link before adding
 it, and leave out anything archived or behind a login. Say a video's year if it's old.
 
 ### `sources.yaml`

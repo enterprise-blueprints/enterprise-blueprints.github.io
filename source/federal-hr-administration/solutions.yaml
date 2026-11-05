@@ -1,0 +1,172 @@
+# Solutions: the ways to source each pattern, in the order the pages show them,
+# each with the patterns it implements and anything it needs.
+
+- id: core-hr-system-federal-core-hcm
+  title: OPM’s government-wide core HR system
+  description: The single commercial core HR platform OMB and OPM are moving executive agencies onto under Federal HR 2.0, in two waves from fiscal year 2026, with government-wide adoption the goal by 2028.
+  approach: shared
+  attributes:
+    strengths:
+      - One system across government, so employees moving between agencies keep one record
+      - It will make the separate eOPF and EHRI systems unnecessary over time
+    fitsWhen:
+      - The agency’s wave has begun, or it’s preparing data, connections, and staff for it
+    watchFor:
+      - Agencies were told to pause their own core HR purchases and projects, with exceptions only from the OMB and OPM Directors
+      - Military personnel and intelligence agencies aren’t included at first
+  implements: [ core-hr-system ]
+
+- id: core-hr-system-hr-shared-service
+  title: The agency’s current HR shared service provider
+  description: The core HR system the agency uses today through a federal HR shared service provider or its department, until its move to the government-wide system.
+  approach: shared
+  attributes:
+    strengths:
+      - Already in place, with staff who know it
+    fitsWhen:
+      - The agency’s wave hasn’t begun yet
+    watchFor:
+      - Changes worth making now are the ones that also prepare for the move, such as cleaning data and documenting connections
+  implements: [ core-hr-system ]
+
+- id: usa-staffing-hiring-usa-staffing
+  title: OPM’s USA Staffing
+  description: OPM’s talent acquisition system, used with USAJOBS and USA Hire, which the Merit Hiring Plan asks agencies to use.
+  approach: shared
+  attributes:
+    strengths:
+      - Built for federal hiring rules and OPM’s hiring data
+      - Shared certificates and talent pools work across agencies that use it
+    fitsWhen:
+      - Most agencies, especially those changing how they assess applicants
+    watchFor:
+      - Each agency still sets up its own assessments, ranking method, and approvals
+  implements: [ usa-staffing-hiring ]
+
+- id: usa-staffing-hiring-talent-acquisition-product
+  title: A talent acquisition product connected to USAJOBS
+  description: A commercial talent acquisition product that posts to USAJOBS and sends hiring data to OPM.
+  approach: product
+  attributes:
+    strengths:
+      - Can suit agencies with unusual hiring authorities or very high volume
+    fitsWhen:
+      - The agency already runs one and it meets the Merit Hiring Plan’s steps
+    watchFor:
+      - Shared certificates and OPM’s hiring data are harder outside USA Staffing
+  implements: [ usa-staffing-hiring ]
+
+- id: pre-employment-connections-talent-acquisition-onboarding
+  title: The talent acquisition system’s onboarding
+  description: The onboarding features of the agency’s talent acquisition system, connected to the vetting, E-Verify, and credentialing systems.
+  approach: platform
+  attributes:
+    strengths:
+      - Picks up where the hiring action ends, with no retyping
+    fitsWhen:
+      - The agency uses USA Staffing or a product with onboarding
+    watchFor:
+      - Connections the Merit Hiring Plan names, such as to background investigations and credentials, may still need building
+  implements: [ pre-employment-connections ]
+
+- id: guided-onboarding-core-hcm
+  title: The core HR system’s onboarding and learning
+  description: The new employee self-service, onboarding, and learning features of the agency’s core HR system, which the government-wide system includes.
+  approach: platform
+  attributes:
+    strengths:
+      - The employee record, training, and onboarding steps share one system
+    fitsWhen:
+      - The agency’s core HR system offers onboarding journeys
+    watchFor:
+      - Tasks for IT, facilities, and security may still need sending to the systems those teams use
+  implements: [ guided-onboarding ]
+
+- id: guided-onboarding-service-platform
+  title: The agency’s shared service or case platform
+  description: Onboarding journeys built on the platform the agency already uses for IT and facilities requests, with tasks routed to each team.
+  approach: platform
+  attributes:
+    strengths:
+      - Tasks land in the queues IT, facilities, and security already work from
+    fitsWhen:
+      - Day-one readiness is the biggest problem, and those teams already use the platform
+    watchFor:
+      - Training assignments and the employee record stay in the HR systems, so connections are needed
+  implements: [ guided-onboarding ]
+
+- id: guided-onboarding-product
+  title: An onboarding product
+  description: An onboarding product connected to the core HR system and the agency’s request systems.
+  approach: product
+  attributes:
+    strengths:
+      - Built for a new employee’s experience, with welcome content and check-ins
+    fitsWhen:
+      - The agency hires many people a year across many sites
+    watchFor:
+      - Another product to buy and keep up, and its data and connections may need moving when the agency joins the government-wide core HR system
+  implements: [ guided-onboarding ]
+
+- id: federal-payroll-provider-payroll-provider
+  title: The agency’s federal payroll provider
+  description: The federal payroll provider that serves the agency, fed with its personnel actions and approved time.
+  approach: shared
+  implements: [ federal-payroll-provider ]
+
+- id: online-retirement-application-ora
+  title: OPM’s Online Retirement Application
+  description: OPM’s Online Retirement Application, prefilled from EHRI and eOPF and completed by the employee, HR, and payroll.
+  approach: shared
+  implements: [ online-retirement-application ]
+
+- id: eopf-and-ehri-opm-systems
+  title: OPM’s eOPF and EHRI
+  description: OPM’s eOPF for personnel folders and EHRI for workforce data, with the agency’s data sent on schedule.
+  approach: shared
+  implements: [ eopf-and-ehri ]
+
+- id: performance-appraisal-system-hr-provider-module
+  title: The HR provider’s performance tool
+  description: The performance management tool the agency’s HR shared service provider or department offers, connected to its core HR system.
+  approach: shared
+  attributes:
+    strengths:
+      - Shares data with the core HR system the agency already uses
+    fitsWhen:
+      - The provider’s tool supports OPM’s current rating patterns
+    watchFor:
+      - The connection to the government-wide core HR system will need building when the agency moves
+  implements: [ performance-appraisal-system ]
+
+- id: performance-appraisal-system-product
+  title: A performance management product
+  description: A performance management product configured for OPM’s rules and connected to the core HR system.
+  approach: product
+  attributes:
+    strengths:
+      - Can offer better check-ins and goal setting than a basic tool
+    fitsWhen:
+      - The agency’s current tool can’t meet the new rules
+    watchFor:
+      - Another product to buy and keep up, and to connect to the core HR system
+  implements: [ performance-appraisal-system ]
+
+- id: hr-ai-drafting-platform
+  title: An AI model the agency approves
+  description: An AI model in an environment the agency has approved, used with OPM’s standards and the agency’s templates to draft HR documents.
+  approach: platform
+  implements: [ hr-ai-drafting ]
+
+- id: workforce-analytics-build
+  title: An analytics workspace
+  description: HR data brought together in the agency’s analytics tools.
+  approach: build
+  attributes:
+    strengths:
+      - Joins data from every HR system the agency uses
+    fitsWhen:
+      - The agency has analytics tools and people who use them
+    watchFor:
+      - Feeds need rebuilding when the agency moves to the government-wide core HR system
+  implements: [ workforce-analytics ]

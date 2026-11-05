@@ -25,42 +25,6 @@
       - Accessibility has to be tested with relay, TTY, and screen readers, not taken from a product sheet
       - Recordings and transcripts hold personal information, so who can hear them and how long they’re kept need setting
       - Moving phone numbers and menus without an outage needs careful planning
-    ways:
-      - id: product
-        approach: product
-        title: A cloud contact center product
-        description: A cloud contact center product with a FedRAMP authorization, configured and run by the agency’s own center.
-        strengths:
-          - The agency controls its menus, routing, and data
-          - New channels and features arrive with the product’s updates
-        fitsWhen:
-          - The agency has people who can configure and run it
-        watchFor:
-          - Another product to buy, secure, and keep up, with its own authorization to operate
-      - id: department-platform
-        approach: platform
-        title: The department’s shared contact center platform
-        description: A contact center platform the department runs for its components, with each program getting its own numbers, menus, queues, and reports.
-        strengths:
-          - Uses contracts, skills, and security approvals the department already has
-          - Calls can be passed between components without the person calling again
-        fitsWhen:
-          - The department already runs a platform like this for other components
-        watchFor:
-          - Changes and upgrades are decided for the whole department, not for the program
-      - id: contracted-center
-        approach: product
-        title: A contact center run by a contractor
-        description: A contractor provides the agents, the system, and the sites, under service levels the agency sets and monitors.
-        strengths:
-          - The agency can add agents for a surge without hiring
-          - The contractor brings systems and experience running large centers
-        fitsWhen:
-          - Contacts swing widely through the year, such as around deadlines
-          - The agency lacks the staff to run a center itself
-        watchFor:
-          - The agency still owns the answers, the data, and the results, and needs people who can manage the contract well
-          - Contact records, recordings, and the knowledge base must stay the agency’s, and be easy to move at the contract’s end
   works_with:
     - to: contact-records-crm
       note: Each call, chat, and email opens or updates a contact record, with its recording and transcript linked.
@@ -91,32 +55,6 @@
     watchFor:
       - Reason codes only help if there are few enough for agents to choose well, and someone reviews them
       - A record of every contact about a person is itself sensitive, so access follows role and need
-    ways:
-      - id: agency-platform
-        approach: platform
-        title: The agency’s shared case platform
-        description: Contact records, handoffs, and follow-up built on the low-code or CRM platform the agency already runs for its cases.
-        strengths:
-          - Handoffs become cases on the same platform the program offices use
-          - Uses licenses, skills, and security approvals the agency already has
-        fitsWhen:
-          - The program offices already work their cases on the platform
-        watchFor:
-          - The connection to the contact center system, to open records as calls arrive, takes real building
-      - id: contact-center-product
-        approach: product
-        title: The contact center product’s own records
-        description: The contact records and case features that come with the contact center product.
-        strengths:
-          - Works with calls, chats, and recordings with little building
-        fitsWhen:
-          - Most contacts are resolved by the center without a program office
-        watchFor:
-          - Handoffs to program offices’ own systems still need connecting
-  depends_on:
-    - to: shared-case-platform
-      way: agency-platform
-      note: The contact records and handoffs are the shared platform, set up for the contact center.
   works_with:
     - to: caller-verification-codes
       note: A verified person’s earlier contacts and cases show on the record.
@@ -146,27 +84,6 @@
     watchFor:
       - Answers go stale unless program offices own them and reviews happen on time
       - Each language the agency serves doubles the work of keeping answers current
-    ways:
-      - id: product
-        approach: product
-        title: A knowledge management product
-        description: A knowledge management product connected to the contact center system and the website.
-        strengths:
-          - Built for review cycles, versions, and publishing to several channels
-        fitsWhen:
-          - The center has many topics or many programs
-        watchFor:
-          - Another product to buy and keep up, and to connect to the website
-      - id: platform
-        approach: platform
-        title: Knowledge articles on the agency’s shared platform
-        description: Knowledge articles kept on the CRM or case platform the agency already runs.
-        strengths:
-          - Agents find answers on the same screen as the contact record
-        fitsWhen:
-          - The center already works on the platform
-        watchFor:
-          - Publishing to the website and virtual agents may need building
   works_with:
     - to: virtual-agent
       note: The virtual agent answers only from approved articles.
@@ -198,27 +115,6 @@
       - It mustn’t decide anyone’s access to a benefit; uses that do are presumed high-impact under OMB’s AI memo
       - People who can’t or won’t use it need an easy way to reach a person
       - What people type may include personal information, so where it’s processed and kept matters
-    ways:
-      - id: product
-        approach: product
-        title: The contact center product’s virtual agent
-        description: The virtual agent that comes with the contact center product, configured to use the agency’s knowledge base.
-        strengths:
-          - Hands off to agents with the conversation, with little building
-        fitsWhen:
-          - The agency runs a contact center product that includes one
-        watchFor:
-          - Its AI model and where it runs need the agency’s approval
-      - id: agency-ai
-        approach: platform
-        title: An AI model the agency approves
-        description: A virtual agent built on an AI model in an environment the agency has approved, connected to the knowledge base and the contact center.
-        strengths:
-          - The same approved model can serve other uses in the agency
-        fitsWhen:
-          - The agency has an approved AI environment and people who can build on it
-        watchFor:
-          - Handoffs to agents, and testing with assistive technology, take real building
   depends_on:
     - to: shared-knowledge-base
       note: The virtual agent answers only from approved knowledge articles.
@@ -251,17 +147,6 @@
       - Contact details on file can be out of date, so there needs to be another way for people who can’t receive a code
       - Callers using relay services need a way to verify that works for them
       - Social engineering targets agents directly, so they need training and the backing to say no
-    ways:
-      - id: combine
-        approach: combine
-        title: Codes and sign-in combined with the contact center
-        description: The contact center system’s verification steps, combined with a one-time code service and the agency’s public sign-in.
-        strengths:
-          - Uses the sign-in the public already has with the agency
-        fitsWhen:
-          - The agency’s public sign-in and contact center can exchange who a person is
-        watchFor:
-          - Each connection between sign-in, codes, and the contact center needs keeping up
   works_with:
     - to: contact-records-crm
       note: The verification method is saved on the contact record.
@@ -289,27 +174,6 @@
       - Summaries and suggestions can be wrong, so agents check each one and accuracy is reviewed over time
       - Transcripts hold personal information, so where they’re processed and kept matters
       - The agency’s AI governance may require a listing in its AI use case inventory first
-    ways:
-      - id: product
-        approach: product
-        title: The contact center product’s AI features
-        description: Transcription, summaries, suggested answers, and analytics that come with the contact center product.
-        strengths:
-          - Works with the product’s recordings and queues with little building
-        fitsWhen:
-          - The agency runs a contact center product that includes them
-        watchFor:
-          - Its AI model and where it runs need the agency’s approval
-      - id: agency-ai
-        approach: platform
-        title: An AI model the agency approves
-        description: Transcripts sent to an AI model in an environment the agency has approved, with results written back to the contact record and reports.
-        strengths:
-          - The same approved model can serve other uses in the agency
-        fitsWhen:
-          - The agency has an approved AI environment and people who can build on it
-        watchFor:
-          - Connections to recordings, contact records, and reports take real building
   works_with:
     - to: contact-records-crm
       note: Summaries and contact reasons are saved on the contact record.
@@ -338,28 +202,6 @@
     watchFor:
       - Response rates are low and skew toward strong feelings, so results need context
       - Surveys outside the umbrella clearance’s terms need their own Paperwork Reduction Act approval
-    ways:
-      - id: touchpoints
-        approach: platform
-        title: GSA’s Touchpoints
-        description: GSA’s Touchpoints, a government tool for customer feedback forms, set up for the Section 280 questions and the quarterly reporting to OMB.
-        strengths:
-          - Built for the Section 280 questions and quarterly reporting
-          - Run by GSA for federal agencies, with a FIPS moderate rating on cloud.gov
-        fitsWhen:
-          - The center can link to a survey from its texts, emails, and chat
-        watchFor:
-          - Joining results to contact reasons needs the contact’s details passed to the survey
-      - id: product
-        approach: product
-        title: The contact center product’s surveys
-        description: The survey features of the contact center product, set up with OMB’s questions.
-        strengths:
-          - Surveys can be offered at the end of a call or chat, and joined to the contact automatically
-        fitsWhen:
-          - The agency runs a contact center product with surveys
-        watchFor:
-          - Quarterly datasets still need putting into OMB’s format
   works_with:
     - to: contact-center-reporting
       note: Survey results appear beside waits and resolution in the reports.
@@ -386,16 +228,5 @@
     watchFor:
       - Figures defined differently across systems, such as when a contact counts as resolved, need agreeing first
       - Averages hide the worst hours and channels, so look at the spread too
-    ways:
-      - id: build
-        approach: build
-        title: A reporting workspace
-        description: Data from the center’s systems brought together in the agency’s analytics tools.
-        strengths:
-          - Reports can join data from every system the center uses
-        fitsWhen:
-          - The agency has analytics tools and people who use them
-        watchFor:
-          - Each feed needs keeping up as the systems change
   works_with:
     - to: cloud-contact-center

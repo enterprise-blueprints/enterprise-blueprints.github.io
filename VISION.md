@@ -38,10 +38,13 @@ agency and what it chooses.
 
 - A **mission** seeks **outcomes**, each with **measures** that tell how it's going.
 - **Capabilities** contribute to outcomes. **Requirements** say what a capability has to do or respect.
-- **Patterns** are the logical parts of an architecture that could provide a capability, fully or in part.
-  Each lists its **ways** to source it (configure a product, extend a platform the agency has, combine tools,
-  or build to fit), with strengths, when it fits, and what to watch for. A pattern can need another, or work
-  well with one.
+- **Patterns** are the logical parts of an architecture that could provide a capability, fully or in part,
+  with strengths, when it fits, and what to watch for. A pattern can need another, or work well with one.
+- **Solutions** implement patterns: the ways to source them, each with its approach (configure a product,
+  extend a platform the agency has, use a shared service another agency runs, combine tools, or build to
+  fit) and its own strengths, fit, and what to watch for. One platform can implement several patterns, and a
+  solution can need a pattern of its own. The library's solutions are examples; organizations publish their
+  products as solutions.
 - A mission's patterns, by **layer**, are its architecture, and the mission lists the **principles** that
   architecture follows. The seven layers, in order: public facing, AI and insights, business applications,
   worker productivity, connections, data and records, and security and identity.
@@ -49,24 +52,23 @@ agency and what it chooses.
   **theme** (what the public gets), a capability's **stage** of the work, and a requirement's **kind** of
   obligation. A new mission fits the groups there are; a group is added only when nothing fits.
 - **Resources** help someone learn about an item or act on it: a video, a course, a guide, a dataset, and
-  so on. Each **helps with** missions, outcomes, capabilities, requirements, or patterns, or one way of
-  sourcing a pattern. A source backs up what an item says; a resource helps a reader go further. The
+  so on. Each **helps with** missions, outcomes, capabilities, requirements, patterns, or solutions. A source backs up what an item says; a resource helps a reader go further. The
   library links only to free resources from government, standards bodies, nonprofits, and universities.
 - **Discovery questions** ask about how an office works today, and each answer can point at what it suggests.
 
-Choosing one way for each pattern is an agency's decision, so it belongs in Studio's **scenarios**, not in
-the library.
+Choosing a solution for each pattern is an agency's decision, so it belongs in Studio, not in the library.
 
 ## Other publishers
 
 Any organization can publish packages of its own that build on the library's, the way each mission builds on Common.
 Every element ID starts with its package's prefix, such as `eb` for the library's own, so its IDs
-never collide with the library's. Its packages can add resources, such as its services, products,
-demos, and case studies, linked to the library's items, and missions, outcomes, capabilities, and patterns
-of its own, all in the library's types. A product is a resource that helps with one of the library's
-ways, not a new way, so the library's patterns stay examples. Extra details, such as a service's contract
-vehicle, go in a resource's attributes; a detail many publishers add becomes a field or a kind in a later
-schema.
+never collide with the library's. Its packages can add solutions, such as its products, that implement
+the library's patterns, and resources, such as its services, demos, and case studies, linked to the library's
+items, and missions, outcomes, capabilities, and patterns of its own, all in the library's types. A product
+implements a pattern rather than becoming a pattern of its own, so the library's patterns stay examples, with
+the organization's solutions beside the library's. Extra details, such as a product's editions or a
+service's contract vehicle, go in its attributes; a detail many publishers add becomes a field or a kind in a
+later schema.
 
 ## Words
 

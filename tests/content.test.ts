@@ -138,9 +138,24 @@ describe('another publisher’s package (schema 0.6.0)', () => {
     expect(step.write!.relations[0].to).toBe('eb:capability:tracking');
   });
 
+  it('compiles solutions, with their approach and link, and a way on a link only before schema 0.7.0', () => {
+    const files = (version: string, link: string) => ({
+      'package.yaml': `schemaVersion: ${version}\npackageId: m\n`,
+      'patterns.yaml': '- id: p\n  title: P\n  description: An example architecture.\n  attributes: { layer: connections }\n',
+      'solutions.yaml': '- id: p-product\n  title: A product\n  description: Bought.\n  approach: product\n  url: https://example.com/p\n  implements: [ p ]\n',
+      'resources.yaml': `- id: r\n  title: R\n  description: R.\n  kind: guide\n  url: https://example.com/r\n  helps_with: [ ${link} ]\n`,
+    });
+    const built = compilePackage(parseSource('m', files('0.7.0', 'solution:p-product')), {}, '0.1.0', 'd');
+    expect(built.elements.find((e) => e.type === 'solution')).toMatchObject({ id: 'eb:solution:p-product', attributes: { approach: 'product', url: 'https://example.com/p' } });
+    expect(built.relations).toContainEqual(expect.objectContaining({ from: 'eb:solution:p-product', predicate: 'implements', to: 'eb:implementationPattern:p' }));
+    const way = '{ to: implementationPattern:p, way: product }';
+    expect(compilePackage(parseSource('m', files('0.6.0', way)), {}, '0.1.0', 'd').relations).toContainEqual(expect.objectContaining({ predicate: 'helps_with', way: 'product' }));
+    expect(() => compilePackage(parseSource('m', files('0.7.0', way)), {}, '0.1.0', 'd')).toThrow('since schema 0.7.0, a link names a solution, such as solution:<pattern>-product');
+  });
+
   it('keeps resource fields to resources', () => {
     const run = () => compilePackage(parseSource('m', { 'package.yaml': 'packageId: m\n', 'capabilities.yaml': '- id: x\n  title: X\n  description: X.\n  kind: video\n  url: https://example.com\n' }), {}, '0.1.0', 'd');
-    expect(run).toThrow(/only a requirement or a resource has a kind[\s\S]*only a resource has a url/);
+    expect(run).toThrow(/only a requirement or a resource has a kind[\s\S]*only a resource or a solution has a url/);
   });
 });
 

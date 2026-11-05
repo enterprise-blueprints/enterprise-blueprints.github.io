@@ -1,0 +1,318 @@
+# Solutions: the ways to source each pattern, in the order the pages show them,
+# each with the patterns it implements and anything it needs.
+
+- id: benefits-claims-system-product
+  title: A benefits administration product
+  description: A product made for benefits or claims work, configured for the program’s rules and run by the agency.
+  approach: product
+  attributes:
+    strengths:
+      - Common steps, such as work queues and letters, come ready
+    fitsWhen:
+      - The program’s steps are close to those the product expects
+    watchFor:
+      - Rules specific to the program can mean heavy configuration
+      - Another product to buy, secure, and keep up
+  implements: [ benefits-claims-system ]
+
+- id: benefits-claims-system-agency-platform
+  title: The agency’s shared case platform
+  description: Claims, steps, and work queues built on the agency’s shared case platform.
+  approach: platform
+  attributes:
+    strengths:
+      - Uses licenses, skills, and security approvals the agency already has
+      - Claims can share a platform with the agency’s other case work
+    fitsWhen:
+      - The agency already runs a case platform with staff who know it
+    watchFor:
+      - Very high claim volumes need testing early
+      - Paying benefits for years is different from closing a case, so plan how the benefit record works
+  implements: [ benefits-claims-system ]
+  depends_on:
+    - to: shared-case-platform
+      note: Claims and their steps are the shared platform, set up for the program.
+
+- id: benefits-claims-system-custom-build
+  title: A claims system built for the program
+  description: The agency’s own system, built in small releases around the program’s rules, usually replacing an old system one piece at a time.
+  approach: build
+  attributes:
+    strengths:
+      - Fits programs too large or unusual for a product
+      - The agency can change it as the law changes
+    fitsWhen:
+      - The program is very large, and has digital staff to keep the system going
+    watchFor:
+      - It needs a lasting team, not just a project
+      - Parts of the old and new systems will run side by side for years
+  implements: [ benefits-claims-system ]
+
+- id: benefits-online-account-product-portal
+  title: The portal in a benefits product
+  description: The public portal that comes with the benefits administration product, configured and branded for the program.
+  approach: product
+  attributes:
+    strengths:
+      - Comes connected to the claims system
+    fitsWhen:
+      - The office has chosen a benefits product with a portal that meets its needs
+    watchFor:
+      - Check it against accessibility standards and with real users before relying on it
+  implements: [ benefits-online-account ]
+
+- id: benefits-online-account-agency-built
+  title: An account the agency builds
+  description: The agency’s own site, using its design system and calling the claims system through APIs.
+  approach: build
+  attributes:
+    strengths:
+      - Can be shaped around what claimants need, and tested as it’s built
+      - Can sit alongside the agency’s other online services
+    fitsWhen:
+      - The agency has digital staff, and serves many people across several programs
+    watchFor:
+      - It needs a lasting team
+      - It depends on the claims system having good APIs
+  implements: [ benefits-online-account ]
+
+- id: eligibility-rules-service-rules-product
+  title: A business rules product
+  description: A rules product that holds the program’s rules, with tools for writing, versioning, and testing them.
+  approach: product
+  attributes:
+    strengths:
+      - Tools for writing and testing rules come ready
+    fitsWhen:
+      - The agency has staff to learn the product and many rules to manage
+    watchFor:
+      - The rules can end up tied to the product’s format
+  implements: [ eligibility-rules-service ]
+
+- id: eligibility-rules-service-rules-as-code
+  title: Rules kept as tested code
+  description: Rules written as code in a shared repository, with program staff reviewing each change and tests running on every one.
+  approach: build
+  attributes:
+    strengths:
+      - Changes are visible, reviewed, and tested like any other code
+      - Nothing extra to license
+    fitsWhen:
+      - The agency has developers working closely with program staff
+    watchFor:
+      - Program staff need a way to read the rules that doesn’t require reading code
+  implements: [ eligibility-rules-service ]
+
+- id: claim-evidence-folder-content-product
+  title: A content management product
+  description: A document or content management product, with scanning and labeling, connected to the claims system.
+  approach: product
+  attributes:
+    strengths:
+      - Scanning, search, and retention come ready
+    fitsWhen:
+      - The office receives a large volume of paper
+    watchFor:
+      - Connections to the claims system take work
+  implements: [ claim-evidence-folder ]
+
+- id: claim-evidence-folder-scanning-service
+  title: A scanning service and the agency’s document store
+  description: A contracted mail and scanning center sends labeled images to the agency’s document store, which the claims system reads.
+  approach: combine
+  attributes:
+    strengths:
+      - The office doesn’t run its own scanning
+      - Volume can rise and fall with the contract
+    fitsWhen:
+      - The agency has a document store, and wants to hand off the mail work
+    watchFor:
+      - The contract needs quality standards and turnaround times the office can check
+  implements: [ claim-evidence-folder ]
+
+- id: public-sign-in-login-gov
+  title: Login.gov
+  description: The government’s shared sign-in and identity verification service, connected to the office’s applications over OpenID Connect or SAML under an interagency agreement.
+  approach: shared
+  attributes:
+    strengths:
+      - People may already have an account
+      - The office doesn’t run the sign-in or verification itself
+    fitsWhen:
+      - Its service levels meet the office’s needs
+    watchFor:
+      - The level of identity assurance the office needs may call for facial matching, which some people won’t want or can’t use
+  implements: [ public-sign-in ]
+
+- id: public-sign-in-agency-identity-service
+  title: The agency’s own public identity service
+  description: An identity service the agency runs for the public, with an identity verification provider behind it.
+  approach: platform
+  attributes:
+    strengths:
+      - The agency controls the experience and the verification steps
+    fitsWhen:
+      - The agency has many public services, and needs that a shared service doesn’t meet
+    watchFor:
+      - Running it, securing it, and keeping up with fraud are lasting work
+  implements: [ public-sign-in ]
+
+- id: eligibility-data-exchanges-api-connections
+  title: API connections from the claims system
+  description: The claims system calls each data source as a claim moves along, using Do Not Pay Connect and other agencies’ APIs.
+  approach: build
+  attributes:
+    strengths:
+      - Results arrive during the work, while they can still help
+    fitsWhen:
+      - The claims system can call APIs, and the data sources offer them
+    watchFor:
+      - Each connection needs its own security review and agreement
+  implements: [ eligibility-data-exchanges ]
+
+- id: eligibility-data-exchanges-scheduled-batch
+  title: Scheduled batch matches
+  description: The office sends files on a schedule, and matches come back through the Do Not Pay Web Portal or file exchanges for staff to work.
+  approach: combine
+  attributes:
+    strengths:
+      - Works with older systems that can’t call APIs
+      - A good place to start
+    fitsWhen:
+      - The claims system is old, or the source only offers files
+    watchFor:
+      - Results arrive after the moment they’d help most
+  implements: [ eligibility-data-exchanges ]
+
+- id: payments-through-treasury-bulk-files
+  title: Bulk payment files from the claims system
+  description: The claims system sends files directly to Treasury, with a summary certified through the Secure Payment System.
+  approach: build
+  attributes:
+    strengths:
+      - Handles very large payment cycles
+    fitsWhen:
+      - The office makes many payments each cycle
+    watchFor:
+      - File formats change from time to time, so plan for updates
+  implements: [ payments-through-treasury ]
+
+- id: payments-through-treasury-through-financial-system
+  title: Through the agency’s financial system
+  description: The claims system sends approved payments to the agency’s financial system, which schedules them with Treasury.
+  approach: combine
+  attributes:
+    strengths:
+      - Accounting entries and payment happen together
+    fitsWhen:
+      - Payments are fewer, or the agency handles all its payments this way
+    watchFor:
+      - Failed and returned payments have further to travel back to the claim
+  implements: [ payments-through-treasury ]
+
+- id: overpayment-tracking-claims-system-module
+  title: A debt module in the claims system
+  description: Overpayments tracked as part of the benefits claims system, with amounts sent to the financial system.
+  approach: platform
+  attributes:
+    strengths:
+      - The debt sits next to the benefit and its history
+    fitsWhen:
+      - The claims system can hold debts and their steps
+    watchFor:
+      - Debts still need to reach the agency’s financial records
+  implements: [ overpayment-tracking ]
+  depends_on:
+    - to: benefits-claims-system
+      note: The debt module is part of the claims system.
+
+- id: overpayment-tracking-financial-system-receivables
+  title: Receivables in the agency’s financial system
+  description: The agency’s financial system holds the debt and does the collection, with waiver and appeal steps in the claims system.
+  approach: product
+  attributes:
+    strengths:
+      - Uses the debt tools and reports finance staff already have
+    fitsWhen:
+      - The agency’s financial system already handles debts and Treasury referrals
+    watchFor:
+      - The two systems must agree on when collection pauses
+  implements: [ overpayment-tracking ]
+
+- id: ai-evidence-summaries-agency-ai-service
+  title: The agency’s approved AI service
+  description: A summarizing tool built on the AI service the agency has already approved for sensitive information.
+  approach: platform
+  attributes:
+    strengths:
+      - Uses security approvals the agency already has
+    fitsWhen:
+      - The agency has an AI service approved for this kind of information
+    watchFor:
+      - It takes testing with the program’s own documents and staff
+  implements: [ ai-evidence-summaries ]
+
+- id: ai-evidence-summaries-product-feature
+  title: An AI feature in the claims or document product
+  description: A summarizing feature that comes with the office’s claims or document product.
+  approach: product
+  attributes:
+    strengths:
+      - Sits where staff already work
+    fitsWhen:
+      - The product’s feature does well in testing on the program’s files
+    watchFor:
+      - Ask how it’s been tested, and what happens to the information
+  implements: [ ai-evidence-summaries ]
+
+- id: payment-risk-analytics-analytics-workspace
+  title: An analytics workspace
+  description: The agency’s analytics tools, with the program’s data brought together for a small team of analysts.
+  approach: build
+  attributes:
+    strengths:
+      - Analysts can change what they look for as fraud changes
+    fitsWhen:
+      - The agency has analysts and a data platform
+    watchFor:
+      - Flags need a clear path to the staff who act on them
+  implements: [ payment-risk-analytics ]
+
+- id: payment-risk-analytics-fraud-product
+  title: A fraud analytics product
+  description: A product made for detecting payment fraud, fed from the program’s data.
+  approach: product
+  attributes:
+    strengths:
+      - Comes with common fraud patterns
+    fitsWhen:
+      - The office has little analytics staff, and common fraud risks
+    watchFor:
+      - Ask how scores are made, since staff must be able to explain why something was flagged
+  implements: [ payment-risk-analytics ]
+
+- id: benefits-workload-reporting-reporting-in-system
+  title: The reports in the claims system
+  description: The reports and dashboards that come with the claims system.
+  approach: product
+  attributes:
+    strengths:
+      - Little to build
+    fitsWhen:
+      - One system holds most of the office’s work
+    watchFor:
+      - Figures from other systems, such as payments, need bringing in
+  implements: [ benefits-workload-reporting ]
+
+- id: benefits-workload-reporting-agency-analytics
+  title: The agency’s analytics platform
+  description: Data from the claims and payment systems brought into the agency’s analytics platform, with dashboards and public reports built there.
+  approach: platform
+  attributes:
+    strengths:
+      - Can combine several systems and years of history
+    fitsWhen:
+      - Work is spread across systems, or the agency already has an analytics platform
+    watchFor:
+      - Someone has to own the definitions, or the numbers will drift
+  implements: [ benefits-workload-reporting ]

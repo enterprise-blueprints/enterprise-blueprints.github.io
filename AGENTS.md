@@ -58,7 +58,9 @@ How they connect:
   case or person. The library's own resources are free ones from government, standards bodies,
   nonprofits, and universities; the `service` and `product` kinds belong in other organizations' packages.
 - Naming in code: a workspace's packages are its **blueprints**; **layer** means only the seven parts of
-  a mission's architecture; a pattern has **ways** to source it.
+  a mission's architecture; a pattern is sourced by **solutions**, which implement it (before schema 0.7.0, a
+  pattern listed its **ways**). The whole design for an engagement is its architecture, never "the
+  solution".
 
 ## The library
 
@@ -94,8 +96,8 @@ keep it true of both sites. It's the same editor the kit's sites have, so a chan
 both, and it can't drift. `editor/store.ts` edits the YAML in place, keeping comments and fields the forms
 don't show; a save runs `scripts/content.ts build`, whose checks decide, and a refused change is undone.
 `forms` there lists the types and what each form holds. `client.ts` finds its places by the attributes the
-pages carry. A link that can't go on the other end's element goes in `links.yaml`. A link's `way` is the
-linked pattern's, except on `depends_on`, where it's the way of the pattern with the need. A package that
+pages carry. A link that can't go on the other end's element goes in `links.yaml`. A solution's form writes
+its `implements` on the solution, and a pattern's form can take a solution on or off there too. A package that
 gains a second prefix among its dependencies has its short references written out, or the compiler can't
 tell them apart. The server tells the two sites apart by `kit.yaml`: a publisher's site has a Publish button
 and the `service` and `product` resource kinds, and the library publishes by pushing to `main`.
@@ -112,7 +114,7 @@ short:
 
 1. Make `source/<name>/` with `package.yaml` (its `packageId`, `idPrefix: eb`, `dependencies: [ common ]`),
    then missions, outcomes (with `theme` and `measures`), capabilities (with `stage`), requirements (with
-   `kind`), patterns (with `layer` and `ways`), resources, sources, `links.yaml` for the Common
+   `kind`), patterns (with `layer`), solutions (with `approach` and `implements`), resources, sources, `links.yaml` for the Common
    capabilities it uses, and discovery questions. The seven federal missions are the models to follow.
 2. Fit the groups that exist (themes, stages, kinds); add a group to the vocabulary only when nothing fits.
 3. Cite official sources with `lastReviewedAt`, checked against the source itself. Each requirement

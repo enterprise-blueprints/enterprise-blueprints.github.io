@@ -1,0 +1,72 @@
+# Solutions: the ways to source each pattern, in the order the pages show them,
+# each with the patterns it implements and anything it needs.
+
+- id: shared-case-platform-platform
+  title: The agency’s low-code or CRM platform
+  description: The low-code or CRM platform the agency already runs, with case types, forms, queues, and permissions set up for each office.
+  approach: platform
+  implements: [ shared-case-platform ]
+
+- id: agency-sign-on-platform
+  title: The agency’s identity provider
+  description: The identity provider the agency already runs, with phishing-resistant authenticators and role groups that each system trusts.
+  approach: platform
+  implements: [ agency-sign-on ]
+
+- id: records-aware-collaboration-platform
+  title: The agency’s office and collaboration suite
+  description: The office suite and collaboration workspace the agency already licenses, with its retention and sensitivity labels turned on and set up.
+  approach: platform
+  implements: [ records-aware-collaboration ]
+
+- id: letters-from-case-data-platform
+  title: Templates filled from case data
+  description: The document templates in the case system or office suite, filled in from a case’s fields and saved back to its file.
+  approach: platform
+  implements: [ letters-from-case-data ]
+
+- id: agency-security-monitoring-platform
+  title: The agency’s security monitoring
+  description: The security monitoring the agency’s security operations team already runs, with the office’s systems sending it their logs.
+  approach: platform
+  implements: [ agency-security-monitoring ]
+
+- id: built-in-audit-trails-product
+  title: Each product’s built-in audit trail
+  description: The audit trail each product already keeps, with its reports run on a schedule by the system’s owner.
+  approach: product
+  implements: [ built-in-audit-trails ]
+
+- id: ai-assisted-intake-sorting-platform
+  title: An AI model the agency approves
+  description: An AI model the agency has approved, called from the intake system to suggest each new matter’s category, urgency, and route.
+  approach: platform
+  implements: [ ai-assisted-intake-sorting ]
+
+- id: sam-gov-entity-checks-build
+  title: A connection to SAM.gov’s APIs
+  description: A connection the agency builds from its award systems to SAM.gov’s APIs, run before each award and on a schedule.
+  approach: build
+  implements: [ sam-gov-entity-checks ]
+
+- id: records-in-business-systems-built-in
+  title: Each system’s own retention features
+  description: Retention rules, holds, and disposal set up in each system that supports them.
+  approach: product
+  attributes:
+    fitsWhen:
+      - The office’s systems have good retention features
+    watchFor:
+      - Each system is set up and checked on its own
+  implements: [ records-in-business-systems ]
+
+- id: records-in-business-systems-records-service
+  title: An agency records service
+  description: An agency records management service that applies schedules and holds across the systems connected to it.
+  approach: platform
+  attributes:
+    fitsWhen:
+      - The agency runs a records service its systems can connect to
+    watchFor:
+      - Each system needs a connection, and offices must agree who can place and see holds on their records
+  implements: [ records-in-business-systems ]

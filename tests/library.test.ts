@@ -78,8 +78,8 @@ describe('a mission’s architecture', () => {
   const slug = (e: { id: string }) => e.id.split(':')[2];
   const missions = elementsOfType('mission');
 
-  it('is its own patterns, by layer, with no solutions in the library', () => {
-    expect(elementsOfType('solution')).toEqual([]);
+  it('is its own patterns, by layer, with the library’s solutions to source them', () => {
+    expect(elementsOfType('solution')).toHaveLength(97);
     for (const m of missions) {
       const layers = byLayer(missionBlueprint(m).patterns, (p) => p).map((g) => g.layer);
       expect(layers, slug(m)).toEqual(expect.arrayContaining(['business-applications', 'worker-productivity', 'data-records', 'security-identity']));
@@ -217,10 +217,10 @@ describe('the index pages', () => {
 
 describe('resources', () => {
   const get = (id: string) => elements.find((e) => e.id === id)!;
-  it('list what helps with an item, kind by kind, and the way of a pattern each is about', () => {
+  it('list what helps with an item, kind by kind, and a solution’s own', () => {
     const records = resourcesFor(get('eb:capability:records-management'));
     expect(records.map((r) => [r.resource.slug, r.details.kind])).toEqual([['nara-records-management-training', 'Course'], ['universal-erm-requirements', 'Template']]);
-    expect(resourcesFor(get('eb:implementationPattern:records-in-business-systems'))[0].way).toEqual({ id: 'built-in', title: expect.any(String) });
+    expect(resourcesFor(get('eb:solution:records-in-business-systems-built-in')).map((r) => r.resource.slug)).toEqual(['universal-erm-requirements']);
     expect(resourceDetails(get('eb:resource:what-is-login-gov'))).toEqual({ kind: 'Video', url: 'https://www.youtube.com/watch?v=ayDtFd5Ugyk', by: 'Login.gov, General Services Administration', lastReviewedAt: '2026-10-30' });
   });
 
@@ -239,21 +239,28 @@ describe('discovery answers that point at a measure', () => {
   });
 });
 
-describe('ways to source a pattern', () => {
+describe('solutions to source a pattern', () => {
   const get = (id: string) => elements.find((e) => e.id === id)!;
   const slug = (e: { id: string }) => e.id.split(':')[2];
 
-  it('describe one way as its approach, and several as how many', () => {
+  it('describe one solution as its approach, and several as how many', () => {
     expect(patternDetails(get('eb:implementationPattern:agency-sign-on')).sourcing).toBe('Extend a platform the agency has');
-    expect(patternDetails(get('eb:implementationPattern:grants-management')).sourcing).toBe('3 ways to source it');
+    expect(patternDetails(get('eb:implementationPattern:grants-management')).sourcing).toBe('3 solutions');
+    expect(patternDetails(get('eb:solution:public-sign-in-login-gov')).sourcing).toBe('Use a shared service');
   });
 
-  it('lists a logical pattern’s ways, with what each one needs', () => {
+  it('lists a logical pattern’s solutions, with what each one needs', () => {
     const ways = patternDetails(get('eb:implementationPattern:oversight-intake-case-tracking')).ways;
-    expect(ways.map((w) => [w.id, w.needs.map((n) => slug(n.pattern))])).toEqual([
-      ['product', []],
-      ['agency-platform', ['shared-case-platform']],
+    expect(ways.map((w) => [w.id, slug(w.solution!), w.needs.map((n) => slug(n.pattern))])).toEqual([
+      ['oversight-intake-case-tracking-product', 'oversight-intake-case-tracking-product', []],
+      ['oversight-intake-case-tracking-agency-platform', 'oversight-intake-case-tracking-agency-platform', ['shared-case-platform']],
     ]);
+    expect(ways[1].fields.map((f) => f.key)).toEqual(['strengths', 'fitsWhen', 'watchFor']);
+  });
+
+  it('group the solutions index by approach', () => {
+    expect(indexGroups('solution').map((g) => g.id)).toEqual(['product', 'platform', 'shared', 'combine', 'build']);
+    expect(groupOf(get('eb:solution:public-sign-in-login-gov'))?.label).toBe('Use a shared service');
   });
 });
 
@@ -262,7 +269,7 @@ describe('what search looks through', () => {
   const kinds = new Set(index.map((i) => i.type));
 
   it('holds every kind of thing, each with a place to go', () => {
-    for (const type of ['mission', 'outcome', 'measure', 'capability', 'requirement', 'implementationPattern', 'resource', 'discovery', 'source']) expect(kinds, type).toContain(type);
+    for (const type of ['mission', 'outcome', 'measure', 'capability', 'requirement', 'implementationPattern', 'solution', 'resource', 'discovery', 'source']) expect(kinds, type).toContain(type);
     for (const i of index) {
       expect(i.title, i.url).toBeTruthy();
       expect(i.url, i.title).toMatch(i.external ? /^https?:/ : /^\//);

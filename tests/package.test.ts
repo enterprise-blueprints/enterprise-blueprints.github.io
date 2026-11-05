@@ -2,7 +2,8 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { validatePackage, type BlueprintPackage, type Resolve } from '../src/lib/package';
 import schema060 from '../schemas/blueprint-package-0.6.0.schema.json';
-import { resourceKinds, soldKinds } from '../src/lib/vocabulary';
+import schema070 from '../schemas/blueprint-package-0.7.0.schema.json';
+import { resourceKinds, retiredKinds, soldKinds, solutionApproaches } from '../src/lib/vocabulary';
 
 const read = (path: string): BlueprintPackage => JSON.parse(readFileSync(path, 'utf8'));
 const byVersion = (a: string, b: string) => {
@@ -20,6 +21,9 @@ const contactCenter = latest('federal-contact-center');
 const hr = latest('federal-hr-administration');
 const benefits = latest('federal-benefits');
 // Published versions, which never change.
+// The last release before schema 0.7.0, whose patterns list their ways.
+const oig0150 = read('content/federal-oig/0.15.0/blueprint.json');
+const common0150 = read('content/common/0.15.0/blueprint.json');
 const oig050 = read('content/federal-oig/0.5.0/blueprint.json');
 const common040 = read('content/common/0.4.0/blueprint.json');
 const foia030 = read('content/federal-foia/0.3.0/blueprint.json');
@@ -35,7 +39,7 @@ const oig030 = read('content/federal-oig/0.3.0/blueprint.json');
 const common010 = read('content/common/0.1.0/blueprint.json');
 const common020 = read('content/common/0.2.0/blueprint.json');
 const foia010 = read('content/federal-foia/0.1.0/blueprint.json');
-const published = [oig010, oig020, oig030, oig040, oig050, common010, common020, common030, common040, foia010, foia020, foia030, grants010, solutions010, solutions020];
+const published = [oig010, oig020, oig030, oig040, oig050, oig0150, common010, common020, common030, common040, common0150, foia010, foia020, foia030, grants010, solutions010, solutions020];
 const all = [original, common, foia, grants, acquisition, contactCenter, hr, benefits, ...published];
 const resolve: Resolve = (id, version) => all.find((p) => p.packageId === id && p.version === version);
 const missions = [original, foia, grants, acquisition, contactCenter, hr, benefits];
@@ -51,6 +55,8 @@ const mission = 'eb:mission:independent-government-oversight';
 const pattern = 'eb:implementationPattern:oversight-intake-case-tracking';
 const ofType = (pkg: BlueprintPackage, type: string) => pkg.elements.filter((e) => e.type === type);
 const patternOf = (pkg: BlueprintPackage) => pkg.elements.find((e) => e.id === pattern)!;
+/** The first solution that implements the pattern. */
+const solutionOf = (pkg: BlueprintPackage) => pkg.elements.find((e) => pkg.relations.some((r) => r.from === e.id && r.predicate === 'implements' && r.to === pattern))!;
 
 describe('validatePackage', () => {
   it('accepts the mission packages, which build on the common one', () => {
@@ -66,11 +72,11 @@ describe('validatePackage', () => {
 
   it('accepts the published versions as they were', () => {
     expect(validatePackage(oig010)).toEqual([]);
-    for (const pkg of [oig020, oig030, oig040, oig050, foia010, foia020, foia030, grants010, solutions010, solutions020]) expect(validatePackage(pkg, resolve), `${pkg.packageId} ${pkg.version}`).toEqual([]);
-    for (const pkg of [common010, common020, common030, common040]) expect(validatePackage(pkg), pkg.version).toEqual([]);
+    for (const pkg of [oig020, oig030, oig040, oig050, oig0150, foia010, foia020, foia030, grants010, solutions010, solutions020]) expect(validatePackage(pkg, resolve), `${pkg.packageId} ${pkg.version}`).toEqual([]);
+    for (const pkg of [common010, common020, common030, common040, common0150]) expect(validatePackage(pkg), pkg.version).toEqual([]);
   });
 
-  it('has one mission, six outcomes, eight capabilities, twenty-one requirements, and eight patterns (one replaced) in the OIG package', () => {
+  it('has one mission, six outcomes, eight capabilities, twenty-one requirements, eight patterns (one replaced), and eleven solutions in the OIG package', () => {
     const counts = Object.groupBy(original.elements, (e) => e.type);
     expect(counts.mission).toHaveLength(1);
     expect(counts.outcome).toHaveLength(6);
@@ -78,7 +84,7 @@ describe('validatePackage', () => {
     expect(counts.implementationPattern).toHaveLength(8);
     expect(counts.implementationPattern!.filter((p) => p.status === 'deprecated').map((p) => p.replacedBy)).toEqual(['eb:implementationPattern:audit-management-system']);
     expect(counts.requirement).toHaveLength(21);
-    expect(counts.solution).toBeUndefined();
+    expect(counts.solution).toHaveLength(11);
   });
 
   it('has one mission, six outcomes, eight capabilities, and seven patterns in the FOIA package', () => {
@@ -106,7 +112,7 @@ describe('validatePackage', () => {
     ['a repeated relationship', (p) => p.relations.push({ ...p.relations[0], id: 'rel:copy' }), 'repeats'],
     ['an unknown schema version', (p) => ((p as { schemaVersion: string }).schemaVersion = '9.0.0'), 'schemaVersion should be one of 0.1.0, 0.2.0, 0.3.0'],
     ['dependencies under schema 0.1.0', (p) => (p.schemaVersion = '0.1.0'), 'must NOT have additional properties'],
-    ['a way with an unknown approach', (p) => ((patternOf(p).attributes!.ways as { approach: string }[])[0].approach = 'outsource'), '/ways/0/approach must be equal to one of the allowed values'],
+    ['a solution with an unknown approach', (p) => (solutionOf(p).attributes!.approach = 'outsource'), '/attributes/approach must be equal to one of the allowed values'],
     ['a pattern with an approach of its own, under schema 0.4.0', (p) => (patternOf(p).attributes!.approach = 'product'), 'must NOT have additional properties'],
     ['a pattern with an empty list', (p) => (patternOf(p).attributes!.watchFor = []), '/attributes/watchFor must NOT have fewer than 1 items'],
     ['a pattern with a list that isn’t statements', (p) => (patternOf(p).attributes!.parts = 'a database'), '/attributes/parts must be array'],
@@ -262,13 +268,17 @@ describe.each(missions.map((pkg) => [pkg.title, pkg] as const))('%s', (_, pkg) =
     expect(types(second)).toEqual(new Set(['measure']));
   });
 
-  it('describes each pattern as an example, with its ways to source it, layer, parts, strengths, fit, and what to watch for', () => {
+  it('describes each pattern as an example, with its layer, parts, strengths, fit, and what to watch for, and solutions to source it', () => {
     const patterns = ofType(pkg, 'implementationPattern');
     expect(patterns.length).toBeGreaterThanOrEqual(5);
     for (const p of patterns) {
       expect(p.description, p.id).toMatch(/^An example architecture/);
-      expect(Object.keys(p.attributes!).sort(), p.id).toEqual(['fitsWhen', 'layer', 'parts', 'strengths', 'watchFor', 'ways']);
+      expect(Object.keys(p.attributes!).sort(), p.id).toEqual(['fitsWhen', 'layer', 'parts', 'strengths', 'watchFor']);
       expect(p.sourceIds?.length, p.id).toBeGreaterThan(0);
+      // A replaced pattern's ways became its replacement's solutions.
+      const solutions = pkg.relations.filter((r) => r.predicate === 'implements' && r.to === p.id);
+      if (p.status === 'deprecated') expect(solutions, p.id).toEqual([]);
+      else expect(solutions.length, p.id).toBeGreaterThan(0);
     }
   });
 
@@ -453,18 +463,18 @@ describe('versions', () => {
   });
 });
 
-describe('missions, measures, and ways to source a pattern (schema 0.4.0)', () => {
+describe('missions, measures, and ways to source a pattern (schema 0.4.0 to 0.6.0)', () => {
   const caseSystem = 'eb:implementationPattern:oversight-intake-case-tracking';
   const hotline = 'eb:implementationPattern:confidential-hotline-intake';
   const check = (change: (pkg: BlueprintPackage) => void) => {
-    const pkg = structuredClone(original);
+    const pkg = structuredClone(oig0150);
     change(pkg);
     return validatePackage(pkg, resolve).join('\n');
   };
 
   it('accept the OIG package, with a need of one way only', () => {
-    expect(validatePackage(original, resolve)).toEqual([]);
-    expect(original.relations.find((r) => r.from === caseSystem && r.predicate === 'depends_on')).toMatchObject({ way: 'agency-platform' });
+    expect(validatePackage(oig0150, resolve)).toEqual([]);
+    expect(oig0150.relations.find((r) => r.from === caseSystem && r.predicate === 'depends_on')).toMatchObject({ way: 'agency-platform' });
   });
 
   it.each<[string, (pkg: BlueprintPackage) => void, string]>([
@@ -502,10 +512,10 @@ describe('groups across missions (schema 0.5.0)', () => {
 
   it('accept every package, with each outcome, capability, and requirement in a group', () => {
     for (const pkg of [original, common, foia, grants, acquisition, contactCenter, hr, benefits]) {
-      expect(pkg.schemaVersion).toBe('0.6.0');
+      expect(pkg.schemaVersion).toBe('0.7.0');
       expect(validatePackage(pkg, resolve), pkg.packageId).toEqual([]);
       for (const e of pkg.elements) {
-        const field = { outcome: 'theme', capability: 'stage', requirement: 'kind' }[e.type];
+        const field = { outcome: 'theme', capability: 'stage', requirement: 'kind', solution: 'approach' }[e.type];
         if (field) expect(e.attributes?.[field], e.id).toEqual(expect.any(String));
       }
     }
@@ -534,6 +544,7 @@ describe('resources and ID prefixes (schema 0.6.0)', () => {
   const resources = current.flatMap((p) => p.elements.filter((e) => e.type === 'resource'));
   const erm = 'eb:resource:universal-erm-requirements';
   const helps = (p: BlueprintPackage) => p.relations.find((r) => r.predicate === 'helps_with' && r.way)!;
+  const viaWay = (change: (pkg: BlueprintPackage) => void) => check(change, common0150);
 
   it('give every library resource a kind the library uses, a link, who made it, when it was checked, and something it helps with', () => {
     expect(resources.length).toBeGreaterThan(15);
@@ -545,19 +556,21 @@ describe('resources and ID prefixes (schema 0.6.0)', () => {
     }
   });
 
-  it('list the same kinds in the schema as in the vocabulary', () => {
+  it('list the same kinds in the schema as in the vocabulary, without products since schema 0.7.0', () => {
     expect(schema060.$defs.resourceAttributes.properties.kind.enum).toEqual(Object.keys(resourceKinds.groups));
+    expect(schema070.$defs.resourceAttributes.properties.kind.enum).toEqual(Object.keys(resourceKinds.groups).filter((k) => !retiredKinds.includes(k)));
   });
 
-  it('accept a resource that helps with one way of a pattern', () => {
-    expect(helps(common)).toEqual(expect.objectContaining({ from: erm, to: 'eb:implementationPattern:records-in-business-systems', way: 'built-in' }));
+  it('accept a resource that helps with one way of a pattern, which since schema 0.7.0 is a solution', () => {
+    expect(helps(common0150)).toEqual(expect.objectContaining({ from: erm, to: 'eb:implementationPattern:records-in-business-systems', way: 'built-in' }));
+    expect(common.relations).toContainEqual(expect.objectContaining({ from: erm, predicate: 'helps_with', to: 'eb:solution:records-in-business-systems-built-in' }));
   });
 
   it('accept a package from another publisher that builds on the library’s, and keep it to its own prefix', () => {
     const vendor: BlueprintPackage = {
       schemaVersion: '0.6.0', packageId: 'com.example.offerings', idPrefix: 'contoso', version: '1.0.0', title: 'Offerings', description: 'What we offer.',
       publisher: { name: 'Contoso' }, license: 'MIT', publishedAt: '2026-10-30', domain: 'public-sector',
-      dependencies: [{ packageId: common.packageId, version: common.version }],
+      dependencies: [{ packageId: common0150.packageId, version: common0150.version }],
       elements: [
         { id: 'contoso:capability:case-management', type: 'capability', title: 'Case management, our way', description: 'The same key as the library’s, under its own prefix.' },
         { id: 'contoso:resource:sprint', type: 'resource', title: 'Sprint', description: 'Help getting started.', attributes: { kind: 'service', url: 'https://example.com', contractVehicle: 'GSA MAS' } },
@@ -580,15 +593,83 @@ describe('resources and ID prefixes (schema 0.6.0)', () => {
     ['helps_with from something other than a resource', (p) => (helps(p).from = 'eb:capability:records-management'), '"helps_with" can\'t link capability'],
     ['a package without its prefix', (p) => delete p.idPrefix, "must have required property 'idPrefix'"],
   ])('reject %s', (_, change, message) => {
-    expect(check(change)).toContain(message);
+    expect(viaWay(change)).toContain(message);
   });
 
   it('keep resources and helps_with to schema 0.6.0 and later', () => {
-    const older = check((p) => {
+    const older = viaWay((p) => {
       p.schemaVersion = '0.5.0';
       delete p.idPrefix;
     });
     expect(older).toContain('resources are new in schema 0.6.0');
     expect(older).toContain('helps_with is new in schema 0.6.0');
+  });
+});
+
+describe('solutions (schema 0.7.0)', () => {
+  const current = [original, common, foia, grants, acquisition, contactCenter, hr, benefits];
+  const solutions = current.flatMap((p) => ofType(p, 'solution'));
+  const relations = current.flatMap((p) => p.relations);
+  const caseSystem = 'eb:implementationPattern:oversight-intake-case-tracking';
+  const check = (change: (pkg: BlueprintPackage) => void, from = original) => {
+    const pkg = structuredClone(from);
+    change(pkg);
+    return validatePackage(pkg, resolve).join('\n');
+  };
+
+  it('source every pattern that isn’t replaced, each with an approach, and implement at least one pattern', () => {
+    expect(solutions).toHaveLength(97);
+    const approaches = Object.groupBy(solutions, (s) => String(s.attributes!.approach));
+    expect(Object.keys(approaches).sort()).toEqual(['build', 'combine', 'platform', 'product', 'shared']);
+    expect(approaches.shared).toHaveLength(14);
+    for (const s of solutions) {
+      expect(Object.keys(solutionApproaches.groups), s.id).toContain(s.attributes!.approach);
+      expect(relations.some((r) => r.from === s.id && r.predicate === 'implements'), s.id).toBe(true);
+    }
+  });
+
+  it('keep the needs of one solution to that solution', () => {
+    expect(relations).toContainEqual(expect.objectContaining({ from: 'eb:solution:oversight-intake-case-tracking-agency-platform', predicate: 'depends_on', to: 'eb:implementationPattern:shared-case-platform' }));
+    expect(relations.some((r) => r.from === caseSystem && r.predicate === 'depends_on')).toBe(false);
+  });
+
+  it('accept a product from another publisher as a solution, with its link, who makes it, and attributes of its own', () => {
+    const vendor: BlueprintPackage = {
+      schemaVersion: '0.7.0', packageId: 'com.example.offerings', idPrefix: 'contoso', version: '1.0.0', title: 'Offerings', description: 'What we offer.',
+      publisher: { name: 'Contoso' }, license: 'MIT', publishedAt: '2026-11-05', domain: 'public-sector',
+      dependencies: [{ packageId: common.packageId, version: common.version }, { packageId: original.packageId, version: original.version }],
+      elements: [
+        { id: 'contoso:solution:case-manager', type: 'solution', title: 'Contoso Case Manager', description: 'A case product for oversight offices.', attributes: { approach: 'product', url: 'https://example.com/case', editions: 'Standard, Government Cloud' } },
+        { id: 'contoso:resource:sprint', type: 'resource', title: 'Sprint', description: 'Help getting started.', attributes: { kind: 'service', url: 'https://example.com' } },
+      ],
+      relations: [
+        { id: 'rel:a', from: 'contoso:solution:case-manager', predicate: 'implements', to: caseSystem },
+        { id: 'rel:b', from: 'contoso:solution:case-manager', predicate: 'depends_on', to: 'eb:implementationPattern:agency-sign-on' },
+        { id: 'rel:c', from: 'contoso:resource:sprint', predicate: 'helps_with', to: 'contoso:solution:case-manager' },
+      ],
+    };
+    expect(validatePackage(vendor, resolve)).toEqual([]);
+    const product = structuredClone(vendor);
+    product.elements[1].attributes!.kind = 'product';
+    expect(validatePackage(product, resolve).join('\n')).toContain('/attributes/kind must be equal to one of the allowed values');
+  });
+
+  it.each<[string, (pkg: BlueprintPackage) => void, string]>([
+    ['a solution that implements nothing', (p) => (p.relations = p.relations.filter((r) => !(r.predicate === 'implements' && r.from === solutionOf(p).id))), "doesn't implement a pattern"],
+    ['a solution without an approach', (p) => delete solutionOf(p).attributes!.approach, "must have required property 'approach'"],
+    ['a solution that implements a capability', (p) => (p.relations.find((r) => r.predicate === 'implements')!.to = 'eb:capability:investigation-management'), '"implements" can\'t link solution'],
+    ['a pattern with ways', (p) => (patternOf(p).attributes!.ways = [{ id: 'product', approach: 'product', title: 'A product' }]), 'must NOT have additional properties'],
+    ['a link that names a way', (p) => ((p.relations.find((r) => r.predicate === 'implements') as { way?: string }).way = 'product'), 'must NOT have additional properties'],
+  ])('reject %s', (_, change, message) => {
+    expect(check(change)).toContain(message);
+  });
+
+  it('keep solutions and implements to schema 0.7.0, apart from the solutions of several patterns before schema 0.4.0', () => {
+    const older = check((p) => {
+      p.elements.push({ id: 'eb:solution:x', type: 'solution', title: 'X', description: 'X.', attributes: { approach: 'product' } });
+      p.relations.push({ id: 'rel:x', from: 'eb:solution:x', predicate: 'implements', to: caseSystem });
+    }, oig0150);
+    expect(older).toContain('there are no solutions');
+    expect(older).toContain('implements is new in schema 0.7.0');
   });
 });

@@ -56,8 +56,9 @@ describe('catalog', () => {
       'schemas/blueprint-package-0.4.0.schema.json',
       'schemas/blueprint-package-0.5.0.schema.json',
       'schemas/blueprint-package-0.6.0.schema.json',
+      'schemas/blueprint-package-0.7.0.schema.json',
     ]);
-    expect(catalog().schema).toBe('schemas/blueprint-package-0.6.0.schema.json');
+    expect(catalog().schema).toBe('schemas/blueprint-package-0.7.0.schema.json');
   });
 
   it('shows the current release on the pages, one package for each source folder', () => {

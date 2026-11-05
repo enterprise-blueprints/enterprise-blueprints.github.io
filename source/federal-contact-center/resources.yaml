@@ -18,7 +18,7 @@
   url: https://digital.gov/resources/contact-center-guidelines/contact-center-technologies
   lastReviewedAt: 2026-11-02
   description: What each common contact center technology does, from automatic call distributors, intelligent routing, and phone menus to web chat, email response, knowledge management, TTY services, and workforce management.
-  helps_with: [ capability:contact-intake-routing, capability:service-planning-staffing, { to: implementationPattern:cloud-contact-center, way: product } ]
+  helps_with: [ capability:contact-intake-routing, capability:service-planning-staffing, solution:cloud-contact-center-product ]
 
 - id: contact-center-community
   title: Contact Center Community

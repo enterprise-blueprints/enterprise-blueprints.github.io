@@ -47,7 +47,9 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
   its `principles`, and leaves solutions to the tools that use the library. 0.5.0 lets outcomes, capabilities,
   and requirements name a group that holds across missions. 0.6.0 adds resources and what they help with, and
   gives every package an `idPrefix` for its element IDs, so other publishers' packages can build on the
-  library's. Every version stays, and Solution Studio keeps identical copies.
+  library's. 0.7.0 makes the ways to source a pattern solutions of their own, which `implement` it, so
+  organizations' products are solutions too. Every version stays, and Solution Studio keeps identical
+  copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
 - `src/lib/compile.ts` builds a package from its source and decides its version; `scripts/content.ts` runs it.
@@ -96,10 +98,10 @@ Add `--json` to either for the same answer as data.
 | --- | --- |
 | `package.yaml` | The package's ID, its `idPrefix` (`eb` for the library's own), title, description, and other details, and `dependencies`: the folder names of the packages it builds on. |
 | `sources.yaml` | The references it cites, each with an `id` that elements and links use. |
-| `missions.yaml`, `outcomes.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
+| `missions.yaml`, `outcomes.yaml`, `capabilities.yaml`, `requirements.yaml`, `patterns.yaml`, `solutions.yaml` | The elements of that type, in the order the pages show them. Each has an `id` (its key), `title`, `description`, and optionally `sources`, `applicabilityNotes`, and `attributes`. |
 | `measures` on an outcome | The outcome's measures, each with an `id`, `title`, `description`, and optionally `sources`. They're published in the outcome's `attributes`; before schema 0.4.0, measures were elements of their own, linked by `measured_by`. A measure's `id` is unique in its package, and a discovery answer points at one as `measure:<id>`, published with its package's prefix, as in `eb:measure:<id>`, the ID measures always had. |
-| `theme`, `stage`, `kind` | The group an outcome, capability, or requirement belongs to, across missions, published in its `attributes` since schema 0.5.0. An outcome's `theme` is what the public gets from it, a capability's `stage` is the part of the work it belongs to, and a requirement's `kind` is the kind of obligation it is. The lists are in `src/lib/vocabulary.ts`, each group with a hint saying what belongs, and the index pages group by them. A new mission's items fit the groups there are; add a group only when none fits. |
-| `resources.yaml` | Resources, since schema 0.6.0: each with a `kind` (a video, course, guide, site, community, dataset, tool, template, demo, service, product, or case study), its `url`, `by` (who made it), `lastReviewedAt`, and `helps_with`, the missions, outcomes, capabilities, requirements, or patterns it helps with. A link to a pattern can name one of its ways, as `{ to: implementationPattern:<key>, way: <way> }`. The library links only to free resources from government, standards bodies, nonprofits, and universities, so it doesn't use the `service` or `product` kinds; those belong in their publishers' own packages. |
+| `theme`, `stage`, `kind`, `approach` | The group an outcome, capability, requirement, or solution belongs to, across missions, published in its `attributes` since schema 0.5.0 (a solution's `approach` since 0.7.0). An outcome's `theme` is what the public gets from it, a capability's `stage` is the part of the work it belongs to, and a requirement's `kind` is the kind of obligation it is. The lists are in `src/lib/vocabulary.ts`, each group with a hint saying what belongs, and the index pages group by them. A new mission's items fit the groups there are; add a group only when none fits. |
+| `resources.yaml` | Resources, since schema 0.6.0: each with a `kind` (a video, course, guide, site, community, dataset, tool, template, demo, service, product, or case study), its `url`, `by` (who made it), `lastReviewedAt`, and `helps_with`, the missions, outcomes, capabilities, requirements, patterns, or solutions it helps with. Before schema 0.7.0, a link to a pattern could name one of its ways; since then, a resource about one way helps with that solution. Since 0.7.0 a product is a solution, not a resource. The library links only to free resources from government, standards bodies, nonprofits, and universities, so it doesn't use the `service` kind; services belong in their publishers' own packages. |
 | `links.yaml` | Links from the elements of packages this one builds on, such as a shared capability that satisfies one of its requirements. |
 | `discovery.yaml` | Discovery question sets. |
 
@@ -148,10 +150,8 @@ supply. Each one describes itself in its `attributes` so patterns can be compare
 `layer` (the layer of the architecture it belongs to: `public-facing`, `ai-insights`, `business-applications`,
 `worker-productivity`, `connections`, `data-records`, or `security-identity`; packages before schema 0.4.0 call
 it `role`, and also use `processing` and `infrastructure`), `parts`, `strengths`, `fitsWhen`, and `watchFor`, each a list
-of short statements, and `ways`, its ways to source it. Each way has an `id`, an `approach` (`product`,
-`platform`, `combine`, or `build`), and a `title`, and optionally a `description` and its own `strengths`,
-`fitsWhen`, and `watchFor`. A pattern with one obvious way lists just that one. `src/lib/vocabulary.ts` defines
-the fields, and `vocabulary.json` publishes their labels; the schema checks them too. A
+of short statements. `src/lib/vocabulary.ts` defines the fields, and `vocabulary.json` publishes their labels;
+the schema checks them too. A
 `candidate_pattern` link's `note` says what the pattern means for that capability, such as a mission's caveat
 on a shared pattern. A pattern that covers only part of a capability says `coverage: partial`, with a note on
 which part:
@@ -164,24 +164,40 @@ which part:
       note: Requests from FOIA.gov only. The agency’s own form, email, and mail come in another way.
 ```
 
+**Solutions** are the ways to source a pattern, since schema 0.7.0, each an element of its own in
+`solutions.yaml` that `implements` one or more patterns: a product configured for the agency, a platform it
+already runs, a shared service another agency runs, tools combined, or something built. Each names its
+`approach` (`product`, `platform`, `shared`, `combine`, or `build`), which groups the solutions index, and has
+its own `strengths`, `fitsWhen`, and `watchFor` in its `attributes`, which add to its patterns'. The library's
+are examples, so they describe kinds of product; an organization's package publishes its products as
+solutions, with a `url`, and `by` when someone else makes it. Before 0.7.0, a pattern listed its `ways` in
+its attributes, and the library's solutions keep their IDs: the pattern's key and the way's, as in
+`eb:solution:grants-management-product`.
+
 Patterns connect to each other too. `depends_on` (shown as **Needs**) is for a pattern that can't work
-without another. With a `way`, it's a need of that way only, such as case management on the agency's platform
-needing the platform. `works_with` (**Works well with**) is for a natural pairing, written once on either
-pattern. A pattern that became a way of another keeps its ID, with `status: deprecated` and `replacedBy`.
+without another, however it's sourced; on a solution, it's a need of that solution only, such as case
+management on the agency's platform needing the platform. `works_with` (**Works well with**) is for a natural
+pairing, written once on either pattern. A pattern that became one way of sourcing another keeps its ID, with
+`status: deprecated` and `replacedBy`.
 
 ```yaml
+- id: oversight-intake-case-tracking-agency-platform
+  title: The agency’s shared case platform
+  approach: platform
+  description: The office’s own case types on the agency’s shared case platform, …
+  implements: [ oversight-intake-case-tracking ]
   depends_on:
     - to: shared-case-platform
-      way: agency-platform
       note: The office's case types and steps are the shared platform, set up for oversight.
 ```
 
 **A mission's architecture** is its own patterns, the ones its capabilities point to, laid out by layer on the
 mission's page. The mission lists the `principles` that architecture follows in its `attributes`, as short
-statements. Choosing a way to source each pattern is a decision for one agency, so it belongs to the tools that
+statements. Choosing a solution for each pattern is a decision for one agency, so it belongs to the tools that
 use the library, such as Solution Studio. The validator refuses a mission whose patterns need one that none of
-its capabilities points to. Packages before schema 0.4.0 have example solutions, which `include` patterns and
-`support` missions; since 0.4.0 a package has none.
+its capabilities points to; a solution's needs count only when that solution is chosen. Packages before schema
+0.4.0 have example solutions of another kind, several patterns together, which `include` patterns and
+`support` missions; from 0.4.0 to 0.6.0 a package has no solutions.
 
 To add a package, create `source/<name>/package.yaml` with its own `packageId`, add its files, and run
 `pnpm content:build`; it joins the next release. Element IDs are unique across all packages: each element is defined

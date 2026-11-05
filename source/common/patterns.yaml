@@ -25,10 +25,6 @@
       - Platform administrators can often see every office’s data unless permissions and administration are set up to prevent it
       - Specialized rules, such as deadlines counted in working days, may need custom work that’s costly to keep up
       - Upgrades and licensing are decided for the whole agency, not for the office
-    ways:
-      - id: platform
-        approach: platform
-        title: The agency’s low-code or CRM platform
   depends_on:
     - to: agency-sign-on
       note: Staff sign in through the agency, and access follows its role groups.
@@ -57,10 +53,6 @@
       - Systems that can’t use single sign-on keep their own accounts, which need their own reviews
       - Each role group needs an owner in the office, or access drifts
       - Members of the public, such as requesters or people who report, need a different way to sign in, or none
-    ways:
-      - id: platform
-        approach: platform
-        title: The agency’s identity provider
 
 - id: records-aware-collaboration
   title: Collaboration Workspace with Records and Sensitivity Labels
@@ -85,10 +77,6 @@
       - Labels only help if they’re applied, so defaults and automatic labeling matter
       - Chat and meeting recordings can be records too, which surprises people
       - Work kept here and in a business application needs one answer to which copy is the record
-    ways:
-      - id: platform
-        approach: platform
-        title: The agency’s office and collaboration suite
   depends_on: [ agency-sign-on ]
 
 - id: letters-from-case-data
@@ -112,10 +100,6 @@
     watchFor:
       - Templates need an owner to keep them current when the law or policy changes
       - A filled-in letter still needs a person to read it before it goes out
-    ways:
-      - id: platform
-        approach: platform
-        title: Templates filled from case data
   works_with:
     - to: shared-case-platform
       note: Fills templates from the case record and saves what’s sent back to it.
@@ -143,10 +127,6 @@
       - Agency security staff may see activity in sensitive systems, so who can search the office’s logs needs agreeing
       - Logs can hold sensitive details, such as names in search terms, and need the same protection as the data
       - Alerts nobody reviews add cost without adding safety
-    ways:
-      - id: platform
-        approach: platform
-        title: The agency’s security monitoring
   works_with:
     - to: agency-sign-on
       note: Sign-in events come from the agency’s identity provider.
@@ -171,10 +151,6 @@
       - Activity can’t be followed from one system to another
       - Reviews depend on someone remembering to run them
       - A product’s administrators may be able to change or delete its audit trail
-    ways:
-      - id: product
-        approach: product
-        title: Each product’s built-in audit trail
 
 - id: ai-assisted-intake-sorting
   title: AI Suggestions for Sorting What Comes In
@@ -199,10 +175,6 @@
       - Suggestions can be wrong, or better for some kinds of matters than others, so people decide and accuracy is checked over time
       - The agency’s AI governance may require an impact assessment and a listing in its AI use case inventory first
       - What’s sent to a model may include personal or sensitive information, so where it’s processed and kept matters
-    ways:
-      - id: platform
-        approach: platform
-        title: An AI model the agency approves
   works_with:
     - to: shared-case-platform
       note: Suggestions appear in the platform’s intake queue.
@@ -230,10 +202,6 @@
       - A check only shows the records, and the award decision, such as a responsibility determination, is still a person’s
       - SAM.gov’s services and keys change, and someone has to keep the connection working
       - Some records need a federal user’s access, so how the system signs in to SAM.gov needs approval
-    ways:
-      - id: build
-        approach: build
-        title: A connection to SAM.gov’s APIs
 
 - id: records-in-business-systems
   title: Records Schedules in Each Business System
@@ -258,23 +226,6 @@
       - Mapping each kind of record to a schedule item takes records officers’ time
       - Older systems may not support holds or disposal, so records pile up
       - Disposal needs the records officer’s approval, and a record of it
-    ways:
-      - id: built-in
-        approach: product
-        title: Each system’s own retention features
-        description: Retention rules, holds, and disposal set up in each system that supports them.
-        fitsWhen:
-          - The office’s systems have good retention features
-        watchFor:
-          - Each system is set up and checked on its own
-      - id: records-service
-        approach: platform
-        title: An agency records service
-        description: An agency records management service that applies schedules and holds across the systems connected to it.
-        fitsWhen:
-          - The agency runs a records service its systems can connect to
-        watchFor:
-          - Each system needs a connection, and offices must agree who can place and see holds on their records
   works_with:
     - to: records-aware-collaboration
       note: Business systems keep their records on schedule, and the collaboration workspace keeps documents and messages on schedule.

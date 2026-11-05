@@ -9,7 +9,7 @@
   url: https://www.opm.gov/policy-data-oversight/hiring-information/merit-hiring-plan-resources/
   lastReviewedAt: 2026-11-02
   description: Guidance, FAQs, and fact sheets for putting the Merit Hiring Plan in place, on applications, assessments, pooled hiring, and Rule of Many ranking, with a webinar series and templates such as a sample Rule of Many policy.
-  helps_with: [ mission:administering-the-civilian-workforce, capability:recruitment-hiring, { to: implementationPattern:usa-staffing-hiring, way: usa-staffing } ]
+  helps_with: [ mission:administering-the-civilian-workforce, capability:recruitment-hiring, solution:usa-staffing-hiring-usa-staffing ]
 
 - id: assessment-and-selection
   title: Assessment and selection

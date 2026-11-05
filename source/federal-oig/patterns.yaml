@@ -24,33 +24,6 @@
       - Early configuration choices, such as case types, are hard to change later
       - Data from older systems needs moving and cleaning up
       - A hosted system needs a security authorization before it can hold case information
-    ways:
-      - id: product
-        approach: product
-        title: An oversight case product
-        description: A case management product made for oversight and investigative work, configured for the office and administered by it.
-        strengths:
-          - Built around investigative work, such as evidence handling and referrals
-          - Comes with reports shaped for oversight reporting
-        fitsWhen:
-          - There’s budget for licenses and an administrator in the office
-        watchFor:
-          - Another product to buy, secure, and keep up
-      - id: agency-platform
-        approach: platform
-        title: The agency’s shared case platform
-        description: The office’s own case types on the agency’s shared case platform, with administration and access the office controls.
-        strengths:
-          - Uses licenses, skills, and security approvals the agency already has
-        fitsWhen:
-          - The agency runs a case platform, and the office can control who administers its part
-        watchFor:
-          - The office’s independence depends on keeping its administration and access apart from the agency’s
-          - Evidence handling, such as chain of custody, usually needs building
-  depends_on:
-    - to: shared-case-platform
-      way: agency-platform
-      note: The office’s case types and steps are the shared platform, set up for oversight.
   works_with:
     - to: digital-evidence-store
       note: Each item of digital evidence is linked to its case.
@@ -78,10 +51,6 @@
       - Anonymous reports are hard to act on without a way to follow up
       - Spam and duplicate reports need screening before triage
       - What people type must not be recorded anywhere outside the intake system, such as in web analytics
-    ways:
-      - id: product
-        approach: product
-        title: A hotline product
   works_with:
     - to: oversight-intake-case-tracking
       note: Each report lands in the product’s intake queue.
@@ -111,34 +80,6 @@
       - Teams need time to adopt a new way of documenting their work
       - Evidence with sensitive personal information needs the same protection it has elsewhere
       - Older engagements usually stay where they are, so there are two places to look for a while
-    ways:
-      - id: product
-        approach: product
-        title: An audit management product
-        description: A product made for audit work, with electronic work papers, review sign-offs, and recommendations built in.
-        strengths:
-          - The documentation and supervision steps come built in
-          - Reporting across engagements, such as on open recommendations, is part of it
-        fitsWhen:
-          - The office has many engagements at a time
-        watchFor:
-          - Another product to buy, secure, and keep up
-      - id: workspace
-        approach: combine
-        title: Work papers in the collaboration workspace
-        description: A workspace for each engagement in the agency’s collaboration suite, with work paper templates, and supervisors’ sign-offs recorded through document approvals.
-        strengths:
-          - Uses tools the office already has and knows
-          - Costs little to start, and is easy to change
-        fitsWhen:
-          - The office is small, with a few engagements at a time
-        watchFor:
-          - Cross-references and review sign-offs depend on discipline, which peer reviews will test
-          - Reporting across engagements, such as on open recommendations, takes manual work
-  depends_on:
-    - to: records-aware-collaboration
-      way: workspace
-      note: The workspaces, approvals, and retention labels are the agency’s collaboration suite.
 
 - id: shared-recommendation-tracker
   title: Shared Recommendation Tracker
@@ -163,23 +104,6 @@
       - Agency users need accounts and guidance, which takes coordination
       - Giving agency officials access must not expose anything else the office holds
       - What it takes to close a recommendation needs agreeing with the agency up front
-    ways:
-      - id: audit-module
-        approach: product
-        title: A module of the audit product
-        description: The audit product’s recommendation module, opened to agency officials for their own recommendations.
-        fitsWhen:
-          - The office’s audit product has a module like this
-        watchFor:
-          - Agency officials need access to the office’s product, limited to their own recommendations
-      - id: owned-app
-        approach: platform
-        title: An app the office owns on a platform
-        description: A tracker the office builds and administers on a platform, kept apart from the agency’s other apps.
-        fitsWhen:
-          - The office’s audit tools have no module agency officials can use
-        watchFor:
-          - The office keeps the app working, and in step with its audit tools
   works_with:
     - to: audit-management-system
       note: Recommendations start in the audit reports and are tracked to closure here.
@@ -206,10 +130,6 @@
       - It’s only as good as the data in the systems that feed it
       - Each definition needs an owner for when the law or guidance changes
       - Sensitive details must stay out of anything published
-    ways:
-      - id: build
-        approach: build
-        title: A reporting store fed by the office’s systems
   works_with:
     - to: oversight-intake-case-tracking
       note: Case statistics for the semiannual report.
@@ -241,10 +161,6 @@
       - A flag isn’t a finding, so every lead needs review and evidence before anything is done
       - Models can carry gaps or bias in the data, so their results need checking over time
       - Data sharing agreements and privacy rules limit what can be combined
-    ways:
-      - id: build
-        approach: build
-        title: An analytics workspace
   works_with:
     - to: audit-management-system
       note: Risks it finds feed the plan of oversight work.
@@ -273,10 +189,6 @@
       - Cross-references and review sign-offs depend on discipline, which peer reviews will test
       - Reporting across engagements, such as on open recommendations, takes manual work
       - Collaboration tools make sharing easy, so access to engagement workspaces needs limiting
-    ways:
-      - id: combine
-        approach: combine
-        title: Workspaces in the collaboration suite
 
 - id: digital-evidence-store
   title: Digital Evidence Store
@@ -301,20 +213,3 @@
       - Storage costs grow with forensic images and video
       - Access needs to be as tightly limited as the cases themselves
       - Sharing with prosecutors and courts needs a defined process
-    ways:
-      - id: product
-        approach: product
-        title: A digital evidence management product
-        description: A product made for managing digital evidence, with custody logs and hashing built in.
-        fitsWhen:
-          - The office handles large amounts of digital evidence
-        watchFor:
-          - Another product to buy, secure, and keep up
-      - id: secure-storage
-        approach: build
-        title: Secure storage with a custody log
-        description: Encrypted storage in the agency’s cloud or data center, kept apart for the office, with a custody log the office builds and links to its case system.
-        fitsWhen:
-          - The office handles digital evidence now and then
-        watchFor:
-          - The custody log and hashing carry the evidence’s weight, so they must be built and checked with care

@@ -1,0 +1,66 @@
+# Solutions: the ways to source each pattern, in the order the pages show them,
+# each with the patterns it implements and anything it needs.
+
+- id: foia-request-processing-product
+  title: A FOIA product
+  description: A product made for FOIA that handles tracking, review, release, and reporting in one place.
+  approach: product
+  attributes:
+    strengths:
+      - Knows FOIA’s rules, such as tracks, working-day deadlines, fee categories, and exemption codes
+    fitsWhen:
+      - The office handles hundreds of requests a year or more
+    watchFor:
+      - Built-in review may struggle with very large email collections
+  implements: [ foia-request-processing ]
+
+- id: foia-request-processing-platform-and-review-tool
+  title: The shared case platform, with a separate review tool
+  description: Requests tracked on the agency’s shared case platform, set up for FOIA’s tracks and deadlines, with a separate document review tool for collecting, deduplicating, and redacting records, and a handoff between the two.
+  approach: combine
+  attributes:
+    strengths:
+      - Uses a platform the agency already has for the tracking
+      - Either tool can be replaced without replacing the other
+      - Suits offices that already own a review tool
+    fitsWhen:
+      - The agency’s shared case platform is well supported
+      - Request volume is moderate, and records are mostly documents rather than large email collections
+    watchFor:
+      - The handoff between the tools is where requests stall or records go missing
+      - Deadline rules, such as pausing the clock, must be built and kept up to date
+      - Two tools to authorize, secure, and train people on
+  implements: [ foia-request-processing ]
+  depends_on:
+    - to: shared-case-platform
+      note: The tracking half is the shared platform, set up for FOIA.
+
+- id: ediscovery-search-review-platform
+  title: The agency’s eDiscovery tools
+  description: The eDiscovery tools the agency already has, used to search mailboxes and collections and send what’s found to review.
+  approach: platform
+  implements: [ ediscovery-search-review ]
+
+- id: national-portal-api-build
+  title: A connection to FOIA.gov’s agency API
+  description: A connection the agency builds from its FOIA system to FOIA.gov’s agency API, so requests arrive as records.
+  approach: build
+  implements: [ national-portal-api ]
+
+- id: foia-library-publishing-platform
+  title: The agency’s online FOIA library
+  description: The agency’s online FOIA library, with released records sent to it from the review tool.
+  approach: platform
+  implements: [ foia-library-publishing ]
+
+- id: ai-review-suggestions-product
+  title: The review tool’s AI features
+  description: The AI features of the document review tool, turned on for suggestions that the reviewer accepts or changes.
+  approach: product
+  implements: [ ai-review-suggestions ]
+
+- id: foia-workload-dashboard-build
+  title: A dashboard on the tracking data
+  description: A dashboard built on the request tracking data, refreshed daily.
+  approach: build
+  implements: [ foia-workload-dashboard ]

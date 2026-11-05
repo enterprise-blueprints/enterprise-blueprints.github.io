@@ -1,0 +1,88 @@
+# Solutions: the ways to source each pattern, in the order the pages show them,
+# each with the patterns it implements and anything it needs.
+
+- id: acquisition-management-product
+  title: A contract writing product
+  description: A contract writing product, configured for the agency’s rules and deviations and run by its contracting office.
+  approach: product
+  attributes:
+    strengths:
+      - Clause logic keeps awards consistent with the rules, and can be updated as the FAR changes
+    fitsWhen:
+      - The agency awards many contracts, or contracts of many kinds
+    watchFor:
+      - Another product to buy, secure, and keep up
+  implements: [ acquisition-management ]
+
+- id: acquisition-management-agency-platform
+  title: The agency’s shared case platform
+  description: Request and contract records, their steps, and documents from templates, built on the agency’s shared case platform.
+  approach: platform
+  attributes:
+    strengths:
+      - Uses licenses, skills, and security approvals the agency already has
+      - Acquisition work can share a platform with the agency’s other case work
+    fitsWhen:
+      - The agency already runs a platform like this, with people who configure it
+      - Its acquisitions are mostly simple, such as orders under existing contracts
+    watchFor:
+      - Clause selection, posting to SAM.gov, and contract action reporting take real building, and keeping them current with the FAR is ongoing work
+      - Contract data the agency reports must still meet SAM.gov’s data standards
+  implements: [ acquisition-management ]
+  depends_on:
+    - to: shared-case-platform
+      note: The request and contract records and their steps are the shared platform, set up for acquisition.
+
+- id: acquisition-management-assisted-acquisition
+  title: Another agency’s contracting office
+  description: Another federal agency’s contracting office awards and administers contracts for the agency, under an interagency agreement, in its own contract writing system, while the agency defines its needs, funds them, and monitors the work.
+  approach: shared
+  attributes:
+    strengths:
+      - The agency doesn’t need its own contracting staff and systems for every kind of buy
+      - Providers bring experience with acquisitions the agency rarely makes
+      - Reporting to SAM.gov and closeout are handled by the provider’s office
+    fitsWhen:
+      - The agency is small, or makes few acquisitions of some kinds
+      - A provider already buys what the agency needs for other agencies
+    watchFor:
+      - Fees add to the cost of each acquisition
+      - The agency still owns its requirements, its funds, and the results, and needs people who can do that well
+      - Getting the agency’s contract data and files back, for reporting or a later move, needs agreeing up front
+  implements: [ acquisition-management ]
+
+- id: vendor-proposal-portal-combine
+  title: A portal combined from secure upload and sign-in tools
+  description: Secure upload and sign-in tools put together into a portal, with uploads time-stamped and offers sealed until the deadline.
+  approach: combine
+  implements: [ vendor-proposal-portal ]
+
+- id: contract-data-to-sam-build
+  title: The contract system’s connection to SAM.gov
+  description: The contract writing system’s system-to-system connection to SAM.gov, set up to send each contract action report when the award is signed.
+  approach: build
+  implements: [ contract-data-to-sam ]
+
+- id: invoices-through-ipp-platform
+  title: Treasury’s Invoice Processing Platform
+  description: Treasury’s Invoice Processing Platform, which vendors send invoices through and which routes each one for acceptance.
+  approach: shared
+  implements: [ invoices-through-ipp ]
+
+- id: cpars-from-contract-data-platform
+  title: CPARS, fed from contract data
+  description: CPARS, with contracts registered from the contract data and reminders sent until each evaluation is done.
+  approach: shared
+  implements: [ cpars-from-contract-data ]
+
+- id: acquisition-ai-drafting-platform
+  title: An AI model the agency approves
+  description: An AI model in an environment the agency has approved, used with the agency’s templates and guidance to draft acquisition documents.
+  approach: platform
+  implements: [ acquisition-ai-drafting ]
+
+- id: contract-spend-analytics-build
+  title: An analytics workspace
+  description: An analytics workspace that brings together contract, obligation, invoice, and evaluation data.
+  approach: build
+  implements: [ contract-spend-analytics ]

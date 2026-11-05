@@ -54,7 +54,7 @@
   url: https://developers.login.gov/overview/
   lastReviewedAt: 2026-11-04
   description: How an agency’s application connects to Login.gov, what each service level verifies, and how to try it in the sandbox before signing an agreement.
-  helps_with: [ { to: "implementationPattern:public-sign-in", way: login-gov } ]
+  helps_with: [ solution:public-sign-in-login-gov ]
 
 - id: vba-detailed-claims-data
   title: VBA Detailed Claims Data

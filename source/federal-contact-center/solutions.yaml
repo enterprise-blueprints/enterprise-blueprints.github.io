@@ -1,0 +1,207 @@
+# Solutions: the ways to source each pattern, in the order the pages show them,
+# each with the patterns it implements and anything it needs.
+
+- id: cloud-contact-center-product
+  title: A cloud contact center product
+  description: A cloud contact center product with a FedRAMP authorization, configured and run by the agency’s own center.
+  approach: product
+  attributes:
+    strengths:
+      - The agency controls its menus, routing, and data
+      - New channels and features arrive with the product’s updates
+    fitsWhen:
+      - The agency has people who can configure and run it
+    watchFor:
+      - Another product to buy, secure, and keep up, with its own authorization to operate
+  implements: [ cloud-contact-center ]
+
+- id: cloud-contact-center-department-platform
+  title: The department’s shared contact center platform
+  description: A contact center platform the department runs for its components, with each program getting its own numbers, menus, queues, and reports.
+  approach: platform
+  attributes:
+    strengths:
+      - Uses contracts, skills, and security approvals the department already has
+      - Calls can be passed between components without the person calling again
+    fitsWhen:
+      - The department already runs a platform like this for other components
+    watchFor:
+      - Changes and upgrades are decided for the whole department, not for the program
+  implements: [ cloud-contact-center ]
+
+- id: cloud-contact-center-contracted-center
+  title: A contact center run by a contractor
+  description: A contractor provides the agents, the system, and the sites, under service levels the agency sets and monitors.
+  approach: product
+  attributes:
+    strengths:
+      - The agency can add agents for a surge without hiring
+      - The contractor brings systems and experience running large centers
+    fitsWhen:
+      - Contacts swing widely through the year, such as around deadlines
+      - The agency lacks the staff to run a center itself
+    watchFor:
+      - The agency still owns the answers, the data, and the results, and needs people who can manage the contract well
+      - Contact records, recordings, and the knowledge base must stay the agency’s, and be easy to move at the contract’s end
+  implements: [ cloud-contact-center ]
+
+- id: contact-records-crm-agency-platform
+  title: The agency’s shared case platform
+  description: Contact records, handoffs, and follow-up built on the low-code or CRM platform the agency already runs for its cases.
+  approach: platform
+  attributes:
+    strengths:
+      - Handoffs become cases on the same platform the program offices use
+      - Uses licenses, skills, and security approvals the agency already has
+    fitsWhen:
+      - The program offices already work their cases on the platform
+    watchFor:
+      - The connection to the contact center system, to open records as calls arrive, takes real building
+  implements: [ contact-records-crm ]
+  depends_on:
+    - to: shared-case-platform
+      note: The contact records and handoffs are the shared platform, set up for the contact center.
+
+- id: contact-records-crm-contact-center-product
+  title: The contact center product’s own records
+  description: The contact records and case features that come with the contact center product.
+  approach: product
+  attributes:
+    strengths:
+      - Works with calls, chats, and recordings with little building
+    fitsWhen:
+      - Most contacts are resolved by the center without a program office
+    watchFor:
+      - Handoffs to program offices’ own systems still need connecting
+  implements: [ contact-records-crm ]
+
+- id: shared-knowledge-base-product
+  title: A knowledge management product
+  description: A knowledge management product connected to the contact center system and the website.
+  approach: product
+  attributes:
+    strengths:
+      - Built for review cycles, versions, and publishing to several channels
+    fitsWhen:
+      - The center has many topics or many programs
+    watchFor:
+      - Another product to buy and keep up, and to connect to the website
+  implements: [ shared-knowledge-base ]
+
+- id: shared-knowledge-base-platform
+  title: Knowledge articles on the agency’s shared platform
+  description: Knowledge articles kept on the CRM or case platform the agency already runs.
+  approach: platform
+  attributes:
+    strengths:
+      - Agents find answers on the same screen as the contact record
+    fitsWhen:
+      - The center already works on the platform
+    watchFor:
+      - Publishing to the website and virtual agents may need building
+  implements: [ shared-knowledge-base ]
+
+- id: virtual-agent-product
+  title: The contact center product’s virtual agent
+  description: The virtual agent that comes with the contact center product, configured to use the agency’s knowledge base.
+  approach: product
+  attributes:
+    strengths:
+      - Hands off to agents with the conversation, with little building
+    fitsWhen:
+      - The agency runs a contact center product that includes one
+    watchFor:
+      - Its AI model and where it runs need the agency’s approval
+  implements: [ virtual-agent ]
+
+- id: virtual-agent-agency-ai
+  title: An AI model the agency approves
+  description: A virtual agent built on an AI model in an environment the agency has approved, connected to the knowledge base and the contact center.
+  approach: platform
+  attributes:
+    strengths:
+      - The same approved model can serve other uses in the agency
+    fitsWhen:
+      - The agency has an approved AI environment and people who can build on it
+    watchFor:
+      - Handoffs to agents, and testing with assistive technology, take real building
+  implements: [ virtual-agent ]
+
+- id: caller-verification-codes-combine
+  title: Codes and sign-in combined with the contact center
+  description: The contact center system’s verification steps, combined with a one-time code service and the agency’s public sign-in.
+  approach: combine
+  attributes:
+    strengths:
+      - Uses the sign-in the public already has with the agency
+    fitsWhen:
+      - The agency’s public sign-in and contact center can exchange who a person is
+    watchFor:
+      - Each connection between sign-in, codes, and the contact center needs keeping up
+  implements: [ caller-verification-codes ]
+
+- id: contact-ai-insights-product
+  title: The contact center product’s AI features
+  description: Transcription, summaries, suggested answers, and analytics that come with the contact center product.
+  approach: product
+  attributes:
+    strengths:
+      - Works with the product’s recordings and queues with little building
+    fitsWhen:
+      - The agency runs a contact center product that includes them
+    watchFor:
+      - Its AI model and where it runs need the agency’s approval
+  implements: [ contact-ai-insights ]
+
+- id: contact-ai-insights-agency-ai
+  title: An AI model the agency approves
+  description: Transcripts sent to an AI model in an environment the agency has approved, with results written back to the contact record and reports.
+  approach: platform
+  attributes:
+    strengths:
+      - The same approved model can serve other uses in the agency
+    fitsWhen:
+      - The agency has an approved AI environment and people who can build on it
+    watchFor:
+      - Connections to recordings, contact records, and reports take real building
+  implements: [ contact-ai-insights ]
+
+- id: post-contact-survey-touchpoints
+  title: GSA’s Touchpoints
+  description: GSA’s Touchpoints, a government tool for customer feedback forms, set up for the Section 280 questions and the quarterly reporting to OMB.
+  approach: shared
+  attributes:
+    strengths:
+      - Built for the Section 280 questions and quarterly reporting
+      - Run by GSA for federal agencies, with a FIPS moderate rating on cloud.gov
+    fitsWhen:
+      - The center can link to a survey from its texts, emails, and chat
+    watchFor:
+      - Joining results to contact reasons needs the contact’s details passed to the survey
+  implements: [ post-contact-survey ]
+
+- id: post-contact-survey-product
+  title: The contact center product’s surveys
+  description: The survey features of the contact center product, set up with OMB’s questions.
+  approach: product
+  attributes:
+    strengths:
+      - Surveys can be offered at the end of a call or chat, and joined to the contact automatically
+    fitsWhen:
+      - The agency runs a contact center product with surveys
+    watchFor:
+      - Quarterly datasets still need putting into OMB’s format
+  implements: [ post-contact-survey ]
+
+- id: contact-center-reporting-build
+  title: A reporting workspace
+  description: Data from the center’s systems brought together in the agency’s analytics tools.
+  approach: build
+  attributes:
+    strengths:
+      - Reports can join data from every system the center uses
+    fitsWhen:
+      - The agency has analytics tools and people who use them
+    watchFor:
+      - Each feed needs keeping up as the systems change
+  implements: [ contact-center-reporting ]

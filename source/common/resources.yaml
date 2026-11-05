@@ -38,8 +38,7 @@
   description: A spreadsheet of baseline requirements for managing electronic records, from capture through disposal, transfer, metadata, and reporting, each marked must-have or should-have. Agencies tailor it into the records requirements for a system they build or buy.
   helps_with:
     - capability:records-management
-    - to: implementationPattern:records-in-business-systems
-      way: built-in
+    - solution:records-in-business-systems-built-in
 
 - id: event-logging-best-practices
   title: Best Practices for Event Logging and Threat Detection

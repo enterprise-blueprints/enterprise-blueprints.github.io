@@ -93,8 +93,8 @@ import { href } from '../lib/paths';
         need another (<code>depends_on</code>) or work well with one (<code>works_with</code>).
       </p>
       <p>
-        Since schema 0.4.0, every pattern lists its <code>ways</code> to source it, each with its approach, and a
-        <code>depends_on</code> relation with a <code>way</code> is a need of that way only. A mission's patterns
+        From schema 0.4.0 to 0.6.0, every pattern lists its <code>ways</code> to source it, each with its approach,
+        and a <code>depends_on</code> relation with a <code>way</code> is a need of that way only. A mission's patterns
         are its architecture, and it lists the <code>principles</code> that architecture follows, so packages have
         no solutions. An outcome lists its <code>measures</code> in its <code>attributes</code>, instead of linking
         to measure elements.
@@ -113,6 +113,14 @@ import { href } from '../lib/paths';
         IDs, which is <code>eb</code> for the library's own. Another publisher's package can build on the
         library's with a prefix of its own, adding resources such as its services, products, and demos, or
         missions and capabilities of its own, without changing the library.
+      </p>
+      <p>
+        Schema 0.7.0 makes the ways to source a pattern <code>solution</code> elements, each of which
+        <code>implements</code> one or more patterns and names its <code>approach</code>, with its own strengths,
+        fit, and what to watch for. A solution's <code>depends_on</code> is a need of that solution only, and a
+        resource about one way of sourcing a pattern helps with its solution, so a relation no longer names a
+        <code>way</code>. Another publisher's products are solutions too, with a <code>url</code>, rather than
+        resources.
       </p>
     </div>
   </div>

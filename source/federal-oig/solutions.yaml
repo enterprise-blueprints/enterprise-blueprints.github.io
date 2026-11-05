@@ -1,0 +1,127 @@
+# Solutions: the ways to source each pattern, in the order the pages show them,
+# each with the patterns it implements and anything it needs.
+
+- id: oversight-intake-case-tracking-product
+  title: An oversight case product
+  description: A case management product made for oversight and investigative work, configured for the office and administered by it.
+  approach: product
+  attributes:
+    strengths:
+      - Built around investigative work, such as evidence handling and referrals
+      - Comes with reports shaped for oversight reporting
+    fitsWhen:
+      - There’s budget for licenses and an administrator in the office
+    watchFor:
+      - Another product to buy, secure, and keep up
+  implements: [ oversight-intake-case-tracking ]
+
+- id: oversight-intake-case-tracking-agency-platform
+  title: The agency’s shared case platform
+  description: The office’s own case types on the agency’s shared case platform, with administration and access the office controls.
+  approach: platform
+  attributes:
+    strengths:
+      - Uses licenses, skills, and security approvals the agency already has
+    fitsWhen:
+      - The agency runs a case platform, and the office can control who administers its part
+    watchFor:
+      - The office’s independence depends on keeping its administration and access apart from the agency’s
+      - Evidence handling, such as chain of custody, usually needs building
+  implements: [ oversight-intake-case-tracking ]
+  depends_on:
+    - to: shared-case-platform
+      note: The office’s case types and steps are the shared platform, set up for oversight.
+
+- id: confidential-hotline-intake-product
+  title: A hotline product
+  description: A hotline product with a public web form and phone line, anonymous reporting, and a code to check back.
+  approach: product
+  implements: [ confidential-hotline-intake ]
+
+- id: audit-management-system-product
+  title: An audit management product
+  description: A product made for audit work, with electronic work papers, review sign-offs, and recommendations built in.
+  approach: product
+  attributes:
+    strengths:
+      - The documentation and supervision steps come built in
+      - Reporting across engagements, such as on open recommendations, is part of it
+    fitsWhen:
+      - The office has many engagements at a time
+    watchFor:
+      - Another product to buy, secure, and keep up
+  implements: [ audit-management-system ]
+
+- id: audit-management-system-workspace
+  title: Work papers in the collaboration workspace
+  description: A workspace for each engagement in the agency’s collaboration suite, with work paper templates, and supervisors’ sign-offs recorded through document approvals.
+  approach: combine
+  attributes:
+    strengths:
+      - Uses tools the office already has and knows
+      - Costs little to start, and is easy to change
+    fitsWhen:
+      - The office is small, with a few engagements at a time
+    watchFor:
+      - Cross-references and review sign-offs depend on discipline, which peer reviews will test
+      - Reporting across engagements, such as on open recommendations, takes manual work
+  implements: [ audit-management-system ]
+  depends_on:
+    - to: records-aware-collaboration
+      note: The workspaces, approvals, and retention labels are the agency’s collaboration suite.
+
+- id: shared-recommendation-tracker-audit-module
+  title: A module of the audit product
+  description: The audit product’s recommendation module, opened to agency officials for their own recommendations.
+  approach: product
+  attributes:
+    fitsWhen:
+      - The office’s audit product has a module like this
+    watchFor:
+      - Agency officials need access to the office’s product, limited to their own recommendations
+  implements: [ shared-recommendation-tracker ]
+
+- id: shared-recommendation-tracker-owned-app
+  title: An app the office owns on a platform
+  description: A tracker the office builds and administers on a platform, kept apart from the agency’s other apps.
+  approach: platform
+  attributes:
+    fitsWhen:
+      - The office’s audit tools have no module agency officials can use
+    watchFor:
+      - The office keeps the app working, and in step with its audit tools
+  implements: [ shared-recommendation-tracker ]
+
+- id: oversight-reporting-from-source-data-build
+  title: A reporting store fed by the office’s systems
+  description: A reporting store the office builds, fed by its case, audit, and recommendation systems.
+  approach: build
+  implements: [ oversight-reporting-from-source-data ]
+
+- id: oversight-data-analytics-build
+  title: An analytics workspace
+  description: An analytics workspace where the office’s data team brings in agency financial, payment, and program data.
+  approach: build
+  implements: [ oversight-data-analytics ]
+
+- id: digital-evidence-store-product
+  title: A digital evidence management product
+  description: A product made for managing digital evidence, with custody logs and hashing built in.
+  approach: product
+  attributes:
+    fitsWhen:
+      - The office handles large amounts of digital evidence
+    watchFor:
+      - Another product to buy, secure, and keep up
+  implements: [ digital-evidence-store ]
+
+- id: digital-evidence-store-secure-storage
+  title: Secure storage with a custody log
+  description: Encrypted storage in the agency’s cloud or data center, kept apart for the office, with a custody log the office builds and links to its case system.
+  approach: build
+  attributes:
+    fitsWhen:
+      - The office handles digital evidence now and then
+    watchFor:
+      - The custody log and hashing carry the evidence’s weight, so they must be built and checked with care
+  implements: [ digital-evidence-store ]

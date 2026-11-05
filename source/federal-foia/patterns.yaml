@@ -21,36 +21,6 @@
     watchFor:
       - Moving open requests from an old system mid-year can disturb the annual report’s counts
       - A hosted system needs a security authorization before it can hold unredacted records
-    ways:
-      - id: product
-        approach: product
-        title: A FOIA product
-        description: A product made for FOIA that handles tracking, review, release, and reporting in one place.
-        strengths:
-          - Knows FOIA’s rules, such as tracks, working-day deadlines, fee categories, and exemption codes
-        fitsWhen:
-          - The office handles hundreds of requests a year or more
-        watchFor:
-          - Built-in review may struggle with very large email collections
-      - id: platform-and-review-tool
-        approach: combine
-        title: The shared case platform, with a separate review tool
-        description: Requests tracked on the agency’s shared case platform, set up for FOIA’s tracks and deadlines, with a separate document review tool for collecting, deduplicating, and redacting records, and a handoff between the two.
-        strengths:
-          - Uses a platform the agency already has for the tracking
-          - Either tool can be replaced without replacing the other
-          - Suits offices that already own a review tool
-        fitsWhen:
-          - The agency’s shared case platform is well supported
-          - Request volume is moderate, and records are mostly documents rather than large email collections
-        watchFor:
-          - The handoff between the tools is where requests stall or records go missing
-          - Deadline rules, such as pausing the clock, must be built and kept up to date
-          - Two tools to authorize, secure, and train people on
-  depends_on:
-    - to: shared-case-platform
-      way: platform-and-review-tool
-      note: The tracking half is the shared platform, set up for FOIA.
 
 - id: foia-tracking-with-review-tool
   status: deprecated
@@ -77,10 +47,6 @@
       - The handoff between the tools is where requests stall or records go missing
       - Deadline rules, such as pausing the clock, must be built and kept up to date
       - Two tools to authorize, secure, and train people on
-    ways:
-      - id: combine
-        approach: combine
-        title: The shared case platform, with a separate review tool
 
 - id: ediscovery-search-review
   title: Email Search with eDiscovery Tools
@@ -105,10 +71,6 @@
       - Searches can wait in IT’s queue for a long time
       - For a single known record, asking the person who keeps it is faster
       - Threading and deduplication need checking, since copies still slip through
-    ways:
-      - id: platform
-        approach: platform
-        title: The agency’s eDiscovery tools
   works_with:
     - to: foia-request-processing
       note: Sends what it finds to the review workspace or tool.
@@ -135,10 +97,6 @@
     watchFor:
       - Changes to the portal’s API need following
       - Each component’s routing must match how FOIA.gov lists it
-    ways:
-      - id: build
-        approach: build
-        title: A connection to FOIA.gov’s agency API
   works_with:
     - foia-request-processing
 
@@ -164,10 +122,6 @@
       - Records released to people about themselves must never be posted
       - Making older scanned records accessible takes effort
       - Posted records still follow a records schedule
-    ways:
-      - id: platform
-        approach: platform
-        title: The agency’s online FOIA library
   works_with:
     - to: foia-request-processing
       note: Releases come from the review tool with their request details.
@@ -195,10 +149,6 @@
       - Exemptions turn on judgment, including the foreseeable harm standard, so a person decides every withholding
       - Relying on suggestions can lead to withholding more than the law allows
       - Records under review hold sensitive information, so the model must run where the records are allowed to be
-    ways:
-      - id: product
-        approach: product
-        title: The review tool’s AI features
   works_with:
     - to: foia-request-processing
       note: Runs in the review workspace or tool, where it’s offered.
@@ -225,9 +175,5 @@
     watchFor:
       - Definitions must match the handbook, or the dashboard and the report will disagree
       - Request details can be sensitive, so dashboards should show counts rather than requesters
-    ways:
-      - id: build
-        approach: build
-        title: A dashboard on the tracking data
   works_with:
     - foia-request-processing
