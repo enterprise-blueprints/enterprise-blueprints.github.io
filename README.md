@@ -48,7 +48,8 @@ node scripts/check-dist.mjs dist-subpath /baseurl-check
   and requirements name a group that holds across missions. 0.6.0 adds resources and what they help with, and
   gives every package an `idPrefix` for its element IDs, so other publishers' packages can build on the
   library's. 0.7.0 makes the ways to source a pattern solutions of their own, which `implement` it, so
-  organizations' products are solutions too. Every version stays, and Solution Studio keeps identical
+  organizations' products are solutions too. 0.8.0 lets a solution list its `components` and say who hosts it
+  (`hostedBy`). Every version stays, and Solution Studio keeps identical
   copies.
 - `src/lib/vocabulary.ts` lists the element types and relationship predicates the site knows, with their
   labels and URL sections.
@@ -173,6 +174,18 @@ are examples, so they describe kinds of product; an organization's package publi
 solutions, with a `url`, and `by` when someone else makes it. Before 0.7.0, a pattern listed its `ways` in
 its attributes, and the library's solutions keep their IDs: the pattern's key and the way's, as in
 `eb:solution:grants-management-product`.
+
+Since schema 0.8.0, a solution can list its **components**, the parts that run separately, written under it
+as `components:` and published in its attributes, the way an outcome's measures are. Each has an `id`, a
+`title`, a `tier` (`front` for what people use, `service` for logic, workflows, APIs, and integration, `data`
+for what's stored), and if it helps, a `description`, a `technology` (what it's built with), an `exposure`
+(`public` or `internal`), `sendsTo` (other components of the same solution, by ID), and `needs` (which of the
+solution's own `depends_on` patterns this part makes the connection to). Tools name a component
+`<prefix>:component:<solution key>-<id>`, and its place on the solution's page is `#component-<id>`. A
+solution's `hostedBy` says who runs it: `vendor` (its maker, as a service), `agency`, or `provider` (another
+agency, as a shared service); left out, a shared service is taken to be run by another agency, and a
+platform or something built by the agency. Studio brings a chosen solution's components in, connected, and
+suggests the connections their needs make. The OIG and Common solutions have components so far.
 
 Patterns connect to each other too. `depends_on` (shown as **Needs**) is for a pattern that can't work
 without another, however it's sourced; on a solution, it's a need of that solution only, such as case

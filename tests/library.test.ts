@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { byLayer, coversPartly, searchIndex, elements, elementsOfType, groupOf, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, resourceDetails, resourcesFor, tagline } from '../src/lib/library';
+import { byLayer, componentsOf, coversPartly, hostingOf, searchIndex, elements, elementsOfType, groupOf, indexGroups, indexParents, missionBlueprint, relationGroups, patternDetails, principlesOf, questionsAbout, discoveryTarget, resourceDetails, resourcesFor, tagline } from '../src/lib/library';
 import { groupings } from '../src/lib/vocabulary';
 import { prepare, search } from '../src/lib/search';
 
@@ -120,6 +120,12 @@ describe('pattern connections', () => {
   it('say what a pattern needs, and what needs it', () => {
     const groups = relationGroups(get('eb:implementationPattern:agency-sign-on'));
     expect(groups.find((g) => g.heading === 'Needed by')!.elements.map(slug)).toEqual(['shared-case-platform', 'records-aware-collaboration', 'core-hr-system']);
+    // The solutions that need it are listed apart, right after, each with its own pattern.
+    const headings = groups.map((g) => g.heading);
+    expect(headings.indexOf('Solutions that need it')).toBe(headings.indexOf('Needed by') + 1);
+    const apart = groups.find((g) => g.heading === 'Solutions that need it')!;
+    expect(apart.elements.map(slug)).toContain('oversight-intake-case-tracking-product');
+    expect(apart.parents!.get('eb:solution:oversight-intake-case-tracking-product')!.title).toBe('Oversight Case Management');
   });
 
   it('mark a candidate pattern that covers only part of a capability', () => {
@@ -252,10 +258,31 @@ describe('solutions to source a pattern', () => {
   it('lists a logical pattern’s solutions, with what each one needs', () => {
     const ways = patternDetails(get('eb:implementationPattern:oversight-intake-case-tracking')).ways;
     expect(ways.map((w) => [w.id, slug(w.solution!), w.needs.map((n) => slug(n.pattern))])).toEqual([
-      ['oversight-intake-case-tracking-product', 'oversight-intake-case-tracking-product', []],
+      ['oversight-intake-case-tracking-product', 'oversight-intake-case-tracking-product', ['agency-sign-on']],
       ['oversight-intake-case-tracking-agency-platform', 'oversight-intake-case-tracking-agency-platform', ['shared-case-platform']],
     ]);
     expect(ways[1].fields.map((f) => f.key)).toEqual(['strengths', 'fitsWhen', 'watchFor']);
+  });
+
+  it('list a solution’s components, with what each sends to and needs, and who runs it', () => {
+    const product = get('eb:solution:oversight-intake-case-tracking-product');
+    const parts = componentsOf(product);
+    expect(parts.map((c) => [c.id, c.tier])).toEqual([
+      ['staff-intake', 'front'],
+      ['case-workspace', 'front'],
+      ['case-workflow', 'service'],
+      ['statistics', 'service'],
+      ['case-records', 'data'],
+    ]);
+    const workspace = parts[1];
+    expect(workspace).toMatchObject({ elementId: 'eb:component:oversight-intake-case-tracking-product-case-workspace', tierLabel: 'Front', exposure: 'Internal', sendsTo: [{ id: 'case-workflow', title: 'Triage and case workflow' }] });
+    expect(workspace.needs.map(slug)).toEqual(['agency-sign-on']);
+    expect(workspace.url).toMatch(/#component-case-workspace$/);
+    expect(hostingOf(product)).toMatchObject({ label: 'Hosted by its maker', said: true });
+    // Unsaid, the approach suggests it where it can.
+    expect(hostingOf(get('eb:solution:shared-case-platform-platform'))).toMatchObject({ label: 'Run by the agency', said: false });
+    expect(hostingOf(get('eb:solution:public-sign-in-login-gov'))).toMatchObject({ label: 'Run by another agency', said: false });
+    expect(hostingOf(get('eb:solution:audit-management-system-workspace'))).toBeUndefined();
   });
 
   it('group the solutions index by approach', () => {

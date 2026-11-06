@@ -1,6 +1,6 @@
 # The package itself. Its version and date are set when it is built (pnpm content:build).
 
-schemaVersion: 0.7.0
+schemaVersion: 0.8.0
 packageId: org.enterprise-blueprints.federal-contact-center
 idPrefix: eb
 title: Contact Center — Helping the Public by Phone, Chat, Email, and the Web

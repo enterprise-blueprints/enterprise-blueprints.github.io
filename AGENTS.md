@@ -58,7 +58,8 @@ How they connect:
   case or person. The library's own resources are free ones from government, standards bodies,
   nonprofits, and universities; the `service` and `product` kinds belong in other organizations' packages.
 - Naming in code: a workspace's packages are its **blueprints**; **layer** means only the seven parts of
-  a mission's architecture; a pattern is sourced by **solutions**, which implement it (before schema 0.7.0, a
+  a mission's architecture; a pattern is sourced by **solutions**, which implement it and, since schema
+  0.8.0, can list their **components**, each in a tier (before schema 0.7.0, a
   pattern listed its **ways**). The whole design for an engagement is its architecture, never "the
   solution".
 
@@ -114,7 +115,8 @@ short:
 
 1. Make `source/<name>/` with `package.yaml` (its `packageId`, `idPrefix: eb`, `dependencies: [ common ]`),
    then missions, outcomes (with `theme` and `measures`), capabilities (with `stage`), requirements (with
-   `kind`), patterns (with `layer`), solutions (with `approach` and `implements`), resources, sources, `links.yaml` for the Common
+   `kind`), patterns (with `layer`), solutions (with `approach` and `implements`, and their `components`
+   with a `tier` each), resources, sources, `links.yaml` for the Common
    capabilities it uses, and discovery questions. The seven federal missions are the models to follow.
 2. Fit the groups that exist (themes, stages, kinds); add a group to the vocabulary only when nothing fits.
 3. Cite official sources with `lastReviewedAt`, checked against the source itself. Each requirement

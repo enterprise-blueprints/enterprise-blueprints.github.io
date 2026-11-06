@@ -87,6 +87,16 @@ it sources, and in `attributes` its own `strengths`, `fitsWhen`, and `watchFor`,
 A need of this solution only, such as case management on the agency's platform needing the platform, goes
 on it as `depends_on:`. The library's solutions are examples too: kinds of product, never a vendor's.
 
+A solution can list its `components:`, the parts that run separately, three to five for most: each with an
+`id`, a `title`, a `tier` (`front` for what people use, `service` for logic, workflows, APIs, and
+integration, `data` for what's stored), and where it helps, a `description`, an `exposure` (`public` for a
+part the public reaches, such as a reporting form, or `internal`), `sendsTo:` with the other parts it calls,
+by ID, and `needs:` with which of the solution's own `depends_on` patterns this part connects to, such as the
+staff workspace needing `agency-sign-on`. `hostedBy` says who runs it: `vendor` for a product its maker runs
+as a service, `agency`, or `provider` for another agency's shared service. Leave it out where it could go
+either way, such as for tools combined. The library's components are kinds of part, so leave out
+`technology`, which is for an organization's products.
+
 ### `resources.yaml`
 
 Free resources from government, standards bodies, nonprofits, and universities: training, videos, guides,

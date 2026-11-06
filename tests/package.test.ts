@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { validatePackage, type BlueprintPackage, type Resolve } from '../src/lib/package';
+import { componentId, componentsIn, validatePackage, type BlueprintPackage, type Resolve } from '../src/lib/package';
 import schema060 from '../schemas/blueprint-package-0.6.0.schema.json';
 import schema070 from '../schemas/blueprint-package-0.7.0.schema.json';
 import { resourceKinds, retiredKinds, soldKinds, solutionApproaches } from '../src/lib/vocabulary';
@@ -512,7 +512,7 @@ describe('groups across missions (schema 0.5.0)', () => {
 
   it('accept every package, with each outcome, capability, and requirement in a group', () => {
     for (const pkg of [original, common, foia, grants, acquisition, contactCenter, hr, benefits]) {
-      expect(pkg.schemaVersion).toBe('0.7.0');
+      expect(pkg.schemaVersion).toBe('0.8.0');
       expect(validatePackage(pkg, resolve), pkg.packageId).toEqual([]);
       for (const e of pkg.elements) {
         const field = { outcome: 'theme', capability: 'stage', requirement: 'kind', solution: 'approach' }[e.type];
@@ -671,5 +671,43 @@ describe('solutions (schema 0.7.0)', () => {
     }, oig0150);
     expect(older).toContain('there are no solutions');
     expect(older).toContain('implements is new in schema 0.7.0');
+  });
+});
+
+describe('components (schema 0.8.0)', () => {
+  const caseProduct = 'eb:solution:oversight-intake-case-tracking-product';
+  const signOn = 'eb:implementationPattern:agency-sign-on';
+  const product = (p: BlueprintPackage) => p.elements.find((e) => e.id === caseProduct)!;
+  const parts = (p: BlueprintPackage) => product(p).attributes!.components as { id: string; tier: string; sendsTo?: string[]; needs?: string[] }[];
+  const check = (change: (pkg: BlueprintPackage) => void) => {
+    const pkg = structuredClone(original);
+    change(pkg);
+    return validatePackage(pkg, resolve).join('\n');
+  };
+
+  it('list the parts of the OIG and Common solutions, each in a tier, with needs that name the solution’s own', () => {
+    for (const pkg of [original, common]) {
+      expect(pkg.schemaVersion).toBe('0.8.0');
+      const listed = ofType(pkg, 'solution').filter((s) => componentsIn(s).length);
+      expect(listed.length, pkg.packageId).toBe(pkg === original ? 11 : 8);
+      for (const s of listed) for (const c of componentsIn(s)) expect(['front', 'service', 'data'], `${s.id} ${c.id}`).toContain(c.tier);
+    }
+    expect(product(original).attributes!.hostedBy).toBe('vendor');
+    // Written as a pattern's key, a need is published as its full ID.
+    expect(parts(original).find((c) => c.id === 'case-workspace')!.needs).toEqual([signOn]);
+    expect(original.relations).toContainEqual(expect.objectContaining({ from: caseProduct, predicate: 'depends_on', to: signOn }));
+    expect(componentId(product(original), 'case-workspace')).toBe('eb:component:oversight-intake-case-tracking-product-case-workspace');
+  });
+
+  it.each<[string, (pkg: BlueprintPackage) => void, string]>([
+    ['an unknown tier', (p) => (parts(p)[0].tier = 'middle'), '/tier must be equal to one of the allowed values'],
+    ['a part sending to one that isn’t there', (p) => (parts(p)[0].sendsTo = ['nowhere']), "sends to nowhere, which isn't one of the solution's components"],
+    ['a part sending to itself', (p) => (parts(p)[0].sendsTo = [parts(p)[0].id]), 'sends to itself'],
+    ['a need the solution doesn’t have', (p) => (parts(p)[0].needs = ['eb:implementationPattern:shared-case-platform']), "which the solution doesn't depend on"],
+    ['two parts with one ID', (p) => (parts(p)[1].id = parts(p)[0].id), 'has two components with the ID staff-intake'],
+    ['unknown hosting', (p) => (product(p).attributes!.hostedBy = 'cloud'), '/hostedBy must be equal to one of the allowed values'],
+    ['components before schema 0.8.0', (p) => (p.schemaVersion = '0.7.0'), 'components are new in schema 0.8.0'],
+  ])('reject %s', (_, change, message) => {
+    expect(check(change)).toContain(message);
   });
 });

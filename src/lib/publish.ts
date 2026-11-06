@@ -12,11 +12,12 @@ import schema040 from '../../schemas/blueprint-package-0.4.0.schema.json?raw';
 import schema050 from '../../schemas/blueprint-package-0.5.0.schema.json?raw';
 import schema060 from '../../schemas/blueprint-package-0.6.0.schema.json?raw';
 import schema070 from '../../schemas/blueprint-package-0.7.0.schema.json?raw';
+import schema080 from '../../schemas/blueprint-package-0.8.0.schema.json?raw';
 import { packageFiles, release, type PackageFile } from './library';
 import { capabilityStages, earlierLayers, elementTypes, outcomeThemes, patternApproaches, patternFields, patternLayers, predicates, requirementKinds, resourceKinds, sourceKinds, statuses } from './vocabulary';
 
 /** Every schema version stays published, so packages that use an older one still validate. Newest last. */
-export const schemas = [schema010, schema020, schema030, schema040, schema050, schema060, schema070].map((text) => {
+export const schemas = [schema010, schema020, schema030, schema040, schema050, schema060, schema070, schema080].map((text) => {
   const version: string = JSON.parse(text).properties.schemaVersion.const;
   return { version, text, path: `schemas/blueprint-package-${version}.schema.json` };
 });
