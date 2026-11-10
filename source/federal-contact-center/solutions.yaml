@@ -5,6 +5,7 @@
   title: A cloud contact center product
   description: A cloud contact center product with a FedRAMP authorization, configured and run by the agency’s own center.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - The agency controls its menus, routing, and data
@@ -13,7 +14,37 @@
       - The agency has people who can configure and run it
     watchFor:
       - Another product to buy, secure, and keep up, with its own authorization to operate
+  components:
+    - id: phone-menu
+      title: Phone numbers and menu
+      description: Toll-free numbers and a phone menu that understands speech, keypresses, and TTY.
+      tier: front
+      exposure: public
+      sendsTo: [ routing ]
+    - id: web-channels
+      title: Website chat and forms
+      description: Chat, email, and web forms that land in the same queues as calls.
+      tier: front
+      exposure: public
+      sendsTo: [ routing ]
+    - id: agent-desktop
+      title: Agent and supervisor desktop
+      description: Where agents handle contacts, and supervisors watch queues, schedule agents, and score recordings.
+      tier: front
+      exposure: internal
+      sendsTo: [ routing, contact-data ]
+      needs: [ agency-sign-on ]
+    - id: routing
+      title: Routing, queues, and callbacks
+      description: Routes each contact by topic, skill, and urgency, and keeps a caller’s place for a callback.
+      tier: service
+      sendsTo: [ contact-data ]
+    - id: contact-data
+      title: Recordings and queue figures
+      description: Recordings of calls and chats, with each queue’s waits and volumes.
+      tier: data
   implements: [ cloud-contact-center ]
+  depends_on: [ agency-sign-on ]
 
 - id: cloud-contact-center-department-platform
   title: The department’s shared contact center platform
@@ -27,12 +58,44 @@
       - The department already runs a platform like this for other components
     watchFor:
       - Changes and upgrades are decided for the whole department, not for the program
+  components:
+    - id: program-channels
+      title: Program numbers, menus, and chat
+      description: The program’s own phone numbers, phone menu, and website chat on the department’s platform.
+      tier: front
+      exposure: public
+      sendsTo: [ program-queues ]
+    - id: agent-desktop
+      title: Agent desktop
+      description: Where the program’s agents take contacts, and pass calls to other components.
+      tier: front
+      exposure: internal
+      sendsTo: [ program-queues ]
+      needs: [ agency-sign-on ]
+    - id: program-queues
+      title: Program queues and routing
+      description: The program’s queues and routing rules, set up on the shared platform.
+      tier: service
+      sendsTo: [ program-contact-data ]
+    - id: program-reports
+      title: Program reports
+      description: Waits, volumes, and abandonment for the program’s own queues.
+      tier: front
+      exposure: internal
+      sendsTo: [ program-contact-data ]
+      needs: [ agency-sign-on ]
+    - id: program-contact-data
+      title: Program contact data
+      description: The program’s recordings and queue figures, kept apart from other components’.
+      tier: data
   implements: [ cloud-contact-center ]
+  depends_on: [ agency-sign-on ]
 
 - id: cloud-contact-center-contracted-center
   title: A contact center run by a contractor
   description: A contractor provides the agents, the system, and the sites, under service levels the agency sets and monitors.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - The agency can add agents for a surge without hiring
@@ -43,7 +106,37 @@
     watchFor:
       - The agency still owns the answers, the data, and the results, and needs people who can manage the contract well
       - Contact records, recordings, and the knowledge base must stay the agency’s, and be easy to move at the contract’s end
+  components:
+    - id: channels
+      title: Phone numbers, menus, and chat
+      description: The agency’s numbers and website chat, answered by the contractor’s system.
+      tier: front
+      exposure: public
+      sendsTo: [ routing ]
+    - id: contractor-desktop
+      title: Contractor agents’ desktop
+      description: Where the contractor’s agents handle contacts, using the agency’s approved answers.
+      tier: front
+      exposure: internal
+      sendsTo: [ routing ]
+    - id: routing
+      title: Routing and queues
+      description: The contractor’s routing and staffing across its sites.
+      tier: service
+      sendsTo: [ contact-records ]
+    - id: service-level-reports
+      title: Service level reports
+      description: Where agency staff check the contractor’s waits, quality, and results against the contract.
+      tier: front
+      exposure: internal
+      sendsTo: [ contact-records ]
+      needs: [ agency-sign-on ]
+    - id: contact-records
+      title: Contact records and recordings
+      description: Kept for the agency, and handed over at the contract’s end.
+      tier: data
   implements: [ cloud-contact-center ]
+  depends_on: [ agency-sign-on ]
 
 - id: contact-records-crm-agency-platform
   title: The agency’s shared case platform
@@ -57,15 +150,47 @@
       - The program offices already work their cases on the platform
     watchFor:
       - The connection to the contact center system, to open records as calls arrive, takes real building
+  components:
+    - id: contact-screen
+      title: Contact record screen
+      description: Where agents record each contact’s reason and outcome, and see the person’s earlier contacts.
+      tier: front
+      exposure: internal
+      sendsTo: [ handoffs, contact-records ]
+      needs: [ agency-sign-on ]
+    - id: office-queues
+      title: Program office queues
+      description: Where program offices work the handoffs they receive as cases.
+      tier: front
+      exposure: internal
+      sendsTo: [ handoffs ]
+      needs: [ agency-sign-on ]
+    - id: contact-center-connection
+      title: Contact center connection
+      description: Opens or updates a record as each call, chat, or email arrives.
+      tier: service
+      sendsTo: [ contact-records ]
+    - id: handoffs
+      title: Handoffs and follow-up
+      description: Opens a case for the program office with the contact’s details, sends a reference number, and sets follow-up tasks.
+      tier: service
+      sendsTo: [ contact-records ]
+      needs: [ shared-case-platform ]
+    - id: contact-records
+      title: Contact records
+      description: Each contact with its reason, outcome, and retention.
+      tier: data
   implements: [ contact-records-crm ]
   depends_on:
     - to: shared-case-platform
       note: The contact records and handoffs are the shared platform, set up for the contact center.
+    - agency-sign-on
 
 - id: contact-records-crm-contact-center-product
   title: The contact center product’s own records
   description: The contact records and case features that come with the contact center product.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Works with calls, chats, and recordings with little building
@@ -73,12 +198,35 @@
       - Most contacts are resolved by the center without a program office
     watchFor:
       - Handoffs to program offices’ own systems still need connecting
+  components:
+    - id: contact-screen
+      title: Contact record in the agent desktop
+      description: Where agents record each contact’s reason and outcome, beside the call or chat.
+      tier: front
+      exposure: internal
+      sendsTo: [ follow-up, contact-records ]
+      needs: [ agency-sign-on ]
+    - id: follow-up
+      title: Follow-up and cases
+      description: Follow-up tasks, callbacks, and simple cases, kept with the contact.
+      tier: service
+      sendsTo: [ office-handoffs, contact-records ]
+    - id: office-handoffs
+      title: Program office handoffs
+      description: Sends handoffs to the program offices’ own systems, with a reference number for the person.
+      tier: service
+    - id: contact-records
+      title: Contact records
+      description: Each contact with its recording, reason, and outcome.
+      tier: data
   implements: [ contact-records-crm ]
+  depends_on: [ agency-sign-on ]
 
 - id: shared-knowledge-base-product
   title: A knowledge management product
   description: A knowledge management product connected to the contact center system and the website.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Built for review cycles, versions, and publishing to several channels
@@ -86,7 +234,37 @@
       - The center has many topics or many programs
     watchFor:
       - Another product to buy and keep up, and to connect to the website
+  components:
+    - id: authoring
+      title: Article authoring and review
+      description: Where writers draft answers and program offices approve them.
+      tier: front
+      exposure: internal
+      sendsTo: [ review-publishing ]
+      needs: [ agency-sign-on ]
+    - id: agent-search
+      title: Agent search
+      description: Answers on the agent’s screen, suggested from the contact’s topic.
+      tier: front
+      exposure: internal
+      sendsTo: [ search ]
+      needs: [ agency-sign-on ]
+    - id: review-publishing
+      title: Review and publishing
+      description: Approval steps and review dates, and publishing to the website, phone menu, and virtual agents.
+      tier: service
+      sendsTo: [ articles ]
+    - id: search
+      title: Search and suggestions
+      description: Finds the answers that fit an agent’s search or the contact’s topic.
+      tier: service
+      sendsTo: [ articles ]
+    - id: articles
+      title: Articles and versions
+      description: Each answer with its owner, sources, review date, and earlier versions.
+      tier: data
   implements: [ shared-knowledge-base ]
+  depends_on: [ agency-sign-on ]
 
 - id: shared-knowledge-base-platform
   title: Knowledge articles on the agency’s shared platform
@@ -99,12 +277,43 @@
       - The center already works on the platform
     watchFor:
       - Publishing to the website and virtual agents may need building
+  components:
+    - id: article-editor
+      title: Article editing and approval
+      description: Where writers draft answers and program offices approve them.
+      tier: front
+      exposure: internal
+      sendsTo: [ approval-steps ]
+      needs: [ agency-sign-on ]
+    - id: answer-panel
+      title: Answers beside the contact record
+      description: Answers for the contact’s topic, on the agent’s record screen.
+      tier: front
+      exposure: internal
+      sendsTo: [ articles ]
+      needs: [ agency-sign-on ]
+    - id: approval-steps
+      title: Approval steps
+      description: The program office’s approval and each answer’s review date, on the platform’s workflow.
+      tier: service
+      sendsTo: [ articles ]
+    - id: publishing
+      title: Publishing to the website and virtual agents
+      description: Sends approved answers to the website and the virtual agent.
+      tier: service
+      sendsTo: [ articles ]
+    - id: articles
+      title: Knowledge articles
+      description: Each answer with its owner, sources, review date, and earlier versions.
+      tier: data
   implements: [ shared-knowledge-base ]
+  depends_on: [ agency-sign-on ]
 
 - id: virtual-agent-product
   title: The contact center product’s virtual agent
   description: The virtual agent that comes with the contact center product, configured to use the agency’s knowledge base.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Hands off to agents with the conversation, with little building
@@ -112,7 +321,34 @@
       - The agency runs a contact center product that includes one
     watchFor:
       - Its AI model and where it runs need the agency’s approval
+  components:
+    - id: chat-and-voice
+      title: Chat window and phone menu speech
+      description: Where people ask their questions, on the website or by phone, usable with assistive technology.
+      tier: front
+      exposure: public
+      sendsTo: [ conversation ]
+    - id: conversation
+      title: Conversation service
+      description: Answers only from approved articles, with a link to each source.
+      tier: service
+      sendsTo: [ handoff, conversation-records ]
+    - id: handoff
+      title: Handoff to an agent
+      description: Passes the person to an agent’s queue with the conversation so far.
+      tier: service
+    - id: conversation-review
+      title: Conversation review
+      description: Where staff review what the virtual agent couldn’t answer, and a sample of what it did.
+      tier: front
+      exposure: internal
+      sendsTo: [ conversation-records ]
+      needs: [ agency-sign-on ]
+    - id: conversation-records
+      title: Conversation records
+      tier: data
   implements: [ virtual-agent ]
+  depends_on: [ agency-sign-on ]
 
 - id: virtual-agent-agency-ai
   title: An AI model the agency approves
@@ -125,7 +361,38 @@
       - The agency has an approved AI environment and people who can build on it
     watchFor:
       - Handoffs to agents, and testing with assistive technology, take real building
+  components:
+    - id: chat-window
+      title: Chat window
+      description: Where people ask their questions on the agency’s website, usable with assistive technology.
+      tier: front
+      exposure: public
+      sendsTo: [ virtual-agent-service ]
+    - id: virtual-agent-service
+      title: Virtual agent service
+      description: Finds approved articles, asks the model for an answer with its source, and decides when to hand off.
+      tier: service
+      sendsTo: [ ai-model, handoff, conversation-records ]
+    - id: ai-model
+      title: Approved AI model
+      description: The model, in the environment the agency has approved.
+      tier: service
+    - id: handoff
+      title: Contact center handoff
+      description: Passes the person into the agents’ queues with the conversation so far.
+      tier: service
+    - id: conversation-review
+      title: Conversation review
+      description: Where staff review what the virtual agent couldn’t answer, and a sample of what it did.
+      tier: front
+      exposure: internal
+      sendsTo: [ conversation-records ]
+      needs: [ agency-sign-on ]
+    - id: conversation-records
+      title: Conversation records
+      tier: data
   implements: [ virtual-agent ]
+  depends_on: [ agency-sign-on ]
 
 - id: caller-verification-codes-combine
   title: Codes and sign-in combined with the contact center
@@ -138,12 +405,46 @@
       - The agency’s public sign-in and contact center can exchange who a person is
     watchFor:
       - Each connection between sign-in, codes, and the contact center needs keeping up
+  components:
+    - id: code-entry
+      title: Code entry
+      description: Where the person enters the code they received, in the phone menu or chat.
+      tier: front
+      exposure: public
+      sendsTo: [ verification-steps ]
+    - id: agent-prompts
+      title: Agent verification prompts
+      description: Shows the agent the level a request needs and whether the person has passed it.
+      tier: front
+      exposure: internal
+      sendsTo: [ verification-steps ]
+      needs: [ agency-sign-on ]
+    - id: verification-steps
+      title: Verification steps
+      description: Sets the level each kind of request needs, and asks for a code or accepts a signed-in session.
+      tier: service
+      sendsTo: [ code-service, verification-results ]
+    - id: code-service
+      title: One-time code service
+      description: Sends codes by text or email to contact details already on file, and checks them.
+      tier: service
+    - id: session-handoff
+      title: Signed-in session handoff
+      description: Carries who a person is from the agency’s public sign-in into chat or a callback.
+      tier: service
+      sendsTo: [ verification-steps ]
+    - id: verification-results
+      title: Verification results
+      description: The method used and its result, saved with the contact.
+      tier: data
   implements: [ caller-verification-codes ]
+  depends_on: [ agency-sign-on ]
 
 - id: contact-ai-insights-product
   title: The contact center product’s AI features
   description: Transcription, summaries, suggested answers, and analytics that come with the contact center product.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Works with the product’s recordings and queues with little building
@@ -151,7 +452,37 @@
       - The agency runs a contact center product that includes them
     watchFor:
       - Its AI model and where it runs need the agency’s approval
+  components:
+    - id: agent-assist
+      title: Agent assist panel
+      description: A draft summary for the agent to check and save, and suggested articles during the contact.
+      tier: front
+      exposure: internal
+      sendsTo: [ ai-features ]
+      needs: [ agency-sign-on ]
+    - id: insight-views
+      title: Contact reasons and quality views
+      description: Trends in why people contact the agency, and contacts flagged for reviewers to score.
+      tier: front
+      exposure: internal
+      sendsTo: [ transcripts-and-results ]
+      needs: [ agency-sign-on ]
+    - id: transcription
+      title: Transcription
+      description: Turns calls and chats into transcripts.
+      tier: service
+      sendsTo: [ transcripts-and-results ]
+    - id: ai-features
+      title: Summaries, suggestions, and analytics
+      description: Drafts summaries, suggests articles, finds contact reasons, and flags contacts for quality review.
+      tier: service
+      sendsTo: [ transcripts-and-results ]
+    - id: transcripts-and-results
+      title: Transcripts and results
+      description: Transcripts kept with their recordings on the same schedule, with summaries and contact reasons.
+      tier: data
   implements: [ contact-ai-insights ]
+  depends_on: [ agency-sign-on ]
 
 - id: contact-ai-insights-agency-ai
   title: An AI model the agency approves
@@ -164,6 +495,29 @@
       - The agency has an approved AI environment and people who can build on it
     watchFor:
       - Connections to recordings, contact records, and reports take real building
+  components:
+    - id: transcript-feed
+      title: Transcript feed
+      description: Brings transcripts of calls and chats from the recordings into the approved environment.
+      tier: service
+      sendsTo: [ analysis-jobs ]
+    - id: analysis-jobs
+      title: Summary and reason jobs
+      description: Asks the model for summaries, contact reasons, and quality flags for each contact.
+      tier: service
+      sendsTo: [ ai-model, write-back, transcripts-and-results ]
+    - id: ai-model
+      title: Approved AI model
+      description: The model, in the environment the agency has approved.
+      tier: service
+    - id: write-back
+      title: Write-back to records and reports
+      description: Puts draft summaries on the contact record, and contact reasons and flags into the reports.
+      tier: service
+    - id: transcripts-and-results
+      title: Transcripts and results
+      description: Transcripts and what the model found, kept on the recordings’ schedule.
+      tier: data
   implements: [ contact-ai-insights ]
 
 - id: post-contact-survey-touchpoints
@@ -178,12 +532,34 @@
       - The center can link to a survey from its texts, emails, and chat
     watchFor:
       - Joining results to contact reasons needs the contact’s details passed to the survey
+  components:
+    - id: survey-links
+      title: Survey links from the center
+      description: Adds the contact’s channel and reason to the survey link sent by text, email, or chat.
+      tier: service
+      sendsTo: [ survey-form ]
+    - id: survey-form
+      title: Survey form
+      description: OMB’s trust question and drivers, with their wording and response choices.
+      tier: front
+      exposure: public
+      sendsTo: [ responses ]
+    - id: quarterly-datasets
+      title: Quarterly datasets
+      description: Results put into OMB’s format for each quarter’s reporting.
+      tier: service
+      sendsTo: [ responses ]
+    - id: responses
+      title: Survey responses
+      description: Each response with the contact’s channel and reason, without identifying the person.
+      tier: data
   implements: [ post-contact-survey ]
 
 - id: post-contact-survey-product
   title: The contact center product’s surveys
   description: The survey features of the contact center product, set up with OMB’s questions.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Surveys can be offered at the end of a call or chat, and joined to the contact automatically
@@ -191,7 +567,35 @@
       - The agency runs a contact center product with surveys
     watchFor:
       - Quarterly datasets still need putting into OMB’s format
+  components:
+    - id: survey
+      title: End-of-contact survey
+      description: OMB’s questions, offered at the end of a call or chat, or by text or email.
+      tier: front
+      exposure: public
+      sendsTo: [ survey-service ]
+    - id: survey-service
+      title: Survey offers and joining
+      description: Decides when to offer the survey, and joins each answer to its contact.
+      tier: service
+      sendsTo: [ responses ]
+    - id: results-views
+      title: Survey results
+      description: Results by channel, reason, and team, for the center’s managers.
+      tier: front
+      exposure: internal
+      sendsTo: [ responses ]
+      needs: [ agency-sign-on ]
+    - id: omb-export
+      title: Quarterly OMB datasets
+      description: Puts each quarter’s results into OMB’s format.
+      tier: service
+      sendsTo: [ responses ]
+    - id: responses
+      title: Survey responses
+      tier: data
   implements: [ post-contact-survey ]
+  depends_on: [ agency-sign-on ]
 
 - id: contact-center-reporting-build
   title: A reporting workspace
@@ -204,4 +608,29 @@
       - The agency has analytics tools and people who use them
     watchFor:
       - Each feed needs keeping up as the systems change
+  components:
+    - id: manager-views
+      title: Manager dashboards
+      description: Waits, abandonment, and resolution by channel, program, and hour, against the center’s standards.
+      tier: front
+      exposure: internal
+      sendsTo: [ reporting-store ]
+      needs: [ agency-sign-on ]
+    - id: program-views
+      title: Program office views
+      description: The contacts about each program, with their top reasons and repeat contacts.
+      tier: front
+      exposure: internal
+      sendsTo: [ reporting-store ]
+      needs: [ agency-sign-on ]
+    - id: data-feeds
+      title: Data feeds
+      description: Regular loads from the contact center system, contact records, surveys, website, and virtual agent.
+      tier: service
+      sendsTo: [ reporting-store ]
+    - id: reporting-store
+      title: Reporting store
+      description: Figures from every system, with shared definitions such as when a contact counts as resolved.
+      tier: data
   implements: [ contact-center-reporting ]
+  depends_on: [ agency-sign-on ]

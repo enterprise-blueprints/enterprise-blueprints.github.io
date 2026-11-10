@@ -685,13 +685,23 @@ describe('components (schema 0.8.0)', () => {
     return validatePackage(pkg, resolve).join('\n');
   };
 
-  it('list the parts of the OIG and Common solutions, each in a tier, with needs that name the solution’s own', () => {
-    for (const pkg of [original, common]) {
+  it('list the parts of every solution but those that are features of another product, each in a tier', () => {
+    // A product's own features, turned on, run as part of it, so they have no parts of their own.
+    const features = ['built-in-audit-trails-product', 'records-in-business-systems-built-in', 'ai-evidence-summaries-product-feature', 'benefits-workload-reporting-reporting-in-system', 'ai-review-suggestions-product'];
+    let count = 0;
+    for (const pkg of [original, common, foia, grants, acquisition, contactCenter, hr, benefits]) {
       expect(pkg.schemaVersion).toBe('0.8.0');
-      const listed = ofType(pkg, 'solution').filter((s) => componentsIn(s).length);
-      expect(listed.length, pkg.packageId).toBe(pkg === original ? 11 : 8);
-      for (const s of listed) for (const c of componentsIn(s)) expect(['front', 'service', 'data'], `${s.id} ${c.id}`).toContain(c.tier);
+      for (const s of ofType(pkg, 'solution')) {
+        const listed = componentsIn(s);
+        expect(listed.length > 0, s.id).toBe(!features.includes(s.id.split(':')[2]));
+        for (const c of listed) expect(['front', 'service', 'data'], `${s.id} ${c.id}`).toContain(c.tier);
+        count += listed.length;
+      }
     }
+    expect(count).toBe(391);
+    // A shared service's staff sign in through its provider, not the agency.
+    const ipp = acquisition.elements.find((e) => e.id === 'eb:solution:invoices-through-ipp-platform')!;
+    expect(acquisition.relations).not.toContainEqual(expect.objectContaining({ from: ipp.id, to: signOn }));
     expect(product(original).attributes!.hostedBy).toBe('vendor');
     // Written as a pattern's key, a need is published as its full ID.
     expect(parts(original).find((c) => c.id === 'case-workspace')!.needs).toEqual([signOn]);

@@ -5,6 +5,7 @@
   title: A FOIA product
   description: A product made for FOIA that handles tracking, review, release, and reporting in one place.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Knows FOIA’s rules, such as tracks, working-day deadlines, fee categories, and exemption codes
@@ -12,7 +13,36 @@
       - The office handles hundreds of requests a year or more
     watchFor:
       - Built-in review may struggle with very large email collections
+  components:
+    - id: request-form
+      title: Public request form
+      description: Where requesters make a request, agree to fees, and check its status.
+      tier: front
+      exposure: public
+      sendsTo: [ request-tracking ]
+    - id: staff-workspace
+      title: FOIA staff workspace
+      description: Where FOIA staff log, assign, and work requests.
+      tier: front
+      exposure: internal
+      sendsTo: [ request-tracking, review ]
+      needs: [ agency-sign-on ]
+    - id: request-tracking
+      title: Request tracking
+      description: Tracks, working-day deadlines, fees, correspondence, and letters from templates.
+      tier: service
+      sendsTo: [ request-records ]
+    - id: review
+      title: Review and redaction
+      description: Collects records, sets duplicates aside, and applies redactions marked with their exemptions.
+      tier: service
+      sendsTo: [ request-records ]
+    - id: request-records
+      title: Request and release records
+      description: Each request with its records, redactions, and release, and the figures for the annual report.
+      tier: data
   implements: [ foia-request-processing ]
+  depends_on: [ agency-sign-on ]
 
 - id: foia-request-processing-platform-and-review-tool
   title: The shared case platform, with a separate review tool
@@ -30,27 +60,126 @@
       - The handoff between the tools is where requests stall or records go missing
       - Deadline rules, such as pausing the clock, must be built and kept up to date
       - Two tools to authorize, secure, and train people on
+  components:
+    - id: request-queues
+      title: FOIA request forms and queues
+      description: Where FOIA staff log, assign, and track requests on the shared platform.
+      tier: front
+      exposure: internal
+      sendsTo: [ request-steps ]
+      needs: [ agency-sign-on ]
+    - id: request-steps
+      title: Tracking and deadline steps
+      description: FOIA’s tracks and working-day deadlines, with pauses for clarification or fees.
+      tier: service
+      sendsTo: [ request-records ]
+      needs: [ shared-case-platform ]
+    - id: request-records
+      title: Request records
+      description: Each request with its dates, fees, and correspondence, and the annual report’s figures.
+      tier: data
+    - id: review-workspace
+      title: Document review tool
+      description: Where reviewers deduplicate records and apply redactions marked with their exemptions.
+      tier: front
+      exposure: internal
+      sendsTo: [ review-sets ]
+      needs: [ agency-sign-on ]
+    - id: handoff
+      title: Request-to-review handoff
+      description: Links each request to its records in review, and brings the release package back.
+      tier: service
+      sendsTo: [ request-steps, review-sets ]
+    - id: review-sets
+      title: Review sets
+      description: The records collected for each request, with their redactions.
+      tier: data
   implements: [ foia-request-processing ]
   depends_on:
     - to: shared-case-platform
       note: The tracking half is the shared platform, set up for FOIA.
+    - agency-sign-on
 
 - id: ediscovery-search-review-platform
   title: The agency’s eDiscovery tools
   description: The eDiscovery tools the agency already has, used to search mailboxes and collections and send what’s found to review.
   approach: platform
+  components:
+    - id: search-console
+      title: Search console
+      description: Where IT staff search mailboxes, chats, and shared files by person, terms, and date range.
+      tier: front
+      exposure: internal
+      sendsTo: [ processing ]
+      needs: [ agency-sign-on ]
+    - id: processing
+      title: Deduplication and threading
+      description: Sets duplicates aside and threads email before review.
+      tier: service
+      sendsTo: [ collections ]
+    - id: export
+      title: Export to review
+      description: Sends each search’s results to the review tool.
+      tier: service
+      sendsTo: [ collections ]
+    - id: collections
+      title: Searches and collections
+      description: Each search’s terms, sources, and results, with the items it collected.
+      tier: data
   implements: [ ediscovery-search-review ]
+  depends_on: [ agency-sign-on ]
 
 - id: national-portal-api-build
   title: A connection to FOIA.gov’s agency API
   description: A connection the agency builds from its FOIA system to FOIA.gov’s agency API, so requests arrive as records.
   approach: build
+  components:
+    - id: portal-receiver
+      title: Portal request receiver
+      description: Takes each request FOIA.gov sends through its agency API.
+      tier: service
+      sendsTo: [ request-mapping, receipt-log ]
+    - id: request-mapping
+      title: Mapping and acknowledgment
+      description: Turns the portal’s fields into a request record, and sends back the tracking number.
+      tier: service
+      sendsTo: [ receipt-log ]
+    - id: arrival-monitor
+      title: Arrival monitoring
+      description: Alerts staff when a request fails to arrive.
+      tier: service
+      sendsTo: [ receipt-log ]
+    - id: receipt-log
+      title: Receipt log
+      description: Each request received, with its tracking number and any errors.
+      tier: data
   implements: [ national-portal-api ]
 
 - id: foia-library-publishing-platform
   title: The agency’s online FOIA library
   description: The agency’s online FOIA library, with released records sent to it from the review tool.
   approach: platform
+  components:
+    - id: library-pages
+      title: FOIA library pages
+      description: Where the public searches released records and the list of frequently requested ones.
+      tier: front
+      exposure: public
+      sendsTo: [ library-search ]
+    - id: library-search
+      title: Library search
+      description: Finds released records by their text and request details.
+      tier: service
+      sendsTo: [ released-records ]
+    - id: publishing
+      title: Publishing step
+      description: Takes each release from the review tool, checks its files are accessible, and holds back records released to people about themselves.
+      tier: service
+      sendsTo: [ released-records ]
+    - id: released-records
+      title: Released records
+      description: Posted files with each release’s details.
+      tier: data
   implements: [ foia-library-publishing ]
 
 - id: ai-review-suggestions-product
@@ -63,4 +192,26 @@
   title: A dashboard on the tracking data
   description: A dashboard built on the request tracking data, refreshed daily.
   approach: build
+  components:
+    - id: dashboard
+      title: Workload dashboard
+      description: Views of the backlog, the oldest requests, and response times, for the Chief FOIA Officer, managers, and staff.
+      tier: front
+      exposure: internal
+      sendsTo: [ measures ]
+      needs: [ agency-sign-on ]
+    - id: measures
+      title: Measures and forecasts
+      description: Counts defined the way the annual report counts them, and forecasts of incoming requests.
+      tier: service
+      sendsTo: [ reporting-store ]
+    - id: daily-copy
+      title: Daily copy
+      description: Copies the request tracking data every day.
+      tier: service
+      sendsTo: [ reporting-store ]
+    - id: reporting-store
+      title: Reporting store
+      tier: data
   implements: [ foia-workload-dashboard ]
+  depends_on: [ agency-sign-on ]

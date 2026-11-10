@@ -185,7 +185,8 @@ solution's own `depends_on` patterns this part makes the connection to). Tools n
 solution's `hostedBy` says who runs it: `vendor` (its maker, as a service), `agency`, or `provider` (another
 agency, as a shared service); left out, a shared service is taken to be run by another agency, and a
 platform or something built by the agency. Studio brings a chosen solution's components in, connected, and
-suggests the connections their needs make. The OIG and Common solutions have components so far.
+suggests the connections their needs make. Every solution has components except the five that are features of
+another product turned on, such as built-in audit trails.
 
 Patterns connect to each other too. `depends_on` (shown as **Needs**) is for a pattern that can't work
 without another, however it's sourced; on a solution, it's a need of that solution only, such as case

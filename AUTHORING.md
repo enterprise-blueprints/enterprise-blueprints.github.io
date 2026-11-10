@@ -92,7 +92,8 @@ A solution can list its `components:`, the parts that run separately, three to f
 integration, `data` for what's stored), and where it helps, a `description`, an `exposure` (`public` for a
 part the public reaches, such as a reporting form, or `internal`), `sendsTo:` with the other parts it calls,
 by ID, and `needs:` with which of the solution's own `depends_on` patterns this part connects to, such as the
-staff workspace needing `agency-sign-on`. `hostedBy` says who runs it: `vendor` for a product its maker runs
+staff workspace needing `agency-sign-on`. A solution with a part staff sign in to depends on `agency-sign-on`,
+unless it's a shared service, whose staff sign in through its provider. `hostedBy` says who runs it: `vendor` for a product its maker runs
 as a service, `agency`, or `provider` for another agency's shared service. Leave it out where it could go
 either way, such as for tools combined. The library's components are kinds of part, so leave out
 `technology`, which is for an organization's products.

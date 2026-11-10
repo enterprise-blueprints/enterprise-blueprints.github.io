@@ -5,6 +5,7 @@
   title: A benefits administration product
   description: A product made for benefits or claims work, configured for the program’s rules and run by the agency.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Common steps, such as work queues and letters, come ready
@@ -13,7 +14,30 @@
     watchFor:
       - Rules specific to the program can mean heavy configuration
       - Another product to buy, secure, and keep up
+  components:
+    - id: claims-workspace
+      title: Claims workspace
+      description: Where staff work the claims in their queues and record decisions.
+      tier: front
+      exposure: internal
+      sendsTo: [ claim-workflow ]
+      needs: [ agency-sign-on ]
+    - id: claim-workflow
+      title: Work queues and claim steps
+      description: Routes each claim, tracks what it still needs and its deadlines, and records each decision.
+      tier: service
+      sendsTo: [ notices, claim-records ]
+    - id: notices
+      title: Notices and letters
+      description: Drafts requests and decision notices from the claim, and saves them back to it.
+      tier: service
+      sendsTo: [ claim-records ]
+    - id: claim-records
+      title: Claimant, claim, and benefit records
+      description: Each person with their claims, benefits, payee, representative, and history.
+      tier: data
   implements: [ benefits-claims-system ]
+  depends_on: [ agency-sign-on ]
 
 - id: benefits-claims-system-agency-platform
   title: The agency’s shared case platform
@@ -28,10 +52,35 @@
     watchFor:
       - Very high claim volumes need testing early
       - Paying benefits for years is different from closing a case, so plan how the benefit record works
+  components:
+    - id: claim-forms
+      title: Claim forms and work queues
+      description: The program’s claim types, forms, and queues, for its staff.
+      tier: front
+      exposure: internal
+      sendsTo: [ claim-steps, benefit-upkeep ]
+      needs: [ agency-sign-on ]
+    - id: claim-steps
+      title: Claim steps and decisions
+      description: The program’s workflow on the platform, from intake to a recorded decision.
+      tier: service
+      sendsTo: [ claim-records ]
+      needs: [ shared-case-platform ]
+    - id: benefit-upkeep
+      title: Benefit changes and reviews
+      description: Changes, scheduled reviews, and payee updates for benefits being paid.
+      tier: service
+      sendsTo: [ claim-records ]
+      needs: [ shared-case-platform ]
+    - id: claim-records
+      title: Claim and benefit records
+      description: Claims, and each benefit’s amount, payee, and history over the years it’s paid.
+      tier: data
   implements: [ benefits-claims-system ]
   depends_on:
     - to: shared-case-platform
       note: Claims and their steps are the shared platform, set up for the program.
+    - agency-sign-on
 
 - id: benefits-claims-system-custom-build
   title: A claims system built for the program
@@ -46,12 +95,36 @@
     watchFor:
       - It needs a lasting team, not just a project
       - Parts of the old and new systems will run side by side for years
+  components:
+    - id: claims-workspace
+      title: Claims workspace
+      description: Where staff work claims and benefits, built around the program’s steps.
+      tier: front
+      exposure: internal
+      sendsTo: [ claim-services ]
+      needs: [ agency-sign-on ]
+    - id: claim-services
+      title: Claim services and APIs
+      description: The claim steps, queues, and decisions, offered as APIs to the online account and other systems.
+      tier: service
+      sendsTo: [ claim-records ]
+    - id: legacy-bridge
+      title: Old system bridge
+      description: Keeps records in step with the old system while its parts move across one at a time.
+      tier: service
+      sendsTo: [ claim-records ]
+    - id: claim-records
+      title: Claimant, claim, and benefit records
+      description: Each person with their claims, benefits, payee, and history.
+      tier: data
   implements: [ benefits-claims-system ]
+  depends_on: [ agency-sign-on ]
 
 - id: benefits-online-account-product-portal
   title: The portal in a benefits product
   description: The public portal that comes with the benefits administration product, configured and branded for the program.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Comes connected to the claims system
@@ -59,6 +132,28 @@
       - The office has chosen a benefits product with a portal that meets its needs
     watchFor:
       - Check it against accessibility standards and with real users before relying on it
+  components:
+    - id: claimant-portal
+      title: Claimant portal
+      description: Where people apply, send documents, see where their claim stands, and read their notices.
+      tier: front
+      exposure: public
+      sendsTo: [ portal-services ]
+    - id: representative-access
+      title: Representative and payee access
+      description: Where representatives and payees act for the people they help, under their own sign-in.
+      tier: front
+      exposure: public
+      sendsTo: [ portal-services ]
+    - id: portal-services
+      title: Portal services
+      description: Saves applications, takes uploads and changes, and passes them to the claims system.
+      tier: service
+      sendsTo: [ portal-data ]
+    - id: portal-data
+      title: Saved applications and uploads
+      description: Applications in progress, with their filing dates, and documents waiting to reach the claim.
+      tier: data
   implements: [ benefits-online-account ]
 
 - id: benefits-online-account-agency-built
@@ -74,12 +169,35 @@
     watchFor:
       - It needs a lasting team
       - It depends on the claims system having good APIs
+  components:
+    - id: account-site
+      title: Online account
+      description: Where people apply, send documents, see their claim’s status, read notices, and report changes.
+      tier: front
+      exposure: public
+      sendsTo: [ account-services ]
+    - id: representative-access
+      title: Representative and payee access
+      description: Where representatives and payees act for the people they help, under their own sign-in.
+      tier: front
+      exposure: public
+      sendsTo: [ account-services ]
+    - id: account-services
+      title: Account services
+      description: Saves applications, handles uploads, and calls the claims system’s APIs.
+      tier: service
+      sendsTo: [ account-data ]
+    - id: account-data
+      title: Saved applications and uploads
+      description: Applications in progress, with their filing dates, and documents waiting to reach the claim.
+      tier: data
   implements: [ benefits-online-account ]
 
 - id: eligibility-rules-service-rules-product
   title: A business rules product
   description: A rules product that holds the program’s rules, with tools for writing, versioning, and testing them.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Tools for writing and testing rules come ready
@@ -87,7 +205,30 @@
       - The agency has staff to learn the product and many rules to manage
     watchFor:
       - The rules can end up tied to the product’s format
+  components:
+    - id: rule-authoring
+      title: Rule writing tools
+      description: Where program staff write, read, and check rules against the law.
+      tier: front
+      exposure: internal
+      sendsTo: [ rule-testing, rule-versions ]
+      needs: [ agency-sign-on ]
+    - id: rule-testing
+      title: Rule testing
+      description: Runs the test cases with known answers before a change goes live.
+      tier: service
+      sendsTo: [ rule-versions ]
+    - id: rules-engine
+      title: Rules engine
+      description: Answers what the rules give for a set of facts, and which rules applied, for the claims system and the online account.
+      tier: service
+      sendsTo: [ rule-versions ]
+    - id: rule-versions
+      title: Rule versions and test cases
+      description: The rules by effective date, with their test cases.
+      tier: data
   implements: [ eligibility-rules-service ]
+  depends_on: [ agency-sign-on ]
 
 - id: eligibility-rules-service-rules-as-code
   title: Rules kept as tested code
@@ -101,12 +242,36 @@
       - The agency has developers working closely with program staff
     watchFor:
       - Program staff need a way to read the rules that doesn’t require reading code
+  components:
+    - id: rules-reader
+      title: Rules in plain words
+      description: A readable view of the rules and their tests, for program staff to review.
+      tier: front
+      exposure: internal
+      sendsTo: [ rules-repository ]
+      needs: [ agency-sign-on ]
+    - id: review-pipeline
+      title: Review and test pipeline
+      description: Runs the tests on each change, and records program staff’s review before it goes live.
+      tier: service
+      sendsTo: [ rules-repository ]
+    - id: rules-api
+      title: Rules API
+      description: Answers what the rules give for a set of facts, and which rules applied and why.
+      tier: service
+      sendsTo: [ rules-repository ]
+    - id: rules-repository
+      title: Rules repository
+      description: The rules as code, with their tests, versioned by effective date.
+      tier: data
   implements: [ eligibility-rules-service ]
+  depends_on: [ agency-sign-on ]
 
 - id: claim-evidence-folder-content-product
   title: A content management product
   description: A document or content management product, with scanning and labeling, connected to the claims system.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Scanning, search, and retention come ready
@@ -114,7 +279,37 @@
       - The office receives a large volume of paper
     watchFor:
       - Connections to the claims system take work
+  components:
+    - id: scanning
+      title: Mail scanning and capture
+      description: Where mail room staff scan incoming paper and check each image.
+      tier: front
+      exposure: internal
+      sendsTo: [ labeling ]
+      needs: [ agency-sign-on ]
+    - id: folder-viewer
+      title: Evidence folder viewer
+      description: Where staff search and read a claim’s documents.
+      tier: front
+      exposure: internal
+      sendsTo: [ document-store ]
+      needs: [ agency-sign-on ]
+    - id: labeling
+      title: Labeling and indexing
+      description: Labels each document’s type, date, and source, for staff to check.
+      tier: service
+      sendsTo: [ document-store ]
+    - id: claims-connection
+      title: Claims system connection
+      description: Links each document to its claim, and takes in uploads from the online account.
+      tier: service
+      sendsTo: [ document-store ]
+    - id: document-store
+      title: Document store
+      description: Each claim’s documents, with their labels, retention, and a record of each view.
+      tier: data
   implements: [ claim-evidence-folder ]
+  depends_on: [ agency-sign-on ]
 
 - id: claim-evidence-folder-scanning-service
   title: A scanning service and the agency’s document store
@@ -128,7 +323,30 @@
       - The agency has a document store, and wants to hand off the mail work
     watchFor:
       - The contract needs quality standards and turnaround times the office can check
+  components:
+    - id: scanning-center
+      title: Contracted mail and scanning center
+      description: Opens the program’s mail, scans it, and labels each image.
+      tier: service
+      sendsTo: [ image-intake ]
+    - id: image-intake
+      title: Image intake
+      description: Takes in each batch of labeled images, and checks it against the contract’s standards.
+      tier: service
+      sendsTo: [ document-store ]
+    - id: quality-reports
+      title: Quality and turnaround reports
+      description: Where office staff check the center’s image quality and turnaround times.
+      tier: front
+      exposure: internal
+      sendsTo: [ image-intake ]
+      needs: [ agency-sign-on ]
+    - id: document-store
+      title: Agency document store
+      description: The labeled images, which the claims system reads.
+      tier: data
   implements: [ claim-evidence-folder ]
+  depends_on: [ agency-sign-on ]
 
 - id: public-sign-in-login-gov
   title: Login.gov
@@ -142,6 +360,27 @@
       - Its service levels meet the office’s needs
     watchFor:
       - The level of identity assurance the office needs may call for facial matching, which some people won’t want or can’t use
+  components:
+    - id: sign-in-pages
+      title: Sign-in and verification pages
+      description: Where people sign in with multi-factor authentication and verify their identity.
+      tier: front
+      exposure: public
+      sendsTo: [ identity-service ]
+    - id: identity-service
+      title: Sign-in and identity service
+      description: Verifies identity to the level asked for, and tells the office’s application who’s there.
+      tier: service
+      sendsTo: [ record-link ]
+    - id: record-link
+      title: The office’s connection
+      description: The office’s own link that matches a verified person to their records.
+      tier: service
+      sendsTo: [ person-links ]
+    - id: person-links
+      title: Links to records
+      description: Which verified person goes with which record in the office’s systems.
+      tier: data
   implements: [ public-sign-in ]
 
 - id: public-sign-in-agency-identity-service
@@ -155,6 +394,27 @@
       - The agency has many public services, and needs that a shared service doesn’t meet
     watchFor:
       - Running it, securing it, and keeping up with fraud are lasting work
+  components:
+    - id: sign-in-pages
+      title: Public sign-in pages
+      description: Where people sign in with multi-factor authentication and verify their identity.
+      tier: front
+      exposure: public
+      sendsTo: [ identity-service ]
+    - id: identity-service
+      title: Public identity service
+      description: Signs people in, asks for stronger checks on risky actions, and tells the office’s applications who’s there.
+      tier: service
+      sendsTo: [ verification, accounts ]
+    - id: verification
+      title: Identity verification connection
+      description: Sends identity checks to the verification provider, and records the result.
+      tier: service
+      sendsTo: [ accounts ]
+    - id: accounts
+      title: Public accounts
+      description: People’s accounts, authenticators, verification results, and links to their records.
+      tier: data
   implements: [ public-sign-in ]
 
 - id: eligibility-data-exchanges-api-connections
@@ -168,7 +428,30 @@
       - The claims system can call APIs, and the data sources offer them
     watchFor:
       - Each connection needs its own security review and agreement
+  components:
+    - id: exchange-service
+      title: Data exchange service
+      description: Calls Do Not Pay Connect and other agencies’ APIs at set points in a claim.
+      tier: service
+      sendsTo: [ match-results ]
+    - id: scheduled-rechecks
+      title: Scheduled rechecks
+      description: Runs the checks again on a schedule while a benefit is paid.
+      tier: service
+      sendsTo: [ exchange-service ]
+    - id: match-queue
+      title: Match review queue
+      description: Where staff confirm matches, with the notice and response time tracked.
+      tier: front
+      exposure: internal
+      sendsTo: [ match-results ]
+      needs: [ agency-sign-on ]
+    - id: match-results
+      title: Match results
+      description: Each result saved with its claim, with its source and date.
+      tier: data
   implements: [ eligibility-data-exchanges ]
+  depends_on: [ agency-sign-on ]
 
 - id: eligibility-data-exchanges-scheduled-batch
   title: Scheduled batch matches
@@ -182,7 +465,25 @@
       - The claims system is old, or the source only offers files
     watchFor:
       - Results arrive after the moment they’d help most
+  components:
+    - id: batch-files
+      title: Scheduled match files
+      description: Sends the office’s files on a schedule, and takes back results from the Do Not Pay Web Portal and other file exchanges.
+      tier: service
+      sendsTo: [ match-results ]
+    - id: match-worklist
+      title: Match work list
+      description: Where staff work the matches that came back, with the notice and response time tracked.
+      tier: front
+      exposure: internal
+      sendsTo: [ match-results ]
+      needs: [ agency-sign-on ]
+    - id: match-results
+      title: Match results
+      description: Each match and what staff found, kept with the claim.
+      tier: data
   implements: [ eligibility-data-exchanges ]
+  depends_on: [ agency-sign-on ]
 
 - id: payments-through-treasury-bulk-files
   title: Bulk payment files from the claims system
@@ -195,7 +496,35 @@
       - The office makes many payments each cycle
     watchFor:
       - File formats change from time to time, so plan for updates
+  components:
+    - id: payment-files
+      title: Payment file builder
+      description: Builds each cycle’s file in Treasury’s Standard Payment Request format from the benefits due.
+      tier: service
+      sendsTo: [ release-checks ]
+    - id: release-checks
+      title: Checks before release
+      description: Compares totals with the last cycle, and flags large or unusual changes.
+      tier: service
+      sendsTo: [ payment-history ]
+    - id: payment-review
+      title: Payment review
+      description: Where staff review each cycle’s checks before the file goes for certification.
+      tier: front
+      exposure: internal
+      sendsTo: [ release-checks ]
+      needs: [ agency-sign-on ]
+    - id: returns
+      title: Returned payment handling
+      description: Brings returned and failed payments back to the benefit record for follow-up.
+      tier: service
+      sendsTo: [ payment-history ]
+    - id: payment-history
+      title: Payment history
+      description: Each cycle’s files, totals, checks, and returns.
+      tier: data
   implements: [ payments-through-treasury ]
+  depends_on: [ agency-sign-on ]
 
 - id: payments-through-treasury-through-financial-system
   title: Through the agency’s financial system
@@ -208,6 +537,26 @@
       - Payments are fewer, or the agency handles all its payments this way
     watchFor:
       - Failed and returned payments have further to travel back to the claim
+  components:
+    - id: approved-payments
+      title: Approved payments feed
+      description: Sends approved payments from the claims system to the financial system.
+      tier: service
+      sendsTo: [ payment-scheduling ]
+    - id: payment-scheduling
+      title: Payment scheduling
+      description: Records the accounting entries in the financial system, and schedules each payment with Treasury.
+      tier: service
+      sendsTo: [ accounting-records ]
+    - id: returns-feed
+      title: Returned payment feed
+      description: Sends failed and returned payments from the financial system back to the claim.
+      tier: service
+      sendsTo: [ accounting-records ]
+    - id: accounting-records
+      title: Payment and accounting records
+      description: Each payment, its accounting entries, and any return.
+      tier: data
   implements: [ payments-through-treasury ]
 
 - id: overpayment-tracking-claims-system-module
@@ -221,10 +570,34 @@
       - The claims system can hold debts and their steps
     watchFor:
       - Debts still need to reach the agency’s financial records
+  components:
+    - id: debt-workspace
+      title: Debt workspace
+      description: Where staff record overpayments, waiver requests, appeals, and repayment plans.
+      tier: front
+      exposure: internal
+      sendsTo: [ debt-steps ]
+      needs: [ agency-sign-on ]
+    - id: debt-steps
+      title: Debt steps
+      description: Sends notices, pauses collection for waivers and appeals, withholds from payments, and refers debts to Treasury.
+      tier: service
+      sendsTo: [ debt-records ]
+      needs: [ benefits-claims-system ]
+    - id: finance-feed
+      title: Financial system feed
+      description: Sends debts and amounts recovered to the agency’s financial system.
+      tier: service
+      sendsTo: [ debt-records ]
+    - id: debt-records
+      title: Debt records
+      description: Each overpayment, tied to its benefit, with how the amount was worked out.
+      tier: data
   implements: [ overpayment-tracking ]
   depends_on:
     - to: benefits-claims-system
       note: The debt module is part of the claims system.
+    - agency-sign-on
 
 - id: overpayment-tracking-financial-system-receivables
   title: Receivables in the agency’s financial system
@@ -237,7 +610,30 @@
       - The agency’s financial system already handles debts and Treasury referrals
     watchFor:
       - The two systems must agree on when collection pauses
+  components:
+    - id: finance-workspace
+      title: Finance staff workspace
+      description: Where finance staff manage debts, repayment plans, and collections.
+      tier: front
+      exposure: internal
+      sendsTo: [ receivables ]
+      needs: [ agency-sign-on ]
+    - id: receivables
+      title: Receivables and collection
+      description: Holds each debt, runs repayment and withholding, and refers delinquent debts to Treasury.
+      tier: service
+      sendsTo: [ debt-records ]
+    - id: waiver-link
+      title: Waiver and appeal link
+      description: Tells the financial system when a waiver request or appeal in the claims system pauses collection.
+      tier: service
+      sendsTo: [ receivables ]
+    - id: debt-records
+      title: Debt and collection records
+      description: Each debt, what’s been collected, and any referral.
+      tier: data
   implements: [ overpayment-tracking ]
+  depends_on: [ agency-sign-on ]
 
 - id: ai-evidence-summaries-agency-ai-service
   title: The agency’s approved AI service
@@ -250,7 +646,33 @@
       - The agency has an AI service approved for this kind of information
     watchFor:
       - It takes testing with the program’s own documents and staff
+  components:
+    - id: summary-panel
+      title: Summary panel
+      description: Where staff read each summary, follow its links to the source pages, and record their checks.
+      tier: front
+      exposure: internal
+      sendsTo: [ summarizer, summary-log ]
+      needs: [ agency-sign-on ]
+    - id: text-extraction
+      title: Text extraction
+      description: Reads the text of scanned and uploaded documents in the evidence folder.
+      tier: service
+    - id: summarizer
+      title: Summarizing service
+      description: Sends a claim’s documents to the approved AI service, and returns a summary on each issue with links to its pages.
+      tier: service
+      sendsTo: [ text-extraction, ai-service, summary-log ]
+    - id: ai-service
+      title: Approved AI service
+      description: The AI service the agency has approved for sensitive information.
+      tier: service
+    - id: summary-log
+      title: Summary and review records
+      description: What the AI produced, and what staff did with it.
+      tier: data
   implements: [ ai-evidence-summaries ]
+  depends_on: [ agency-sign-on ]
 
 - id: ai-evidence-summaries-product-feature
   title: An AI feature in the claims or document product
@@ -276,12 +698,36 @@
       - The agency has analysts and a data platform
     watchFor:
       - Flags need a clear path to the staff who act on them
+  components:
+    - id: analyst-workspace
+      title: Analyst workspace
+      description: Notebooks and dashboards where analysts look for risk and set up flags.
+      tier: front
+      exposure: internal
+      sendsTo: [ risk-store ]
+      needs: [ agency-sign-on ]
+    - id: data-feeds
+      title: Data feeds
+      description: Regular loads from the claims, payment, sign-in, and match systems.
+      tier: service
+      sendsTo: [ risk-store ]
+    - id: flag-referrals
+      title: Flag referrals
+      description: Sends flags and suggested samples to the staff who act on them, and records what they decided.
+      tier: service
+      sendsTo: [ risk-store ]
+    - id: risk-store
+      title: Risk data store
+      description: Claims, payments, match results, past findings, and each flag’s outcome.
+      tier: data
   implements: [ payment-risk-analytics ]
+  depends_on: [ agency-sign-on ]
 
 - id: payment-risk-analytics-fraud-product
   title: A fraud analytics product
   description: A product made for detecting payment fraud, fed from the program’s data.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Comes with common fraud patterns
@@ -289,7 +735,30 @@
       - The office has little analytics staff, and common fraud risks
     watchFor:
       - Ask how scores are made, since staff must be able to explain why something was flagged
+  components:
+    - id: review-console
+      title: Flag review console
+      description: Where staff see each flag and why it was raised, and record what they decided.
+      tier: front
+      exposure: internal
+      sendsTo: [ scoring ]
+      needs: [ agency-sign-on ]
+    - id: data-intake
+      title: Program data feeds
+      description: Brings in claims, payment, and match data on a schedule.
+      tier: service
+      sendsTo: [ fraud-data ]
+    - id: scoring
+      title: Risk scoring
+      description: Scores claims and payments against common fraud patterns, with the reasons for each score.
+      tier: service
+      sendsTo: [ fraud-data ]
+    - id: fraud-data
+      title: Scores and review records
+      description: The program’s data as brought in, each score, and what staff decided.
+      tier: data
   implements: [ payment-risk-analytics ]
+  depends_on: [ agency-sign-on ]
 
 - id: benefits-workload-reporting-reporting-in-system
   title: The reports in the claims system
@@ -315,4 +784,33 @@
       - Work is spread across systems, or the agency already has an analytics platform
     watchFor:
       - Someone has to own the definitions, or the numbers will drift
+  components:
+    - id: manager-dashboards
+      title: Manager dashboards
+      description: Claims pending, their ages, and where work is stuck, for managers each day.
+      tier: front
+      exposure: internal
+      sendsTo: [ measures ]
+      needs: [ agency-sign-on ]
+    - id: public-reports
+      title: Public reports
+      description: The report published on a set schedule, with downloadable data.
+      tier: front
+      exposure: public
+      sendsTo: [ measures ]
+    - id: measures
+      title: Agreed measures
+      description: The agreed definitions each figure is built from, such as when a claim starts.
+      tier: service
+      sendsTo: [ reporting-store ]
+    - id: data-loads
+      title: Data loads
+      description: Regular copies of claims, payments, and reviews from the claims and payment systems.
+      tier: service
+      sendsTo: [ reporting-store ]
+    - id: reporting-store
+      title: Reporting store
+      description: Claims, payments, and reviews over the years, kept out of the way of daily work.
+      tier: data
   implements: [ benefits-workload-reporting ]
+  depends_on: [ agency-sign-on ]

@@ -5,6 +5,7 @@
   title: A contract writing product
   description: A contract writing product, configured for the agency’s rules and deviations and run by its contracting office.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Clause logic keeps awards consistent with the rules, and can be updated as the FAR changes
@@ -12,7 +13,41 @@
       - The agency awards many contracts, or contracts of many kinds
     watchFor:
       - Another product to buy, secure, and keep up
+  components:
+    - id: requests
+      title: Program office requests
+      description: Where program offices send their needs and funding, and see where each request stands.
+      tier: front
+      exposure: internal
+      sendsTo: [ approvals ]
+      needs: [ agency-sign-on ]
+    - id: contracting-workspace
+      title: Contracting workspace
+      description: Where contracting staff build solicitations, awards, and modifications from templates.
+      tier: front
+      exposure: internal
+      sendsTo: [ clause-rules, approvals ]
+      needs: [ agency-sign-on ]
+    - id: clause-rules
+      title: Clause rules
+      description: Chooses the clauses for each document by the contract’s type and value.
+      tier: service
+    - id: approvals
+      title: Reviews and approvals
+      description: Routes each request and award for review by its value and type, and tracks closeout.
+      tier: service
+      sendsTo: [ contract-file, connections ]
+    - id: connections
+      title: SAM.gov and financial system connections
+      description: Posts notices and contract action reports to SAM.gov, and sends obligations to the financial system.
+      tier: service
+      sendsTo: [ contract-file ]
+    - id: contract-file
+      title: Contract file
+      description: Each contract’s documents and approvals, from request to closeout.
+      tier: data
   implements: [ acquisition-management ]
+  depends_on: [ agency-sign-on ]
 
 - id: acquisition-management-agency-platform
   title: The agency’s shared case platform
@@ -28,10 +63,41 @@
     watchFor:
       - Clause selection, posting to SAM.gov, and contract action reporting take real building, and keeping them current with the FAR is ongoing work
       - Contract data the agency reports must still meet SAM.gov’s data standards
+  components:
+    - id: request-forms
+      title: Program office request forms
+      description: Where program offices send their needs and funding, and see where each request stands.
+      tier: front
+      exposure: internal
+      sendsTo: [ acquisition-steps ]
+      needs: [ agency-sign-on ]
+    - id: contracting-forms
+      title: Contracting case types and forms
+      description: The contracting office’s queues and records, with documents made from templates.
+      tier: front
+      exposure: internal
+      sendsTo: [ acquisition-steps ]
+      needs: [ agency-sign-on ]
+    - id: acquisition-steps
+      title: Acquisition steps
+      description: Planning, solicitation, evaluation, award, and closeout steps, with their approvals, on the platform.
+      tier: service
+      sendsTo: [ acquisition-records, reporting-connections ]
+      needs: [ shared-case-platform ]
+    - id: reporting-connections
+      title: SAM.gov and financial system connections
+      description: Connections the agency builds to post to SAM.gov, report contract actions, and send obligations to the financial system.
+      tier: service
+      sendsTo: [ acquisition-records ]
+    - id: acquisition-records
+      title: Request and contract records
+      description: Each request and contract, with its modifications, documents, and closeout checklist.
+      tier: data
   implements: [ acquisition-management ]
   depends_on:
     - to: shared-case-platform
       note: The request and contract records and their steps are the shared platform, set up for acquisition.
+    - agency-sign-on
 
 - id: acquisition-management-assisted-acquisition
   title: Another agency’s contracting office
@@ -49,40 +115,196 @@
       - Fees add to the cost of each acquisition
       - The agency still owns its requirements, its funds, and the results, and needs people who can do that well
       - Getting the agency’s contract data and files back, for reporting or a later move, needs agreeing up front
+  components:
+    - id: customer-portal
+      title: Customer portal
+      description: Where agency staff send requirements and funding documents to the provider, and follow each request.
+      tier: front
+      exposure: internal
+      sendsTo: [ contract-writing ]
+    - id: contract-writing
+      title: Provider contract writing
+      description: The provider’s system for awards, modifications, and reporting to SAM.gov.
+      tier: service
+      sendsTo: [ contract-files ]
+    - id: status-reports
+      title: Status reports
+      description: Regular reports to the agency on each request and contract.
+      tier: service
+      sendsTo: [ contract-files ]
+    - id: contract-files
+      title: Contract files
+      description: Each contract’s documents, kept by the provider, with copies for the agency as agreed.
+      tier: data
   implements: [ acquisition-management ]
 
 - id: vendor-proposal-portal-combine
   title: A portal combined from secure upload and sign-in tools
   description: Secure upload and sign-in tools put together into a portal, with uploads time-stamped and offers sealed until the deadline.
   approach: combine
+  components:
+    - id: vendor-portal
+      title: Vendor portal
+      description: Where vendors ask questions, read the answers, and upload offers.
+      tier: front
+      exposure: public
+      sendsTo: [ vendor-sign-in, sealed-upload ]
+    - id: vendor-sign-in
+      title: Vendor sign-in
+      description: Vendor accounts, tied to each vendor’s SAM.gov registration.
+      tier: service
+    - id: sealed-upload
+      title: Time-stamped upload
+      description: Stamps each upload, gives the vendor a receipt, and keeps offers locked until the deadline.
+      tier: service
+      sendsTo: [ offer-storage ]
+    - id: evaluator-access
+      title: Evaluation team access
+      description: Where the evaluation team opens offers after the deadline.
+      tier: front
+      exposure: internal
+      sendsTo: [ sealed-upload ]
+      needs: [ agency-sign-on ]
+    - id: offer-storage
+      title: Offer storage
+      description: Offers and questions, with a record of who opened what, and when.
+      tier: data
   implements: [ vendor-proposal-portal ]
+  depends_on: [ agency-sign-on ]
 
 - id: contract-data-to-sam-build
   title: The contract system’s connection to SAM.gov
   description: The contract writing system’s system-to-system connection to SAM.gov, set up to send each contract action report when the award is signed.
   approach: build
+  components:
+    - id: reporting-connection
+      title: Contract action reporting connection
+      description: Sends each contract action report to SAM.gov when the award is signed.
+      tier: service
+      sendsTo: [ report-log ]
+    - id: report-checks
+      title: Daily report checks
+      description: Lists reports still in draft or error or past due, and contracts missing subcontract reports.
+      tier: service
+      sendsTo: [ report-log ]
+    - id: report-log
+      title: Report log
+      description: Each report sent, SAM.gov’s response, and when, for the year’s certification.
+      tier: data
   implements: [ contract-data-to-sam ]
 
 - id: invoices-through-ipp-platform
   title: Treasury’s Invoice Processing Platform
   description: Treasury’s Invoice Processing Platform, which vendors send invoices through and which routes each one for acceptance.
   approach: shared
+  components:
+    - id: vendor-invoicing
+      title: Vendor invoicing
+      description: Where vendors enroll, send invoices, and see each one’s status.
+      tier: front
+      exposure: public
+      sendsTo: [ invoice-routing ]
+    - id: acceptance
+      title: Invoice acceptance
+      description: Where program office staff accept or reject each invoice before its due date.
+      tier: front
+      exposure: internal
+      sendsTo: [ invoice-routing ]
+    - id: invoice-routing
+      title: Matching and routing
+      description: Matches each invoice to its order and line items, and routes it for acceptance.
+      tier: service
+      sendsTo: [ invoice-records ]
+    - id: financial-exchange
+      title: Financial system exchange
+      description: The agency’s connection that sends orders to the platform, and accepted invoices to the financial system for payment.
+      tier: service
+      sendsTo: [ invoice-routing ]
+    - id: invoice-records
+      title: Invoice records
+      description: Each invoice with its arrival date, acceptance, and payment.
+      tier: data
   implements: [ invoices-through-ipp ]
 
 - id: cpars-from-contract-data-platform
   title: CPARS, fed from contract data
   description: CPARS, with contracts registered from the contract data and reminders sent until each evaluation is done.
   approach: shared
+  components:
+    - id: registration-feed
+      title: Contract registration feed
+      description: The agency’s connection that registers each contract needing evaluations, with its officials and due dates.
+      tier: service
+      sendsTo: [ evaluation-tracking ]
+    - id: evaluation-workspace
+      title: Evaluation workspace
+      description: Where assessing and reviewing officials write and sign evaluations.
+      tier: front
+      exposure: internal
+      sendsTo: [ evaluation-tracking ]
+    - id: evaluation-tracking
+      title: Due dates and reminders
+      description: Tracks each evaluation’s due date, and reminds officials and their managers until it’s done.
+      tier: service
+      sendsTo: [ evaluation-records ]
+    - id: evaluation-records
+      title: Evaluation records
+      description: Each contract’s interim and final evaluations.
+      tier: data
   implements: [ cpars-from-contract-data ]
 
 - id: acquisition-ai-drafting-platform
   title: An AI model the agency approves
   description: An AI model in an environment the agency has approved, used with the agency’s templates and guidance to draft acquisition documents.
   approach: platform
+  components:
+    - id: drafting-assistant
+      title: Drafting assistant
+      description: Where contracting and program staff ask for drafts, check them against their sources, and approve them.
+      tier: front
+      exposure: internal
+      sendsTo: [ drafting-service ]
+      needs: [ agency-sign-on ]
+    - id: drafting-service
+      title: Drafting service
+      description: Sends each request to the model with the guidance it needs, and applies the rules on what may be shared.
+      tier: service
+      sendsTo: [ ai-model, reference-library, drafts ]
+    - id: ai-model
+      title: Approved AI model
+      description: The model, in the environment the agency has approved for acquisition information.
+      tier: service
+    - id: reference-library
+      title: Templates and guidance
+      description: The agency’s templates, guidance, and current deviations, for the model to draw on.
+      tier: data
+    - id: drafts
+      title: Drafts
+      description: Each draft with the sources it drew on and who approved it.
+      tier: data
   implements: [ acquisition-ai-drafting ]
+  depends_on: [ agency-sign-on ]
 
 - id: contract-spend-analytics-build
   title: An analytics workspace
   description: An analytics workspace that brings together contract, obligation, invoice, and evaluation data.
   approach: build
+  components:
+    - id: dashboards
+      title: Spend and workload dashboards
+      description: Spending, lead times, competition, and evaluations and closeouts coming due, for managers and planners.
+      tier: front
+      exposure: internal
+      sendsTo: [ analytics-store ]
+      needs: [ agency-sign-on ]
+    - id: data-feeds
+      title: Data feeds
+      description: Regular loads from SAM.gov contract data, the contract writing system, the financial system, and invoicing.
+      tier: service
+      sendsTo: [ analytics-store ]
+    - id: analytics-store
+      title: Analytics data store
+      description: Contract, obligation, invoice, and evaluation data, with where each figure came from.
+      tier: data
   implements: [ contract-spend-analytics ]
+  depends_on: [ agency-sign-on ]

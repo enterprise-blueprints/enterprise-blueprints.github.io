@@ -14,6 +14,33 @@
     watchFor:
       - Agencies were told to pause their own core HR purchases and projects, with exceptions only from the OMB and OPM Directors
       - Military personnel and intelligence agencies aren’t included at first
+  components:
+    - id: self-service
+      title: Employee and manager self-service
+      description: Where employees update their details and enter time, and managers request personnel actions and approve time.
+      tier: front
+      exposure: internal
+      sendsTo: [ personnel-actions ]
+    - id: hr-workspace
+      title: HR specialist workspace
+      description: Where HR specialists process personnel actions and keep positions up to date.
+      tier: front
+      exposure: internal
+      sendsTo: [ personnel-actions ]
+    - id: personnel-actions
+      title: Personnel action routing
+      description: Routes each requested action for approval before its effective date, and records it on the employee’s record.
+      tier: service
+      sendsTo: [ employee-records ]
+    - id: connections
+      title: Payroll, benefits, and OPM connections
+      description: Sends personnel actions and approved time to payroll, and data to benefits, retirement, and OPM.
+      tier: service
+      sendsTo: [ employee-records ]
+    - id: employee-records
+      title: Employee and position records
+      description: Each employee’s record, each position, and every personnel action and time record.
+      tier: data
   implements: [ core-hr-system ]
 
 - id: core-hr-system-hr-shared-service
@@ -27,6 +54,33 @@
       - The agency’s wave hasn’t begun yet
     watchFor:
       - Changes worth making now are the ones that also prepare for the move, such as cleaning data and documenting connections
+  components:
+    - id: self-service
+      title: Employee and manager self-service
+      description: Where employees update their details and enter time, and managers request personnel actions.
+      tier: front
+      exposure: internal
+      sendsTo: [ personnel-actions ]
+    - id: hr-workspace
+      title: HR processing workspace
+      description: Where HR specialists at the agency or the provider process personnel actions.
+      tier: front
+      exposure: internal
+      sendsTo: [ personnel-actions ]
+    - id: personnel-actions
+      title: Personnel action processing
+      description: Routes and approves each action, and records it on the employee’s record.
+      tier: service
+      sendsTo: [ hr-records ]
+    - id: feeds
+      title: Payroll, eOPF, and EHRI feeds
+      description: Sends personnel actions and approved time to payroll, and documents and data to eOPF and EHRI.
+      tier: service
+      sendsTo: [ hr-records ]
+    - id: hr-records
+      title: Employee and position records
+      description: The records the agency will clean and move to the government-wide system.
+      tier: data
   implements: [ core-hr-system ]
 
 - id: usa-staffing-hiring-usa-staffing
@@ -41,12 +95,41 @@
       - Most agencies, especially those changing how they assess applicants
     watchFor:
       - Each agency still sets up its own assessments, ranking method, and approvals
+  components:
+    - id: applicant-portal
+      title: Applications and assessments
+      description: Where applicants apply from USAJOBS, take the questionnaire and assessments, and see their status.
+      tier: front
+      exposure: public
+      sendsTo: [ rating-and-certificates ]
+    - id: staffing-workspace
+      title: HR staffing workspace
+      description: Where HR specialists build announcements, set up assessments, and issue certificates.
+      tier: front
+      exposure: internal
+      sendsTo: [ rating-and-certificates ]
+    - id: manager-review
+      title: Hiring manager review
+      description: Where hiring managers review certificates, interview, and record selections.
+      tier: front
+      exposure: internal
+      sendsTo: [ rating-and-certificates ]
+    - id: rating-and-certificates
+      title: Rating, ranking, and certificates
+      description: Scores applicants with veterans’ preference, ranks them by the agency’s method, builds certificates and talent pools, and sends notices.
+      tier: service
+      sendsTo: [ hiring-records ]
+    - id: hiring-records
+      title: Applications and hiring data
+      description: Applications, scores, certificates, and the hiring data OPM reports from.
+      tier: data
   implements: [ usa-staffing-hiring ]
 
 - id: usa-staffing-hiring-talent-acquisition-product
   title: A talent acquisition product connected to USAJOBS
   description: A commercial talent acquisition product that posts to USAJOBS and sends hiring data to OPM.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Can suit agencies with unusual hiring authorities or very high volume
@@ -54,7 +137,35 @@
       - The agency already runs one and it meets the Merit Hiring Plan’s steps
     watchFor:
       - Shared certificates and OPM’s hiring data are harder outside USA Staffing
+  components:
+    - id: applicant-portal
+      title: Applications and assessments
+      description: Where applicants arriving from USAJOBS apply, take assessments, and see their status.
+      tier: front
+      exposure: public
+      sendsTo: [ hiring-workflow ]
+    - id: hiring-workspace
+      title: HR and hiring manager workspace
+      description: Where HR specialists set up assessments and certificates, and hiring managers record selections.
+      tier: front
+      exposure: internal
+      sendsTo: [ hiring-workflow ]
+      needs: [ agency-sign-on ]
+    - id: hiring-workflow
+      title: Rating, ranking, and certificates
+      description: Scores and ranks applicants with veterans’ preference, and sends notices at each stage.
+      tier: service
+      sendsTo: [ hiring-records ]
+    - id: usajobs-and-opm
+      title: USAJOBS and OPM connections
+      description: Posts announcements to USAJOBS, brings applicants back, and sends hiring data to OPM.
+      tier: service
+      sendsTo: [ hiring-records ]
+    - id: hiring-records
+      title: Applications and hiring data
+      tier: data
   implements: [ usa-staffing-hiring ]
+  depends_on: [ agency-sign-on ]
 
 - id: pre-employment-connections-talent-acquisition-onboarding
   title: The talent acquisition system’s onboarding
@@ -67,7 +178,36 @@
       - The agency uses USA Staffing or a product with onboarding
     watchFor:
       - Connections the Merit Hiring Plan names, such as to background investigations and credentials, may still need building
+  components:
+    - id: selectee-forms
+      title: Selectee onboarding forms
+      description: Where the selectee completes investigation forms and Form I-9 after the tentative offer, and sees what’s next.
+      tier: front
+      exposure: public
+      sendsTo: [ pre-employment-case ]
+    - id: status-view
+      title: Pre-employment status
+      description: Where HR and the hiring manager see each step toward the start date.
+      tier: front
+      exposure: internal
+      sendsTo: [ pre-employment-case ]
+      needs: [ agency-sign-on ]
+    - id: pre-employment-case
+      title: Pre-employment case
+      description: Opens a case from the tentative offer and tracks each step to the first day.
+      tier: service
+      sendsTo: [ vetting-connections, case-records ]
+    - id: vetting-connections
+      title: Vetting, E-Verify, and credential connections
+      description: Sends forms to the background investigation system, runs E-Verify checks, and orders the credential and accounts.
+      tier: service
+      sendsTo: [ case-records ]
+    - id: case-records
+      title: Pre-employment records
+      description: Each selectee’s forms, checks, and step dates.
+      tier: data
   implements: [ pre-employment-connections ]
+  depends_on: [ agency-sign-on ]
 
 - id: guided-onboarding-core-hcm
   title: The core HR system’s onboarding and learning
@@ -80,7 +220,37 @@
       - The agency’s core HR system offers onboarding journeys
     watchFor:
       - Tasks for IT, facilities, and security may still need sending to the systems those teams use
+  components:
+    - id: onboarding-page
+      title: New employee onboarding page
+      description: Where each new employee sees their steps, completes forms, and takes assigned training.
+      tier: front
+      exposure: internal
+      sendsTo: [ onboarding-journey ]
+      needs: [ agency-sign-on ]
+    - id: supervisor-view
+      title: Supervisor and sponsor tasks
+      description: Where supervisors and sponsors see their tasks and check-in prompts.
+      tier: front
+      exposure: internal
+      sendsTo: [ onboarding-journey ]
+      needs: [ agency-sign-on ]
+    - id: onboarding-journey
+      title: Onboarding journey
+      description: Sets each step with its owner and date, and prompts check-ins and the survey.
+      tier: service
+      sendsTo: [ learning, employee-records ]
+    - id: learning
+      title: Training assignments
+      description: Assigns the training every new employee needs, security awareness first, and records completions.
+      tier: service
+      sendsTo: [ employee-records ]
+    - id: employee-records
+      title: Employee and onboarding records
+      description: The employee’s record, with onboarding steps and training completed.
+      tier: data
   implements: [ guided-onboarding ]
+  depends_on: [ agency-sign-on ]
 
 - id: guided-onboarding-service-platform
   title: The agency’s shared service or case platform
@@ -93,12 +263,42 @@
       - Day-one readiness is the biggest problem, and those teams already use the platform
     watchFor:
       - Training assignments and the employee record stay in the HR systems, so connections are needed
+  components:
+    - id: onboarding-portal
+      title: New employee portal
+      description: Where each new employee sees their steps and completes forms.
+      tier: front
+      exposure: internal
+      sendsTo: [ journey-workflow ]
+      needs: [ agency-sign-on ]
+    - id: team-queues
+      title: Team task queues
+      description: Where IT, facilities, security, and supervisors work their onboarding tasks with the rest of their requests.
+      tier: front
+      exposure: internal
+      sendsTo: [ journey-workflow ]
+      needs: [ agency-sign-on ]
+    - id: journey-workflow
+      title: Onboarding journey workflow
+      description: Opens each new employee’s journey and routes tasks to each team with deadlines.
+      tier: service
+      sendsTo: [ onboarding-records ]
+    - id: hr-connection
+      title: HR system connection
+      description: Brings in new hires from the core HR system and sends training assignments back.
+      tier: service
+      sendsTo: [ journey-workflow ]
+    - id: onboarding-records
+      title: Onboarding tasks and status
+      tier: data
   implements: [ guided-onboarding ]
+  depends_on: [ agency-sign-on ]
 
 - id: guided-onboarding-product
   title: An onboarding product
   description: An onboarding product connected to the core HR system and the agency’s request systems.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Built for a new employee’s experience, with welcome content and check-ins
@@ -106,24 +306,126 @@
       - The agency hires many people a year across many sites
     watchFor:
       - Another product to buy and keep up, and its data and connections may need moving when the agency joins the government-wide core HR system
+  components:
+    - id: onboarding-page
+      title: New employee onboarding page
+      description: Where each new employee sees welcome content, their steps, and their forms.
+      tier: front
+      exposure: internal
+      sendsTo: [ journeys ]
+      needs: [ agency-sign-on ]
+    - id: supervisor-view
+      title: Supervisor and sponsor view
+      description: Where supervisors and sponsors see their tasks and check-in prompts.
+      tier: front
+      exposure: internal
+      sendsTo: [ journeys ]
+      needs: [ agency-sign-on ]
+    - id: journeys
+      title: Journeys and check-ins
+      description: Runs each journey’s steps, check-ins, and survey.
+      tier: service
+      sendsTo: [ onboarding-data ]
+    - id: connections
+      title: HR and request system connections
+      description: Brings in new hires from the core HR system and sends tasks to the agency’s request systems.
+      tier: service
+      sendsTo: [ journeys ]
+    - id: onboarding-data
+      title: Onboarding data
+      description: Each new employee’s journey, tasks, check-ins, and survey responses.
+      tier: data
   implements: [ guided-onboarding ]
+  depends_on: [ agency-sign-on ]
 
 - id: federal-payroll-provider-payroll-provider
   title: The agency’s federal payroll provider
   description: The federal payroll provider that serves the agency, fed with its personnel actions and approved time.
   approach: shared
+  components:
+    - id: pay-statements
+      title: Earnings and leave statements
+      description: Where employees see their pay, deductions, and leave balances.
+      tier: front
+      exposure: internal
+      sendsTo: [ payroll-records ]
+    - id: action-intake
+      title: Personnel action and time intake
+      description: Takes in the agency’s personnel actions and approved time each pay period.
+      tier: service
+      sendsTo: [ pay-calculation ]
+    - id: pay-calculation
+      title: Pay calculation
+      description: Calculates pay, deductions, and leave, pays employees, and sends payroll data to OPM and the agency’s financial system.
+      tier: service
+      sendsTo: [ payroll-records ]
+    - id: debt-handling
+      title: Pay debt handling
+      description: Finds overpayments and handles debt notices, repayment agreements, and hearing requests.
+      tier: service
+      sendsTo: [ payroll-records ]
+    - id: payroll-records
+      title: Pay and leave records
+      tier: data
   implements: [ federal-payroll-provider ]
 
 - id: online-retirement-application-ora
   title: OPM’s Online Retirement Application
   description: OPM’s Online Retirement Application, prefilled from EHRI and eOPF and completed by the employee, HR, and payroll.
   approach: shared
+  components:
+    - id: employee-application
+      title: Employee application
+      description: Where the retiring employee completes the prefilled application and uploads documents.
+      tier: front
+      exposure: internal
+      sendsTo: [ application-routing ]
+    - id: hr-payroll-review
+      title: HR and payroll review
+      description: Where HR starts applications and certifies the summary of service, and payroll certifies its part.
+      tier: front
+      exposure: internal
+      sendsTo: [ application-routing ]
+    - id: application-routing
+      title: Prefill and routing
+      description: Prefills service, salary, and sick leave from EHRI and eOPF, tracks status, and submits the package to OPM.
+      tier: service
+      sendsTo: [ applications ]
+    - id: applications
+      title: Retirement applications
+      description: Each application with its documents and certifications.
+      tier: data
   implements: [ online-retirement-application ]
 
 - id: eopf-and-ehri-opm-systems
   title: OPM’s eOPF and EHRI
   description: OPM’s eOPF for personnel folders and EHRI for workforce data, with the agency’s data sent on schedule.
   approach: shared
+  components:
+    - id: folder-access
+      title: Personnel folder access
+      description: Where HR staff file documents and employees view their own folder.
+      tier: front
+      exposure: internal
+      sendsTo: [ personnel-folders ]
+    - id: agency-extract
+      title: Agency data extract
+      description: The agency’s scheduled extract of personnel action, status, and payroll data in OPM’s data standards.
+      tier: service
+      sendsTo: [ ehri-screening ]
+    - id: ehri-screening
+      title: EHRI screening
+      description: Screens each submission against OPM’s standards and returns error lists for the agency to correct.
+      tier: service
+      sendsTo: [ workforce-data ]
+    - id: personnel-folders
+      title: Electronic personnel folders
+      description: Each employee’s Official Personnel Folder, which moves with them between agencies.
+      tier: data
+    - id: workforce-data
+      title: Workforce data warehouse
+      description: The government-wide workforce data behind OPM’s reports and public data.
+      tier: data
   implements: [ eopf-and-ehri ]
 
 - id: performance-appraisal-system-hr-provider-module
@@ -137,12 +439,33 @@
       - The provider’s tool supports OPM’s current rating patterns
     watchFor:
       - The connection to the government-wide core HR system will need building when the agency moves
+  components:
+    - id: performance-workspace
+      title: Plans and ratings workspace
+      description: Where supervisors write plans, hold check-ins, and propose ratings, and employees acknowledge them.
+      tier: front
+      exposure: internal
+      sendsTo: [ appraisal-workflow ]
+    - id: appraisal-workflow
+      title: Appraisal routing
+      description: Routes plans and ratings for review, checks proposed ratings against OPM’s cap, and reminds supervisors of probationary certifications.
+      tier: service
+      sendsTo: [ performance-records ]
+    - id: core-hr-link
+      title: Core HR connection
+      description: Saves ratings of record on the employee’s record in the provider’s core HR system.
+      tier: service
+      sendsTo: [ performance-records ]
+    - id: performance-records
+      title: Plans and ratings
+      tier: data
   implements: [ performance-appraisal-system ]
 
 - id: performance-appraisal-system-product
   title: A performance management product
   description: A performance management product configured for OPM’s rules and connected to the core HR system.
   approach: product
+  hostedBy: vendor
   attributes:
     strengths:
       - Can offer better check-ins and goal setting than a basic tool
@@ -150,13 +473,64 @@
       - The agency’s current tool can’t meet the new rules
     watchFor:
       - Another product to buy and keep up, and to connect to the core HR system
+  components:
+    - id: performance-workspace
+      title: Plans and ratings workspace
+      description: Where supervisors write plans from templates, hold check-ins, and propose ratings, and employees acknowledge them.
+      tier: front
+      exposure: internal
+      sendsTo: [ appraisal-workflow ]
+      needs: [ agency-sign-on ]
+    - id: distribution-view
+      title: Rating distribution view
+      description: Where leaders see proposed ratings against OPM’s cap, by covered population, before they’re final.
+      tier: front
+      exposure: internal
+      sendsTo: [ appraisal-workflow ]
+      needs: [ agency-sign-on ]
+    - id: appraisal-workflow
+      title: Appraisal routing
+      description: Routes plans and ratings for review, and reminds supervisors of probationary certifications.
+      tier: service
+      sendsTo: [ performance-records ]
+    - id: core-hr-connection
+      title: Core HR connection
+      description: Brings in employees and positions, and sends ratings of record to the core HR system.
+      tier: service
+      sendsTo: [ performance-records ]
+    - id: performance-records
+      title: Plans and ratings
+      tier: data
   implements: [ performance-appraisal-system ]
+  depends_on: [ agency-sign-on ]
 
 - id: hr-ai-drafting-platform
   title: An AI model the agency approves
   description: An AI model in an environment the agency has approved, used with OPM’s standards and the agency’s templates to draft HR documents.
   approach: platform
+  components:
+    - id: drafting-assistant
+      title: Drafting assistant
+      description: Where HR specialists and managers ask for drafts and policy answers, then check and finish them.
+      tier: front
+      exposure: internal
+      sendsTo: [ drafting-service ]
+      needs: [ agency-sign-on ]
+    - id: drafting-service
+      title: Draft and answer service
+      description: Sends each request to the model with the reference material, returns drafts with their sources, and turns away decisions about people.
+      tier: service
+      sendsTo: [ ai-model, reference-material ]
+    - id: ai-model
+      title: AI model
+      description: The model, in the environment the agency approved for HR information.
+      tier: service
+    - id: reference-material
+      title: Reference material
+      description: OPM’s standards and guides and the agency’s templates, kept current.
+      tier: data
   implements: [ hr-ai-drafting ]
+  depends_on: [ agency-sign-on ]
 
 - id: workforce-analytics-build
   title: An analytics workspace
@@ -169,4 +543,27 @@
       - The agency has analytics tools and people who use them
     watchFor:
       - Feeds need rebuilding when the agency moves to the government-wide core HR system
+  components:
+    - id: dashboards
+      title: Workforce dashboards
+      description: Hiring against the staffing plan, time to hire, retirements, and ratings, for leaders and HR.
+      tier: front
+      exposure: internal
+      sendsTo: [ analytics-store ]
+      needs: [ agency-sign-on ]
+    - id: data-feeds
+      title: HR data feeds
+      description: Scheduled loads from the core HR system, hiring, payroll, and performance tools.
+      tier: service
+      sendsTo: [ analytics-store ]
+    - id: data-checks
+      title: Data checks
+      description: Checks the agency’s data against OPM’s standards before each submission.
+      tier: service
+      sendsTo: [ analytics-store ]
+    - id: analytics-store
+      title: HR analytics store
+      description: The joined HR data, with access to person-level data limited by role.
+      tier: data
   implements: [ workforce-analytics ]
+  depends_on: [ agency-sign-on ]

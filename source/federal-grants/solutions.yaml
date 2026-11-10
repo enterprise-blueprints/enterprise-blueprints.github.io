@@ -5,6 +5,7 @@
   title: A grants management product
   description: A product made for grants, configured for the agency’s programs and run by the agency.
   approach: product
+  hostedBy: agency
   attributes:
     strengths:
       - Built around the Uniform Guidance, so much of the process comes ready
@@ -12,7 +13,36 @@
       - The agency runs several grant programs, with staff to administer a system
     watchFor:
       - Another product to buy, secure, and keep up
+  components:
+    - id: recipient-portal
+      title: Recipient portal
+      description: Where recipients send reports, ask for changes, and close out their awards.
+      tier: front
+      exposure: public
+      sendsTo: [ award-workflow ]
+    - id: staff-workspace
+      title: Grants staff workspace
+      description: Where program and grants staff prepare announcements, run reviews, make awards, and monitor them.
+      tier: front
+      exposure: internal
+      sendsTo: [ award-workflow ]
+      needs: [ agency-sign-on ]
+    - id: award-workflow
+      title: Application and award workflow
+      description: Eligibility checks, reviewer assignments and scoring, risk reviews, award documents, and closeout.
+      tier: service
+      sendsTo: [ award-records ]
+    - id: data-exchange
+      title: Federal data exchange
+      description: Sends and receives announcements, applications, obligations, and award data with Grants.gov and the financial system.
+      tier: service
+      sendsTo: [ award-records ]
+    - id: award-records
+      title: Application and award records
+      description: Each award from announcement to closeout, with its monitoring and audit findings.
+      tier: data
   implements: [ grants-management ]
+  depends_on: [ agency-sign-on ]
 
 - id: grants-management-shared-service
   title: A federal grants shared service
@@ -30,6 +60,38 @@
       - Changes for the agency’s programs wait on the provider’s priorities
       - Getting the agency’s data out, for reporting or a later move, needs agreeing up front
       - Costs can grow with the number of awards and users
+  components:
+    - id: recipient-portal
+      title: Recipient portal
+      description: Where applicants and recipients apply, report, and ask for changes.
+      tier: front
+      exposure: public
+      sendsTo: [ program-workflows ]
+    - id: staff-workspace
+      title: Agency staff workspace
+      description: Where the agency’s program and grants staff work their awards in the provider’s system.
+      tier: front
+      exposure: internal
+      sendsTo: [ program-workflows ]
+    - id: program-workflows
+      title: Program workflows
+      description: The agency’s programs, forms, and steps, set up in the provider’s system.
+      tier: service
+      sendsTo: [ award-records ]
+    - id: federal-connections
+      title: Provider’s federal connections
+      description: The provider’s links to Grants.gov, payment systems, and USAspending.gov.
+      tier: service
+      sendsTo: [ award-records ]
+    - id: data-extract
+      title: Agency data extract
+      description: Copies the agency’s award data out, for its own reporting, under the agreement.
+      tier: service
+      sendsTo: [ award-records ]
+    - id: award-records
+      title: Award records
+      description: The agency’s applications and awards, kept by the provider.
+      tier: data
   implements: [ grants-management ]
 
 - id: grants-management-agency-platform
@@ -47,31 +109,150 @@
       - Merit review, reporting forms, and the recipient portal often take more building than expected
       - Federal reporting, such as to USAspending.gov, has to be built and kept up
       - Rules change with the Uniform Guidance, and someone has to update the platform each time
+  components:
+    - id: recipient-portal
+      title: Recipient portal
+      description: Where recipients send reports and ask for changes.
+      tier: front
+      exposure: public
+      sendsTo: [ award-steps ]
+    - id: grants-queues
+      title: Grants forms and queues
+      description: Where program and grants staff work applications and awards on the shared platform.
+      tier: front
+      exposure: internal
+      sendsTo: [ award-steps ]
+      needs: [ agency-sign-on ]
+    - id: award-steps
+      title: Review and award steps
+      description: Steps and approvals for review, risk checks, award, and closeout.
+      tier: service
+      sendsTo: [ award-data ]
+      needs: [ shared-case-platform ]
+    - id: program-reports
+      title: Program reports
+      description: Each program’s awards, monitoring, and closeout, from the award records.
+      tier: service
+      sendsTo: [ award-data ]
+    - id: award-data
+      title: Application and award records
+      description: Status, dates, amounts, and documents for each application and award.
+      tier: data
   implements: [ grants-management ]
   depends_on:
     - to: shared-case-platform
       note: The award records and steps are the shared platform, set up for grants.
+    - agency-sign-on
 
 - id: grants-gov-system-to-system-build
   title: A connection to Grants.gov’s system-to-system service
   description: A connection the agency builds from its grants system to Grants.gov’s system-to-system service.
   approach: build
+  components:
+    - id: opportunity-posting
+      title: Opportunity posting
+      description: Posts funding opportunities from the grants system to Grants.gov.
+      tier: service
+      sendsTo: [ exchange-log ]
+    - id: application-retrieval
+      title: Application retrieval
+      description: Brings each application, with its forms and attachments, into an application record, and sends its status back.
+      tier: service
+      sendsTo: [ exchange-log ]
+    - id: arrival-monitor
+      title: Arrival monitoring
+      description: Alerts staff to applications that fail to arrive, before the deadline passes.
+      tier: service
+      sendsTo: [ exchange-log ]
+    - id: exchange-log
+      title: Exchange log
+      description: Each posting, application retrieved, and status sent, with any errors.
+      tier: data
   implements: [ grants-gov-system-to-system ]
 
 - id: payments-through-asap-platform
   title: Treasury’s ASAP.gov
   description: Treasury’s ASAP.gov, with each recipient enrolled and each award’s account funded from the financial system.
   approach: shared
+  components:
+    - id: payment-requests
+      title: Recipient payment requests
+      description: Where enrolled recipients draw funds from their award accounts.
+      tier: front
+      exposure: public
+      sendsTo: [ account-controls ]
+    - id: account-controls
+      title: Award accounts and controls
+      description: Each award’s account, with the agency’s controls, such as review of requests over a set amount.
+      tier: service
+      sendsTo: [ payment-records ]
+    - id: financial-feed
+      title: Financial system feed
+      description: The agency’s connection that funds accounts as awards are obligated, and brings drawdown data back.
+      tier: service
+      sendsTo: [ account-controls ]
+    - id: payment-records
+      title: Accounts and drawdowns
+      description: Account balances and drawdowns, with recipients’ banking details kept by Treasury.
+      tier: data
   implements: [ payments-through-asap ]
 
 - id: grant-risk-analytics-build
   title: An analytics workspace
   description: An analytics workspace that brings together risk data for each applicant and recipient.
   approach: build
+  components:
+    - id: risk-workspace
+      title: Risk workspace
+      description: Where program staff see each applicant’s and recipient’s risk profile and flags, and accept or change suggested monitoring.
+      tier: front
+      exposure: internal
+      sendsTo: [ risk-scoring ]
+      needs: [ agency-sign-on ]
+    - id: data-feeds
+      title: Data feeds
+      description: Regular loads from SAM.gov, Do Not Pay, the Federal Audit Clearinghouse, and the grants and payment systems.
+      tier: service
+      sendsTo: [ risk-store ]
+    - id: risk-scoring
+      title: Risk profiles and flags
+      description: Builds each risk profile, with the facts behind it, and flags patterns worth a closer look.
+      tier: service
+      sendsTo: [ risk-store ]
+    - id: risk-store
+      title: Risk data and decisions
+      description: The facts brought together, what was flagged, what staff decided, and what came of it.
+      tier: data
   implements: [ grant-risk-analytics ]
+  depends_on: [ agency-sign-on ]
 
 - id: award-data-to-usaspending-build
   title: Scheduled submissions from the grants system
   description: Submissions to USAspending.gov produced by the grants system on a schedule and checked against the financial records.
   approach: build
+  components:
+    - id: award-extract
+      title: Award extract
+      description: Takes new awards and changes from the grants system on a schedule.
+      tier: service
+      sendsTo: [ financial-checks ]
+    - id: financial-checks
+      title: Checks against financial records
+      description: Compares each extract with the agency’s financial records before it’s submitted.
+      tier: service
+      sendsTo: [ submission ]
+    - id: submission
+      title: Submission
+      description: Submits the award data for publication on USAspending.gov, and records the results.
+      tier: service
+      sendsTo: [ submission-records ]
+    - id: error-notices
+      title: Error notices
+      description: Sends errors, missing data, and missing subaward reports to the staff who own each award.
+      tier: service
+      sendsTo: [ submission-records ]
+    - id: submission-records
+      title: Submission records
+      description: Each submission, with its results and errors.
+      tier: data
   implements: [ award-data-to-usaspending ]
